@@ -1,0 +1,32 @@
+mainmatter:
+
+  foreword.md
+
+  GeneralInformation/README.md
+  GeneralInformation/operating-system.md
+  GeneralInformation/application.md
+
+  BashShell/README.md
+  BashShell/tools.md
+  BashShell/command-line-interface.md
+  BashShell/file-system.md
+  BashShell/commands-info.md
+  BashShell/files-and-directories.md
+  BashShell/extra-features.md
+
+  BashScripting/README.md
+  BashScripting/tools.md
+  BashScripting/scripts-features.md
+  BashScripting/variables.md
+  BashScripting/conditional-statement.md
+  BashScripting/arithmetic-expression.md
+  BashScripting/loop-operators.md
+  BashScripting/functions.md
+
+  package-manager.md
+
+  finalwords.md
+
+  glossary.md
+  answers.md
+  links.md
