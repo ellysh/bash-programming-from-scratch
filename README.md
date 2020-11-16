@@ -1,18 +1,20 @@
-# Программирование на Bash с нуля
+# Bash programming from scratch
 
-Эта книга задумывалась не как очередное руководство по Bash и Unix-окружению. Перед вами самоучитель по программированию. Примеры в нём написаны на языке Bash.
+This book was not intended to be another Bash and Unix environment guide. This is a programming tutorial. Examples of programs are written in the Bash language here.
 
-Программирование можно изучить самостоятельно. При этом неизбежно возникают вопросы. Они сложны для новичка, но очевидны для профессионала. Мы будем двигаться медленно и подробно разберём следующие темы:
+Learning programming by yourself is possible. But you will have inevitable questions. Without some experience, it will be difficult to answer them. We will try to consider all these questions.
 
-* Общие принципы работы компьютера.
-* Инструменты разработчика и требования к ним.
-* Основные концепции программирования.
+The book covers the following topics in detail:
 
-По каждой теме есть упражнения. Мы выполним их вместе и так закрепим полученные знания.
+* General principles of computer operation.
+* Developer tools and requirements for them.
+* Basic programming concepts.
 
-После прочтения этой книги вы научитесь использовать Bash. Его возможности помогут вам в решении ежедневных задач по работе с компьютером. Некоторые из этих задач вы сможете автоматизировать. Это отличный старт, чтобы научиться программировать.
+There are exercises for each topic. Let's do them together. We will consolidate new knowledge in this way.
 
-## Ссылки
+After reading this book, you will learn how to use Bash. Its features will help you to solve your daily computer tasks. You will learn how to automate some of them. This is a great start for learning programming.
 
-* [Читать или загрузить с Leanpub](https://leanpub.com/programming-from-scratch)
-* [Связь с автором](mailto:petrsum@gmail.com)
+## Links
+
+* [Read or download the book from Leanpub] (https://leanpub.com/programming-from-scratch)
+* [Contact the author] (mailto:petrsum@gmail.com)
