@@ -16,5 +16,5 @@ After reading this book, you will learn how to use Bash. Its features will help 
 
 ## Links
 
-* [Read or download the book from Leanpub] (https://leanpub.com/programming-from-scratch)
-* [Contact the author] (mailto:petrsum@gmail.com)
+* [Read or download the book from Leanpub](https://leanpub.com/programming-from-scratch)
+* [Contact the author](mailto:petrsum@gmail.com)
