@@ -1,16 +1,16 @@
 # Introduction
 
-Learning to program is not easy. It is even harder if you start from scratch and learn on your own without the help of professional teachers. This is a feasible task, but much will depend on you.
+Learning to program is not easy. It is even harder if you start from scratch and learn it on your own without mentors. This is a feasible task, but its result depends on you.
 
-Studying a new and complex subject is impossible without good motivation. So before you continue reading this book, sort out your goals. What do you expect from your new skills? What tasks will be solved by your programs? Answers to these questions will help you choose an effective way to learn.
+You need good motivation for studying a new and complex subject. So, consider your goals before continue reading this book. What do you expect from your new skills? What tasks will your programs solve? Answers to these questions help you to choose an effective way to learn.
 
-If you firmly intend to become a professional programmer in the shortest possible time, you can not do without help. Enroll in full-time courses or online lectures on the Internet. Being able to communicate directly with your mentor, ask questions, and clarify unclear points will greatly accelerate your progress.
+If you firmly intend to become a professional programmer in the shortest possible time, you need a mentor. Enroll yourself in a full-time or online course. You accelerate your progress greatly when you communicate directly with mentor, ask questions, and clarify unclear topics.
 
-You can do without a mentor if you are interested in programming out of curiosity as a hobby or to expand your horizons. In this case, self-study with the book will already bring practical benefits. After all, basic programming skills will be useful to anyone who works with the computer. Perhaps this book will serve as a starting point and help you decide on the direction for further development.
+You can learn programming without a mentor if curiosity guides you. Do you want to get a new hobby or learn a new fancy thing? In this case, self-study with the book is a right way. It will bring you practical benefits for relatively small efforts. After all, basic programming skills are useful for anyone who works with the computer. Perhaps this book would be a starting point for you. It will help you to choose a direction for further development.
 
-Today in online stores and libraries available many books on programming for readers with different levels of training. Is there a point in another book?
+Today there are plenty books are available in online shops and libraries. A reader with any technical level can find an appropriate book. Is there a reason to write yet another book?
 
-Programming is a very practical field. Of course, it has a lot of theory, as in mathematics. But knowing the fundamental principles will not make you a programmer. To become one, you will have to write a lot of code yourself. At first, this code just won't work. Then, it will contain errors. Gradually, you will learn to anticipate and fix them in advance. The indicator of your progress will not be your increasing knowledge of a particular language, but the evaluation of your old code. When you read it a month or two later and notice that it contains errors, it will be a confirmation of your progress.
+Programming is a very practical domain. It has a lot of theory, as mathematics has. But knowing the fundamental principles does not make you a programmer. You have to write a lot of code by your own to become a programmer. At first, this code just won't work. Then, it will contain errors. Gradually, you will learn how to anticipate and fix the errors in advance. Knowledge of a particular language does not indicate your progress. But evaluation of your old code does it. When you read your code a month later and notice its disadvantages, it confirms your progress.
 
 So what is wrong with existing books? Many of them are dedicated to a specific language or technology. The chosen theme is considered in all its subtleties and nuances. In this case, the implementation of practical tasks is not given enough attention. A beginner has no need for such a volume of highly specialized theoretical knowledge. In addition, it causes a false idea of how to learn to program. Such books on specific technologies are rarely read from cover to cover. They are used more often as a reference when there is a practical question.
 
