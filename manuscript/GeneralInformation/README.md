@@ -1,3 +1,3 @@
-# Общая информация
+# General information
 
-В этом разделе мы рассмотрим основные принципы работы компьютера. Начнём с операционных систем и истории их возникновения. Познакомимся с возможностями и семействами современных ОС. Затем рассмотрим, что представляет собой компьютерная программа, как она запускается и исполняется.
+In this section we will consider the basic principles of the computer. We will start with the operating systems and their history. Then we will consider the features and families of modern operating systems. At the end, we will get what a computer program is, how it is launched and executed.
