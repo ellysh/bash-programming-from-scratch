@@ -1,6 +1,6 @@
 ## Operating Systems
 
-### History of OS origin
+### History of OS Origin
 
 Most computer users understand why [**operating system**](https://en.wikipedia.org/wiki/Operating_system) (OS) is needed. Usually, when you buy or download an application from the Internet, you check its system requirements. They specify the required hardware and an operating system to launch the application. It means that the OS is a software platform, which is necessary for the application to work. But where did this requirement come from? Why can't you just buy a computer and launch an application on it without any OS?
 
@@ -57,56 +57,56 @@ Now we return to the question about the necessity of operating systems. We found
 
 OS usually provides the code for supporting hardware. Why not use it? Most modern developers choose this way. It reduces the amount of work and speeds up the release of the applications.
 
-### Возможности ОС
+### OS Features
 
-Почему мы начали изучение программирования с рассмотрения ОС? Иллюстрация 1-4 демонстрирует схему взаимодействия ОС с [**прикладными программами**](https://ru.wikipedia.org/wiki/Прикладное_программное_обеспечение) и [**аппаратным обеспечением**](https://ru.wikipedia.org/wiki/Аппаратное_обеспечение). Прикладные программы — это приложения, которые решают задачи пользователя (например, текстовый редактор, калькулятор, браузер). Под аппаратным обеспечением подразумеваются все электронные и механические компоненты компьютера (например, клавиатура, монитор, центральный процессор, видеокарта).
+Why did we start studying programming by looking at the OS? Figure 1-4 illustrates the OS's interaction with [**applications**] (https://ru.wikipedia.org/wiki/Прикладное_программное_обеспечение) and [**hardware**] (https://ru.wikipedia.org/wiki/Аппаратное_обеспечение). Applications are applications that solve user tasks (e.g. text editor, calculator, browser). Hardware means all electronic and mechanical components of a computer (for example, keyboard, monitor, central processor, video card).
 
-{caption: "Иллюстрация 1-4. Схема взаимодействия ОС с программами и аппаратным обеспечением", height: "50%"}
+{caption: "Ficgure 1-4. Scheme of interaction between OS and programs and hardware", height: "50%"}
 ![Схема взаимодействия ОС](images/GeneralInformation/operating-system.png)
 
-Согласно схеме, приложения получают доступ к аппаратным ресурсам не напрямую, а через [**системные библиотеки**](https://ru.wikipedia.org/wiki/Библиотека_(программирование)) ОС. Этот доступ предоставляется по определённым правилам. Программа работает только с теми возможностям устройств, которые поддерживаются ОС. Правила работы с устройствами определены в [**интерфейсе прикладного программирования**]((https://ru.wikipedia.org/wiki/API)), также известном как API (Application Programming Interface), который предоставляется системными библиотеками. Интерфейс — это набор соглашений о взаимодействии компонентов информационной системы. Как правило, интерфейсы описываются стандартами. Благодаря им, гарантируется совместимость компонентов системы.
+According to the scheme, applications do not access hardware resources directly, but through [**system libraries**] (https://ru.wikipedia.org/wiki/Библиотека_(programming)). OS. This access is granted by certain rules. The program works only with those features of devices that are supported by the OS. Device rules are defined in [**application Programming Interface**]((https://ru.wikipedia.org/wiki/API)), also known as the API (Application Programming Interface), which is provided by the system libraries. An API is a set of agreements on how information system components interact. As a rule, the interfaces are described in the standards. Thanks to them, the compatibility of system components is guaranteed.
 
-API интерфейс описывает следующие аспекты взаимодействия программ и ОС:
+The API interface describes the following aspects of interaction between programs and the operating system:
 
-1. Какая операция будет выполнена при вызове конкретной функции ОС?
+1. What operation will be performed when a specific OS function is called?
 
-2. Какие данные следует переданы ей на вход?
+2. What data should be transferred to it at the input?
 
-3. Какие данные функция вернёт в качестве результата?
+3. Which data will the function return as a result?
 
-Следование интерфейсу крайне важно как со стороны ОС, так и со стороны приложений. Это гарантирует их совместимость на уровне текущих версий и будущих модификаций. Без хорошо документированного, стандартизированного интерфейса такая совместимость была бы невозможна.
+Following the interface is very important on both the OS and application sides. This guarantees their compatibility at the level of current versions and future modifications. Without a well documented, standardized interface this compatibility would not have been possible.
 
-Мы уже выяснили, что приложения могут работать без ОС. Однако, она предлагает готовые решения для взаимодействия с аппаратными ресурсами компьютера, которые в противном случае пришлось бы решать разработчикам приложений. Это огромная работа. Тем более если учесть разнообразие комплектующих современных компьютеров. Все модели устройств (например, видеокарт) должны поддерживаться, иначе программа не сможет стабильно работать у всех пользователей.
+We have already discovered that applications can operate without an OS. However, it offers ready-made solutions for interaction with the hardware resources of the computer, which otherwise would have to be solved by the developers of applications. It is a huge job. Especially when you consider the variety of components of modern computers. All models of devices (for example, video cards) must be supported, otherwise the program will not be able to work stably with all users.
 
-Выясним, какие возможности предоставляет современная ОС через свой API интерфейс.
+Let's find out what features the modern OS provides through its API interface.
 
-Все электронные и механические компоненты компьютера (аппаратное обеспечение), можно рассматривать как некоторые ресурсы, необходимые для вычислений. Именно с помощью этих компонентов выполняются программы пользователей.
+All electronic and mechanical components of the computer (hardware), can be considered as some resources needed for calculations. It is with these components that user programs are executed.
 
-Интерфейс отражает не только список возможностей оборудования, которыми может воспользоваться программа. Также он устанавливает порядок взаимодействия между несколькими программами и оборудованием. Рассмотрим пример.
+The interface reflects not only the list of hardware features that the program can use. It also establishes the order of interaction between several programs and the hardware. Let's have a look at an example.
 
-Две программы не могут одновременно записывать данные на [жёсткий диск](https://ru.wikipedia.org/wiki/Жёсткий_диск#Технологии_записи_данных) в одну и ту же область. Во-первых, запись выполняется единственной магнитной головкой жёсткого диска. Во-вторых, данные, записанные первым приложением, будут затёрты данными второго. Поэтому одновременные запросы программ на запись должны блокироваться или помещаться в очередь и исполняться друг за другом. За эти механизмы отвечает ОС, а точнее её [**ядро**](https://ru.wikipedia.org/wiki/Ядро_операционной_системы) (см. иллюстрацию 1-4), в котором реализована [**файловая система**](https://ru.wikipedia.org/wiki/Файловая_система). Похожим образом ОС упорядочивает доступ ко всем [**периферийным**](https://ru.wikipedia.org/wiki/Периферийное_устройство) и внутренним устройствам компьютера. Этот доступ предоставляется через специальные программы, называемые [**драйверами устройств**](https://ru.wikipedia.org/wiki/Драйвер) (см. иллюстрацию 1-4).
+Two programs cannot simultaneously write data to [hard disk] (https://ru.wikipedia.org/wiki/Жёсткий_диск#Технологии_записи_данных) in the same area. First, the recording is performed by a single magnetic head of the hard disk. Secondly, the data recorded by the first application will be wiped with the data of the second one. Therefore, simultaneous requests of the programs for recording should be blocked or placed in a queue and executed one after another. These mechanisms are the responsibility of the OS, to be more precise its [**core**] (https://ru.wikipedia.org/wiki/Ядро_операционной_системы) (see illustration 1-4), in which [**file system**] (https://ru.wikipedia.org/wiki/Файловая_система) is implemented. In a similar fashion, the OS organizes access to all [**peripheral**](https://ru.wikipedia.org/wiki/Периферийное_устройство) and your computer's internal devices. This access is provided through special programs called [**device drivers**](https://ru.wikipedia.org/wiki/Драйвер) (see illustration 1-4).
 
-Что такое периферийные устройства, и чем они отличаются от внутренних? К периферийным относятся все устройства, отвечающие за ввод и вывод информации, а также за её постоянное хранение. Например, клавиатура, мышь, микрофон, монитор, колонки, жёсткий диск. Внутренние устройства отвечают за обработку информации, то есть непосредственное исполнение программ. К ним относятся [**центральный процессор**](https://ru.wikipedia.org/wiki/Центральный_процессор) (central processing unit, CPU), [**оперативную память**](https://ru.wikipedia.org/wiki/Оперативная_память) (random-access memory, RAM), [**видеокарту**](https://ru.wikipedia.org/wiki/Видеокарта) (graphics processing unit, GPU).
+What are peripherals, and how do they differ from internal devices? Peripherals are all devices that are responsible for inputting, outputting, and storing information permanently. For example, keyboard, mouse, microphone, monitor, speakers, hard drive. Internal devices are responsible for information processing, i.e. direct execution of programs. These include [**central processing unit**] (https://ru.wikipedia.org/wiki/Центральный_процессор) (central processing unit, CPU), [**RAM**] (https://ru.wikipedia.org/wiki/Оперативная_память) (random-access memory, RAM), [**video card**] (https://ru.wikipedia.org/wiki/Видеокарта) (graphics processing unit, GPU).
 
-Интерфейс доступа к аппаратным ресурсам — это не единственное, что предоставляет ОС. Кроме аппаратных есть ещё и программные ресурсы ОС. Это тот самый повторяющийся код, ставший со временем служебными программами и оформленный впоследствии в системные библиотеки (см. иллюстрацию 1-4). Некоторые из них обслуживают устройства, но некоторые выполняют полезные операции над входными данными. Например, компонент Windows под названием [**интерфейс графических устройств**](https://ru.wikipedia.org/wiki/GDI) даёт приложениям возможность манипулировать графическими объектами. С их помощью разработчики могут создавать пользовательский интерфейс для своих программ. К программным ресурсам относятся все компоненты ОС, установленные на компьютере. Кроме них ОС может также предоставлять доступ к алгоритмам сторонних приложений или библиотек.
+The hardware access interface is not the only thing the OS provides. In addition to hardware, there are also software resources for the OS. This is the same repetitive code that over time has become a service program and is later processed into system libraries (see illustrations 1-4). Some of them serve the devices, but some perform useful operations on the input data. For example, a Windows component called [**Graphics Device Interface**] (https://ru.wikipedia.org/wiki/GDI) allows applications to manipulate graphics objects. With these, developers can create a user interface for their programs. Software resources include all OS components installed on your computer. In addition, the OS may also provide access to third party algorithms or libraries.
 
-ОС не только управляет ресурсами, но и организует работу запущенных приложений. Прежде всего код приложения надо загрузить с [**устройства хранения информации**](https://ru.wikipedia.org/wiki/Компьютерная_память) (будь то перфокарта или жёсткий диск) и поместить в оперативную память компьютера. Эта процедура нетривиальная, поскольку надо также загрузить код всех сторонних библиотек, которые используются приложением во время работы. Процесс запуска и исполнения программы мы рассмотрим подробнее в следующем разделе.
+The OS not only manages the resources, but also organizes the work of running applications. First of all the application code should be downloaded from [**information storage devices**] (https://ru.wikipedia.org/wiki/Компьютерная_память) (whether it is a punch card or a hard drive) and placed in the computer RAM. This procedure is non-trivial, because you also need to download the code of all third-party libraries that the application uses while running. We will describe the process of launching and executing the program in more detail in the next section.
 
-Если ОС многопользовательская, она контролирует доступ к данным. Таким образом каждый пользователь может работать только со своими собственными файлами и каталогами.
+If the OS is multi-user, it controls the access to the data. This way, each user can only work with his own files and directories.
 
-Подведём итог. ОС выполняет следующие функции:
+Let's sum it up. The operating system has the following functions:
 
-1. Предоставляет и упорядочивает доступ к аппаратным ресурсам компьютера.
+1. Provides and arranges access to hardware resources of the computer.
 
-2. Предоставляет программные ресурсы в виде системных библиотек.
+2. Provides program resources in the form of system libraries.
 
-3. Запускает приложения, а также отвечает за ввод данных для них и вывод результата.
+3. Runs applications, and is responsible for entering data for them and outputting the result.
 
-4. Организует взаимодействие приложений друг с другом.
+4. organizes the interaction of applications with each other.
 
-5. Контролирует доступ пользователей к своим данным.
+5. Controls user access to their data.
 
-Изучив эти функции, внимательный читатель возможно догадался, что без ОС невозможно одновременное выполнение нескольких приложений. Ведь их разработчики не могут предусмотреть в каком сочетании программы будут выполняться. Только ОС имеет достаточно информации, чтобы эффективно распределить ресурсы компьютера в реальном времени.
+Having studied these functions, the attentive reader may have guessed that without the OS it is impossible to execute several applications simultaneously. After all, their developers can not foresee in what combination the programs will be executed. Only the OS has enough information to effectively allocate computer resources in real time.
 
 ### Современные ОС
 
