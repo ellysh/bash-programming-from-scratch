@@ -59,28 +59,30 @@ OS usually provides the code for supporting hardware. Why not use it? Most moder
 
 ### OS Features
 
-Why did we start studying programming by looking at the OS? Figure 1-4 illustrates the OS's interaction with [**applications**](https://en.wikipedia.org/wiki/Application_software) and [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware). Applications are applications that solve user tasks (e.g. text editor, calculator, browser). Hardware means all electronic and mechanical components of a computer (for example, keyboard, monitor, central processor, video card).
+Why did we start studying programming by considering the OS? Figure 1-4 illustrates interaction of the OS with [**applications**](https://en.wikipedia.org/wiki/Application_software) and [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware). Applications are programs that solve user tasks (e.g. text editor, calculator, browser). Hardware is all electronic and mechanical components of a computer. For example, these are keyboard, monitor, central processor, video card.
 
-{caption: "Ficgure 1-4. Scheme of interaction between OS and programs and hardware", height: "50%"}
-![Схема взаимодействия ОС](images/GeneralInformation/operating-system.png)
+{caption: "Ficgure 1-4. Interaction scheme of an OS with applications and hardware", height: "50%"}
+![Interaction Scheme](images/GeneralInformation/operating-system.png)
 
-According to the scheme, applications do not access hardware resources directly, but through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)). OS. This access is granted by certain rules. The program works only with those features of devices that are supported by the OS. Device rules are defined in [**Application Programming Interface**](https://en.wikipedia.org/wiki/API), also known as the API (Application Programming Interface), which is provided by the system libraries. An API is a set of agreements on how information system components interact. As a rule, the interfaces are described in the standards. Thanks to them, the compatibility of system components is guaranteed.
+According to the scheme, applications do not access hardware resources directly. They do it through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)) of the OS. There are certain rules for gaining the access.
 
-The API interface describes the following aspects of interaction between programs and the operating system:
+The program works only with those features of devices that are supported by the OS. Device rules are defined by [**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API. The system libraries provide this interface. An API is a set of agreements for interacting components of information system. The interface is described in some standard often. These standards guarante the compatibility of system components.
 
-1. What operation will be performed when a specific OS function is called?
+The API describes the following aspects of interaction between the application and the OS:
 
-2. What data should be transferred to it at the input?
+1. Which operation is performed when a specific OS function is called?
 
-3. Which data will the function return as a result?
+2. Which data the function receives at its input?
 
-Following the interface is very important on both the OS and application sides. This guarantees their compatibility at the level of current versions and future modifications. Without a well documented, standardized interface this compatibility would not have been possible.
+3. Which data the function returns as a result?
 
-We have already discovered that applications can operate without an OS. However, it offers ready-made solutions for interaction with the hardware resources of the computer, which otherwise would have to be solved by the developers of applications. It is a huge job. Especially when you consider the variety of components of modern computers. All models of devices (for example, video cards) must be supported, otherwise the program will not be able to work stably with all users.
+It is important to follow the API agreements on both sides: the OS and the application. This guarantees compatibility of their current versions and future modifications. Is is impossible to achieve such compatibility without a well documented and standardized interface.
 
-Let's find out what features the modern OS provides through its API interface.
+We have discovered that applications can operate without an OS. However, OS offers ready-made solutions for interaction with computer hardware. Without such solutions, developers of applications should take care about this task. It requires huge amount of efforts. For example, consider the variety of devices models in a modern computer. All models should be supported. Otherwise, the application would not work stably for all users.
 
-All electronic and mechanical components of the computer (hardware), can be considered as some resources needed for calculations. It is with these components that user programs are executed.
+Let's consider features, which the modern OS provides via its API.
+
+We can consider all electronic and mechanical components of the computer (hardware) as resources. These resources are required for prerforming calculations. In other words, hardware executes all user's applications.
 
 The interface reflects not only the list of hardware features that the program can use. It also establishes the order of interaction between several programs and the hardware. Let's have a look at an example.
 
