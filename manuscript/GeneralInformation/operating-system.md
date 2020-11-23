@@ -80,17 +80,34 @@ It is important to follow the API agreements on both sides: the OS and the appli
 
 We have discovered that applications can operate without an OS. However, OS offers ready-made solutions for interaction with computer hardware. Without such solutions, developers of applications should take care about this task. It requires huge amount of efforts. For example, consider the variety of devices models in a modern computer. All models should be supported. Otherwise, the application would not work stably for all users.
 
-Let's consider features, which the modern OS provides via its API.
+Let's consider features, which the modern OS provides via its API. We can consider all electronic and mechanical components of the computer (hardware) as resources. These resources are required for prerforming calculations. In other words, hardware executes all user's applications. The API reflects the list of hardware features that the application can use. Also, the API dictate the order of interaction between several applications and the hardware.
 
-We can consider all electronic and mechanical components of the computer (hardware) as resources. These resources are required for prerforming calculations. In other words, hardware executes all user's applications.
+There is an example. Two programs cannot write data to the same area of the [hard disk](https://en.wikipedia.org/wiki/Hard_disk_drive#Magnetic_recording) simultaneously. There are two reasons for that:
 
-The interface reflects not only the list of hardware features that the program can use. It also establishes the order of interaction between several programs and the hardware. Let's have a look at an example.
+1. A single magnetic head records data on the hard disk. The head can do one task at a time.
 
-Two programs cannot simultaneously write data to [hard disk](https://en.wikipedia.org/wiki/Hard_disk_drive#Magnetic_recording) in the same area. First, the recording is performed by a single magnetic head of the hard disk. Secondly, the data recorded by the first application will be wiped with the data of the second one. Therefore, simultaneous requests of the programs for recording should be blocked or placed in a queue and executed one after another. These mechanisms are the responsibility of the OS, to be more precise its [**core**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) (see Figure 1-4), in which [**file system**](https://en.wikipedia.org/wiki/File_system) is implemented. In a similar fashion, the OS organizes access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and your computer's internal devices. This access is provided through special programs called [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) (see Figure 1-4).
+2. One program overwrites data of another program in the same memory area. It leads to losing data.
 
-What are peripherals, and how do they differ from internal devices? Peripherals are all devices that are responsible for inputting, outputting, and storing information permanently. For example, keyboard, mouse, microphone, monitor, speakers, hard drive. Internal devices are responsible for information processing, i.e. direct execution of programs. These include [**central processing unit**](https://en.wikipedia.org/wiki/Central_processing_unit) (central processing unit, CPU), [**RAM**](https://en.wikipedia.org/wiki/Random-access_memory) (random-access memory, RAM), [**video card**](https://en.wikipedia.org/wiki/Video_card) (graphics processing unit, GPU).
+Therefore, the writing requests from all programs should be placed in a queue and executed one after another. The OS responses for this job. The [**kernel**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). The same way, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. There are special programs called [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) (see Figure 1-4). They help OS to manage devices.
 
-The hardware access interface is not the only thing the OS provides. In addition to hardware, there are also software resources for the OS. This is the same repetitive code that over time has become a service program and is later processed into system libraries (see Figure 1-4). Some of them serve the devices, but some perform useful operations on the input data. For example, a Windows component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) allows applications to manipulate graphics objects. With these, developers can create a user interface for their programs. Software resources include all OS components installed on your computer. In addition, the OS may also provide access to third party algorithms or libraries.
+What is the difference between peripheral and internal devices? Peripherals are all devices that are responsible for inputting, outputting, and storing data permanently. These are few examples:
+
+* Keyboard
+* Mouse
+* Microphone
+* Monitor
+* Speakers
+* Hard drive
+
+Internal devices are responsible for processing data, i.e. for programs execution. These are internal devices:
+
+* [**Central Processing Unit**](https://en.wikipedia.org/wiki/Central_processing_unit) (CPU)
+* [**Random-Access Memory**](https://en.wikipedia.org/wiki/Random-access_memory) (RAM)
+* [**Video Card**](https://en.wikipedia.org/wiki/Video_card) (graphics processing unit or GPU).
+
+The OS provides an access to the computer resources (hardware). At the same, the OS has own software resources for sharing with user's applications. Do you remember the copied code for supporting devices from the first generation of OS? This code has become a service program. Later, it has transformed into the system libraries (see Figure 1-4).
+
+There are system libraries for serving the devices. There are libraries to process input data using a complex algorithm. There is an example: the Windows component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) (GDI). This interface allows an application to manipulate graphics objects. Using GDI, developers create a user interface for their applications. All software resources of OS are already installed on your computer. You just need a knowledge how to use them. In addition, the OS also provides an access to third-party algorithms or libraries.
 
 The OS not only manages the resources, but also organizes the work of running applications. First of all the application code should be downloaded from [**data storage devices**](https://en.wikipedia.org/wiki/Computer_data_storage) (whether it is a punch card or a hard drive) and placed in the computer RAM. This procedure is non-trivial, because you also need to download the code of all third-party libraries that the application uses while running. We will describe the process of launching and executing the program in more detail in the next section.
 
