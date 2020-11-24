@@ -80,7 +80,7 @@ Both the OS and application should follow the API agreements. It guarantees the 
 
 We have discovered that applications can operate without an OS. However, the OS provides ready-made solutions for interaction with computer hardware. Without such solutions, developers of applications should solve this task on their own. It requires significant efforts. For example, consider the variety of devices of a modern computer. The software should support all popular models of each device. For example, all video cards should be supported. Without such support, the application would not work stably for all users.
 
-Let's consider features, which the modern OS provides via its API. We can consider all electronic and mechanical components of the computer (hardware) as resources. The software uses these resources for performing calculations. In other words, hardware executes all user's applications. The API reflects the list of hardware features that the application can use. Also, the API dictates the order of interaction between several applications and the hardware.
+Let's consider the features that the modern OS provides via its API. We can treat all electronic and mechanical components of the computer (hardware) as resources. The software uses these resources for performing calculations. In other words, hardware executes all user's applications. The API reflects the list of hardware features that the application can use. Also, the API dictates the order of interaction between several applications and the hardware.
 
 There is an example. Two programs cannot write data to the same area of the [hard disk](https://en.wikipedia.org/wiki/Hard_disk_drive#Magnetic_recording) simultaneously. There are two reasons for that:
 
@@ -88,9 +88,9 @@ There is an example. Two programs cannot write data to the same area of the [har
 
 2. One program overwrites data of another program in the same memory area. It leads to losing data.
 
-Therefore, the writing requests from all programs should be placed in a queue and executed one after another. The OS responses for this job. The [**kernel**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). The same way, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. There are special programs called [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) (see Figure 1-4). They help OS to manage devices.
+Therefore, all programs' writing requests should be placed in a queue and executed one after another. The OS responses for this job. The [**kernel**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). In the same way, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. There are special programs called [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) (see Figure 1-4). They help the OS to manage devices.
 
-What is the difference between peripheral and internal devices? Peripherals are all devices that are responsible for inputting, outputting, and storing data permanently. These are few examples:
+What is the difference between the peripheral and internal devices? Peripherals are all devices that are responsible for inputting, outputting, and storing data permanently. These are a few examples:
 
 * Keyboard
 * Mouse
@@ -105,19 +105,19 @@ Internal devices are responsible for processing data, i.e. for programs executio
 * [**Random-Access Memory**](https://en.wikipedia.org/wiki/Random-access_memory) (RAM)
 * [**Video Card**](https://en.wikipedia.org/wiki/Video_card) (graphics processing unit or GPU).
 
-The OS provides an access to the computer resources (hardware). At the same, the OS has own software resources for sharing with user's applications. Do you remember the copied code for supporting devices from the first generation of OS? This code has become a service program. Later, it has transformed into the system libraries (see Figure 1-4).
+The OS provides access to computer resources (hardware). At the same time, the OS has its own software resources for sharing with user's applications. Do you remember the copied code for supporting devices from the first generation of OS? This code has become a service program. Later, it has transformed into the system libraries (see Figure 1-4).
 
-There are system libraries for serving the devices. There are libraries to process input data using a complex algorithm. There is an example: the Windows component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) (GDI). This interface allows an application to manipulate graphics objects. Using GDI, developers create a user interface for their applications. All software resources of OS are already installed on your computer. You just need a knowledge how to use them. In addition, the OS also provides an access to third-party algorithms or libraries.
+Some system libraries serve the devices. Other system libraries process data using a complex algorithm. There is an example: the Windows component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) (GDI). It provides an interface for manipulating graphic objects. Using GDI, developers create a user interface for their applications. All software resources of OS are already installed on your computer. You just need knowledge of how to use them. Besides, the OS also provides access to third-party algorithms or libraries.
 
-The OS manages the hardware and software resources. Also, it organizes the jointly work of running programs. The OS performs several non-trivial tasks to launch an application. Then the OS tracks its work. If the application violates some agreements (like memory usage), the OS terminates it. We will consider the process of launching and executing the program in the next section.
+The OS manages hardware and software resources. Also, it organizes the joint work of running programs. The OS performs several non-trivial tasks to launch an application. Then the OS tracks its work. If the application violates some agreements (like memory usage), the OS terminates it. We will consider the process of launching and executing the program in the next section.
 
-If the OS is multi-user, it controls the access to the data. This is important security feature. Thanks to such control, each user can access his own files only.
+If the OS is multi-user, it controls access to the data. It is an important security feature. Thanks to such control, each user can access his own files only.
 
 Let's summarize. The OS has the following features:
 
 1. It provides and arranges access to hardware resources of the computer.
 
-2. It provides own software resources.
+2. It provides its own software resources.
 
 3. It launches applications.
 
@@ -125,7 +125,7 @@ Let's summarize. The OS has the following features:
 
 5. It controls access to users' data.
 
-You can guess that without the OS it is impossible to execute several applications simultaneously. It is true. The devlopers can not foresee the combination of launched applications. The OS launches these applications. So, only OS has enough information to allocate computer resources in real-time effectively.
+You can guess that without the OS, it is impossible to execute several applications simultaneously. Yes, it is true. The developers can not foresee the combination of launched applications. The OS launches these applications. So, only the OS has enough information to allocate computer resources in real-time effectively.
 
 ### Современные ОС
 
