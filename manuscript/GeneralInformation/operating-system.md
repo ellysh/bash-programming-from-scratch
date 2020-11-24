@@ -59,28 +59,28 @@ OS usually provides the code for supporting hardware. Why not use it? Most moder
 
 ### OS Features
 
-Why did we start studying programming by considering the OS? Figure 1-4 illustrates interaction of the OS with [**applications**](https://en.wikipedia.org/wiki/Application_software) and [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware). Applications are programs that solve user tasks (e.g. text editor, calculator, browser). Hardware is all electronic and mechanical components of a computer. For example, these are keyboard, monitor, central processor, video card.
+Why did we start studying programming by considering the OS? Figure 1-4 explains interaction between the OS, [**applications**](https://en.wikipedia.org/wiki/Application_software) and [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware). Applications are programs that solve user tasks. There are examples: text editor, calculator, browser. Hardware is all electronic and mechanical components of a computer. For example, these are keyboard, monitor, central processor, video card.
 
-{caption: "Ficgure 1-4. Interaction scheme of an OS with applications and hardware", height: "50%"}
+{caption: "Figure 1-4. Interaction scheme of an OS with applications and hardware", height: "50%"}
 ![Interaction Scheme](images/GeneralInformation/operating-system.png)
 
-According to the scheme, applications do not access hardware resources directly. They do it through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)) of the OS. There are certain rules for gaining the access.
+According to Figure 1-4, applications do not access hardware directly. They do it through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)). The system libraries are part of the OS. Each application should follow specific rules for interacting with them.
 
-The program works only with those features of devices that are supported by the OS. Device rules are defined by [**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API. The system libraries provide this interface. An API is a set of agreements for interacting components of information system. The interface is described in some standard often. These standards guarante the compatibility of system components.
+The application can access only the features of devices that are supported by the OS. [**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API of the OS defines available devices features. Also, the API dictates a set of rules for working with devices. The API is a set of agreements for interacting components of the information system. Often a standard describes an interface of the specific OS (for example, POSIX). Such standards guarantee the compatibility of the OS and applications. The system libraries provide API.
 
-The API describes the following aspects of interaction between the application and the OS:
+The API describes the following aspects of the interaction between the OS and applications:
 
-1. Which operation is performed when a specific OS function is called?
+1. Which action does the OS perform when the application calls the specific system function?
 
-2. Which data the function receives at its input?
+2. Which data does the function receive as an input?
 
-3. Which data the function returns as a result?
+3. Which data does the function return as a result?
 
-It is important to follow the API agreements on both sides: the OS and the application. This guarantees compatibility of their current versions and future modifications. Is is impossible to achieve such compatibility without a well documented and standardized interface.
+Both the OS and application should follow the API agreements. It guarantees the compatibility of their current versions and future modifications. Such compatibility would be unreachable without a well documented and standardized interface.
 
-We have discovered that applications can operate without an OS. However, OS offers ready-made solutions for interaction with computer hardware. Without such solutions, developers of applications should take care about this task. It requires huge amount of efforts. For example, consider the variety of devices models in a modern computer. All models should be supported. Otherwise, the application would not work stably for all users.
+We have discovered that applications can operate without an OS. However, the OS provides ready-made solutions for interaction with computer hardware. Without such solutions, developers of applications should solve this task on their own. It requires significant efforts. For example, consider the variety of devices of a modern computer. The software should support all popular models of each device. For example, all video cards should be supported. Without such support, the application would not work stably for all users.
 
-Let's consider features, which the modern OS provides via its API. We can consider all electronic and mechanical components of the computer (hardware) as resources. These resources are required for prerforming calculations. In other words, hardware executes all user's applications. The API reflects the list of hardware features that the application can use. Also, the API dictate the order of interaction between several applications and the hardware.
+Let's consider features, which the modern OS provides via its API. We can consider all electronic and mechanical components of the computer (hardware) as resources. The software uses these resources for performing calculations. In other words, hardware executes all user's applications. The API reflects the list of hardware features that the application can use. Also, the API dictates the order of interaction between several applications and the hardware.
 
 There is an example. Two programs cannot write data to the same area of the [hard disk](https://en.wikipedia.org/wiki/Hard_disk_drive#Magnetic_recording) simultaneously. There are two reasons for that:
 
@@ -109,23 +109,23 @@ The OS provides an access to the computer resources (hardware). At the same, the
 
 There are system libraries for serving the devices. There are libraries to process input data using a complex algorithm. There is an example: the Windows component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) (GDI). This interface allows an application to manipulate graphics objects. Using GDI, developers create a user interface for their applications. All software resources of OS are already installed on your computer. You just need a knowledge how to use them. In addition, the OS also provides an access to third-party algorithms or libraries.
 
-The OS not only manages the resources, but also organizes the work of running applications. First of all the application code should be downloaded from [**data storage devices**](https://en.wikipedia.org/wiki/Computer_data_storage) (whether it is a punch card or a hard drive) and placed in the computer RAM. This procedure is non-trivial, because you also need to download the code of all third-party libraries that the application uses while running. We will describe the process of launching and executing the program in more detail in the next section.
+The OS manages the hardware and software resources. Also, it organizes the jointly work of running programs. The OS performs several non-trivial tasks to launch an application. Then the OS tracks its work. If the application violates some agreements (like memory usage), the OS terminates it. We will consider the process of launching and executing the program in the next section.
 
-If the OS is multi-user, it controls the access to the data. This way, each user can only work with his own files and directories.
+If the OS is multi-user, it controls the access to the data. This is important security feature. Thanks to such control, each user can access his own files only.
 
-Let's sum it up. The operating system has the following functions:
+Let's summarize. The OS has the following features:
 
-1. Provides and arranges access to hardware resources of the computer.
+1. It provides and arranges access to hardware resources of the computer.
 
-2. Provides program resources in the form of system libraries.
+2. It provides own software resources.
 
-3. Runs applications, and is responsible for entering data for them and outputting the result.
+3. It launches applications.
 
-4. organizes the interaction of applications with each other.
+4. It organizes the interaction of applications with each other.
 
-5. Controls user access to their data.
+5. It controls access to users' data.
 
-Having studied these functions, the attentive reader may have guessed that without the OS it is impossible to execute several applications simultaneously. After all, their developers can not foresee in what combination the programs will be executed. Only the OS has enough information to effectively allocate computer resources in real time.
+You can guess that without the OS it is impossible to execute several applications simultaneously. It is true. The devlopers can not foresee the combination of launched applications. The OS launches these applications. So, only OS has enough information to allocate computer resources in real-time effectively.
 
 ### Современные ОС
 
