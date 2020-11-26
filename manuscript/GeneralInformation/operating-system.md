@@ -139,9 +139,9 @@ The most modern OSes support [**multitasking**](https://en.wikipedia.org/wiki/Co
 
 In the 1960s, the challenge of increasing computer efficiency came. Computers were expensive that time. It leads that their owners count every minute of the hardware work. Only large companies and universities were able to buy computers. These organizations considered unacceptable any idle time of the hardware.
 
-Early operating systems allowed programs to be executed one after the other without delay. This saved the time needed to switch computers from one task to another. In such systems, several programs and their input data were prepared in advance and written to a storage device (e.g., magnetic tape). This tape was fed to a computer reading device. It would sequentially execute programs and output their results to an output device (e.g., a printer). This mode of operation is called [**batch processing**](https://en.wikipedia.org/wiki/Batch_processing).
+Early operating systems allowed programs to be executed one after the other without delay. This approach saved the time needed to switch computers from one task to another. In such systems, several programs and their input data were prepared in advance and written to a storage device (e.g., magnetic tape). This tape was loaded to a computer reading device. Then the computer executed the programs sequentially and printed their results to an output device (e.g., a printer). This mode of operation is called [**batch processing**](https://en.wikipedia.org/wiki/Batch_processing).
 
-Batch processing increased the efficiency of mainframe time usage. It automated program loading and partially excluded a human operator from this process. However, the system had one more [**bottleneck**](https://en.wikipedia.org/wiki/Bottleneck_(production)). The point is that the computational power of processors became much higher than that of peripheral devices. It resulted in CPU downtime.
+Batch processing increased the efficiency of mainframe usage. It automated program loading and partially eliminated the human operator from the process. However, the computer system still has the [**bottleneck**](https://en.wikipedia.org/wiki/Bottleneck_(production)). The computational power of processors has increased significantly. But the speed of peripherals has remained almost the same. Thus, the CPU often stayed idle while waiting for input/output.
 
 I> Bottleneck is a component or resource of an information system that limits its overall performance or bandwidth.
 
@@ -155,7 +155,7 @@ Multitasking solves the problem of quick response when working interactively wit
 
 Pseudo-parallel processing means that only one task is executed at any given time. However, task switching is so fast that the user doesn't notice it. He feels like his computer reacts immediately to any action he takes. In fact, however, every program and OS component gets its hardware resources at strictly defined moments.
 
-In the case of computers with multiple processors or [multi-core] processors (https://ru.wikipedia.org/wiki/Ядро_микропроцессора), several programs are executed simultaneously. Roughly speaking, the number of simultaneously executed tasks is equal to the number of cores of all the computer processors. At the same time the principle of preemptive multitasking with constant task switching is preserved. It is universal and does a good job of load balancing multi-processor and multi-core systems. This makes it possible to maintain an acceptable response time for the user.
+In the case of computers with multiple processors or [multi-core processors](https://en.wikipedia.org/wiki/Multi-core_processor), several programs are executed simultaneously. Roughly speaking, the number of simultaneously executed tasks is equal to the number of cores of all the computer processors. At the same time the principle of preemptive multitasking with constant task switching is preserved. It is universal and does a good job of load balancing multi-processor and multi-core systems. This makes it possible to maintain an acceptable response time for the user.
 
 #### Интерфейс пользователя
 
