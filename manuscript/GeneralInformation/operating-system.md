@@ -173,3 +173,12 @@ We will consider operating systems for PCs and notebooks only. Apart from multit
 Users of commercial computers learned about the interactive mode in 1960. This mode was supported by a new [minicomputer] (https://en.wikipedia.org/wiki/Minicomputer) [PDP-1] (https://en.wikipedia.org/wiki/PDP-1) from [Digital Equipment Corporation](https://en.wikipedia.org/wiki/Digital_Equipment_Corporation). Why did computer manufacturers and users become interested in interactivity in general? In the 1950s, IBM computers dominated the mainframe market. They worked in batch processing mode and coped well with computational tasks. Their operating systems with multi-programming support automated program loading and provided high performance.
 
 The idea of interactive work with the computer appeared in the SAGE military project. The US Air Force ordered it. The project developed an automated air defense system to detect Soviet bombers. During development, the engineers faced the problem of processing data from radars. According to the requirements, the computer had to output data in real-time. The human operator reacted to data as quickly as possible and gave commands to the system. The existing methods of interaction with the computer did not fit this task. Because in an air defense system, the speed of response to a threat is essential.
+
+The SAGE project has led to the creation of the first interactive computer [AN/FSQ-7](https://en.wikipedia.org/wiki/AN/FSQ-7_Combat_Direction_Central) (see Figure 1-5). The computer used the monitor with a [cathode-ray tube](https://en.wikipedia.org/wiki/Cathode-ray_tube). An operator entered commands using the [**light pen**](https://en.wikipedia.org/wiki/Light_pen).
+
+{caption: "Figure 1-5. Computer AN/FSQ-7"}
+![Computer AN/FSQ-7](images/GeneralInformation/AN-FSQ-7.jpg)
+
+The method of interactive work with the computer became known in scientific circles. It gained popularity quickly. Batch processing successfully coped with program execution. However, this approach was inconvenient for development and debugging applications. The developer should make his algorithm and wrote it on a storage device. Then he placed the application in a queue for execution on the mainframe. Waiting in the queue took hours. If an error was detected after the program execution, the developer should fix it and put the application in the queue again. As a result, it took days to fix all the errors even in a small program.
+
+
