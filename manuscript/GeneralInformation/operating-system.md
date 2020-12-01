@@ -204,3 +204,24 @@ Figure 1-7 shows a modern command-line interface. There is the window of [**term
 ![Command-line interface](images/GeneralInformation/cli.png)
 
 The command-line interface is still in demand today. It has several advantages over the graphical interface. The main advantage of the CLI is low requirements for computing resources. It runs reliably on low-performance embedded computers as well as on powerful servers. If you access a computer remotely via CLI, the communication channel's quality and bandwidth may be low. Even with a slow connection, the server will receive commands.
+
+The command-line interface has disadvantages. Its main problem is the complexity of learning. There are hundreds of commands available to the user. They have different input parameters that define their working mode. It takes a lot of time to remember at least a minimum set of commands for daily work.
+
+The problem of visual representation of available commands was solved by [**text-based user interface**](https://en.wikipedia.org/wiki/Text-based_user_interface) (TUI). It uses [**box-drawing characters**](https://en.wikipedia.org/wiki/Box-drawing_character) along with alphanumeric characters. The box-drawing characters display the graphic primitives on the screen. Primitives are lines, rectangles, triangles, etc. Figure 1-8 shows a typical text interface. There is an output of system resource usage by the htop program.
+
+{caption: "Figure 1-8. Text-based user interface", height: "50%"}
+![Text-based user interface](images/GeneralInformation/tui.png)
+
+Further growth of computer performance allowed replacing box-drawing characters with real graphic elements. There are examples of such elements: windows, icons, buttons, etc. As a result, a full-fledged graphical interface appeared. Modern operating systems provide this kind of interface.
+
+Figure 1-9 demonstrates the Windows GUI. There is a screenshot of the desktop. The desktop contains the windows of three applications: Explorer, Notepad and Calculator. They work simultaneously.
+
+{caption: "Figure 1-9. Windows GUI"}
+![Windows GUI](images/GeneralInformation/gui.png)
+
+The first GUI was intended for a mini-computer [Xerox Alto](https://en.wikipedia.org/wiki/Xerox_Alto) (see Figure 1-10). The computer was developed in 1973 in the research center [Xerox PARC](https://en.wikipedia.org/wiki/PARC_(company)). However, the interface was not widespread until the 1980s. It required a lot of memory and high computer performance. At that time, such PCs were too expensive for ordinary users.
+
+Apple produced the first PC with GUI in 1983. It was called Lisa.
+
+{caption: "Figure 1-10. Mini-computer Xerox Alto", height: "50%"}
+![Mini-computer Xerox Alto](images/GeneralInformation/xerox-alto.jpg)
