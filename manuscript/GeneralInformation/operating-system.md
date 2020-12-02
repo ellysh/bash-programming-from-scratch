@@ -225,3 +225,29 @@ Apple produced the first PC with GUI in 1983. It was called Lisa.
 
 {caption: "Figure 1-10. Mini-computer Xerox Alto", height: "50%"}
 ![Mini-computer Xerox Alto](images/GeneralInformation/xerox-alto.jpg)
+
+#### Families of OSes
+
+Today the market of personal computers is dominated by three [families of operating systems](https://en.wikipedia.org/wiki/Category:Operating_system_families):
+
+* [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows)
+* [Linux](https://en.wikipedia.org/wiki/Linux)
+* [macOS](https://en.wikipedia.org/wiki/MacOS)
+
+The term "family" means several OS versions that follow the same architectural solutions. Besides, most functions in these OS versions are implemented in the same way.
+
+OS developers adhere to the same architecture. They do not offer something fundamentally new in the next versions of their product. Why?
+
+Changes in modern operating systems are taking place, but gradually and slowly. The reason for this is [** backward compatibility**](https://en.wikipedia.org/wiki/Backward_compatibility). This compatibility means that newer OS versions repeat the features of older versions. These features are needed to run existing programs. At first glance, this seems to be an optional requirement. But it is a severe limitation for software development. Let us find out why it is.
+
+Imagine that you wrote a program for Windows and sell it. Sometimes users find errors in the program. You fix them. From time to time, you add new features.
+
+Now imagine that a new version of Windows has been released. Your program does not work on this version. Therefore, your users have two solutions: 
+
+* Wait for the update of your program, which is compatible with the new Windows.
+
+* Refuse to update Windows.
+
+If users need your program for daily work, they refuse the Windows update.
+
+Suppose that the new Windows is fundamentally different from the previous one. It means that you should rewrite your program completely. Count all the time you have already spent fixing bugs and adding new features. You should repeat all this work. You will most likely give up this idea and suggest users stay on the old Windows version.
