@@ -238,7 +238,7 @@ The term "family" means several OS versions that follow the same architectural s
 
 OS developers adhere to the same architecture. They do not offer something fundamentally new in the next versions of their product. Why?
 
-Changes in modern operating systems are taking place, but gradually and slowly. The reason for this is [** backward compatibility**](https://en.wikipedia.org/wiki/Backward_compatibility). This compatibility means that newer OS versions repeat the features of older versions. These features are needed to run existing programs. At first glance, this seems to be an optional requirement. But it is a severe limitation for software development. Let us find out why it is.
+Changes in modern operating systems are taking place, but gradually and slowly. The reason for this is [**backward compatibility**](https://en.wikipedia.org/wiki/Backward_compatibility). This compatibility means that newer OS versions repeat the features of older versions. These features are needed to run existing programs. At first glance, this seems to be an optional requirement. But it is a severe limitation for software development. Let us find out why it is.
 
 Imagine that you wrote a program for Windows and sell it. Sometimes users find errors in the program. You fix them. From time to time, you add new features.
 
@@ -251,3 +251,17 @@ Now imagine that a new version of Windows has been released. Your program does n
 If users need your program for daily work, they refuse the Windows update.
 
 Suppose that the new Windows is fundamentally different from the previous one. It means that you should rewrite your program completely. Count all the time you have already spent fixing bugs and adding new features. You should repeat all this work. You will most likely give up this idea and suggest users stay on the old Windows version.
+
+There are many programs like yours. Their developers will come to the same solution as you. As a result, nobody will update to the new Windows version. This situation is the essence of the backward compatibility problem. Because of this problem, there are families of operating systems.
+
+The impact of applications on OS development is great. For example, Windows and personal computers from IBM owe their success to a table processor [Lotus 1-2-3](https://en.wikipedia.org/wiki/Lotus_1-2-3). Lotus 1-2-3 has worked on IBM PC with Windows only. For the sake of Lotus 1-2-3, users bought both PC and OS. The popular application, which brings the platform to the broad market, is called [**killer application**](https://en.wikipedia.org/wiki/Killer_application).
+
+The tabular processor [VisiCalc](https://en.wikipedia.org/wiki/VisiCalc) had a similar influence. It promoted the distribution of computers [Apple II](https://en.wikipedia.org/wiki/Apple_II_series). Similarly, the C, Fortran and Pascal languages' free compilers fuelled interest in Unix in university circles. There was the killer application behind each of the three dominating OSes today. Further distribution of these OSes happened thanks to the [network effect](https://en.wikipedia.org/wiki/Network_effect). Developers of new applications chose the software platform, which most users already had.
+
+Let us return to the list of OS families. Windows and Linux are remarkable because they do not depend on hardware. It means that you can install them on any PC or laptop. macOS will run on Apple devices only. You would need the unofficial [modified version](https://en.wikipedia.org/wiki/Hackintosh) of macOS for installing it on different hardware.
+
+Hardware compatibility is an example of an architectural solution. There are many such solutions. Together they define the features of each family.
+
+OS defines the infrastructure for the programmer. It dictates the development tools. Examples of tools are IDE, compiler, build system. Also, the OS imposes architectural solutions for the applications. There is a culture of developing programs for a specific OS. It is an important point: you should develop applications differently for different OSes. Please take it into account when you design your programs.
+
+Let's consider the different cultures of software development on the example of Windows and Linux.
