@@ -277,3 +277,7 @@ The target platform for Windows is relatively cheap PCs and notebooks. Many peop
 Many applications have been written for the Windows OS family. Microsoft itself developed the first applications. There is a package of office applications [Microsoft Office](https://en.wikipedia.org/wiki/Microsoft_Office) and standard Windows applications. For third-party developers, they have become a standard to follow.
 
 Microsoft followed the same principle when developing both the OS and applications for it. It is a secrecy principle: source codes are not available to users, data formats are undocumented, and third-party utilities do not have access to software features. These solutions protect Microsoft's intellectual property.
+
+Software developers have followed the example of Microsoft. They stuck with the same philosophy of secrecy. As a result, their applications were self-contained and independent of each other. The formats of their data are encoded and undocumented.
+
+If you are an experienced computer user, you immediately recognize a typical Windows application. There is a window with [control elements] (https://en.wikipedia.org/wiki/Graphical_widget) like buttons, input fields, tabs, etc. In this window, the user manipulates the data. Examples of data are text, image or sound record. The result of the work is saved on the hard disk. You can open it again in the same application. If you write your own Windows program, it will look and work similarly. This succession of solutions is called the development culture.
