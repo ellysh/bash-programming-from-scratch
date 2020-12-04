@@ -265,3 +265,15 @@ Hardware compatibility is an example of an architectural solution. There are man
 OS defines the infrastructure for the programmer. It dictates the development tools. Examples of tools are IDE, compiler, build system. Also, the OS imposes architectural solutions for the applications. There is a culture of developing programs for a specific OS. It is an important point: you should develop applications differently for different OSes. Please take it into account when you design your programs.
 
 Let's consider the different cultures of software development on the example of Windows and Linux.
+
+#### Windows
+
+Windows is [proprietary software](https://en.wikipedia.org/wiki/Proprietary_software). The source code of such software is closed. You will not be able to read and modify it. In other words, there is no legal way to know about proprietary software more than its documentation tells you.
+
+If you want to install Windows on your computer, you should buy it from Microsoft. However, this OS is often pre-installed on new computers and notebooks. Therefore, its price is included in the final cost of the devices.
+
+The target platform for Windows is relatively cheap PCs and notebooks. Many people can afford to buy such a device. Therefore, the market of potential users is huge. Microsoft tends to maintain a competitive edge in this market. The company is afraid that Windows analogs with the same features appear. So, Microsoft takes care of protecting its intellectual property. They do it in both technical and legal ways. For example, the user agreement prohibits you from exploring the internals of the OS.
+
+Many applications have been written for the Windows OS family. Microsoft itself developed the first applications. There is a package of office applications [Microsoft Office](https://en.wikipedia.org/wiki/Microsoft_Office) and standard Windows applications. For third-party developers, they have become a standard to follow.
+
+Microsoft followed the same principle when developing both the OS and applications for it. It is a secrecy principle: source codes are not available to users, data formats are undocumented, and third-party utilities do not have access to software features. These solutions protect Microsoft's intellectual property.
