@@ -219,12 +219,12 @@ Figure 1-9 demonstrates the Windows GUI. There is a screenshot of the desktop. T
 {caption: "Figure 1-9. Windows GUI"}
 ![Windows GUI](images/GeneralInformation/gui.png)
 
-The first GUI was intended for a mini-computer [Xerox Alto](https://en.wikipedia.org/wiki/Xerox_Alto) (see Figure 1-10). The computer was developed in 1973 in the research center [Xerox PARC](https://en.wikipedia.org/wiki/PARC_(company)). However, the interface was not widespread until the 1980s. It required a lot of memory and high computer performance. At that time, such PCs were too expensive for ordinary users.
+The first GUI was intended for a minicomputer [Xerox Alto](https://en.wikipedia.org/wiki/Xerox_Alto) (see Figure 1-10). The computer was developed in 1973 in the research center [Xerox PARC](https://en.wikipedia.org/wiki/PARC_(company)). However, the interface was not widespread until the 1980s. It required a lot of memory and high computer performance. At that time, such PCs were too expensive for ordinary users.
 
 Apple produced the first PC with GUI in 1983. It was called Lisa.
 
-{caption: "Figure 1-10. Mini-computer Xerox Alto", height: "50%"}
-![Mini-computer Xerox Alto](images/GeneralInformation/xerox-alto.jpg)
+{caption: "Figure 1-10. Minicomputer Xerox Alto", height: "50%"}
+![Minicomputer Xerox Alto](images/GeneralInformation/xerox-alto.jpg)
 
 #### Families of OSes
 
@@ -280,4 +280,56 @@ Microsoft followed the same principle when developing both the OS and applicatio
 
 Software developers have followed the example of Microsoft. They stuck with the same philosophy of secrecy. As a result, their applications were self-contained and independent of each other. The formats of their data are encoded and undocumented.
 
-If you are an experienced computer user, you immediately recognize a typical Windows application. There is a window with [control elements] (https://en.wikipedia.org/wiki/Graphical_widget) like buttons, input fields, tabs, etc. In this window, the user manipulates the data. Examples of data are text, image or sound record. The result of the work is saved on the hard disk. You can open it again in the same application. If you write your own Windows program, it will look and work similarly. This succession of solutions is called the development culture.
+If you are an experienced computer user, you immediately recognize a typical Windows application. There is a window with [control elements](https://en.wikipedia.org/wiki/Graphical_widget) like buttons, input fields, tabs, etc. In this window, the user manipulates the data. Examples of data are text, image or sound record. The result of the work is saved on the hard disk. You can open it again in the same application. If you write your own Windows program, it will look and work similarly. This succession of solutions is called the development culture.
+
+#### Linux
+
+Linux has borrowed ideas and solutions from the [Unix](https://en.wikipedia.org/wiki/Unix). Both OSes follow the set of standards that is called [POSIX](https://en.wikipedia.org/wiki/POSIX) (Portable Operating System Interface). POSIX defines interfaces between applications and the operating system. Following Linux and Unix to the same standard led to their similar behavior.
+
+The Unix appeared in the late 1960s. It was created by two engineers from the Bell Labs company. The OS was a hobby project of [Ken Thompson](https://en.wikipedia.org/wiki/Ken_Thompson) and [Dennis Ritchie](https://en.wikipedia.org/wiki/Dennis_Ritchie). In their daily work, they developed the OS [**Multics**](https://en.wikipedia.org/wiki/Multics). It was a joint project of the Massachusetts Institute of Technology (MIT), General Electric (GE) and Bell Labs. Multics was planned as an OS for the new mainframe GE-645 (see Figure 1-11) by General Electric.
+
+{caption: "Figure 1-11. Mainframe GE-645", height: "30%"}
+![Mainframe GE-645](images/GeneralInformation/ge-645.jpg)
+
+In Multics, the developers have applied several innovative solutions. One of them is time-sharing. Therefore, the mainframe GE-645 was the first commercial computer where several users could work simultaneously. In this case, multitasking responds for sharing resources among the users.
+
+Multics turned out to be too complicated. The project consumed more time and money than it was initially planned. That is why Bell Labs decided to leave the project. But the project was interesting from the technical point of view. Therefore, many Bell Labs engineers wanted to continue working on it. Ken Thompson was one of them. He decided to create his own operating system for the computer GE-645. Ken started to write the system kernel and duplicated some Multics mechanisms. However, General Electric soon demanded the return of its GE-645. Bell Labs received the computer on loan only. As a result, Ken Thompson lost a hardware platform for his development.
+
+In parallel with his work on the Multics analog, Ken wrote a computer game [Space Travel](https://en.wikipedia.org/wiki/Space_Travel_(video_game)). The game worked on the past generation mainframe GE-635 from General Electric. This computer had the [GECOS](https://en.wikipedia.org/wiki/General_Comprehensive_Operating_System) OS. GE-635 consisted of several modules. Each module was a cabinet with electronics. The overall mainframe cost was about 7 500 000$. Bell Labs engineers actively used this computer. Therefore, Ken was rarely able to work with it.
+
+Ken decided to port his game to a relatively inexpensive and rarely used minicomputer [PDP-7](https://en.wikipedia.org/wiki/PDP-7) (see Figure 1-12). It cost about 72 000$. But there was one problem. Space Travel used the features of the GECOS OS. PDP-7 did not provide such features. Ken was joined by his colleague Dennis Ritchie. They implemented GECOS features for PDP-7. It was a set of libraries and subsystems. Over time, they developed into a self-sufficient OS. It was called Unix.
+
+{caption: "Figure 1-12. Minicomputer PDP-7", height: "30%"}
+![Minicomputer PDP-7](images/GeneralInformation/pdp-7.jpg)
+
+Ken and Dennis were not going to sell their software. Therefore, there was never a goal to protect intellectual property. They wrote Unix for their own needs and distributed it in open source. Everyone could copy and use the OS. Initially, the active Unix users were Bell Labs employees only.
+
+Bell Labs belonged to AT&T company. After some time, AT&T provided Unix source code to US universities. Thus, university circles continued the development of the OS.
+
+[Linus Torvalds](https://en.wikipedia.org/wiki/Linus_Torvalds) created the Linux OS in 1991. At that time, he was studying at the University of Helsinki. Linus solved a practical problem. He needed a Unix-compatible OS for PC. Such OS was not available at that moment.
+
+At the University of Helsinki, students performed study assignments on a MicroVAX minicomputer running Unix. At home, they had PCs. But the Unix was not running on such computers. There was a Unix alternative for PCs. There is [Minix](https://en.wikipedia.org/wiki/MINIX) OS. It was developed by Andrew Tanenbaum in 1987 for IBM PCs with Intel 80268 processors. He created Minix for educational purposes only. So Andrew refused to apply changes to his OS for supporting modern PCs. The complexity of the system was a reason for this decision. If the system becomes too complicated, it is unsuitable for teaching students.
+
+Linus had a goal to write a Unix-compatible OS for his new IBM computer with Intel 80386 processor. The prototype of this OS became Minix. Like the Unix creators, Linus had no commercial interests and was not going to sell his software. He developed the OS for his own needs and wanted to share it with everyone. Linux OS became free in this way. It was freely distributed with source code via the Internet.
+
+Linux is just the kernel of OS. It provides memory management, file system, peripherals drivers and processor time scheduler. The general features of the system are available through free [GNU software](https://en.wikipedia.org/wiki/GNU_Project). [Richard Stallman](https://en.wikipedia.org/wiki/Richard_Stallman) has developed this software at MIT. It was also distributed for free. Therefore, Linus included GNU software in his first [Linux distribution](https://en.wikipedia.org/wiki/Linux_distribution).
+
+The first versions of Linux did not have a graphical subsystem. The user should launch all applications from the command line. Only some complex applications had a text interface. With time, Linux got a windowing system. It was called [X Window System](https://en.wikipedia.org/wiki/X_Window_System). Using X Window, the developers started to add a graphical interface to their applications.
+
+The application development culture for Unix and Linux was defined by conditions in which these OSes have evolved. Both systems were developed in university circles. Their users were teachers and students of the IT domain. They understood well how the OS works. So, they fixed software errors willingly.
+
+In Unix culture, users prefer to use highly specialized command-line utilities. Each specific task has its own utility to solve. Such programs are well written, tested many times and worked as efficiently as possible.
+
+If you need to solve a complex task, one specialized utility cannot cope with it. But you can combine several utilities. This way, you solve the task quickly and efficiently. For better interaction, the utilities accept the input data and output the results in an open format. As a rule, this is [text data](https://en.wikipedia.org/wiki/Plain_text). The source code of the utilities is always available for study and correction.
+
+The Linux development culture follows the Unix tradition. It is different from the standards that are adopted in Windows. In Windows, every application is monolithic and performs all its tasks by itself. It does not rely on third-party utilities. They may cost money or unavailable to the user. Thus, each developer relies on himself only. He should not force the user to buy something extra to make the application working. However, the situation differs on Linux. Most of the utilities are free, interchangeable and easily accessible via the Internet. Therefore, it is natural that one application requires to download and install a missing system component or another application.
+
+The interaction of programs is crucial in Linux. Even monolithic graphical Linux-applications usually provide a command-line interface. This way, they fit smoothly into the ecosystem. So, you can integrate them easily with other utilities and applications.
+
+When using Linux, the user assembles a complex computing process from a combination of highly specialized programs. He should create a general computation algorithm if he wants to get an effective solution. The [shell](https://en.wikipedia.org/wiki/Unix_shell) solves exactly this task. It is a special application for typing user commands. The first widespread shell was [Bourne shell](https://en.wikipedia.org/wiki/Bourne_shell). Now it is deprecated and substituted by [Bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) in most Linux distributions. In this book, we will consider Bash only.
+
+You cannot give a preference to the Linux or Windows culture. Comparing them causes endless disputes on the Internet. Each culture has its advantages and disadvantages. For example, the Window-style monolithic applications are better to handle tasks that require intensive calculations. When combining specialized Linux utilities for the same task, there is an overhead. It is caused by launching the utilities and transferring data between them. All this requires extra time. As a result, the task takes longer to complete.
+
+Today, Windows and Linux cultures are synthesized. More and more commercial applications are being ported to Linux: browsers, development tools, games, messengers, etc. However, their developers are not ready to make changes that are dictated by the Linux culture. Such changes take time and effort. They also make it more challenging to maintain the product. Instead of one application, there are two: each platform has a different version. It is much easier to port an application as it is already running on Windows. As a result, you will find more and more Windows-style applications on Linux. One can argue about the pros and cons of this process. But one thing is obvious: the more applications run on an OS, the more popular it becomes thanks to the network effect.
+
+I> Read more about the development culture in Unix and Linux in Eric Raymond's book ["The Art of Programming in Unix"](https://en.wikipedia.org/wiki/Unix_philosophy#Eric_Raymond's_17_Unix_Rules).
