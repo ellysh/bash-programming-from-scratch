@@ -90,3 +90,20 @@ Table 1-3 shows the ratio of parameters of different memory types.
 | 4 | Disk drive ([**hard drive**](https://en.wikipedia.org/wiki/Hard_disk_drive) or [**solid drive**](https://en.wikipedia.org/wiki/Solid-state_drive)) | several TB | 2000 Mbps | up to 10000000 cycles | $10^-12^/byte |
 
 Table 1-3 raises questions. The speed of access to disk drives is huge. Why is it impossible to read data from the disk into registers directly? Actually, the access speed is not so important. More critical is processor idle time. How long does the processor idle waiting for access to the requested data? The unit of this idle time is the number of clock signals. The signal synchronizes all operations of the processor. It takes one or several clock cycles for executing a single program instruction.
+
+Suppose that the processor reads the program instructions directly from the hard disk. In this case, the execution of the simplest algorithm would take weeks. Most of this time, the processor would idle while waiting for reading operations. Hierarchical organization of memory speeds up access to the data that are needed by the processor.
+
+We will consider a simple program. It reads a file from the disk drive and displays the file content on the screen. According to Figure 1-13, the first step is reading data from the disk into the RAM. The next step is loading data from RAM to the CPU cache. The caching mechanism guesses which data the CPU would need next. The processor reads needed data from the cache to registers. After that, the CPU calls an API function of the system library. The function receives data for printing on the screen. The CPU provides these data to the function. The system library refers to the video card driver. It displays the data on the screen.
+
+The problem may occur when the processor calls a function and pass data to it. If data are in the cache but not in registers, the CPU spends waiting from 2 to 100 cycles (see Table 1-3). If data is in the RAM, the waiting time increases by order of magnitude (up to 1000 cycles). Suppose that the read file is too big. It did not fit into the RAM entirely. The CPU can refer to the part of the file that is not in the RAM. In this case, the CPU idle time increases by four orders of magnitude (up to 10000000 clock cycles). For comparison, the CPU could execute about 1000000 program instructions during this time.
+
+The caching mechanism loads data into the CPU cache. An example of reading a file showed how each error of this mechanism is expensive. Such an error is called **cache miss**. Remember the memory hierarchy and consider it when developing algorithms. Some algorithms and data structures cause more cache misses than others.
+
+The memory devices with shorter access times are placed closer to the processor. Figure 1-14 demonstrates this principle. For example, the internal memory of the CPU (registers and cache) is inside its chip. The RAM is located on [**motherboard**](https://en.wikipedia.org/wiki/Motherboard) next to the CPU. There is the high-frequency [**data bus**](https://en.wikipedia.org/wiki/Bus_(computing)) between CPU and RAM. The disk drive is connected to the motherboard via a relatively slow data bus. [**SATA**](https://en.wikipedia.org/wiki/Serial_ATA) is an example of such a bus.
+
+There is a system controller that uploads data from RAM to the CPU cache. The controller is called [**northbridge**](https://en.wikipedia.org/wiki/Northbridge_(computing)). In earlier versions of personal computers, it was a separate chip on the motherboard. Processor manufacturing technology has evolved. As a result, the northbridge is built into the processor chip nowadays.
+
+The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) controller reads data from the hard drive into RAM.
+
+{caption: "Figure 1-14. PC motherboard", height: "50%"}
+![PC motherboard](images/GeneralInformation/motherboard-memory.png)
