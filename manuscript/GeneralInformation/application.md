@@ -107,3 +107,13 @@ The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) con
 
 {caption: "Figure 1-14. PC motherboard", height: "50%"}
 ![PC motherboard](images/GeneralInformation/motherboard-memory.png)
+
+## Machine code
+
+Suppose that the OS has loaded the content of an executable file into RAM. This file contains both program instructions and its data. Examples of data are text strings, icons, pictures, predefined constants, etc.
+
+Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor has different logical blocks. Each block executes instructions of the specific type. The set of blocks determines the operations that the CPU supports. If the CPU does not have a special block to execute an operation, it is executed by combining blocks. This execution will take more time and resources. A single instruction is an elementary operation on the data that the CPU registers store.
+
+After loading the program into RAM, the CPU executes it. The execution of the program is called [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)). (process). The process also includes the resources that a running program uses. The resources are memory region and OS objects.
+
+There are special programs for reading and editing executable files. They are called [**hex editors**](https://en.wikipedia.org/wiki/Hex_editor). Such editors represent the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The hex editor translates it into hexadecimal for readability. The processor receives instructions and data in binary code.
