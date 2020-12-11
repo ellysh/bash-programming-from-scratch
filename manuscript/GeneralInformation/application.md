@@ -114,7 +114,7 @@ Suppose that the OS has loaded the content of an executable file into RAM. This 
 
 Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor executes them one by one. The CPU has different logical blocks. Each block executes instructions of the specific type. The set of blocks determines the operations that the CPU supports. If the processor does not have a special block to execute an operation, it combines several blocks to do this job. The execution will take more time and resources in this case. A single instruction is an elementary operation on the data that the CPU registers store.
 
-After loading the program into RAM, the CPU executes it. The execution of the program is called [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)). (process). The process also includes the resources that the running program uses. The resources are memory region and OS objects.
+After loading the program into RAM, the CPU executes it. The execution of the program is called [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)). (process). The process also includes the resources that the running program uses. The resources are memory area and OS objects.
 
 There are special programs for reading and editing executable files. They are called [**hex editors**](https://en.wikipedia.org/wiki/Hex_editor). Such editors represent the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The hex editor translates them into hexadecimal for readability. The processor receives instructions and data in binary code.
 
@@ -179,3 +179,7 @@ Convert the following numbers from hexadecimal to binary:
 ```
 
 You can find the answers to the exercises in the last section of the book. Check yourself if you are unsure about the results.
+
+Let's come back to our executable file of the program. The OS loads the file into RAM together with all libraries that are necessary for the program. The special OS component is responsible for this job. It is called [**loader**](https://en.wikipedia.org/wiki/Loader_(computing)). Thanks to preloading libraries, there is no CPU idle when the program accesses them. The required library code is already in RAM. Thus, it is available to the CPU for a few hundred clock cycles. When the loader finishes his job, the program becomes a process. The CPU executes it, starting from the first instruction.
+
+While the program is running, its instructions, resources and required libraries occupy the RAM area. When the program finishes, the OS clears this memory area. From now on, other applications can use it.
