@@ -110,10 +110,72 @@ The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) con
 
 ## Machine code
 
-Suppose that the OS has loaded the content of an executable file into RAM. This file contains both program instructions and its data. Examples of data are text strings, icons, pictures, predefined constants, etc.
+Suppose that the OS has loaded the content of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, icons, pictures, predefined constants, etc.
 
-Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor has different logical blocks. Each block executes instructions of the specific type. The set of blocks determines the operations that the CPU supports. If the CPU does not have a special block to execute an operation, it is executed by combining blocks. This execution will take more time and resources. A single instruction is an elementary operation on the data that the CPU registers store.
+Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor executes them one by one. The CPU has different logical blocks. Each block executes instructions of the specific type. The set of blocks determines the operations that the CPU supports. If the processor does not have a special block to execute an operation, it combines several blocks to do this job. The execution will take more time and resources in this case. A single instruction is an elementary operation on the data that the CPU registers store.
 
-After loading the program into RAM, the CPU executes it. The execution of the program is called [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)). (process). The process also includes the resources that a running program uses. The resources are memory region and OS objects.
+After loading the program into RAM, the CPU executes it. The execution of the program is called [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)). (process). The process also includes the resources that the running program uses. The resources are memory region and OS objects.
 
-There are special programs for reading and editing executable files. They are called [**hex editors**](https://en.wikipedia.org/wiki/Hex_editor). Such editors represent the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The hex editor translates it into hexadecimal for readability. The processor receives instructions and data in binary code.
+There are special programs for reading and editing executable files. They are called [**hex editors**](https://en.wikipedia.org/wiki/Hex_editor). Such editors represent the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The hex editor translates them into hexadecimal for readability. The processor receives instructions and data in binary code.
+
+The same number looks differently in different numeral systems. The system determines the symbols and their order to write a number. For example, binary allows 0 and 1 symbols only.
+
+Table 1-4 shows matching of numbers in binary (BIN), decimal (DEC), and hexadecimal (HEX).
+
+{caption: "Table 1-4. Numbers in decimal, hexadecimal and binary", width: "50%"}
+| Decimal | Hexadecimal | Binary |
+| --- | --- | --- |
+| 0 | 0 | 0000 |
+| 1 | 1 | 0001 |
+| 2 | 2 | 0010 |
+| 3 | 3 | 0011 |
+| 4 | 4 | 0100 |
+| 5 | 5 | 0101 |
+| 6 | 6 | 0110 |
+| 7 | 7 | 0111 |
+| 8 | 8 | 1000 |
+| 9 | 9 | 1001 |
+| 10 | A | 1010 |
+| 11 | B | 1011 |
+| 12 | C | 1100 |
+| 13 | D | 1101 |
+| 14 | E | 1110 |
+| 15 | F | 1111 |
+
+I> Use the standard Windows calculator for conversion from one numeral system to another. This feature is available in the [**programmer mode**](https://en.wikipedia.org/wiki/Windows_Calculator#Features).
+
+Why are binary and hexadecimal used in programming? Binary and Boolean algebra is the basis of [**digital electronics**](https://en.wikipedia.org/wiki/Digital_electronics). In digital electronics, the smallest portion of the information is an electrical [**signal**](https://en.wikipedia.org/wiki/Signal#Digital_signal). The simplest way to encode it is to distinguish between states when it is present and does not. The number one encodes the presence of the signal. Its absence matches number zero. One bit is enough for such coding.
+
+The basic element in digital electronics is a [**logic gate**](https://en.wikipedia.org/wiki/Logic_gate). It converts electrical signals. Different physical parts can play the role of a logic gate. They can be electromagnetic relays, vacuum tubes or transistors. All these devices work in the same way in terms of signal processing. This processing consists of two steps:
+
+1. Receive one or more signals as input.
+2. Transmit the resulting signal to the output.
+
+Such processing is performed according to the rules of [**Boolean algebra**](https://en.wikipedia.org/wiki/Boolean_algebra). Each operation of Boolean algebra corresponds to a logic gate. If you connect them in series, you get a complex signal conversion. In essence, the CPU is a huge network of logic gates.
+
+A binary numeral system allows you to work with digital electronics at the lowest level. This level is logical gates and electrical signals. It turns out that the hardware design imposes usage of the binary system.
+
+The hardware works in the binary numeral system. Why do we need the hexadecimal then? Programmers use either the decimal or binary system. The first one is convenient when writing high-level logic of the program. For example, you count the number of repeating the same action in decimal. The binary system is needed to communicate with the hardware. For example, you prepare and send data to a device in binary. There is one problem with binary. It is hard to write, read, memorize and pronounce the numbers in this system. Translation from decimal to binary is difficult. The hexadecimal solves the problem of translation. It is as compact and convenient as the decimal system. You can do translation from hexadecimal to the binary system and back in mind.
+
+Consider converting a number from binary to hexadecimal. The first step is dividing the number into groups of four digits starting from the end. If the last group is less than four digits, add zeros to the left side. Then use Table 1-4 to replace each four-digit group with a hexadecimal number. Here is an example of the conversion:
+```
+110010011010111 = 110 0100 1101 0111 = 0110 0100 1101 0111 = 6 4 D 7 = 64D7 
+```
+
+{caption: "Exercise 1-1. Numbers conversion from binary to hexadecimal", line-numbers: false}
+```
+Convert the following numbers from binary to hexadecimal:
+* 10100110100110
+* 1011000111010100010011
+* 1111101110001001010100110000000110101101
+```
+
+{caption: "Exercise 1-2. Numbers conversion from hexadecimal to binary", line-numbers: false}
+```
+Convert the following numbers from hexadecimal to binary:
+* FF00AB02
+* 7854AC1
+* 1E5340ACB38
+```
+
+You can find the answers to the exercises in the last section of the book. Check yourself if you are unsure about the results.
