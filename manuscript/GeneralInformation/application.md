@@ -183,3 +183,55 @@ You can find the answers to the exercises in the last section of the book. Check
 Let's come back to our executable file of the program. The OS loads the file into RAM together with all libraries that are necessary for the program. The special OS component is responsible for this job. It is called [**loader**](https://en.wikipedia.org/wiki/Loader_(computing)). Thanks to preloading libraries, there is no CPU idle when the program accesses them. The required library code is already in RAM. Thus, it is available to the CPU for a few hundred clock cycles. When the loader finishes his job, the program becomes a process. The CPU executes it, starting from the first instruction.
 
 While the program is running, its instructions, resources and required libraries occupy the RAM area. When the program finishes, the OS clears this memory area. From now on, other applications can use it.
+
+# Source Code
+
+Machine code is a low-level representation of a program. This format of instructions and data is convenient for the processor. However, it is hard for a human to write a program in machine code. It became more complicated since computers got more performance and the complexity of their programs increased. There are two types of special applications to solve this problem: [**compilers**](https://en.wikipedia.org/wiki/Compiler) and [**interpreters**](https://en.wikipedia.org/wiki/Interpreter_(computing)). They perform the same task in different ways. The task is a translation of the program from a human-readable language into machine code.
+
+Nowadays, programs are written in [**programming languages**](https://en.wikipedia.org/wiki/Programming_language). They differ from the [**natural languages**](https://en.wikipedia.org/wiki/Natural_language) that humans use to communicate. Programming languages are very limited. They can express only actions that a computer can perform. These languages also have strict rules. For example, they allow a small set of words. You can combine these words in a specific order only. [**Source code**](https://en.wikipedia.org/wiki/Source_code) is a text of the program that is written in a programming language.
+
+The compiler and interpreter handle source code differently. The difference is when the machine code is generated from source code. The compiler reads the entire program text, generates processor instructions and saves them on a disk. The compiler does not execute the program. The interpreter reads the source code in parts, generates processor instructions and executes them immediately. The result of the interpreter is stored in RAM temporarily.
+
+Let's consider how the compiler handles a program. Suppose that you have written the program. You saved its source code to a file on the hard disk. Next, you run a suitable compiler. Each programming language has an appropriate compiler or interpreter. The compiler writes its result in an executable file on a disk. This file contains machine code. It corresponds to the source code of the program. Now you can run the executable file to launch the program.
+
+Figure 1-15 shows how the compiler handles a program written in C or C++.
+
+{caption: "Figure 1-15. Compilation process", height: "50%", width: "100%"}
+![Compilation process](images/GeneralInformation/compiler.png)
+
+The compilation consists of two steps. The compiler does the first step. The second step is called **linking**. The special program performs it. The program is called [**linker**](https://en.wikipedia.org/wiki/Linker_(computing)).
+
+The compiler creates intermediate **object files**. The linker uses them to produce an executable file. Why can't the compiler and the linker be combined into one program? There are several problems with this solution. The first one has to do with limited RAM size. There is common practice to split source code into several files. The compiler processes them separately and writes the results to the disk in the object files. These files are the intermediate results of compilation. If you combine the compiler and linker, you can not save the intermediate results to the disk. You will have to compile the entire program at once. In this case, you can reach the RAM limit.
+
+The second problem is resolving dependencies. In the source code, there are blocks of commands that refer to each other. For tracking such cross-calls, the compiler needs additional passes through the whole program code. It increases the compilation time several times over. Linker solves this problem faster.
+
+The program can call blocks of commands from the library. In this case, the linker receives the library file on input along with the object files. The compiler cannot process the library. Because, it is provided in machine code but not in source code. Splitting the compilation into two steps solves this problem.
+
+Now suppose that you have chosen an interpreter to translate the source code of a program. In this case, the source code file is ready for execution. To run it, the OS first loads the interpreter. Then the interpreter reads the source code file from the disk into RAM. Then it executes the file line by line. The translation of source code commands to machine code is done in RAM. Some interpreters save files with an intermediate representation of the program to the disk. It speeds up the program execution. However, the interpreter always executes the program.
+
+Figure 1-16 shows the process of interpreting the program.
+
+{caption: "Figure 1-16. Interpreting the program", height: "50%", width: "100%"}
+![Interpreting the program](images/GeneralInformation/interpreter.png)
+
+From the diagram 1-16, you may conclude that the interpreter works as a compiler combined with a linker. The interpreter loads text files into RAM and translates them into machine code. Why is there no problem with RAM size and cross-calls to blocks of code?
+
+The interpreter handles source code differently than the compiler. The interpreter reads and executes the program line by line. It means that there is no need to store the machine code of the entire application in memory. Instead, it is enough to process source code text files as needed. To save memory, the interpreter periodically removes commands that have already been executed.
+
+All interpreters work slowly. Loading the program's source code from the disk into RAM causes the processor to idle. According to Table 1-3, this loading takes up to 10000000 clock cycles. Besides, the interpreter itself is a complex program. Its work requires some of the computer's hardware resources. As a result, the computer executes both the interpreter and the program in parallel. It is an extra overhead. They slow down the work of the program.
+
+Interpreting programs is expensive. What about compilation? The compiler generates an executable file with machine code. Therefore, when you compile the program and write it in machine code, you reach almost the same execution speed. However, you pay for the convenience of the programming language at the compilation stage. A couple of seconds and a few megabytes of RAM are enough to compile a small program. But compiling large projects (e.g. the OS kernel) takes several hours. Keep in mind the overhead when choosing a programming language. The interpreter better handles some tasks. Others are done better by the compiler.
+
+Is it worth using programming languages at all? The time to compile a project can be spent writing the program in machine code. It seems that you save time and computer resources in this way. An example will help us to evaluate the advantage of programming languages. Listing 1-1 shows the source code of a C program. It prints the text "Hello world!" on the screen.
+
+{caption: "Listing 1-1. Source code of the C program", format: C}
+![`HelloWorld.c`](code/GeneralInformation/HelloWorld.c)
+
+Listing 1-2 shows the same program in machine code format. It is a hexadecimal representation.
+
+{caption: "Listing 1-2. MAchine code of the program"}
+![`MachineCode.txt`](code/GeneralInformation/MachineCode.txt)
+
+Even if you don't know the C language, the code in Listing 1-1 looks more evident than Listing 1-2. It is easier to read and edit this code. Perhaps a professional developer can quickly write machine code for a small program. But another programmer will spend a lot of time and effort to figure it out.
+
+A programming language is more convenient and expressive than machine code. It makes programs easier to develop and maintain.
