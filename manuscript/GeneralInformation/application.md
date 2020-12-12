@@ -108,7 +108,7 @@ The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) con
 {caption: "Figure 1-14. PC motherboard", height: "50%"}
 ![PC motherboard](images/GeneralInformation/motherboard-memory.png)
 
-## Machine code
+### Machine code
 
 Suppose that the OS has loaded the content of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, icons, pictures, predefined constants, etc.
 
@@ -184,7 +184,7 @@ Let's come back to our executable file of the program. The OS loads the file int
 
 While the program is running, its instructions, resources and required libraries occupy the RAM area. When the program finishes, the OS clears this memory area. From now on, other applications can use it.
 
-# Source Code
+### Source Code
 
 Machine code is a low-level representation of a program. This format of instructions and data is convenient for the processor. However, it is hard for a human to write a program in machine code. It became more complicated since computers got more performance and the complexity of their programs increased. There are two types of special applications to solve this problem: [**compilers**](https://en.wikipedia.org/wiki/Compiler) and [**interpreters**](https://en.wikipedia.org/wiki/Interpreter_(computing)). They perform the same task in different ways. The task is a translation of the program from a human-readable language into machine code.
 
