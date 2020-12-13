@@ -1,13 +1,11 @@
-# Командный интерпретатор Bash
+# Bash Shell
 
-Программирование — это прикладной навык. Нельзя научиться программировать в общем. Чтобы познакомится с предметом, нам придётся выбрать конкретный язык. На его примере мы изучим основные принципы программирования.
+Programming is an applied skill. To learn it, let's choose a programming language and start solving tasks with it. This way, you will get some skills and learn basic programming principles.
 
-В этой книге языком для обучения будет Bash. Он хорошо подходит для автоматизации рутинных задач администрирования. Например:
+In this book, we will use Bash. It is convenient for automating computer administration tasks. For example, you can do the following with Bash:
 
-* Создание резервных копий данных.
-* Операции с [каталогами](https://ru.wikipedia.org/wiki/Каталог_(файловая_система)) и файлами.
-* Составление сценариев запуска программ.
+* Create data backups.
+* Manipulate [directories](https://en.wikipedia.org/wiki/Directory_(computing)) and files.
+* Run programs and transfer data between them.
 
-Bash появился в операционной системе Unix и несёт в себе отпечаток её [философии](https://ru.wikipedia.org/wiki/Философия_Unix). Он также доступен в Windows и macOS.
-
-Из этой главы вы узнаете основные приёмы работы с Bash в режиме интерпретатора командной строки.
+Bash was developed in the Unix environment. It bears the imprint of the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy). Bash is also available on Windows and macOS.
