@@ -5,3 +5,5 @@ mainmatter:
   GeneralInformation/README.md
   GeneralInformation/operating-system.md
   GeneralInformation/application.md
+
+  BashShell/README.md
