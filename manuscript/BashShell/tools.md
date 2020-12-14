@@ -1,96 +1,69 @@
-## Инструменты для разработки
+## Development tools
 
-Чтобы запустить примеры этой главы, вам понадобится интерпретатор Bash и эмулятор терминала. Они доступны на всех современных ОС: Windows, macOS и Linux. Рассмотрим процесс установки и запуска этих программ.
+You need a Bash interpreter and a terminal emulator to run the examples of this chapter. They can be installed on all modern operating systems. Let's take a look at how to do this.
 
-### Интерпретатор Bash
+### Bash Interpreter
 
-Bash относится к [**скриптовым языкам программирования**](https://ru.wikipedia.org/wiki/Сценарный_язык). Для них характерны следующие особенности:
+Bash is a [**script programming language**](https://en.wikipedia.org/wiki/Scripting_language). Such languages have the following features:
 
-1. Скриптовые языки интерпретируются, а не компилируются.
+1. They are interpreted but not compiled.
 
-2. Они оперируют готовыми программами или высокоуровневыми командами.
+2. They operate existing programs or high-level commands.
 
-3. Они обычно интегрированы в командную оболочку или ОС.
+3. They are integrated into a shell or OS.
 
-Bash как скриптовый язык интегрирован в ОС Linux и macOS. Пользователям Windows для его корректной работы придётся установить минимальное Unix-окружение. Это можно сделать несколькими способами.
+The Bash language is integrated into Linux and macOS. If you use Windows, you should install a minimal Unix environment. Bash needs it for working correctly. Let's look at two ways to set up an environment.
 
-I> Термины "Unix-окружение" и "Linux-окружение" означают программную среду, совместимую с набором стандартов [POSIX](https://ru.wikipedia.org/wiki/POSIX) (Portable Operating System Interface). POSIX описывает интерфейсы взаимодействия прикладных программ с ОС.
+The terms "Unix-environment" and "Linux-environment" mean a software environment compatible with POSIX standards.
 
-Первый вариант установки — использовать набор инструментов [**MinGW**](https://ru.wikipedia.org/wiki/MinGW#Компоненты_MinGW). Помимо интерпретатора Bash он включает в себя [свободный набор компиляторов GCC](https://ru.wikipedia.org/wiki/GNU_Compiler_Collection). Для примеров этой книги будет достаточно компонента MinGW под названием MSYS (Minimal SYStem). Он предоставляет интерпретатор Bash, эмулятор терминала и [утилиты командной строки GNU](https://ru.wikipedia.org/wiki/GNU_Coreutils). Вместе эти компоненты составляют минимальное Unix-окружение.
+The first option is to install the [**MinGW**](https://en.wikipedia.org/wiki/MinGW) toolkit. In addition to the Bash interpreter, it provides the [free GCC compiler](https://en.wikipedia.org/wiki/GNU_Compiler_Collection). The MinGW component called MSYS (Minimal SYStem) is sufficient for the examples of this book. This component includes a Bash interpreter, a terminal emulator, and [GNU utilities](https://en.wikipedia.org/wiki/GNU_Core_Utilities). Together they make up a minimal Unix environment.
 
-Мы будем использовать версию Unix-окружения под названием [MSYS2](https://www.msys2.org). Перед установкой MSYS2 уточните разрядность вашей версии Windows. Для этого выполните следующее:
+Let's install a version of the Unix environment called [MSYS2](https://www.msys2.org). Before installing it, check the bitness of your Windows operating system. These are steps to take it:
 
-1. Если на вашем рабочем столе есть иконка "Компьютер", нажмите на неё правой кнопкой мыши и выберите пункт "Свойства".
+1. If you have a "Computer" icon on your desktop, right-click on it and select "Properties".
 
-2. Если на рабочем столе нет иконки "Компьютер", нажмите кнопку "Пуск", найдите в открывшемся меню пункт "Компьютер" и по правой кнопке мыши выберите "Свойства".
+2. If there is no "Computer" icon on your desktop, click the "Start" button. Find the "Computer" item in the menu. Do right-click on it and select "Properties".
 
-3. В открывшемся окне "Система" найдите пункт "Тип системы" как на иллюстрации 2-1.
+3. In the "System" window that opens, locate the "System Type" item as Figure 2-1 shows. It shows the bitness of your Windows.
 
-{caption: "Иллюстрация 2-1. Тип системы"}
-![Тип системы](images/BashShell/windows-system-type.png)
+{caption: "Figure 2-1. System Type"}
+![System Type](images/BashShell/windows-system-type.png)
 
-Теперь вы готовы к установке MSYS2. Выполните следующие шаги:
+Download the MSYS2 installer from the [official website](https://www.msys2.org). The installer file depends on the bitness of your system:
 
-1. Загрузите установщик MSYS2 с [официального сайта](https://www.msys2.org). Обратите внимание на версию установщика:
-  * Если ваша Windows-система 32-разрядная, загрузите файл `msys2-i686-20190524.exe`. 
+The number `20190524` in the filename means the version of MSYS2. Select the latest available version.
 
-  * Для 64-разрядной Windows, вам нужен файл `msys2-x86_64-20190524.exe`.
+Now let's install MSYS2. These are the steps to take it:
 
-  * Число `20190524` в имени файла означает номер версии MSYS2. Она может отличаться в вашем случае.
+1. Run the installer file. You will see the window as Figure 2-2 shows.
 
-2. Запустите установщик. Откроется окно, как на иллюстрации 2-2.
+{caption: "Figure 2-2. MSYS2 installation dialog", height: "30%"}
+![MSYS2 installation dialog](images/BashShell/msys2-install.png)
 
-{caption: "Иллюстрация 2-2. Диалог установки MSYS2", height: "30%"}
-![Диалог установки](images/BashShell/msys2-install.png)
+2. Click the "Next" button (next). In the new window (see Figure 2-3), select the installation [**path**](https://en.wikipedia.org/wiki/Path_(computing)) and press the "Next" button.
 
-3. Нажмите кнопку "Next" (далее). В новом окне (см. иллюстрацию 2-3) выберите [**путь**](https://ru.wikipedia.org/wiki/Путь_к_файлу) установки и нажмите кнопку "Next".
+{caption: "Figure 2-3. Selecting the installation path", height: "30%"}
+![Installation process](images/BashShell/msys2-path.png)
 
-{caption: "Иллюстрация 2-3. Выбор пути установки", height: "30%"}
-![Процесс установки](images/BashShell/msys2-path.png)
+3. In the next window, you can select the application name for the "Start" menu. Leave it unchanged and click "Next". Then the installation process starts.
 
-4. Следующее окно предлагает вам выбрать имя приложения для меню "Пуск". Оставьте его без изменений и нажмите "Next". После этого начнётся процесс установки.
+4. When the installation is complete, click the "Finish" button. The window will close.
 
-5. После завершения установки закройте окно установщика нажатием на кнопку "Finish" (завершить).
+Now the MSYS2 Unix environment is on your hard drive. Its files are located in the `C:\msys64` directory if you keep the default installation path. Go to this directory and run the application `msys2.exe`. The Bash shell window opens as Figure 2-4 shows.
 
-Unix-окружение MSYS2 установлено на ваш жёсткий диск. Его файлы находятся в каталоге `C:\msys64`, если вы оставили путь установки по умолчанию. Перейдите в этот каталог и запустите приложение `msys2.exe`. Откроется окно интерпретатора командной строки Bash как на иллюстрации 2-4.
+{caption: "Figure 2-4. The Bash shell window", height: "20%"}
+![The Bash shell window](images/BashShell/bash-window.png)
 
-{caption: "Иллюстрация 2-4. Окно интерпретатора командной строки Bash", height: "20%"}
-![Окно Bash](images/BashShell/bash-window.png)
+The second option is to install a Unix environment from Microsoft. It is called [Windows subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL). This environment is available for Windows 10 only. It does not work on Windows 8 and 7. You can find the manual to install WSL on the [Microsoft website](https://docs.microsoft.com/ru-ru/windows/wsl/install-win10).
 
-Второй вариант установки Bash — использовать Unix-окружение от Microsoft под названием [Windows подсистема для Linux](https://ru.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (Windows subsystem for Linux или WSL).  Это окружение доступно только для Windows 10. На более ранних версиях ОС оно не заработает. Инструкция установки WSL доступна на [официальном сайте](https://docs.microsoft.com/ru-ru/windows/wsl/install-win10).
+Linux and macOS users do not need to install Bash. It is available on these systems by default.
 
-Пользователям Linux и macOS устанавливать Bash не надо. Он доступен в этих системах по умолчанию.
+Press the shortcut key Ctrl+Alt+T to open the Bash window in Linux.
 
-Чтобы открыть окно интерпретатора Bash в Linux, достаточно нажать комбинацию клавиш Ctrl+Alt+T.
+These are the steps to launch Bash on macOS:
 
-Для запуска Bash в macOS выполните следующие действия:
+1. Launch the Spotlight search program. To do this, click the magnifying glass icon in the upper right corner of the screen.
 
-1. Запустите программу поиска Spotlight. Для этого нажмите на иконку лупы в правом верхнем углу экрана.
+2. The dialog box appears. Enter the text "Terminal" there.
 
-2. Появится диалог, в котором надо ввести текст "Terminal".
-
-3. В открывшемся списке приложений щелкните на первой строчке с именем "Terminal".
-
-### Эмулятор терминала
-
-После запуска приложения `msys2.exe` откроется окно эмулятора терминала. [**Эмулятор**](https://ru.wikipedia.org/wiki/Эмуляция) — это программа, которая имитирует поведение другой программы, ОС или устройства. Эмуляторы нужны для совместимости. Например, вы хотите запустить Windows-программу на Linux. Для этого на Linux систему надо установить эмулятор Windows-окружения под названием [Wine](https://ru.wikipedia.org/wiki/Wine). Wine предоставляет собственную реализацию системных библиотек Windows. Благодаря эмулятору, Windows-программа сможет работать на Linux.
-
-Эмулятор терминала также решает задачу совместимости. Приложения с интерфейсом командной строки предназначены для работы через устройство терминал. Сегодня это устройство нигде не используется. Его вытеснили персональные компьютеры и ноутбуки. Чтобы запустить программу, работающую только через терминал, вам нужен эмулятор терминала. Благодаря эмулятору, программа сможет передавать команды в командную оболочку и выводить на экран результат их исполнения.
-
-Иллюстрация 2-5 демонстрирует взаимодействие устройств ввода-вывода, эмулятора терминала, оболочки и программы.
-
-{caption: "Иллюстрация 2-5. Роль эмулятора терминала", height: "25%"}
-![Эмулятора Терминала](images/BashShell/terminal-emulator.png)
-
-В окне терминала сразу после запуска выводятся две строчки (см. иллюстрацию 2-4):
-{line-numbers: false}
-```
-ilya.shpigor@DESKTOP-1NBVQM4 MSYS ~
-$
-```
-
-Первая строка начинается с имени пользователя. В моём случае это `ilya.shpigor`. Далее через символ `@` следует имя компьютера: `DESKTOP-1NBVQM4`. Его можно изменить в настройках Windows. Затем через пробел идёт слово `MSYS`. Это название платформы, на которой запущен Bash. В конце строки стоит символ `~`. Это **абсолютный путь** до текущего каталога. Остановимся на этом пункте подробнее.
-
-Есть два типа путей до объектов файловой системы: абсолютные и относительные. С первыми вы сталкиваетесь при навигации по файловой системе через Проводник Windows. Абсолютным называется путь к одному и тому же объекту файловой системы вне зависимости от текущего каталога. **Относительный путь** напротив указывается по отношению к текущему каталогу.
-
-Относительные пути короче абсолютных. Поэтому их быстрее набирать и они чаще используются в командных интерпретаторах. Есть простое правило, чтобы отличить тип пути в Unix-окружении. Если он начинается с символа `/` (например, `/c/Windows/system32`), перед вами абсолютный путь. Если же путь начинается с имени каталога (например, `Windows/system32`), то он относительный.
+3. The list of applications opens. Click on the first line with the name "Terminal" there.
