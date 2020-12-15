@@ -7,3 +7,4 @@ mainmatter:
   GeneralInformation/application.md
 
   BashShell/README.md
+  BashShell/tools.md

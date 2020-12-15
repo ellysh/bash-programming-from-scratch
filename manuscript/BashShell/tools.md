@@ -67,3 +67,27 @@ These are the steps to launch Bash on macOS:
 2. The dialog box appears. Enter the text "Terminal" there.
 
 3. The list of applications opens. Click on the first line with the name "Terminal" there.
+
+### Terminal emulator
+
+When you launch the application `msys2.exe`, the terminal emulator window opens. An [**emulator**](https://en.wikipedia.org/wiki/Emulator) is a program that simulates the behavior of another program, OS or device. Emulators are used for compatibility. For example, you want to run a Windows program on Linux. To do this, install an emulator of the Windows environment on Linux. It is called [Wine](https://en.wikipedia.org/wiki/Wine_(software)). Wine provides its own version of the Windows system libraries. Thanks to the emulator, you can run the Windows program on Linux.
+
+The terminal emulator solves the compatibility problem. Command-line programs are designed to work through a terminal device. Today, nobody uses terminals. Personal computers and laptops have replaced them. To run a program that works only with the terminal, you need a terminal emulator. It sends the program's commands to the shell and displays the results on the screen.
+
+Figure 2-5 shows the interaction between input/output devices, the terminal emulator, the shell and the command-line program.
+
+{caption: "Figure 2-5. The workflow of the terminal emulator", height: "25%"}
+![Terminal Emulator](images/BashShell/terminal-emulator.png)
+
+There are two lines in the terminal window after startup (see Figure 2-4):
+{line-numbers: false}
+```
+ilya.shpigor@DESKTOP-1NBVQM4 MSYS ~
+$
+```
+
+The first line starts with the username. In my case, it equals `ilya.shpigor`. Then there is the computer name `DESKTOP-1NBVQM4` after the symbol @. You can change this name via Windows settings. The word `MSYS` comes next. It means the name of the platform where Bash is running. At the end of the line, there is the symbol ~. It is the **absolute path** to the current directory. Let's pay attention to this point.
+
+There are two types of paths to file system objects: absolute and relative. The address bar of Windows Explorer shows the paths of the first type. An absolute path is a path to the same file system object regardless of the current directory. **Relative path** specifies the path concerning the current directory.
+
+Relative paths are shorter than absolute paths. That is why they are faster to type and easier to use in shells. There is a simple rule to distinguish the type of paths in the Unix environment. Absolute paths start with a slash /. For example, `/c/Windows/system32`. Relative paths start with a directory name. For example, `Windows/system32`.
