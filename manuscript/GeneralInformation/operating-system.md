@@ -70,11 +70,11 @@ The application can access only the features of devices that are supported by th
 
 The API describes the following aspects of the interaction between the OS and applications:
 
-1. Which action does the OS perform when the application calls the specific system function?
+1. What action does the OS perform when the application calls the specific system function?
 
-2. Which data does the function receive as an input?
+2. What data does the function receive as an input?
 
-3. Which data does the function return as a result?
+3. What data does the function return as a result?
 
 Both the OS and application should follow the API agreements. It guarantees the compatibility of their current versions and future modifications. Such compatibility would be unreachable without a well documented and standardized interface.
 
