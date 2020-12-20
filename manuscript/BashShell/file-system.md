@@ -129,3 +129,27 @@ The MSYS2 environment includes a set of GNU utilities. These are auxiliary highl
 * grep
 
 Often no distinction is made between commands and utilities. Any text after the command line prompt is called a command.
+
+#### pwd
+
+Let's consider the commands in Table 2-1. We have just started the terminal. The first thing we do is to find out the current directory. The MSYS2 terminal prints it before the command prompt. This output depends on the terminal configuration. If you are running Linux or macOS, the terminal does not print the current directory with the default setup.
+
+After starting the MSYS2 terminal, the home directory of the current user opens. It has the abbreviation that is the tilde symbol ~. You see this symbol before the command line prompt. You can work with the abbreviation ~ in the same way as with an absolute path.
+
+Run the pwd built-in command to get the current directory. Figure 2-7 shows how it looks like. The command prints the absolute path to the user's home directory: `/home/ilya.shpigor`.
+
+If you add an **option** `-W` to the pwd call, it prints the path in the Windows directory structure. It is useful when you create a file in the MSYS2 environment and open it in a Windows application. Figure 2-7 shows the output of the pwd command with the `-W` option.
+
+{caption: "Figure 2-7. The output of the pwd command"}
+![Output pwd](images/BashShell/pwd-command.png)
+
+What is a command option? If an application has only a text interface, the ways of interacting with it are limited. The application needs some input data to work. An example of data is the path to a file or directory. The command interpreter offers a simple way to pass this information. You can specify it after the command for launching the application. [**Parameter**](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) or program argument is the word or character passed to it for input. An **Option** or key is an argument that switches the mode of a program. The format of options is standardized. They usually start with a dash -- or a double dash --.
+
+The built-in interpreter commands are called just like programs. They have parameters and options too.
+
+Typing long commands is inconvenient. That is why Bash has an autocomplete feature. Press the Tab key for using it. Type the first letters of the command and press Tab. If Bash finds the command by its first letters, it will complete it.  If several commands start the same way, autocomplete does not happen. In this case, press Tab again. Bash will list all available commands.
+
+Figure 2-8 shows a list of available commands. Bash printed it after typing `pw` and pressing Tab twice.
+
+{caption: "Figure 2-8. Autocomplete for the `pw` command"}
+![Autocomplete pw](images/BashShell/pw-autocompletion.png)
