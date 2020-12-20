@@ -69,3 +69,63 @@ When you launch the MSYS2 terminal, you enter the Unix environment. Windows path
 In a Unix environment, the [character case](https://en.wikipedia.org/wiki/Case_sensitivity) is important. It means that the strings `Documents` and `documents` are not equal. Windows has no case sensitivity. So if you write the path `c:\windows` in the Explorer address bar, you go to the system directory `C:\Windows`. This approach does not work in a Unix environment. You should enter all characters in the correct case.
 
 In addition to the character case, there is another difference. In Unix, directory and file names are separated by a slash /. Windows use a backslash \ for that.
+
+### File System Navigation Commands
+
+How to execute a command in a terminal emulator? There are three steps: 
+
+1. Switch to the terminal window.
+2. Type the command.
+3. Press Enter.
+
+The shell will process your input.
+
+The shell notifies you that it is ready by printing a [**command prompt**](https://en.wikipedia.org/wiki/Command-line_interface#Command_prompt). The prompt is a special character or string of characters. If there is no prompt, the shell is busy and cannot execute your command.
+
+The prompt is denoted by the dollar sign $ in Figure 2-4.
+
+When using Windows Explorer, you can do the following actions to navigate the file system:
+
+* Display the current directory.
+* Go to a specified directory.
+* Find a directory or file on the disk.
+
+The command-line interface allows you to do the same actions. There are special commands for each kind of action. Table 2-1 shows these commands.
+
+{caption: "Table 2-1. Commands and utilities for navigating the file system", width: "100%"}
+| Command | Description | Examples |
+| --- | --- | --- |
+| ls | Display the contents of the directory. | `ls` |
+| | If no directory is specified, the contents of the current one are displayed. | `ls /c/Windows` |
+|  | | |
+| pwd | Display the path to the current directory. | `pwd` |
+| | When using the `-W` key, the command displays the path in the Windows directory structure. |
+|  | | |
+| cd | Go to the directory at the specified | `cd tmp` |
+| | relative or absolute path. | `cd /c/Windows` |
+| | | `cd ..` |
+|  | | |
+| mount | Mount the disk to the root file system. When you call the command without parameters, it displays a list of all mounted disks.  | `mount` |
+|  | | |
+| find | Find a file or directory. The first parameter | `find . -name vim` |
+| | of the command is the directory where the search starts. If it is not specified, the current directory is chosen. | `find /c/Windows -name *vim*` |
+|  | | |
+| grep | Find a file by its contents. | `grep "PATH" *` |
+| | | `grep -Rn "PATH" .` |
+| | | `grep "PATH" * .*` |
+
+Bash handles by itself the following commands from Table 2-1:
+
+* pwd
+* cd
+
+These commands are called [**builtins**](https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html). If Bash cannot execute the command by itself, it looks for a suitable utility or program to do it.
+
+The MSYS2 environment includes a set of GNU utilities. These are auxiliary highly specialized programs. They give access to OS features. They also allow you to work with the file system. GNU utilities execute the following commands from Table 2-1:
+
+* ls
+* mount
+* find
+* grep
+
+Often no distinction is made between commands and utilities. Any text after the command line prompt is called a command.
