@@ -153,3 +153,27 @@ Figure 2-8 shows a list of available commands. Bash printed it after typing `pw`
 
 {caption: "Figure 2-8. Autocomplete for the `pw` command"}
 ![Autocomplete pw](images/BashShell/pw-autocompletion.png)
+
+#### ls
+
+We know the current directory. Now let's print its contents. The utility called ls does it. Suppose you have just installed the MSYS2 environment. Launch the "ls" command without parameters in the user's home directory. It prints nothing. The second line in Figure 2-9 demonstrates this result. Such output usually means that the directory is empty.
+
+{caption: "Figure 2-9. The output of the ls utility"}
+![Output ls](images/BashShell/ls-command.png)
+
+Windows has a concept of hidden files and directories. They also exist in the Unix environment. Such files are created by applications and operating systems for their own needs. They are used for storing configuration or temporary information. Windows Explorer does not display hidden files in normal mode. Change [Explorer settings](https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2) to see hidden files.
+
+Names of hidden files and directories begin with a dot in the Unix environment. The ls utility does not show them by default. To change this behavior, run the ls utility with the `-a` option. Then you will see eight files in the home directory. They all start with a dot, as Figure 2-9 shows.
+
+You can get the contents of a directory without going into it. Pass an absolute or relative path to the directory when launching the ls utility. For example, there is the command to show the contents of the root directory:
+{line-numbers: false, format: Bash}
+```
+ls /
+```
+
+Figure 2-10 shows the output of this command.
+
+{caption: "Figure 2-10. The output of the ls utility"}
+![Output ls](images/BashShell/ls-root-command.png)
+
+There are no directories `/c` and `/d` in Figure 2-10. According to Listing 2-2, these are the mount points of disks C and D. They are in the root directory. Why does not ls output them? The problem is that the Windows file system has no concept of mount points. For that reason, it does not have directories `/c` and `/d`. They are present in the Unix environment only. Through these directories, you access the contents of the disks. The ls utility reads the contents of directories in the Windows file system. Thus, it does not show the mount points. Linux and macOS do not have this problem. The ls utility displays all mount points correctly there.
