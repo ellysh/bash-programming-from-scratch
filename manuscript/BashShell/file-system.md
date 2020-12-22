@@ -177,3 +177,38 @@ Figure 2-10 shows the output of this command.
 ![Output ls](images/BashShell/ls-root-command.png)
 
 There are no directories `/c` and `/d` in Figure 2-10. According to Listing 2-2, these are the mount points of disks C and D. They are in the root directory. Why does not ls output them? The problem is that the Windows file system has no concept of mount points. For that reason, it does not have directories `/c` and `/d`. They are present in the Unix environment only. Through these directories, you access the contents of the disks. The ls utility reads the contents of directories in the Windows file system. Thus, it does not show the mount points. Linux and macOS do not have this problem. The ls utility displays all mount points correctly there.
+
+#### mount
+
+If several disks are attached to your computer, it is useful to display their mount points. The [mount](https://en.wikipedia.org/wiki/Mount_(Unix)) utility does it. Run the utility without parameters. It will print all mount points, as Figure 2-11 shows.
+
+{caption: "Figure 2-11. The output of the mount utility"}
+![Output mount](images/BashShell/mount-command.png)
+
+Consider this output as a table with four columns. Their values are the following:
+
+1. The disk, its partition or directory. It means the thing that is mounted to the root file system. 
+
+2. Mount point. It is the path where the mounted disk is accessible.
+
+3. The file system type of the disk.
+
+4. Mounting parameters. For example, access permissions to the drive.
+
+Table 2-2 shows the output of the mount utility call in Figure 2-11. The output is divided into columns.
+
+{caption: "Table 2-2. The output of the mount utility", width: "100%"}
+| Mounted partition | Mount point | FS type | Mounting parameters |
+| --- | --- | --- | --- |
+| `C:/msys64` | `/` | `ntfs` | `binary,noacl,auto` |
+| `C:/msys64/usr/bin` | `/bin` | `ntfs` | `binary,noacl,auto` |
+| `C:` | `/c` | `ntfs` | `binary,noacl,posix=0,user,noumount,auto` |
+| `Z:` | `/z` | `hgfs` | `binary,noacl,posix=0,user,noumount,auto` |
+
+Table 2-2 can confuse Windows users. The `C:/msys64` directory is mounted as the root path in the Unix environment. Then the C and Z disks are mounted into the root at the paths `/c` and `/z`. From the Unix environment's point of view, drive C is available at the Windows path `C:/msys64/c`. But in the Windows file system, there is a reversed relationship. There `C:/msys64` is a subdirectory of disk C.
+
+In the Unix environment, this contradiction is not a problem. The `/c` path is the mount point. It exists only in the Unix environment. It does not exist in the Windows file system. You can imagine that the `/c` directory in MSYS2 is a [shortcut](https://en.wikipedia.org/wiki/Shortcut_(computing)) to drive C.
+
+The output of the mount utility took up a lot of screen space. Press Ctrl+L to clear the terminal window.
+
+It happens that a running command takes a long time to execute or hangs. Press Ctrl+C to interrupt its execution.
