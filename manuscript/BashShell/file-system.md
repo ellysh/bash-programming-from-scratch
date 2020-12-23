@@ -212,3 +212,99 @@ In the Unix environment, this contradiction is not a problem. The `/c` path is t
 The output of the mount utility took up a lot of screen space. Press Ctrl+L to clear the terminal window.
 
 It happens that a running command takes a long time to execute or hangs. Press Ctrl+C to interrupt its execution.
+
+#### cd
+
+We know the current directory. Now we can change it. For example, we are looking for the Bash documentation. Let's check the system directory `/usr`. Installed applications keep their files there. There is a built-in command cd for changing the directory. Launch it in this way:
+{line-numbers: false, format: Bash}
+```
+cd /usr
+```
+
+Don't forget about autocompletion. It works for both the command name and its parameters. Just type `cd /u` and press the Tab key. Bash will automatically add the directory name `usr`. Figure 2-12 shows the result of the command.
+
+{caption: "Figure 2-12. The result of the cd command"}
+![cd result](images/BashShell/cd-command.png)
+
+The cd command does not output anything if it succeeds. The only effect is changing the current directory. Run the command and check the output before the command prompt. The current directory is `/usr` now.
+
+The cd command accepts both absolute and relative paths. Relative paths are shorter and faster to type. That is why they are used often for file system navigation.
+
+We have moved to the `/usr` directory. Now you can list its subdirectories and go to one of them. Suppose instead that you need to go one level higher to the root directory. There are two ways to do this: go to the absolute path `/` or the special relative path `..`. The path `..` always points to the parent directory for the current one. This is the cd command to go this path:
+{line-numbers: false, format: Bash}
+```
+cd ..
+```
+
+I> In addition to `..`, there is another special path `.`. It stands for the current directory. If you execute the command "cd .", nothing happens. You stay in the same place. The path `.` is needed to run programs from the current directory.
+
+We are in the `/usr` directory. Let's run the ls utility here. In its output, there is the subdirectory `share`. There you can find the subdirectory `doc` with the documentation for the installed applications. The full path of the Bash documentation is `share/doc/bash`. This is the command to go there:
+{line-numbers: false, format: Bash}
+```
+cd share/doc/bash
+```
+
+Now the current directory is `/usr/share/doc/bash`. Let's run the command ls. There are several files. One of them has the `README` name. This file is the Bash documentation that we are looking for.
+
+Print the content of file `README` with the cat utility. This is the command to do that:
+{line-numbers: false, format: Bash}
+```
+cat README
+```
+
+Figure 2-13 shows the command result.
+
+{caption: "Figure 2-13. The result of the cd command", height: "30%"}
+![cat result](images/BashShell/cat-command.png)
+
+I> Some Bash manuals do not recommend using the cat utility to output a file's contents. The utility's purpose is to merge several files and print the result to a standard output stream. Instead of calling cat for a single file, the manuals recommend combining the echo command with stream redirection. Here is an example of this approach:
+{line-numbers: false, format: Bash}
+```
+echo "$(< README.txt)"
+```
+
+Figure 2-13 does not show the entire `README` file. There are the last lines only. The file is large. Therefore, the output of the cat utility does not fit the terminal window. To see the beginning of the file, use the scroll bar on the window's right side. Use the Shift+PageUp and Shift+PageDown hotkeys to scroll [pages](https://en.wikipedia.org/wiki/Page_Up_and_Page_Down_keys). Shift+↑ and Shift+↓ allow you to scroll lines.
+
+#### Command History
+
+When you execute a command in the terminal, it is saved in the [command history](https://en.wikipedia.org/wiki/Command_history). These are the keys to navigate the history:
+
+1. Press the up arrow ↑ and Enter to repeat the previous command.
+2. Press the up arrow several times to the beginning of the history.
+3. Press the down arrow ↓ to move to the next command in the history.
+
+For example, you have entered the command "cat README". To repeat it, press the up arrow and Enter.
+
+The keyboard shortcut Ctrl+R brings up a history search. Press Ctrl+R and start typing. Bash will prompt you for the last command you typed, which starts the same way. Press Enter to execute it.
+
+Type the following command to print the entire command history:
+{line-numbers: false, format: Bash}
+```
+history
+```
+
+The command history accumulates only commands that have been executed. It does not store commands that you typed and then erased.
+
+What should you do if you want to save a command to the history without executing it? For example, you are going to execute it later. There is the trick with a comment for that. If a command starts with a #, Bash treats it as a comment. When you press Enter, it will go into the history, but it won't be executed. Using this trick, you can launch the cat utility in this way:
+{line-numbers: false, format: Bash}
+```
+#cat README
+```
+
+Now let's execute the command. For doing it, find the command in the history. Then erase the hash symbol at the beginning and press Enter.
+
+The Alt+Shift+3 keyboard shortcut does the comment trick in most terminals. It works like this:
+
+1. Type a command, but don't press Enter.
+2. Press Alt+Shift+3.
+3. The command has been saved in the history without being executed.
+
+How to copy text from the terminal? Suppose that another document needs a part of the `README` file. Use [**clipboard**](https://en.wikipedia.org/wiki/Clipboard_(computing)) to copy it. The clipboard is temporary storage for strings. The text selected in the terminal is stored there. You can paste it into any other window.
+
+These are the steps to copy text from the terminal:
+
+1. Select the text with the mouse. For doing it, hold down the left mouse button and drag the cursor over the text.
+
+2. Press the middle mouse button to paste the text from the clipboard into the terminal window. The text will be inserted at the current cursor position.
+
+3. Right-click and select the Paste item to paste the text to the application other than the terminal.
