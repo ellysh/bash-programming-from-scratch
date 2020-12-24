@@ -143,7 +143,7 @@ If you add an **option** `-W` to the pwd call, it prints the path in the Windows
 {caption: "Figure 2-7. The output of the pwd command"}
 ![Output pwd](images/BashShell/pwd-command.png)
 
-What is a command option? If an application has only a text interface, the ways of interacting with it are limited. The application needs some input data to work. An example of data is the path to a file or directory. The command interpreter offers a simple way to pass this information. You can specify it after the command for launching the application. [**Parameter**](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) or program argument is the word or character passed to it for input. An **Option** or key is an argument that switches the mode of a program. The format of options is standardized. They usually start with a dash -- or a double dash --.
+What is a command option? If an application has only a text interface, the ways of interacting with it are limited. The application needs some input data to work. An example of data is the path to a file or directory. The command interpreter offers a simple way to pass this information. You can specify it after the command for launching the application. [**Parameter**](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) or program argument is the word or character passed to it for input. An **Option** or key is an argument that switches the mode of a program. The format of options is standardized. They usually start with a dash `-` or a double dash `--`.
 
 The built-in interpreter commands are called just like programs. They have parameters and options too.
 
