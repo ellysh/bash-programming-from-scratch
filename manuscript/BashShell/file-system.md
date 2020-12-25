@@ -95,38 +95,38 @@ The command-line interface allows you to do the same actions. There are special 
 {caption: "Table 2-1. Commands and utilities for navigating the file system", width: "100%"}
 | Command | Description | Examples |
 | --- | --- | --- |
-| ls | Display the contents of the directory. | `ls` |
+| `ls` | Display the contents of the directory. | `ls` |
 | | If no directory is specified, the contents of the current one are displayed. | `ls /c/Windows` |
 |  | | |
-| pwd | Display the path to the current directory. | `pwd` |
+| `pwd` | Display the path to the current directory. | `pwd` |
 | | When using the `-W` key, the command displays the path in the Windows directory structure. |
 |  | | |
-| cd | Go to the directory at the specified | `cd tmp` |
+| `cd` | Go to the directory at the specified | `cd tmp` |
 | | relative or absolute path. | `cd /c/Windows` |
 | | | `cd ..` |
 |  | | |
-| mount | Mount the disk to the root file system. When you call the command without parameters, it displays a list of all mounted disks.  | `mount` |
+| `mount` | Mount the disk to the root file system. When you call the command without parameters, it displays a list of all mounted disks.  | `mount` |
 |  | | |
-| find | Find a file or directory. The first parameter | `find . -name vim` |
+| `find` | Find a file or directory. The first parameter | `find . -name vim` |
 | | of the command is the directory where the search starts. If it is not specified, the current directory is chosen. | `find /c/Windows -name *vim*` |
 |  | | |
-| grep | Find a file by its contents. | `grep "PATH" *` |
+| `grep` | Find a file by its contents. | `grep "PATH" *` |
 | | | `grep -Rn "PATH" .` |
 | | | `grep "PATH" * .*` |
 
 Bash handles by itself the following commands from Table 2-1:
 
-* pwd
-* cd
+* `pwd`
+* `cd`
 
 These commands are called [**builtins**](https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html). If Bash cannot execute the command by itself, it looks for a suitable utility or program to do it.
 
 The MSYS2 environment includes a set of GNU utilities. These are auxiliary highly specialized programs. They give access to OS features. They also allow you to work with the file system. GNU utilities execute the following commands from Table 2-1:
 
-* ls
-* mount
-* find
-* grep
+* `ls`
+* `mount`
+* `find`
+* `grep`
 
 Often no distinction is made between commands and utilities. Any text after the command line prompt is called a command.
 
@@ -136,11 +136,11 @@ Let's consider the commands in Table 2-1. We have just started the terminal. The
 
 After starting the MSYS2 terminal, the home directory of the current user opens. It has the abbreviation that is the tilde symbol ~. You see this symbol before the command line prompt. You can work with the abbreviation ~ in the same way as with an absolute path.
 
-Run the pwd built-in command to get the current directory. Figure 2-7 shows how it looks like. The command prints the absolute path to the user's home directory: `/home/ilya.shpigor`.
+Run the `pwd` built-in command to get the current directory. Figure 2-7 shows how it looks like. The command prints the absolute path to the user's home directory: `/home/ilya.shpigor`.
 
-If you add an **option** `-W` to the pwd call, it prints the path in the Windows directory structure. It is useful when you create a file in the MSYS2 environment and open it in a Windows application. Figure 2-7 shows the output of the pwd command with the `-W` option.
+If you add an **option** `-W` to the `pwd` call, it prints the path in the Windows directory structure. It is useful when you create a file in the MSYS2 environment and open it in a Windows application. Figure 2-7 shows the output of the `pwd` command with the `-W` option.
 
-{caption: "Figure 2-7. The output of the pwd command"}
+{caption: "Figure 2-7. The output of the `pwd` command"}
 ![Output pwd](images/BashShell/pwd-command.png)
 
 What is a command option? If an application has only a text interface, the ways of interacting with it are limited. The application needs some input data to work. An example of data is the path to a file or directory. The command interpreter offers a simple way to pass this information. You can specify it after the command for launching the application. [**Parameter**](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) or program argument is the word or character passed to it for input. An **Option** or key is an argument that switches the mode of a program. The format of options is standardized. They usually start with a dash `-` or a double dash `--`.
@@ -156,16 +156,16 @@ Figure 2-8 shows a list of available commands. Bash printed it after typing `pw`
 
 #### ls
 
-We know the current directory. Now let's print its contents. The utility called ls does it. Suppose you have just installed the MSYS2 environment. Launch the "ls" command without parameters in the user's home directory. It prints nothing. The second line in Figure 2-9 demonstrates this result. Such output usually means that the directory is empty.
+We know the current directory. Now let's print its contents. The utility called `ls` does it. Suppose you have just installed the MSYS2 environment. Launch the "ls" command without parameters in the user's home directory. It prints nothing. The second line in Figure 2-9 demonstrates this result. Such output usually means that the directory is empty.
 
-{caption: "Figure 2-9. The output of the ls utility"}
+{caption: "Figure 2-9. The output of the `ls` utility"}
 ![Output ls](images/BashShell/ls-command.png)
 
 Windows has a concept of hidden files and directories. They also exist in the Unix environment. Such files are created by applications and operating systems for their own needs. They are used for storing configuration or temporary information. Windows Explorer does not display hidden files in normal mode. Change [Explorer settings](https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2) to see hidden files.
 
-Names of hidden files and directories begin with a dot in the Unix environment. The ls utility does not show them by default. To change this behavior, run the ls utility with the `-a` option. Then you will see eight files in the home directory. They all start with a dot, as Figure 2-9 shows.
+Names of hidden files and directories begin with a dot in the Unix environment. The `ls` utility does not show them by default. To change this behavior, run the `ls` utility with the `-a` option. Then you will see eight files in the home directory. They all start with a dot, as Figure 2-9 shows.
 
-You can get the contents of a directory without going into it. Pass an absolute or relative path to the directory when launching the ls utility. For example, there is the command to show the contents of the root directory:
+You can get the contents of a directory without going into it. Pass an absolute or relative path to the directory when launching the `ls` utility. For example, there is the command to show the contents of the root directory:
 {line-numbers: false, format: Bash}
 ```
 ls /
@@ -173,16 +173,16 @@ ls /
 
 Figure 2-10 shows the output of this command.
 
-{caption: "Figure 2-10. The output of the ls utility"}
+{caption: "Figure 2-10. The output of the `ls` utility"}
 ![Output ls](images/BashShell/ls-root-command.png)
 
-There are no directories `/c` and `/d` in Figure 2-10. According to Listing 2-2, these are the mount points of disks C and D. They are in the root directory. Why does not ls output them? The problem is that the Windows file system has no concept of mount points. For that reason, it does not have directories `/c` and `/d`. They are present in the Unix environment only. Through these directories, you access the contents of the disks. The ls utility reads the contents of directories in the Windows file system. Thus, it does not show the mount points. Linux and macOS do not have this problem. The ls utility displays all mount points correctly there.
+There are no directories `/c` and `/d` in Figure 2-10. According to Listing 2-2, these are the mount points of disks C and D. They are in the root directory. Why does not `ls` output them? The problem is that the Windows file system has no concept of mount points. For that reason, it does not have directories `/c` and `/d`. They are present in the Unix environment only. Through these directories, you access the contents of the disks. The `ls` utility reads the contents of directories in the Windows file system. Thus, it does not show the mount points. Linux and macOS do not have this problem. The `ls` utility displays all mount points correctly there.
 
 #### mount
 
-If several disks are attached to your computer, it is useful to display their mount points. The [mount](https://en.wikipedia.org/wiki/Mount_(Unix)) utility does it. Run the utility without parameters. It will print all mount points, as Figure 2-11 shows.
+If several disks are attached to your computer, it is useful to display their mount points. The [`mount`](https://en.wikipedia.org/wiki/Mount_(Unix)) utility does it. Run the utility without parameters. It will print all mount points, as Figure 2-11 shows.
 
-{caption: "Figure 2-11. The output of the mount utility"}
+{caption: "Figure 2-11. The output of the `mount` utility"}
 ![Output mount](images/BashShell/mount-command.png)
 
 Consider this output as a table with four columns. Their values are the following:
@@ -195,9 +195,9 @@ Consider this output as a table with four columns. Their values are the followin
 
 4. Mounting parameters. For example, access permissions to the drive.
 
-Table 2-2 shows the output of the mount utility call in Figure 2-11. The output is divided into columns.
+Table 2-2 shows the output of the `mount` utility call in Figure 2-11. The output is divided into columns.
 
-{caption: "Table 2-2. The output of the mount utility", width: "100%"}
+{caption: "Table 2-2. The output of the `mount` utility", width: "100%"}
 | Mounted partition | Mount point | FS type | Mounting parameters |
 | --- | --- | --- | --- |
 | `C:/msys64` | `/` | `ntfs` | `binary,noacl,auto` |
@@ -209,13 +209,13 @@ Table 2-2 can confuse Windows users. The `C:/msys64` directory is mounted as the
 
 In the Unix environment, this contradiction is not a problem. The `/c` path is the mount point. It exists only in the Unix environment. It does not exist in the Windows file system. You can imagine that the `/c` directory in MSYS2 is a [shortcut](https://en.wikipedia.org/wiki/Shortcut_(computing)) to drive C.
 
-The output of the mount utility took up a lot of screen space. Press Ctrl+L to clear the terminal window.
+The output of the `mount` utility took up a lot of screen space. Press Ctrl+L to clear the terminal window.
 
 It happens that a running command takes a long time to execute or hangs. Press Ctrl+C to interrupt its execution.
 
 #### cd
 
-We know the current directory. Now we can change it. For example, we are looking for the Bash documentation. Let's check the system directory `/usr`. Installed applications keep their files there. There is a built-in command cd for changing the directory. Launch it in this way:
+We know the current directory. Now we can change it. For example, we are looking for the Bash documentation. Let's check the system directory `/usr`. Installed applications keep their files there. There is a built-in command `cd` for changing the directory. Launch it in this way:
 {line-numbers: false, format: Bash}
 ```
 cd /usr
@@ -223,14 +223,14 @@ cd /usr
 
 Don't forget about autocompletion. It works for both the command name and its parameters. Just type `cd /u` and press the Tab key. Bash will automatically add the directory name `usr`. Figure 2-12 shows the result of the command.
 
-{caption: "Figure 2-12. The result of the cd command"}
+{caption: "Figure 2-12. The result of the `cd` command"}
 ![cd result](images/BashShell/cd-command.png)
 
-The cd command does not output anything if it succeeds. The only effect is changing the current directory. Run the command and check the output before the command prompt. The current directory is `/usr` now.
+The `cd` command does not output anything if it succeeds. The only effect is changing the current directory. Run the command and check the output before the command prompt. The current directory is `/usr` now.
 
-The cd command accepts both absolute and relative paths. Relative paths are shorter and faster to type. That is why they are used often for file system navigation.
+The `cd` command accepts both absolute and relative paths. Relative paths are shorter and faster to type. That is why they are used often for file system navigation.
 
-We have moved to the `/usr` directory. Now you can list its subdirectories and go to one of them. Suppose instead that you need to go one level higher to the root directory. There are two ways to do this: go to the absolute path `/` or the special relative path `..`. The path `..` always points to the parent directory for the current one. This is the cd command to go this path:
+We have moved to the `/usr` directory. Now you can list its subdirectories and go to one of them. Suppose instead that you need to go one level higher to the root directory. There are two ways to do this: go to the absolute path `/` or the special relative path `..`. The path `..` always points to the parent directory for the current one. This is the `cd` command to go this path:
 {line-numbers: false, format: Bash}
 ```
 cd ..
@@ -254,7 +254,7 @@ cat README
 
 Figure 2-13 shows the command result.
 
-{caption: "Figure 2-13. The result of the cd command", height: "30%"}
+{caption: "Figure 2-13. The result of the `cd` command", height: "30%"}
 ![cat result](images/BashShell/cat-command.png)
 
 I> Some Bash manuals do not recommend using the cat utility to output a file's contents. The utility's purpose is to merge several files and print the result to a standard output stream. Instead of calling cat for a single file, the manuals recommend combining the echo command with stream redirection. Here is an example of this approach:
@@ -308,3 +308,78 @@ These are the steps to copy text from the terminal:
 2. Press the middle mouse button to paste the text from the clipboard into the terminal window. The text will be inserted at the current cursor position.
 
 3. Right-click and select the Paste item to paste the text to the application other than the terminal.
+
+#### find
+
+It is not convenient to search for a file or directory with `cd` and `ls`. There is a special `find` utility for this purpose.
+
+If you run the `find` utility without parameters, it traverses all subdirectories of the current one and prints their contents. The output also includes hidden objects. Figure 2-14 shows the result of running `find` for the user's `~` home directory.
+
+{caption: "Figure 2-14. The output of the `find` utility", height: "30%"}
+![find output](images/BashShell/find-command.png)
+
+The first parameter of the find utility is the directory to search in. The utility accepts relative and absolute paths. For example, here is a command to search in the root directory:
+{line-numbers: false, format: Bash}
+```
+find /
+```
+
+The search conditions start from the second utility parameter. If the found object does not meet the conditions, `find` does not print it. The conditions are combined with each other and form a single expression. A special interpreter is built into the utility to process this expression. For example, a search condition can be a filename. In this case, only files with this name will appear in the `find` output.
+
+Table 2-3 shows commonly used conditions for the `find` utility.
+
+{caption: "Table 2-3. Commonly used conditions for the `find` utility", width: "100%"}
+| Condition | Meaning | Example |
+| --- | --- | --- |
+| `-type f` | Search files only. | `find -type f` |
+|  | | |
+| `-type d` | Search directories only. | `find -type d` |
+|  | | |
+| `-name <pattern>` | Search for a file or directory with the name | `find -name README` |
+| | that matches a [**glob pattern**](https://en.wikipedia.org/wiki/Glob_(programming)). The pattern is case-sensitive. | `find -name READ*` |
+| | | `find -name READ??` |
+|  | | |
+| `-iname <pattern>` | Search for a file or directory with the name that matches a glob pattern. The pattern is case-insensitive. | `find -iname readme` |
+|  | | |
+| `-path <pattern>` | Search for a file or directory with the path that matches a glob pattern. The pattern is case-sensitive. | `find -path */doc/bash/*` |
+|  | | |
+| `-ipath <pattern>` | Search for a file or directory with the path that matches a glob pattern. The pattern is case-insensitive. | `find . -ipath */DOC/BASH/*` |
+|  | | |
+| `-a` or `-and` | Combine several conditions using logical AND. Only files and directories that satisfy all combined conditions appear in the output. | `find -name README -a -path */doc/bash/* ` |
+|  | | |
+| `-o` or `-or` | Combine several conditions with a logical OR. If a file or directory matches at least one condition, it appears in the output. | `find -name README -o -path */doc/bash/* ` |
+|  | | |
+| `!` or `-not` | It is a logical negation (NOT) | `find -not -name README` |
+| | of the condition. Only files and directories that do not satisfy the condition appear in the output. | `find ! -name README` |
+
+A glob pattern is a search query that contains [**wildcard characters**](https://en.wikipedia.org/wiki/Wildcard_character). There are three wildcard characters in Bash: *, ? и [. The asterisk stands for any number of any characters. A question mark means a single character of any kind. For example, the string `README` matches the following patterns:
+
+* `*ME`
+* `READM?`
+* `*M?`
+* `R*M?`
+
+Square brackets indicate a set of characters at a specific position. For example, the pattern `[cb]at.txt` matches the files `cat.txt` and `bat.txt`. Here is a call to the `find` utility that searches with this pattern:
+{line-numbers: false, format: Bash}
+```
+find . -name "[cb]at.txt"
+```
+
+{caption: "Exercise 2-1. Glob patterns", line-numbers: false}
+```
+What of the following lines corresponds to the pattern "*ME.??" ?
+
+* 00_README.txt
+* README
+* README.md
+```
+
+{caption: "Exercise 2-2. Glob patterns", line-numbers: false}
+```
+What of the following lines corresponds to the pattern "*/doc?openssl*" ?
+
+* /usr/share/doc/openssl/IPAddressChoice_new.html
+* /usr/share/doc_openssl/IPAddressChoice_new.html
+* doc/openssl
+* /doc/openssl
+```
