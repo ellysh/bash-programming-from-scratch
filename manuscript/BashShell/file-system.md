@@ -383,3 +383,130 @@ What of the following lines corresponds to the pattern "*/doc?openssl*" ?
 * doc/openssl
 * /doc/openssl
 ```
+
+Let's apply glob patterns into practice. We will find the Bash `README` file with the `find` utility. Suppose that we don't know the disk where the file is stored. Then we pass the root directory as the first parameter to `find`. This way, the utility looks for the file on all mounted disks. In the Unix environment, documents are stored in directories named `doc`. With this in mind, we make the following search command:
+{line-numbers: false, format: Bash}
+```
+find / -path */doc/*
+```
+
+The command lists all documentation files on all mounted disks. There are too many files. We can shorten the list with extra search conditions. Add the word `bash` to the path of the file that we are looking for. Then we get the following command:
+{line-numbers: false, format: Bash}
+```
+find / -path */doc/* -path */bash/*
+```
+
+Figure 2-15 shows the result. The following command provides the same result:
+{line-numbers: false, format: Bash}
+```
+find / -path */doc/* -a -path */bash/*
+```
+
+The commands differ by the `-a` option between conditions. The option means logical AND. It is used by default if no logical operation is specified between conditions.
+
+{caption: "Figure 2-15. The output of the `find` utility", height: "30%"}
+![find output](images/BashShell/find-path-path.png)
+
+At the end of the list, the find utility reports an error. The problem is some subdirectories of the root are mount points of the Windows disks. For example, the C drive is mounted in `/c`. The utility cannot access their contents when searching from the root directory. To avoid the error, start the search from the mount point of the C drive. You can do it this way:
+{line-numbers: false, format: Bash}
+```
+find /c -path */doc/* -a -path */bash/*
+```
+
+An alternative solution is to exclude mount points from the search. To do this, pass the `-mount` option:
+{line-numbers: false, format: Bash}
+```
+find / -mount -path */doc/* -a -path */bash/*
+```
+
+As a result, the `find` utility displays a short list of documents. Among them, it is easy to find the `README` file you need.
+
+There are other ways to search for a documentation file. Suppose that we know its name. We put the name together with an assumed path. Then we get the following command:
+{line-numbers: false, format: Bash}
+```
+find / -path */doc/* -name README
+```
+
+Figure 2-16 shows the result of the search.
+
+{caption: "Figure 2-16. The output of the `find` utility", height: "30%"}
+![find output](images/BashShell/find-path-name.png)
+
+Again we get a short list of files. It is easy to locate the right file there.
+
+The conditions of the `find` utility can be grouped together. For doing it, use [escaped](https://en.wikipedia.org/wiki/Escape_character) parentheses. For example, let's find `README` files with path `*/doc/*` or `LICENSE` files with an arbitrary path. The following command does it:
+{line-numbers: false, format: Bash}
+```
+find / \( -path */doc/* -name README \) -o -name LICENSE
+```
+
+Why escape brackets in a `find` utility expression? The parentheses are part of the Bash syntax. They are used in language constructs. When Bash meets parentheses in a command, it performs **substitution**. Substitution is the replacement of a part of command with something else. Escaping characters forces the interpreter to ignore the parentheses.  In this case, Bash passes them as is to the `find` utility.
+
+The find utility can search for files and directories. Also, it can process them. You can specify an action after a search condition. The utility applies the action to each object it finds.
+
+Table 2-4 shows the options for specifying actions.
+
+{caption: "Table 2-4. Options for specifying actions on found objects", width: "100%"}
+| Option | Meaning | Example |
+| --- | --- | --- |
+| `-exec команда {} \;`| Execute the specified command on each found object. | `find -name README -type f -exec cp {} ~ \;` |
+|  | | |
+| `-exec команда {} +`| Execute the specified command once over all found objects. So, the command receives all objects on the input. | ` find -type d -exec cp -t ~ {} +` |
+|  | | |
+| `-delete`| Delete each of the found files. The directories are deleted if they are empty. | `find -name README -type f -delete` |
+
+There are two variants of the `-exec` action. They differ in the characters at the end: an escaped semicolon `\;` or plus +. The second case with plus works if the called command can handle several input parameters. Most GNU utilities can do this. If the command accepts only one parameter, it processes the first found object only.
+
+Let's apply the `-exec` action to solve a practical task. We should copy the Bash documentation files with an HTML extension into the home directory. First, we should find these files with the find utility. The search command looks like this:
+{line-numbers: false, format: Bash}
+```
+find / -path "*/doc/bash/*" -name "*.html"
+```
+
+When you pass glob patterns to the `find` utility, enclose them in double-quotes. The quotation marks do the same as the backslash before parentheses. They prevent Bash from interpreting the patterns. Then the `find` utility gets them as is and interprets them itself.
+
+Figure 2-17 shows the result of searching the HTML files.
+
+{caption: "Figure 2-17. The output of the `find` utility", height: "30%"}
+![Результат find](images/BashShell/find-html.png)
+
+Let's add the `-exec` action to the search command. It calls the `cp` utility. This utility copies files and directories to the specified path. The first parameter of `cp` is the object to copy. The second parameter is the path to copy to.  The final command looks the following:
+{line-numbers: false, format: Bash}
+```
+find / -path "*/doc/bash/*" -name "*.html" -exec cp {} ~ \;
+```
+
+This command prints a mount point error only.
+
+Let's see what the command did. It calls the `cp` utility for each HTML file it finds. The first parameter of `cp` is the path to the file. It was put in place of the curly braces {}. The `find` utility found two files. That is why `cp` is called twice like this:
+{line-numbers: true, format: Bash}
+```
+cp ./usr/share/doc/bash/bash.html ~
+cp ./usr/share/doc/bash/bashref.html ~
+```
+
+Each call copies one HTML file to the user's home directory.
+
+We have just written our first program in the language of the `find` utility interpreter. The program works according to the following algorithm:
+
+1. Find files with an HTML extension on all disks. Their paths correspond to the pattern `*/doc/bash/*`.
+
+2. Copy each found file into the user's directory.
+
+The program algorithm consists of two steps only. But it is a scalable solution for finding and copying files. The program will process dozens of files as fast as a couple of them.
+
+You can combine the `-exec` actions in the same way as the search conditions. To give you an example, let's print out each found HTML file's contents and count the number of lines in it. The `cat` utility can print the content of the file. The `wc` utility counts the number of lines. At the input, `wc` takes the name of the file to be processed. In this case, the `find` call looks like this:
+{line-numbers: false, format: Bash}
+```
+find / -path "*/doc/bash/*" -name "*.html" -exec cat {} \; -exec wc -l {} \;
+```
+
+We have not specified a logical operation between the `-exec` actions. The default is to use logical AND. It means that the second action is only executed if the first one succeeds. If we apply the logical OR instead, the second action is always executed. It would not depend on the result of the first one.
+
+You can group the `-exec` actions with escaped parentheses `\(` and `\)`. It works in the same way as grouping search conditions.
+
+{caption: "Exercise 2-3. Searching for files with the `find` utility", line-numbers: false}
+```
+Write a find call to search for text files in a Unix environment.
+Extend the command to print the total number of lines in these files.
+```
