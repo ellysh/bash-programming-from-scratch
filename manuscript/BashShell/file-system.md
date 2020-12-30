@@ -510,3 +510,112 @@ You can group the `-exec` actions with escaped parentheses `\(` and `\)`. It wor
 Write a find call to search for text files in a Unix environment.
 Extend the command to print the total number of lines in these files.
 ```
+
+#### Logic Expressions
+
+The search conditions of the `find` utility are [**Boolean expressions**](https://en.wikipedia.org/wiki/Boolean_expression). A Boolean expression is a programming language statement. Its calculation gives one of two possible results: "true" or "false".
+
+The `find` conditions are statements of the utility's built-in interpreter. If the condition is met for a found object, its result equals "true". Otherwise, the condition result is "false". If there are several conditions, they are combined into a compound Boolean expression.
+
+We met Boolean algebra already when we have considered the binary numeral system. This section of mathematics studies [**logical operators**](https://en.wikipedia.org/wiki/Logical_connective). They are different from the usual arithmetic operations: addition, subtraction, multiplication, and division.
+
+The result of calculating a Boolean expression can be two values only. Therefore, arithmetic operations on such an expression are trivial and yield nothing. If we apply logical operators instead, we get conditions with strict rules for calculations. This way, we write a search condition for a file with a given name and path for the `find` utility. The combination of such conditions with actions provides a program with complex behavior.
+
+An **operand** is an object of a logical operator. An operand can be an expression or a single value.
+
+For simplicity, let's consider Boolean expressions using an example not related to the `find` utility. Imagine that we are programming a robot for a warehouse. Its job is to move boxes from point A to point B. To do this, we would write the following straightforward algorithm for the robot:
+
+1. Move to point A.
+
+2. Pick up the box at point A.
+
+3. Move to point B.
+
+4. Put the box at point B.
+
+There are no conditions in this algorithm. It means that the robot performs each step independently of external events.
+
+Now imagine that there is an obstacle in the way of the robot to point B. For example, there is another robot. In this case, the execution of the algorithm leads to a collision. We can add a condition in our algorithm to prevent the collision. It would look this way:
+
+1. Move to point A.
+
+2. Take the box at point A.
+
+3. If there is no obstacle, move to point B. Otherwise, stop.
+
+4. Put the box at point B.
+
+The third step of the algorithm is called [**conditional statement**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). All modern programming languages have such a statement.
+
+The algorithm of the conditional statement looks like this:
+
+1. Calculate the value of the operand.
+
+2. If the result equals "true", perform the first action.
+
+3. If the result is "false", perform the second action.
+
+In our example, the robot calculates the value of the Boolean expression "there is no obstacle". If there is an obstacle, the expression returns false and the robot stops. Otherwise, the robot moves to point B.
+
+Logical operators allow you to combine several expressions into one. For example, the robot tries to pick up a box at point A, but there is no box. Then there is no reason for him to move to point B. We can add this condition to the existing expression using [**logical AND**](https://en.wikipedia.org/wiki/Logical_conjunction) (conjunction). Now the robot algorithm looks like this:
+
+1. Move to point A.
+
+2. Take the box at point A.
+
+3. If there is a box AND no obstacle, move to point B. Otherwise, stop.
+
+4. Put the box at point B.
+
+Calculating logical operators also yields "true" or "false". The result of a logical AND equals "true" when both operands are "true". For our examples, it means that the robot has a box and there is no obstacle. In any other case, the result of logical AND equals "false". Then the robot stops.
+
+Working with the `find` utility, we got acquainted with two more logical operators: [**OR**](https://en.wikipedia.org/wiki/Logical_disjunction) (disjunction) and [**NOT**](https://en.wikipedia.org/wiki/Negation) (negation).
+
+Actually, we already applied logical NOT in the robot algorithm. It stays implicitly in the expression "there is no obstacle". It equals to the following negation: "there is NOT an obstacle". Let's specify the logical NOT in the algorithm explicitly:
+
+1. Move to point A.
+
+2. Get the box at point A.
+
+3. If there is a box AND there is NOT an obstacle, move to point B. Otherwise, stop.
+
+4. Put the box at point B.
+
+You can always replace logical AND by OR in the Boolean expression. Let's do it for our example. We want to change the operator but keep the robot's behavior the same. Then we would add negation to the first condition and remove it from the second one. Also, let's change the order of actions in the conditional statement. Now, if the expression is true, the robot stops. If it is false, the robot moves to point B. The final algorithm looks this way:
+
+1. Move to point A.
+
+2. Get the box at point A.
+
+3. If there is NOT a box OR there is an obstacle, stop. Otherwise, move to point B.
+
+4. Put the box at point B.
+
+Read the new conditional statement carefully. The robot follows the same decisions. It still stops if it has no box or if there is an obstacle in the way.
+
+In our example, we wrote the Boolean expression as a sentence in English. This sentence sounds unnatural. You have to read it several times to understand it. The reason is that the [**natural language**](https://en.wikipedia.org/wiki/Natural_language) (the language of human communication) is not suitable for writing Boolean expressions. This language is not accurate enough. That is why Boolean algebra uses mathematical notation instead.
+
+We have considered logical AND, OR and NOT. Three other operations are used in programming often:
+
+* Equivalence
+* Non-equivalence
+* Exclusive OR
+
+Table 2-5 explains them.
+
+{caption: "Table 2-5. Logical operators", width: "100%"}
+| Operator | Calculation Result |
+| --- | --- |
+| AND | It returns "true" when both operands are "true". |
+|  | |
+| OR | It returns "true" when any of the operands is "true". It returns "false" when all operands are "false". |
+|  | |
+| NOT | It returns "true" when the operand is "false" and vice versa. |
+|  | |
+| Exclusive OR (XOR) | It returns "true" when the operands have different values (true-false or false-true). It returns "false" when the operands are the same (true-true, false-false). |
+|  | |
+| Equivalence | It returns "true" when the operands have the same values. |
+|  | |
+| Non-equivalence | It returns "true" when the values of the operands differ. |
+
+Try to memorize this table. It is simple when you use logical operators often.
