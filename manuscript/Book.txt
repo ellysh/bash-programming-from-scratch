@@ -10,3 +10,4 @@ mainmatter:
   BashShell/tools.md
   BashShell/command-line-interface.md
   BashShell/file-system.md
+  BashShell/commands-info.md

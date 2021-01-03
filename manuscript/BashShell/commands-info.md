@@ -1,115 +1,42 @@
-## Информация о командах
+## Command Information
 
-Мы познакомились с командами навигации по файловой системе. При этом для каждой команды и утилиты мы рассмотрели только часто используемые опции и параметры. Что делать, если вам нужен режим работы утилиты, который остался за рамками этой книги? 
+We got acquainted with the file system navigation commands. For each of them, we have considered commonly used options and parameters only. What if you need a feature that was left out of the scope of this book?
 
-Все современные ОС и прикладные программы имеют документацию. Но благодаря графическому интерфейсу эта документация редко оказывается нужна. Назначение иконок или кнопок обычно очевидно. Поэтому большинство пользователей ПК не пользуется встроенной в приложения документацией.
+All modern OSes and applications have documentation. But you need the documentation rarely, thanks to the graphical interface. The purposes of icons and buttons are usually obvious. Therefore, most PC users do not use the documentation that is built into applications.
 
-При работе с интерфейсом командной строки доступные режимы работы и действия неочевидны. Перед запуском утилиты необходимо познакомиться с её опциями. Небрежность в работе может привести к потере или повреждению ваших данных.
+When working with the command-line interface, the available features and modes of the application are not obvious. Before running it, you should know its options. The negligence can lead to loss or corruption of your data.
 
-Разработчики Unix сначала распространяли документацию к системе в бумажном виде. Но это было неудобно. Объём документации быстро рос и скоро превысил объём одной книги. Чтобы сделать документацию удобнее, была разработана система man. С её помощью пользователи могут получить информацию по любой установленной утилите.
+The first versions of Unix have paper documentation. It was inconvenient. The documentation volume grew rapidly. Soon it exceeded the size of a single book. The Unix developers introduced the system called `man`. It made accessing the documentation more convenient. The system allows a user to get information about any installed program.
 
-Кроме централизованной документации в системе man, каждая программа в Unix предоставляет информацию о себе. Так например, у интерпретатора Bash есть своя система справки help. Рассмотрим её подробнее.
+The `man` system is a centralized place to get documentation. Besides it, every program in Unix provides information about itself. For example, the Bash interpreter has its own documentation system. It is called `help`.
 
-Чтобы вывести список всех встроенных команд Bash, выполните команду help без параметров. Вы получите вывод как на иллюстрации 2-21.
+You want to list all built-in Bash commands. For getting it, launch the `help` command without parameters. Figure 2-21 shows its output.
 
-{caption: "Иллюстрация 2-21. Результат выполнения команды `help`", height: "50%"}
-![Результат help](images/BashShell/bash-help.png)
+{caption: "Figure 2-21. The output of the `help` command", height: "50%"}
+![help output](images/BashShell/bash-help.png)
 
-Перед вами все команды, которые интерпретатор Bash исполняет самостоятельно. Если команды нет в этом списке, она выполняется GNU утилитой или сторонней программой.
+Here is a list of all commands that Bash executes on its own. If a command absents in this list, a GNU utility or third-party program executes it.
 
-Например, команда cd есть в списке help. Это значит, что Bash выполняет её сам без вызова вспомогательной утилиты. Теперь предположим, что вы ввели команду find. Её в списке help нет. Поэтому Bash ищет утилиту с именем find на жёстком диске. Если найти её удалось, Bash запускает утилиту с указанными вами параметрами.
+For example, the command `cd` presents in the `help` list. It means that Bash executes it without calling any other program. Now suppose you type the "find" command. There is no `find` command in the `help` list. Therefore, Bash looks for a utility with the `find` name on the hard drive. If this utility presents, Bash launches it.
 
-Где Bash ищет утилиты для выполнения команд? У него есть список путей, по которым надо искать. Этот список хранится в [**переменной окружения**](https://ru.wikipedia.org/wiki/Переменная_среды) с именем `PATH`. [**Переменная**](https://ru.wikipedia.org/wiki/Переменная_(программирование)) — это область оперативной памяти. Обычно для обращения к области памяти нужно указать её адрес. Но переменная позволяет заменить адрес на имя. Обратившись по имени переменной, вы можете записать или прочитать её область памяти. С переменными окружения мы познакомимся в следующей главе.
+Where does Bash look for utilities for executing commands? It has a list of paths for searching. Bash stores the list in the **environment variable** that is called `PATH`. The [**variable**](https://en.wikipedia.org/wiki/Variable_(computer_science)) is a named area of memory. If you want to access the memory area, you should specify its address. Variables provide a mechanism for simplifying this access. You can use the variable name instead of the address. It is much simpler to memorize names than addresses.
 
-I> Чтобы вывести все переменные окружения, установленные в данный момент, вызовите утилиту env без параметров.
+Some data affect the behavior of Bash. The interpreter stores these data in the environment variables. We will consider all types of Bash variables in the next chapter.
 
-Переменную можно представить как некоторое значение, у которого есть имя. Например, можно сказать: "время — 12 часов". В этом случае имя переменной — это "время", а значение — "12 часов". Это значение хранится в памяти компьютера. Если вы запросите значение переменной с именем "время", компьютер вернёт вам "12 часов".
+I> Call the `env` utility without parameters to print all defined environment variables.
 
-Команда echo выводит на экран строки. С её помощью также можно вывести значение переменной. Чтобы вывести значение переменной с именем `PATH`, выполните следующую команду:
+You can imagine the variable as a value that has a name. For example, you can say: "the time is 12 hours". In this case, the variable name is "time". Its value is "12 hours". The computer's memory stores this value. If you request a value of the variable with the name "time", the computer returns you "12 hours".
+
+The `echo` command prints strings. It can also output the value of a variable. If you want to print the value of the `PATH` variable, call the following command:
 {line-numbers: false, format: Bash}
 ```
 echo "$PATH"
 ```
 
-Зачем нам понадобился знак доллара `$` перед именем переменной? Команда echo выводит строку, которую получает входным параметром. Например, следующая команда выведет на экран текст "123":
+Why do we need the dollar sign $ before a variable name? The `echo` command prints the string that it receives as an input parameter. For example, the following command prints the text "123":
 {line-numbers: false, format: Bash}
 ```
 echo 123
 ```
 
-Знак доллара `$` перед словом сообщает Bash, что это имя переменной. Оно обрабатывается иначе, чем обычная строка. Когда Bash встречает имя переменной в команде, он ищет его в своём списке переменных. Если имя есть в списке, вместо него в команду подставляется значение переменной. В противном случае будет подставлена пустая строка.
-
-I> Заключать имена переменных в двойные кавычки `"` считается [хорошей практикой](https://www.tldp.org/LDP/abs/html/quotingvar.html). Это позволяет избежать потенциальные ошибки. Представьте, что Bash подставляет значение переменной вместо её имени. Если в значении встречаются [**управляющие символы**](https://ru.wikipedia.org/wiki/Управляющие_символы), интерпретатор их обработает. В результате подставленное значение переменной будет отличаться от того, что хранится в памяти Bash. Это может привести к некорректному поведению программы.
-
-Вернёмся к команде echo для вывода переменной `PATH`. Она выведет на экран строку как на иллюстрации 2-22.
-
-{caption: "Иллюстрация 2-22. Значение переменной `PATH`", height: "30%", width: "100%"}
-![Значение PATH](images/BashShell/echo-path.png)
-
-Что означает этот вывод? Перед нами список путей, разделённых двоеточиями. Если записать каждый путь с новой строки, получим следующее:
-{line-numbers: false}
-```
-/usr/local/bin
-/usr/bin
-/bin
-/opt/bin
-/c/Windows/System32
-/c/Windows
-/c/Windows/System32/Wbem
-/c/Windows/System32/WindowsPowerShell/v1.0/
-```
-
-Формат переменной `PATH` вызывает вопросы. Почему нельзя хранить пути в виде списка с [переводом строки](https://ru.wikipedia.org/wiki/Перевод_строки) вместо двоеточия? Тогда при выводе переменной на экран, её было бы удобнее читать. Короткий ответ: так проще программировать. Символ перевода строки `\n` обрабатывается по-разному интерпретатором и некоторыми GNU-утилитами. Это может стать источником ошибок.
-
-Если вам нужно найти утилиту или программу на диске, переменная `PATH` подскажет вам, где искать. Кроме того не забывайте про утилиту для поиска find. Например, найдём её исполняемый файл. Для этого выполним команду:
-{line-numbers: false, format: Bash}
-```
-find / -name find
-```
-
-Файл с именем `find` находится в каталогах `/bin` и `/usr/bin`.
-
-Найти программу на диске можно быстрее. Для этого у Bash есть встроенная команда type. Передайте в неё имя интересующей вас программы. Команда type выведет абсолютный путь до её исполняемого файла как на иллюстрации 2-23.
-
-{caption: "Иллюстрация 2-23. Результат выполнения команды `type`", height: "30%"}
-![Результат `type`](images/BashShell/type-command.png)
-
-Из этого вывода мы узнали, что исполняемые файлы утилит find и ls находятся в каталоге `/usr/bin`. Причём путь до утилиты ls **хэшируется**. Bash запоминает его и не будет искать исполняемый файл ls при каждом вызове. Поэтому если перенести файл ls в другое место на диске, Bash её не найдёт.
-
-В type можно передать встроенную команду интерпретатора. В этом случае вы получите сообщение, что оболочка исполняет эту команду самостоятельно. На иллюстрации 2-23 приведён пример такого вывода для команды pwd.
-
-Мы нашли исполняемый файл нужной нам утилиты. Как теперь узнать, какие входные параметры она принимает? Для вывода краткой справки вызовите утилиту с опцией `--help`. Вы получите вывод как на иллюстрации 2-24. Это краткая справка об утилите cat.
-
-{caption: "Иллюстрация 2-24. Краткая справка об утилите cat", height: "50%"}
-![Справка `cat`](images/BashShell/cat-help.png)
-
-Если на вашей системе в качестве языка по умолчанию установлен английский, справочная информация будет выводиться на нём. Перевод на русский вы можете найти в [интернете](https://www.opennet.ru/man.shtml?topic=cat&russian=0&category=&submit=%F0%CF%CB%C1%DA%C1%D4%D8+man). Альтернативное решение — использовать онлайн переводчик [Google Translate](https://translate.google.com) или [DeepL](https://www.deepl.com/translator). Если вы используйте Linux или macOS, переключите системный язык на русский. После этого документация станет на русском.
-
-Если краткой справки недостаточно, обратитесь к системе документации info. Предположим, вам нужны примеры использования cat. Для этого выполните следующую команду:
-{line-numbers: false, format: Bash}
-```
-info cat
-```
-
-Иллюстрация 2-25 демонстрирует результат выполнения команды.
-
-{caption: "Иллюстрация 2-25. Справка info по утилите `cat`", height: "50%"}
-![Справка info по `cat`](images/BashShell/cat-info.png)
-
-Перед вами программа для чтения текстовых документов. Клавиши стрелки либо PageUp и PageDown прокручивают текст вверх и вниз. Клавиша Q завершает программу.
-
-Систему документацию info создали разработчики GNU-утилит. До этого на всех Unix-системах использовалась программа man. Возможности обеих систем похожи. В MSYS2 по умолчанию устанавливается более современная система info.
-
-В вашем Linux-дистрибутиве может быть установлена система man, а не info. Тогда вы можете вывести документацию об утилите точно так же, как и с помощью info. Например, следующая команда выводит справку для cat:
-{line-numbers: false, format: Bash}
-```
-man cat
-```
-
-Когда имя утилиты для решения вашей задачи известно, получить справку о ней легко. Но что делать, если вы не знаете как решить задачу? Лучше всего искать ответ в интернете. Советы по использованию командной строки лаконичнее инструкций для программ с графическим интерфейсом. Вам не нужны скриншоты и видеоролики с объяснениями каждого действия. Вместо этого достаточно одной единственной строчки с командой, которая сделает всё необходимое.
-
-{caption: "Упражнение 2-5. Использование системы документации", format: text, line-numbers: false}
-```
-Найдите информацию по каждой из встроенных команд и утилит, представленных в таблице 2-1.
-Изучите параметры утилит ls и find, которые мы не рассмотрели.
-```
+The dollar sign $ before a word tells Bash that it is a variable name. It is handled differently than a normal string. When Bash encounters a variable name in a command, it looks for this name in the variable list. If the list has it, Bash substitutes the variable name by its value in the command. Otherwise, an empty string is placed.
