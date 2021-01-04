@@ -11,3 +11,4 @@ mainmatter:
   BashShell/command-line-interface.md
   BashShell/file-system.md
   BashShell/commands-info.md
+  BashShell/files-and-directories.md
