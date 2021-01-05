@@ -207,3 +207,126 @@ You should get a similar directory structure:
         2020/
              01/
 ```
+
+#### File System Permissions
+
+When the `rm` utility removes a file or directory, it checks the [**file system permissions**](https://en.wikipedia.org/wiki/File-system_permissions). For example, if a file is write-protected, the utility prints a warning. What are permissions and what are they for?
+
+Permissions restrict what the user can do with the file system. The operating system controls them. With this feature, users can access only their files and directories. At the same time, access to the OS components is restricted.
+
+The permissions allow several people to share one computer. This approach was widespread everywhere before inventing personal computers. Computing resources were expensive at that time. Thus, it was more effective to share one computer among users.
+
+Let's look again at Figure 2-26. When you call the `ls` utility with the `-l` option, it prints the table. Its single row corresponds to one file or directory. The columns have the following meaning:
+
+1. Permissions or access rights.
+2. The number of hard links to the file or directory.
+3. Owner.
+4. Owner group.
+5. The size of the object in bytes.
+6. Date and time of the last change.
+7. File or directory name.
+
+Now we are interested in permissions. They equal the line "-r--r--r--" for the file `report.txt`. What does it mean?
+
+In Unix, file or directory permissions are stored as [**bitmask**](https://en.wikipedia.org/wiki/Mask_(computing)). The bitmask is a positive integer. The memory stores it in binary form as a sequence of zeros and ones. Each bit of the mask keeps a value that is independent of the other bits. Therefore, it is possible to pack a set of values into a single bitmask.
+
+What values can a bitmask store? For example, these can be the attributes of an object. The object either has or does not have each attribute. Each bit of the bitmask corresponds to one attribute. If the bit equals one, the object attribute presents. Otherwise, the bit equals zero.
+
+Let's come back to the file access rights. We can represent these rights as the following three attributes:
+
+1. Read permission.
+2. Write permission.
+3. Permission to execute.
+
+We can pack these attributes in the mask of three bits. Suppose a user has full access to the file. He can read or change it. Also, the user can copy, remove or execute the file. It means that the file has read, write, and execute permissions. The writing permission allows changing the file and removing it. In this case, the file permissions mask looks like this:
+{line-numbers: false}
+```
+111
+```
+
+All three bits equal ones in the mask.
+
+Suppose the user cannot read or execute the file. The first bit of the mask corresponds to the read access. The third bit is execution permission. Both these bits equal zero. Then we get the following mask:
+{line-numbers: false}
+```
+010
+```
+
+You should know the meaning of each bit in the mask if you want to operate it properly. The mask itself does not provide this information. 
+
+We have considered the simplified example of permissions. Now let's see how they look like in Unix. The `ls` utility prints the following line with permissions for the `report.txt` file:
+{line-numbers: false}
+```
+-r--r--r--
+```
+
+This string is the bitmask. Here dashes correspond to zeroes and Latin letters are ones. Then we can represent the string "-r--r--r--" as the mask 0100100100. If all bits of the mask equal ones, the `ls` utility prints the string "drwxrwxrwx".
+
+The Unix permissions string has four parts. Table 2-8 explains the meaning of each.
+
+{caption: "Table 2-8. Parts of the permissions string in Unix", width: "100%"}
+| d | rwx | rwx | rwx |
+| --- | --- | --- | --- |
+| The directory attribute. | The object's owner permissions. The owner is a user who has created the object. | The permissions of the user group that is attached to the object. By default, it is the group to which the owner belongs. | The permissions of all other users except the owner and the group attached to the object. |
+
+A separate bitmask represents each part of the Unix permissions. The bitmasks have the same four bits size. Therefore, the string "-r--r--r--" matches the following four bitmasks:
+{line-numbers: false}
+```
+0000 0100 0100 0100
+```
+
+What do the Latin letters in the permissions string mean? They match bits that have value one in the bitmask. Each bit's position determines the allowed user's action on the object: read, write, and execute. The letters make the bitmask easier to read for humans. Just compare the string "-rw-r--r--" and the binary number 0000011001000100. What is simpler to read?
+
+Table 2-9 explains the meaning of each letter in the permissions string.
+
+{caption: "Table 2-9. Letters in the permissions string", width: "100%"}
+| Letter | Meaning for a file | Meaning for a directory |
+| --- | --- | --- |
+| d | If the first character is a dash instead of `d`, the permissions correspond to a file. | The permissions correspond to a directory. |
+|  | | |
+| r | Access for reading. | Access for listing the directory contents. |
+|  | | |
+| w | Access for writing. | Access for creating, renaming or deleting objects in the directory. |
+|  | | |
+| x | Access for executing. | Access for navigating to the directory and accessing its nested objects. |
+|  | | |
+| — | The corresponding action is prohibited. | The corresponding action is prohibited. |
+
+Suppose that all users of the system have full access to the file. Then its permissions string looks like this:
+{line-numbers: false}
+```
+-rwxrwxrwx
+```
+
+If the user has full access to a directory, the permissions string is almost the same. The only difference is the first character. It equals `d` instead of the dash. Here is an example of the string:
+{line-numbers: false}
+```
+drwxrwxrwx
+```
+
+I> The `groups` utility prints the list of groups that the current user belongs.
+
+Now you can read the permissions in Figure 2-26 easily. There are two files: `report.txt` and `report1.txt`. All users can read the first one. No one can modify or execute it. Everyone can read the second file. Only the owner can modify it. No one can execute it.
+
+We have considered commands and utilities for operating on the file system. Each of them accesses the specified file or directory. It means that the target object should have certain permissions. Otherwise, the command fails.
+
+Table 2-10 shows the required permissions for each utility and command.
+
+{caption: "Table 2-10. File system permissions for running commands and utilities", width: "100%"}
+| Command | Bitmask | Permissions | Comment |
+| --- | --- | --- | --- |
+| `ls` | `r--` | Reading | Applied for directories only. |
+|  | | | |
+| `cd` | `--x` | Executing | Applied for directories only. |
+|  | | | |
+| `mkdir` | `-wx` | Writing and executing | Applied for directories only. |
+|  | | | |
+| `rm` | `-w-` | Writing | Specify the `-r` option for the directories. |
+|  | | | |
+| `cp` | `r--` | Reading | The target directory should have writing and executing permissions.
+ |
+|  | | | |
+| `mv` | `r--` | Reading | The target directory should have writing and executing permissions.
+ |
+|  | | | |
+| Executing | `r-x` | Reading and executing. | Applied for files only. |
