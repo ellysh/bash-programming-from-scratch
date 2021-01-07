@@ -12,3 +12,4 @@ mainmatter:
   BashShell/file-system.md
   BashShell/commands-info.md
   BashShell/files-and-directories.md
+  BashShell/extra-features.md
