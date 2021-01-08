@@ -243,3 +243,164 @@ info bash | grep -n "GNU"
 The `info` utility sends its result to the output stream. Then there is the vertical bar `|` symbol. It means the pipeline. The pipeline transfers the command's output on the left side to the command's input on the right side. This way, the `grep` utility receives the Bash `info` page. The utility searches the lines with the word "GNU" there. The nonempty command output means that Bash has the [GNU GPL](https://en.wikipedia.org/wiki/GNU_General_Public_License) license.
 
 There is the `-n` option in the `grep` call. The option adds the line numbers in the `grep` output. It helps to find a particular place in the file.
+
+#### du
+
+Let's take a more complex example with pipelines. The `du` utility evaluates disk space usage. Run it without parameters in the current directory. The utility **recursively** passes through all subdirectories and prints the occupied space by each of them.
+
+Recursive traversal means repeating visiting of subdirectories. The traversal algorithm looks like this:
+
+1. Check the contents of the current directory.
+
+2. If there is an unvisited subdirectory, go to it and start from the 1st step of the algorithm.
+
+3. If all subdirectories are visited, go to the parent directory and start from the 1st step of the algorithm.
+
+4. If it is impossible to go to the parent directory, finish the algorithm.
+
+Following this algorithm, we bypass all subdirectories from the selected file system point. It is a universal traversal algorithm. You can add any action to it for processing each subdirectory. The action of the `du` utility is calculating disk space usage.
+
+The algorithm of the `du` utility looks like this:
+
+1. Check the contents of the current directory.
+
+2. If there is an unvisited subdirectory, go to it and start from the 1st step of the algorithm.
+
+3. If all subdirectories are visited:
+
+    3.1 Calculate and display the disk space occupied by the current directory.
+
+    3.2 Go to the parent directory.
+
+    3.3 Start from the 1st step of the algorithm.
+
+4. If it is impossible to go to the parent directory, finish the algorithm.
+
+The `du` utility takes a path to the file or directory on input. In the case of the file, the utility prints its size. For the directory, the utility traverses its subdirectories.
+
+Here is the `du` call for the system path `/usr/share`:
+{line-numbers: false, format: Bash}
+```
+du /usr/share
+```
+
+Here is a clipped example of the command output:
+{line-numbers: true, format: Bash}
+```
+261     /usr/share/aclocal
+58      /usr/share/awk
+3623    /usr/share/bash-completion/completions
+5       /usr/share/bash-completion/helpers
+3700    /usr/share/bash-completion
+2       /usr/share/cmake/bash-completion
+2       /usr/share/cmake
+8       /usr/share/cygwin
+1692    /usr/share/doc/bash
+85      /usr/share/doc/flex
+...
+```
+
+We get a table that has two columns. The right column shows the subdirectory. The left column shows the number of occupied bites.
+
+If you want to add information about files in the `du` output, use the `-a` option. Here is an example:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a
+```
+
+The `-h` option makes the output of the `du` utility clearer. The option converts the number of bytes into kilobytes, megabytes, and gigabytes.
+
+Suppose that we should evaluate all HTML files in the `/usr/share` path. The following command prints that statistics:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a -h | grep "\.html"
+```
+
+Here the pipeline transfers the `du` output to the `grep` input. Then `grep` prints the lines that contain the "\.html" pattern.
+
+The backslash \ escapes the dot in the "\.html" pattern. The dot means a single occurrence of any character. If you specify the ".html" pattern, the `grep` utility finds extra files (like `pod2html.1perl.gz`) and subdirectories (like `/usr/share/doc/pcre/html`). When you escape the dot, the `grep` utility treats it as a dot character.
+
+The pipeline combines two commands in our example with `du` and `grep`. But the number of combined commands is not limited. For example, you can sort the found HTML files in descending order.  The `sort` utility does this job. Here is the example command:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a -h | grep "\.html" | sort -h -r
+```
+
+By default, the `sort` utility sorts the strings in ascending [**lexicographic order**](https://en.wikipedia.org/wiki/Lexicographic_order). For example, there is a file that contains the following strings:
+{line-numbers: true, format: text}
+```
+abc
+aaaa
+aaa
+dca
+bcd
+dec
+```
+
+If you call the `sort` utility without options, it places the file's lines in the following order:
+{line-numbers: true, format: text}
+```
+aaa
+aaaa
+abc
+bcd
+dca
+dec
+```
+
+The `-r` option reverts the order. If you apply this option, the utility prints the following:
+{line-numbers: true, format: text}
+```
+dec
+dca
+bcd
+abc
+aaaa
+aaa
+```
+
+The `du` utility prints file sizes in the first column. The `sort` utility operates this column. The file sizes are numbers. Therefore, we cannot place them in order properly with lexicographic sorting. An example will help us to understand the issue.
+
+Suppose there is a file with the following numbers:
+{line-numbers: true, format: text}
+```
+3
+100
+2
+```
+
+Lexicographical sort of the file produces the following result:
+{line-numbers: true, format: text}
+```
+100
+2
+3
+```
+
+The algorithm put the number 100 before 2 and 3. It assumes that 100 is less than other numbers. It happens because the ASCII code of character 1 is smaller than the codes of characters 2 and 3. Use the `-n` option for sorting integers by their values.
+
+We have an example command with two pipelines. The `du` utility has the `-h` option there. The option converts bytes into larger memory units. The `sort` utility can process them only if you call it with the same `-h` option.
+
+You can combine pipelines with stream redirection. Let's save the filtered and sorted output of the `du` utility to the file. The following command does it:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a -h | grep "\.html" | sort -h -r > result.txt
+```
+
+The command writes its result into the `result.txt` file.
+
+Suppose you are combining pipelines and stream redirection. You want to write the output stream into the file and pass it to another utility simultaneously. How can you do that? Bash does not have a built-in mechanism for this task. But the special `tee` utility does it. Here is an example:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a -h | tee result.txt
+```
+
+The command prints the `du` utility result on the screen. It writes the same result into the `result.txt` file. It means that the `tee` utility duplicates its input stream to the specified file and the output stream. The utility overwrites the contents of `result.txt`. Use the `-a` option if you need to append data to the file instead of overwriting it.
+
+Sometimes you want to check the data flow between commands in a pipeline. The `tee` utility helps you in this case. Just call the utility between the commands in the pipeline. Here is an example:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a -h | tee du.txt | grep "\.html" | tee grep.txt | sort -h -r > result.txt
+```
+
+It stores the output of each command in the pipeline to the corresponding file. These intermediate results are useful for debugging. The `result.txt` file still contains the final result of the whole command.
