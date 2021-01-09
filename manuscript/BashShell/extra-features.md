@@ -558,3 +558,124 @@ There are several GNU utilities for processing text data on the input stream. Th
 |  | | |
 | `less` | It is the utility for navigating | `less /usr/share/doc/bash/README` |
 |  | through text from the standard input stream. Press the Q key to exit. | `du | less` |
+
+### Pipelines Pitfalls
+
+Pipelines are a popular feature of the Unix environment.  Users apply them frequently. Unfortunately, it is quite simple to make a mistake using pipelines. Let's consider the common mistakes by examples.
+
+You can expect that the following two commands give the same result:
+{line-numbers: true, format: Bash}
+```
+find /usr/share/doc/bash -name "*.html"
+ls /usr/share/doc/bash | grep "\.html"
+```
+
+The commands' results differ in some cases. There is no problem in processing the search pattern differently by the `find` and `grep` utilities. The problem happens when you pass the filenames through the pipeline.
+
+The POSIX standard allows all printable characters in filenames. It means that spaces and line breaks are allowed too. The only forbidden character is [**null character**](https://en.wikipedia.org/wiki/Null_character) (NULL). This rule can lead to unexpected results.
+
+Here is an example. Create a file in the user's home directory. The filename should contain the line break. This control character matches the `\n` [**escape sequence**](https://en.wikipedia.org/wiki/Escape_sequence) in ASCII encoding. You can add escape sequences in filenames with the `touch` utility. Call it this way:
+{line-numbers: false, format: Bash}
+```
+touch ~/$'test\nfile.txt'
+```
+
+The `touch` utility updates the modification time of the file. It is a primary task of the utility. If the file does not exist, `touch` creates it. It is a [**side effect**](https://en.wikipedia.org/wiki/Side_effect_(computer_science)) feature of the utility.
+
+Create extra two files for our example: `test1.txt` and `file1.txt`. The following command does that:
+{line-numbers: false, format: Bash}
+```
+touch ~/test1.txt ~/file1.txt
+```
+
+Now call the `ls` utility in the user's home directory. Pass its output to `grep` via pipeline. Here are the examples:
+{line-numbers: true, format: Bash}
+```
+ls ~ | grep test
+ls ~ | grep file
+```
+
+Figure 2-27 shows the output of these commands.
+
+{caption: "Figure 2-27. The result of combining the `ls` and `grep` utilities", width: "100%"}
+![ls and grep](images/BashShell/ls-grep.png)
+
+Both commands truncate the `test\nfile.txt` filename. Remove the grep calls in the commands. You see that the `ls` utility prints the filename properly in this way: 'test'$'\n''file.txt'. When you pass it via the pipeline, the escaping sequence `\n` is replaced by the line break. It leads to splitting the filename into two parts. Then `grep` handles the parts separately as two different filenames.
+
+There is another potential problem. Suppose you search and copy the file. Its name has space (for example, "test file.txt"). Then the following command fails:
+{line-numbers: false, format: Bash}
+```
+ls ~ | xargs cp -t ~/tmp
+```
+
+In this case, `xargs` constructs the following call of the `cp` utility:
+{line-numbers: false, format: Bash}
+```
+cp -t ~/tmp test file.txt
+```
+
+The command copies the `test` and `file.txt` files to the `~/tmp` path. But none of these files exists. The reason for the error is the word splitting mechanism of Bash. It splits lines in words by spaces. You can disable the mechanism by double-quotes. Here is an example for our command:
+{line-numbers: false, format: Bash}
+```
+ls ~ | xargs -I % cp -t ~/tmp "%"
+```
+
+It copies the "test file.txt" file properly.
+
+Double-quotes do not help if the filename has a line break. The only solution here is not to use `ls`. The `find` utility with the `-exec` action does this job right. Here is an example:
+{line-numbers: false, format: Bash}
+```
+find . -name "*.txt" -exec cp -t tmp {} \;
+```
+
+It would be great not to use pipelines with filenames at all. However, it is required for solving some tasks. In this case, you can combine the `find` and `xargs` utilities. This approach works fine if you call `find` with the `-print0` option. Here is an example:
+{line-numbers: false, format: Bash}
+```
+find . -type f -print0 | xargs -0 -I % bsdtar -cf %.tar %
+```
+
+The `-print0` option changes the `find` output format. It separates the paths to found objects by the null character. Without the option, the separator is a line break.
+
+We changed the `find` output format. Then we should notify the `xargs` utility about it. By default, the utility separates the strings on the input stream by line breaks. The `-0` option changes this behavior. With the option, `xargs` applies the null character as the separator.  In this way, we have reconciled the output and input formats of the utilities.
+
+You can change the output format of the `grep`utility in the same manner. It allows you to pass its output through the pipeline. The `-Z` option does that. The option separates filenames with the null character. Here is an example:
+{line-numbers: false, format: Bash}
+```
+grep -RlZ "GNU" . | xargs -0 -I % bsdtar -cf %.tar %
+```
+
+The command searches files that contain the "GNU" pattern. Then it passes their names to the `xargs` utility. The utility constructs the `bsdtar` call for archiving the files.
+
+Here are the general advices for using pipelines:
+
+1. Be aware of spaces and line breaks when passing filenames through the pipeline.
+
+2. Never process the `ls` output. Use the `find` utility with the `-exec` action instead.
+
+3. Always use `-0` option when process filenames by `xargs`. Pass null separated names to the utility.
+
+{caption: "Exercise 2-7. Pipelines and I/O streams redirection", format: text, line-numbers: false}
+```
+Write a command to archive photos with the `bsdtar` utility.
+If you are a Linux or macOS user, use the `tar` utility instead.
+The photos are stored in the directory structure from exercises 2-6:
+
+~/
+  photo/
+        2019/
+             11/
+             12/
+        2020/
+             01/
+
+The photos of the same month should come into the same archive.
+Your command should provide the following result:
+
+~/
+  photo/
+        2019/
+             11.tar
+             12.tar
+        2020/
+             01.tar
+```
