@@ -404,3 +404,157 @@ du /usr/share -a -h | tee du.txt | grep "\.html" | tee grep.txt | sort -h -r > r
 ```
 
 It stores the output of each command in the pipeline to the corresponding file. These intermediate results are useful for debugging. The `result.txt` file still contains the final result of the whole command.
+
+#### xargs
+
+The `find` utility has the `-exec` parameter. It calls a command for each found object. This behavior resembles a pipeline: `find` passes its result to another program. These mechanisms look similar but their internals differs. Choose an appropriate mechanism depending on your task.
+
+Let's look at how the `find` utility performs the `-exec` action. Some program performs this action. The built-in `find` interpreter runs it. The interpreter passes to the program whatever the `find` utility has found. Note that the Bash interpreter is not involved in the `-exec` call. Therefore, you cannot use the following Bash features in the call:
+
+* built-in Bash commands
+* functions
+* pipelines
+* stream redirection
+* conditional statements
+* loops
+
+Try to run the following command:
+{line-numbers: false, format: Bash}
+```
+find ~ -type f -exec echo {} \;
+```
+
+The `find` utility calls the `echo` Bash built-in here. It works correctly. Why? Actually, `find` calls another utility with the same name `echo` as the Bash command. Unix environment provides several utilities that duplicate Bash built-ins. You can find them in the `/bin` system path. For example, there is the `/bin/echo` file there.
+
+Some tasks require the Bash features in the `-exec` action. There is a trick to access them in this case. Run the interpreter explicitly and pass a command to it. Here is an example:
+{line-numbers: false, format: Bash}
+```
+find ~ -type f -exec bash -c 'echo {}' \;
+```
+
+This command does the same as the previous one that calls the `echo` utility. It prints the results of the `find` search.
+
+You can apply the pipeline and redirect the `find` output to another command. In this case, you pass the text through the pipeline rather than filenames and directories. Here is an example of such passing:
+{line-numbers: false, format: Bash}
+```
+find ~ -type f | grep "bash"
+```
+
+The command prints the output like this:
+{line-numbers: true, format: Bash}
+```
+/home/ilya.shpigor/.bashrc
+/home/ilya.shpigor/.bash_history
+/home/ilya.shpigor/.bash_logout
+/home/ilya.shpigor/.bash_profile
+```
+
+The pipeline passes the `find` output to the `grep` utility input. Then `grep` prints only the filenames where the pattern "bash" occurs.
+
+The `-exec` action behaves in another way. When `find` passes its results to the `-exec` command, it constructs a utility call. The utility receives the names of found files and directories. You can get the same behavior when using the pipeline. Just apply the `xargs` utility for that.
+
+Let's change our command with `find` and `grep`. Now we pass the text to the input stream of the `grep` utility. Then it filters found filenames. Instead of that, we want to filter the contents of the files. In this case, the `grep` utility should receive filenames via command line parameters. The `xargs` utility does this job:
+{line-numbers: false, format: Bash}
+```
+find ~ -type f | xargs grep "bash"
+```
+
+I> This command cannot handle files whose names contain spaces and line breaks. The next section considers how to solve this problem.
+
+Here is the output of the command:
+{line-numbers: true, format: Bash}
+```
+/home/ilya.shpigor/.bashrc:# ~/.bashrc: executed by bash(1) for interactive shells.
+/home/ilya.shpigor/.bashrc:# The copy in your home directory (~/.bashrc) is yours, please
+/home/ilya.shpigor/.bashrc:# User dependent .bashrc file
+/home/ilya.shpigor/.bashrc:# See man bash for more options...
+/home/ilya.shpigor/.bashrc:# Make bash append rather than overwrite the history on disk
+/home/ilya.shpigor/.bashrc:# When changing directory small typos can be ignored by bash
+...
+```
+
+The `xargs` utility constructs a command from parameters that it receives on the input stream. The utility takes two things on the input: parameters and text from the stream. The parameters come in the first place in the constructing command. Then all data from the input stream follows.
+
+Let's come back to our example. Suppose the first file that the `find` gets is `~/.bashrc`. Here is the `xargs` call that receives the file via the pipeline:
+{line-numbers: false, format: Bash}
+```
+xargs grep "bash"
+```
+
+The utility receives two command-line parameters in this call: `grep` and "bash". Therefore, the constructed command starts with these two words:
+{line-numbers: false, format: Bash}
+```
+grep "bash"
+```
+
+Then `xargs` appends the text from the input stream to the command. There is the filename `~/.bashrc` in the stream. Therefore, the constructed command looks like this:
+{line-numbers: false, format: bash}
+```
+grep "bash" ~/.bashrc
+```
+
+The `xargs` utility does not call Bash for executing the constructed command. It means that the command has the same restrictions as the `-exec` action of the `find` utility. No Bash features are allowed there.
+
+The `xargs` utility puts all data from the input stream at the end of the constructed command. In some cases, you want to change the position of these data. For example, you want to put them at the beginning of the command. The `-I` parameter of `xargs` does that.
+
+Here is an example. Suppose that you want to copy the found files to the user's home directory. The `cp` utility does copying. But you should construct its call properly by the `xargs` utility. The following command does it:
+{line-numbers: false, format: Bash}
+```
+find /usr/share/doc/bash -type f -name "*.html" | xargs -I % cp % ~
+```
+
+The `-I` parameter changes the place where the `xargs` utility puts the filenames. In our case, the parameter points to the position of the percent sign % for that.
+
+The `xargs` utility calls `cp` for each line that it receives via the pipeline. Thus, it constructs the following two commands:
+{line-numbers: true, format: Bash}
+```
+cp /usr/share/doc/bash/bash.html /home/ilya.shpigor
+cp /usr/share/doc/bash/bashref.html /home/ilya.shpigor
+```
+
+The `-t` option of the `xargs` utility displays the constructed commands before executing them. It can help you with debugging. Here is an example of using the option:
+{line-numbers: false, format: Bash}
+```
+find /usr/share/doc/bash -type f -name "*.html" | xargs -t -I % cp % ~
+```
+
+We have considered how to combine the `find` utility and pipelines. These examples are for educational purposes only. Do not apply them in your Bash scripts. Use the `-exec` action of the `find` utility instead of pipelines. This way, you avoid issues with processing filenames with spaces and line breaks.
+
+There are few cases when a combination of `find` and pipeline makes sense. One of these cases is the parallel processing of found files.
+
+Here is an example. When you call the `cp` utility in the `-exec` action, it copies files one by one. It is inefficient if your hard disk has a high access speed. You can speed up the operation by running it in several parallel processes. The `-P` parameter of the `xargs` utility does that. Specify the number of parallel processes in this parameter. They will execute the constructed command.
+
+Suppose your computer processor has four cores. Then you can copy files in four parallel processes. Here is the command to do that:
+{line-numbers: false, format: Bash}
+```
+find /usr/share/doc/bash -type f -name "*.html" | xargs -P 4 -I % cp % ~
+```
+
+The command copies four files at once. As soon as one of the parallel processes finishes, it handles the next file. This approach can speed up the execution of the command considerably. The gain depends on the configuration of your CPU and hard drive.
+
+There are several GNU utilities for processing text data on the input stream. They work well in pipelines. Table 2-14 shows the most commonly used of these utilities.
+
+{caption: "Table 2-14. Utilities for processing the input stream", width: "100%"}
+| Utility | Description | Examples |
+| --- | --- | --- |
+| `xargs` | It constructs a command using command-line parameters and data from the input stream. | `find . -type f -print0 | xargs -0 cp -t ~` |
+|  | | |
+| `grep` | It searches for text that matches | `grep -A 3 -B 3 "GNU" file.txt` |
+| | the specified pattern. | `du /usr/share -a | grep "\.html"` |
+|  | | |
+| `tee` | It redirects the input stream to the output stream and file at the same time. | `grep "GNU" file.txt | tee result.txt` |
+|  | | |
+| `sort` | It sorts strings from the input stream | `sort file.txt` |
+| | in forward and reverse order (`-r`). | `du /usr/share | sort -n -r` |
+|  | | |
+| `wc` | It count the number of lines (`-l`), words (`-w`), | `wc -l file.txt` |
+| | letters (`-m`) and bytes (`-c`) in a specified file or input stream. | `info find | wc -m` |
+|  | | |
+| `head` | It outputs the first bytes (`-c`) or lines (`-n`) | `head -n 10 file.txt` |
+| | of a file or text from the input stream. | `du /usr/share | sort -n -r | head -10` |
+|  | | |
+| `tail` | It outputs the last bytes (`-c`) or lines (`-n`) | `tail -n 10 file.txt` |
+| | of a file or text from the input stream. | `du /usr/share | sort -n -r | tail -10` |
+|  | | |
+| `less` | It is the utility for navigating | `less /usr/share/doc/bash/README` |
+|  | through text from the standard input stream. Press the Q key to exit. | `du | less` |
