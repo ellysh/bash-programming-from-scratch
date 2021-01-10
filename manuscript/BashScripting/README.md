@@ -1,3 +1,3 @@
-# Разработка Bash скриптов
+# Bash Scripts
 
-Мы изучили основные приёмы для работы с файловой системой на Bash. Пришло время перейти от составления отдельных команд к программам. Программы, написанные на языке Bash, называют сценариями оболочки (shell scripts) или **скриптами**.
+We have learned the basics of how to operate the file system in Bash. Now we do the next step. We come from the standalone shell commands to programs. When you write a program in Bash, it is called **script**. Let's learn how to write scripts.

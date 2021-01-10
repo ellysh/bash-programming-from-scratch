@@ -13,3 +13,5 @@ mainmatter:
   BashShell/commands-info.md
   BashShell/files-and-directories.md
   BashShell/extra-features.md
+
+  BashScripting/README.md
