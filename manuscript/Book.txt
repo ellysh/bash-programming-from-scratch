@@ -15,3 +15,4 @@ mainmatter:
   BashShell/extra-features.md
 
   BashScripting/README.md
+  BashScripting/tools.md
