@@ -679,3 +679,150 @@ Your command should provide the following result:
         2020/
              01.tar
 ```
+
+### Logical Operators
+
+Pipelines allow you to combine several commands. Together they make an algorithm with [**linear sequence**](https://www.cs.utexas.edu/users/mitra/csSpring2017/cs303/lectures/algo.html). The computer executes actions of such an algorithm one by one without any checks.
+
+Suppose we implement a more complex algorithm. There the result of the first command determines the next step. If the command succeeds, the computer does one action. Otherwise, it does another action. Such a dependency is known as [**conditional algorithm**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). The pipeline does not work in this case. 
+
+Here is an example of the conditional algorithm. We want to write a command to copy the directory. Then we should write the operation result to the log file. The "OK" line matches successful copying. The "Error" line means error.
+
+We can write the following command using a pipeline:
+{line-numbers: false, format: Bash}
+```
+cp -R ~/docs ~/docs-backup | echo "OK" > result.log
+```
+
+The command does not work properly. It writes the "OK" line to the `result.log` file regardless of the copying result. Even if the `docs` directory does not exist, the log file's message says that the operation succeeds.
+
+The `cp` utility result should define the `echo` command output. The operator && can provide such behavior. Here is an example:
+{line-numbers: false, format: Bash}
+```
+cp -R ~/docs ~/docs-backup && echo "OK" > result.log
+```
+
+Now the command prints the "OK" line when the `cp` utility succeeds. Otherwise, there is no output to the log file.
+
+What is the && operator? It is a logical AND operation. Here its operands are Bash commands (actions) instead of Boolean expressions (conditions). Let's have a look at how the logical operation works in this case.
+
+The POSIX standard requires each running program to provide [**exit status**](https://en.wikipedia.org/wiki/Exit_status) when it finishes. The zero code means that the program completed successfully. Otherwise, the code takes a value from 1 to 255.
+
+When you apply a logical operator to a command, the operator handles its exit status. First, Bash executes the command. Then its exit status is used as the Boolean expression in the logical operator.
+
+Let's go back to our example:
+{line-numbers: false, format: Bash}
+```
+cp -R ~/docs ~/docs-backup && echo "OK" > result.log
+```
+
+Suppose the `cp` utility completes successfully. It returns the zero code in this case. The zero code matches the value "true" in Bash. Therefore, the left part of the && operator equals "true". This information is not enough to deduce the result of the whole expression. It can be "true" or "false" depending on the right operand. Then the && operator has to execute the `echo` command. It always succeeds and returns the zero code. Thus, the result of the && operator equals "true".
+
+It is not clear how do we use the result of the && operator in our example. The answer is we do not. Logical operators are needed to calculate Boolean expressions. But they are often used for their side effect in Bash. This side effect is a strict order of operands evaluation.
+
+Let's consider the case when the `cp` utility finishes with an error in our example. Then it returns a non-zero exit status. It is equivalent to the "false" value for Bash. In this case, the && operator can already calculate the value of the whole Boolean expression. It does not need to calculate the right operand. Because If at least one operand of the boolean AND is "false", the entire expression is "false". Thus, the exit status of the `echo` command is not required. Then the && operator does not execute it. In this case, there is no "OK" output in the log file.
+
+Now you get the [**short-circuit evaluation**](https://en.wikipedia.org/wiki/Short-circuit_evaluation). It means calculation only those operands that are sufficient to deduce the value of the whole Boolean expression.
+
+I> Bash stores the exit status of the last executed command in the environment variable. Its name is the question mark. The `echo` command displays its value like this:
+{line-numbers: false, format: Bash}
+```
+echo $?
+```
+
+We have done only the first part of our task. Now the command prints the "OK" line in the log file when copying succeeds. But we should handle the false case. The "Error" line should appear in the log file in this case. We can do it with the logical OR operator. It is called || in Bash.
+
+With the OR operator, our command looks like this:
+{line-numbers: false, format: Bash}
+```
+cp -R ~/docs ~/docs-backup && echo "OK" > result.log || echo "Error" > result.log
+```
+
+This command implements the conditional algorithm that we need. If the `cp` utility finishes successfully, the command writes "OK" in the log file. Otherwise, it writes "Error". To understand how it works, let's consider the priority of the operation first.
+
+First, we would make our command simpler for reading. Let's denote all operands by Latin letters. The "A" letter matches the `cp` call. The "B" letter marks the first `echo` call with the "OK" line. The "C" letter is the second `echo` call. Then we can rewrite our command this way:
+{line-numbers: false}
+```
+A && B || C
+```
+
+The && and || operators have the same priorities in Bash. The Boolean expression is calculated from the left to the right side. The operators are called [**left-associative**](https://en.wikipedia.org/wiki/Operator_associativity) in this case. Given this, we can rewrite our expression this way:
+{line-numbers: false}
+```
+(A && B) || C
+```
+
+Adding parentheses does not change anything. First, Bash evaluates the expression (A && B). Then, it calculates the "C" operand if it is necessary.
+
+What happens if "A" equals "true"? The && operator calculates its right operand "B" in this case. It leads to printing the "OK" line to the log file. Next, Bash processes the || operator. The interpreter already knows the value of its left operand (A && B). It equals "true". The OR operator's value equals "true" when at least one of its operands is "true". Therefore, the right operand's value does not affect the expression result. Bash skips it. It leads that the "Error" line absents in the log file.
+
+If the "A" value is "false", the expression (A && B) equals "false" too. In this case, Bash skips the operand "B". It leads to the missing "OK" output in the log file. Then Bash handles the next || operator. The interpreter already knows that its left operand equals "false". Thus, it should evaluate the right operand for deducing the whole expression. It leads to the execution of the second `echo` command. Then the "Error" line comes to the log file.
+
+The principle of short-circuits evaluation is not obvious. You would need some time to figure it out. Please do your best for that. Every modern programming language supports Boolean expressions. Therefore, understanding the rules of their evaluation is essential.
+
+We already know how to combine Bash commands with pipelines and logical operators. There is a third way to do that. You can use a semicolon. When two commands have the semicolon in between, Bash executes them one by one without any conditions. You get the linear sequence algorithm in this case.
+
+Here is an example. Suppose that you want to copy two directories to different target paths. The single `cp` call cannot do it at once. But you can combine two calls into one command like this:
+{line-numbers: false, format: Bash}
+```
+cp -R ~/docs ~/docs-backup ; cp -R ~/photo ~/photo-backup
+```
+
+The command calls the `cp` utility twice. The second call does not depend on the result of copying the `docs` directory. Even if it fails, Bash copies the `photo` directory.
+
+Can we do the same with the pipeline? Yes. Bash executes both `cp` calls in this case too. It means that we get the same linear sequence algorithm in both cases. Here is the command with the pipeline:
+{line-numbers: false, format: Bash}
+```
+cp -R ~/docs ~/docs-backup | cp -R ~/photo ~/photo-backup
+```
+
+However, semicolon and pipeline behave differently in general. When you use a semicolon, two commands do not depend on each other completely. When you use a pipeline, there is dependency. The output stream of the first command is connected to the input stream of the second command. In some cases, it changes the behavior of the entire algorithm.
+
+Compare the following two commands:
+{line-numbers: true, format: Bash}
+```
+ls /usr/share/doc/bash | grep "README" * -
+ls /usr/share/doc/bash ; grep "README" * -
+```
+
+The `-` option of `grep` appends data from the input stream to the utility parameters.
+
+Figure 2-28 shows the results of both commands.
+
+{caption: "Figure 2-28. Results of commands with pipeline and semicolon", width: "100%"}
+![pipeline and semicolon](images/BashShell/pipe-vs-connector.png)
+
+Even the behavior of the `ls` utility differs in these two commands. With the pipeline, `ls` prints on the screen nothing. Instead, it redirects the output to the `grep` utility input.
+
+Let's consider the output of the commands. The second parameter of `grep` is the "*" pattern. Because of it, the utility processes all files in the current directory. It founds the "README" word in the `xz.txt` file. Then it prints this line on the screen:
+{line-numbers: false, format: Bash}
+```
+xz.txt: README This file
+```
+
+On the next step, `grep` processes the `ls` output that it receives on the input stream. This data also contains the "README" word. Then `grep` prints the following line:
+{line-numbers: false, format: Bash}
+```
+(standard input):README
+```
+
+This way, the `grep` utility processed two things at once:
+
+* Files of the current directory.
+* Data on the input stream.
+
+When you combine the commands with the semicolon, the `ls` utility prints its result on the screen. Then Bash calls the `grep` utility. It processes all files in the current directory. Next, `grep` checks its input stream. But there is no data there. This way, `grep` finds the "README" word in the `xz.txt` file only.
+
+{caption: "Exercise 2-8. Logical operators", format: text, line-numbers: false}
+```
+Write a command that implements the following algorithm:
+
+1. Copy the README file with the Bash documentation to the user's home directory.
+
+2. Archive the copied ~/README file.
+
+3. Delete the copied ~/README file.
+
+Each step takes place only if the previous one succeeds.
+Write the result of each step to the log file result.txt.
+```
