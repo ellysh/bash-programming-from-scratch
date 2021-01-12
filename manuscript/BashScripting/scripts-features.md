@@ -180,3 +180,40 @@ Let's come back to the real Bash code. The backup command looks like this now:
 ```
 
 We wrote the command quickly. But it is hard for reading and understanding. It is often happening in programming. Because of it, you should pay more efforts to make your code clean and obvious. Code cleanliness is more important than a high speed of writing it.
+
+### Poor Technical Solution
+
+We have written the long and complicated backup command. If you run it regularly, you should store it somewhere. Otherwise, you have to type the command in the terminal window each time. Typing is a bad idea because you can make a mistake easily.
+
+The Bash history file saves all commands that you execute in the terminal. Each user has this file in his home directory. Its path is `~ / .bash_history`. When you press Ctrl+R keys in the terminal window, Bash calls the quick search over the history file. You can quickly find the required command this way.
+
+Can we use the history file for storing the backup command permanently? There you can find and execute the command every time you need it. This solution seems to be reliable and convenient. But don't jump to conclusions. Let's take a look at its possible problems.
+
+First, the history file has a limited size. By default, the file saves only the 500 most recently executed commands. If this number is exceeded, each new command overwrites the oldest ones in the file. This way, you can accidentally lose the backup command.
+
+It is possible to increase the maximum size of the history file. But what size would be enough? Whatever size we choose, there is a risk of exceeding it. There is an option to remove the size limitation at all. Then the history file saves all commands without overwriting the old ones.
+
+It seems we find a way to store the backup command effectively. The Bash history file with unlimited size does it. Could this solution have any problems?
+
+Suppose you use Bash for a couple of years. All commands you entered during this time come to the `.bash_history` file. If you execute the same command twice, it appears in the file twice too. Therefore, the file size will reach hundreds of megabytes in two years. You do not need most of these commands. Instead, only a small part of them are needed for regular usage. It leads to inefficient use of hard disk space.
+
+You might argue that storing the extra two hundred megabytes is not a problem for modern computers. Yes, it is true. But there is an overhead that you miss. When you press Ctrl+R, Bash searches the command in the entire `.bash_history` file. The larger it is, the longer the search takes. Over time, you will wait several seconds even on a powerful computer.
+
+When the history file grows, the search time increases. There are two reasons for that. First, Bash should process more lines to find your request. Second, the file has many commands that have the same first letters. It forces you to type more letters after pressing Ctrl+R to find the right command. At some point, the history file search becomes inconvenient. That is the second problem with our solution.
+
+What else could go wrong? Suppose that you get new photo albums. Their path differs from `~/photo`. It is `~/Documents/official_photo` for example. Our backup command works with the `~/photo` path only. It cannot copy photos from another path. You should write a new command for doing that. Thus, the complexity of extending features is the third problem of our solution.
+
+You may already have several backup commands. The first one copies photos. The second one copies documents. It would be hard to combine them. You have to write the third command that includes all actions of the existing ones.
+
+We can conclude that a history file is a bad option for the long-term storage of commands. There is the same reason for all our problems. We misuse the history file mechanism. It was not intended as a permanent storage place. As a result, we came up with the poor technical solution.
+
+Everybody can make a poor technical solution. Professionals with extensive experience often come to them too. It happens for various reasons. The lack of knowledge played a role in our case. We got how to work with Bash in shell mode. Then we applied this experience to the new task. But we did not take into account all the requirements.
+
+Here is the complete list of the requirements for our task:
+
+1. The backup command should have long-term storage.
+2. The way to call the command quickly should be available.
+3. It should be a possibility to extend the command by new features.
+4. The command should be able to combine with other commands.
+
+First, let's evaluate our knowledge of Bash. They are not enough to meet all these requirements. All the mechanisms we know don't fit here. Maybe a Bash script could help us? I propose to explore its features. Then we can check if it is suitable for our task.
