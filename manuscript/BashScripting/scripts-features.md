@@ -395,3 +395,78 @@ bash -e
 The `-e` option has [several problems](http://mywiki.wooledge.org/BashFAQ/105). The option changes the behavior of the current Bash process only. The subshells it spawns work as usual.
 
 Bash executes each command of a pipeline or logical operator in a separate subshell. Therefore, the `-e` option does not affect these commands. It means that the option does not fit in our case.
+
+### Changing Parameters
+
+Suppose you have moved photos from the `~/photo` path to `~/Documents/Photo`. Then you should change the backup script. Listing 3-5 shows the script with the fixed path.
+
+{caption: "Listing 3-5. The script with the new path", line-numbers: true, format: Bash}
+![`photo-backup-path.sh`](code/BashScripting/photo-backup-path.sh)
+
+Every time you change the path of photos, you have to fix the script. It is inconvenient. The better solution is to make a universal script. Such a script should receive the path of photos as an input parameter.
+
+When you run a Bash script, you can pass command-line parameters there. It works the same as for any GNU utility. Specify the parameters separated by a space after the script name. Then Bash passes it to the script. Here is an example:
+{line-numbers: false, format: Bash}
+```
+./photo-backup.sh ~/Documents/Photo
+```
+
+This command runs our script. Bash passes there the path `~/Documents/Photo` as an input parameter. You can access the path in the script via the variable called `$1`. If the script receives more parameters, they are available through the variables `$2`, `$3`, `$4`, etc. The variable name matches the number of the parameter. They are called **positional parameters**.
+
+There is a special positional parameter `$0`. It stores the path to the launched script. In our case, it equals `./Photo-backup.sh`.
+
+Let's improve our script. It will read the path to the photos in the first positional parameter. Listing 3-6 shows the new source code.
+
+{caption: "Listing 3-6. The script uses the positional parameter", line-numbers: true, format: Bash}
+![`photo-backup-parameter-path.sh`](code/BashScripting/photo-backup-parameter-path.sh)
+
+The `$1` variable stores the path to the photos. We use it in the `bsdtar` call. There are quotes around the variable name. They prevent the word splitting mechanism.
+
+Suppose you want to backup photos from the `~/photo album` path. Here is a command to call our script for that:
+{line-numbers: false, format: Bash}
+```
+./photo-backup.sh "~/photo album"
+```
+
+If you skip quotes around the variable name in the script, the `bsdtar` call looks like this:
+{line-numbers: false, format: Bash}
+```
+bsdtar -cjf ~/photo.tar.bz2 ~/photo album &&
+  echo "bsdtar - OK" > results.txt ||
+  { echo "bsdtar - FAILS" > results.txt ; exit 1 ; }
+```
+
+In this case, the `bsdtar` utility receives the "~/photo album" string in parts. Instead of one parameter, there are two: "~/photo" and "album". There are no such directories. Therefore, the script fails.
+
+Our example showed that it is not enough to quote parameters when calling a script. You should quote all occurrences of the variable name in the script. It happens because of the way how the Bash runs scripts. When you call a script from the shell, Bash spawns a child process. This process executes the script. The child process does not receive quotes from the command-line. Bash removes them. Therefore, you need quotes inside the script.
+
+We added the parameter to our script. What are the benefits of this solution? This way, we get a universal script for making backups. It processes any input files: documents, photos, videos, source code, etc.
+
+Adding a parameter to our script leads to the problem. Suppose you call it twice for making backups of photos and documents:
+{line-numbers: true, format: Bash}
+```
+./photo-backup.sh ~/photo
+./photo-backup.sh ~/Documents
+```
+
+These commands create the `~/photo.tar.bz2` archive. Then they copy the archive to the D disk. When the second command copies it, it overwrites the existing `/d/photo.tar.bz2` file. This file is a result of the first command. So, we lose it.
+
+To solve this problem, we should use the script's parameter for naming the archive. This way, we avoid filename conflicts. Listing 3-7 shows the new version of the script.
+
+{caption: "Listing 3-7. The script with the unique archive name", line-numbers: true, format: Bash}
+![`photo-backup-parameter-name.sh`](code/BashScripting/photo-backup-parameter-name.sh)
+
+Now the script creates the archive in the target path. For example, we call it this way:
+{line-numbers: false, format: Bash}
+```
+./photo-backup.sh ~/Documents
+```
+
+The command creates an archive in the `~/Documents.tar.bz2` path. Then it copies the file to the D disk. In this case, the filename does not conflict with the photo archive `/d/photo.tar.bz2`.
+
+There is the last improvement of the script. We can call the `mv` utility instead of `cp`. It deletes the temporary archive. Listing 3-8 shows the result.
+
+{caption: "Listing 3-8. The script with removing the temporary archive", line-numbers: true, format: Bash}
+![`photo-backup-mv.sh`](code/BashScripting/photo-backup-mv.sh)
+
+Now we get the universal backup script. Its old name `photo-backup.sh` does not fit anymore. The new version of the script can copy any data. Let's rename it to `make-backup.sh`.
