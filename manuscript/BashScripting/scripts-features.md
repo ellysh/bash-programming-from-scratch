@@ -217,3 +217,117 @@ Here is the complete list of the requirements for our task:
 4. The command should be able to combine with other commands.
 
 First, let's evaluate our knowledge of Bash. They are not enough to meet all these requirements. All the mechanisms we know don't fit here. Maybe a Bash script could help us? I propose to explore its features. Then we can check if it is suitable for our task.
+
+### Bash Script
+
+Let's create a Bash script with our backup command. Here are the steps for that:
+
+1. Open the source code editor and create a new file. If you have integrated Notepad++ into Bash, run the following command:
+{line-numbers: false, format: Bash}
+```
+notepad++ ~/photo-backup.sh
+```
+
+2. Copy the command to the file:
+{line-numbers: false, format: Bash}
+```
+(bsdtar -cjf ~/photo.tar.bz2 ~/photo &&
+  echo "bsdtar - OK" > results.txt ||
+  ! echo "bsdtar - FAILS" > results.txt) &&
+(cp -f ~/photo.tar.bz2 /d &&
+  echo "cp - OK" >> results.txt ||
+  ! echo "cp - FAILS" >> results.txt)
+```
+
+3. Save the file in the user's home directory. It should have the `photo-backup.sh` name.
+
+4. Close the editor.
+
+Now we have the Bash script file. Call the Bash interpreter and pass the script there as the first parameter. Here is an example of such a command:
+{line-numbers: false, format: Bash}
+```
+bash photo-backup.sh
+```
+
+We have run our first script. The script itself is a sequence of Bash commands. The file on some drive stores them. When Bash runs a script, it reads the file line by line. The interpreter executes lines in this order. Conditional and loop statements can change the order of execution.
+
+It is inconvenient to run a script with an explicit call of the Bash interpreter. You can run it by a relative or absolute path. To do that, change the permissions of the script. Here are the steps:
+
+1. Run the following command in the terminal window:
+{line-numbers: false, format: Bash}
+```
+chmod +x ~/photo-backup.sh
+```
+
+2. Open the script file in an editor.
+
+3. Add the following line at the beginning of the script:
+{line-numbers: false, format: Bash}
+```
+#!/bin/bash
+```
+
+4. Save the modified file.
+
+5. Close the editor.
+
+Now you can run the script by a relative or absolute path. Here are examples of these commands:
+{line-numbers: true, format: Bash}
+```
+./photo-backup.sh
+~/photo-backup.sh
+```
+
+Let's consider our steps for launching the script. The first thing that prevents it from running is permissions. When you create a new file, it gets the following permissions by default:
+{line-numbers: false}
+```
+-rw-rw-r--
+```
+
+It means that the owner and his group can read and modify the file. Everyone else can only read it. No one can run the file.
+
+The `chmod` utility changes the permissions of the specified file. We call it with the `+x` option. The option changes the file permissions to this:
+{line-numbers: false}
+```
+-rwxrwxr-x
+```
+
+It means that everyone can execute the file now.
+
+If you run the script by a relative or absolute path, your shell tries to interpret its lines. It works if your shell is Bash.
+
+Suppose that your shell is not Bash. It is the [Csh](https://ru.wikipedia.org/wiki/Csh) for example. Then the script fails. It happens because the syntax of Bash and Csh differs. It means that they use different language constructions for the same things. You wrote the script in Bash language. Therefore, the Bash interpreter only can execute it.
+
+There is an option to specify the interpreter that should execute the script. To do that, add the [**shebang**](https://en.wikipedia.org/wiki/Shebang_(Unix)) at the beginning of the script file. Shebang is a combination of the number sign and exclamation mark. It looks like this:
+{line-numbers: false}
+```
+#!
+```
+
+The absolute path to the interpreter comes after the shebang. In our case, we get the following line:
+{line-numbers: false, format: Bash}
+```
+#!/bin/bash
+```
+
+Now Bash always executes the script. It happens even when the user works in another shell.
+
+The `file` utility prints the type of the specified file. If the script does not have the shebang, the utility defines it as a regular text file. Here is an example output:
+{line-numbers: false, format: Bash}
+```
+~/photo-backup.sh: ASCII text
+```
+
+If you add the shebang, the utility defines the same file as a Bash script:
+{line-numbers: false, format: Bash}
+```
+~/photo-backup.sh: Bourne-Again shell script, ASCII text executable
+```
+
+Most Linux systems have the same path to the Bash interpreter. It equals `/bin/bash`. However, this path differs on some Unix systems (for example, FreeBSD). It can be a reason why your script does not work there. You can solve this problem by the following shebang:
+{line-numbers: false, format: Bash}
+```
+#!/usr/bin/env bash
+```
+
+Here we call the `env` utility. It searches the Bash executable in the paths of the `PATH` variable.
