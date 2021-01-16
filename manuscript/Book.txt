@@ -17,3 +17,4 @@ mainmatter:
   BashScripting/README.md
   BashScripting/tools.md
   BashScripting/scripts-features.md
+  BashScripting/variables.md
