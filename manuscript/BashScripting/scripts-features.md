@@ -470,3 +470,115 @@ There is the last improvement of the script. We can call the `mv` utility instea
 ![`photo-backup-mv.sh`](code/BashScripting/photo-backup-mv.sh)
 
 Now we get the universal backup script. Its old name `photo-backup.sh` does not fit anymore. The new version of the script can copy any data. Let's rename it to `make-backup.sh`.
+
+### Combination with Other Commands
+
+Now you can call the script by an absolute or relative path. If you integrate it into Bash, you can call the script by name. Then it will be more convenient to combine it with other programs.
+
+We learned two ways how to integrate an application with Bash. There is also the third way. Here is a complete list of these options:
+
+1. Add the script's path to the `PATH` variable. To do that, edit the `~/.bash_profile` file.
+
+2. Define an alias with an absolute path to the script. Do that in the file `~/.bashrc`.
+
+3. Copy the script to the `/usr/local/bin` directory. The `PATH` variable contains its path by default. If there is no such directory in your MSYS2 environment, create it.
+
+I> Call the `unalias` Bash command to remove a declared alias. Here is an example:
+{line-numbers: false, format: Bash}
+```
+unalias make-backup.sh
+```
+
+Suppose that you have integrated the backup script with Bash in one of three ways. Now you can launch it by name like this:
+{line-numbers: false, format: Bash}
+```
+make-backup.sh ~/photo
+```
+
+You can combine the script with other commands in pipelines and logical operators. It works the same way as for any Bash built-in or GNU utility.
+
+Here is an example. Suppose we want to backup all PDF documents of the `~/Documents` directory. The `find` utility can find them by the following call:
+{line-numbers: false, format: Bash}
+```
+find ~/Documents -type f -name "*.pdf"
+```
+
+We can apply our script to archive and copy each found file. Here is the command for that:
+{line-numbers: false, format: Bash}
+```
+find ~/Documents -type f -name "*.pdf" -exec make-backup.sh {} \;
+```
+
+I> There is the escaped semicolon at the end of the `find` call. It means that action is executed on each found file separately.
+
+The command copies archives to disk D. Each archive matches one PDF file. This approach is inconvenient. It would be better to collect all PDF files into one archive. Let's try the following command for that:
+{line-numbers: false, format: Bash}
+```
+find ~/Documents -type f -name *.pdf -exec make-backup.sh {} +
+```
+
+The command should processes all found files in the single `make-backup.sh` call. However, it produces an archive with the first found PDF file only. Where are the rest of the documents? Let's take a look at the `bsdtar` call inside our script. For simplicity, we omit all echo outputs there. The call looks like this:
+{line-numbers: false, format: Bash}
+```
+bsdtar -cjf "$1".tar.bz2 "$1"
+```
+
+The problem happens because we process the first positional parameter only. The `$1` variables stores it. The `bsdtar` call ignores other parameters in variables `$2`, `$3`, etc. But they contain all results of the `find` utility. Therefore, we cut off all results except the first one.
+
+We should use the `$@` variable instead of `$1` to solve the problem. Bash stores all script parameters into `$@`. Here is the fixed `bsdtar` call:
+{line-numbers: false, format: Bash}
+```
+bsdtar -cjf "$1".tar.bz2 "$@"
+```
+
+Now the `bsdtar` utility processes all script's parameters. Note that we still use the first parameter `$1` as the archive name. It should be a single word. Otherwise, `bsdtar` fails.
+
+Listing 3-9 shows the fixed version of the backup script. It handles an arbitrary number of input parameters.
+
+{caption: "Listing 3-9. The script with an arbitrary number of input parameters", line-numbers: true, format: Bash}
+![`make-backup.sh`](code/BashScripting/make-backup.sh)
+
+Bash has an alternative variable for `$@`. It is called `$*`. If you put the `$*` variable in double-quotes, Bash interprets its value as a single word. It interprets the `$@` variable as a set of words in the same case.
+
+Here is an example. Suppose you call the backup script this way:
+{line-numbers: false, format: Bash}
+```
+make-backup.sh "one two three"
+```
+
+Then substitution of the "$*" value gives the following:
+{line-numbers: false, format: Bash}
+```
+"one two three"
+```
+
+Here is the result for the "$@" substitution:
+{line-numbers: false, format: Bash}
+```
+"one" "two" "three"
+```
+
+W> Always prefer to use `$@` instead of `$*`. The only exception is when a single word must represent all input parameters.
+
+### Scripts Features
+
+When solving the backup task, we considered the features of the Bash scripts. 
+
+Here are the requirements for the task:
+
+1. The backup command should have long-term storage.
+2. The command has to be called quickly.
+3. It must be possible to extend it.
+4. It should be possible to combine it with other commands.
+
+The final version of the `make-backup.sh` script meets all these requirements. Let's check each of them:
+
+1. The script is stored on the hard disk. It is long-term memory.
+
+2. The script is easy to integrate with Bash. Then you can quickly call it.
+
+3. The script is a sequence of commands. Each one starts on a new line. It is easy to read and edit. Thanks to parameterization, it is easy to generalize it for solving tasks of the same type.
+
+4. Due to integration with Bash, the script is easy to combine with other commands. You can do it with pipelines and logical operators.
+
+If your task requires any of these features, write a Bash script for that.
