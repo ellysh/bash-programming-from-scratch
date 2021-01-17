@@ -56,3 +56,186 @@ There are four attributes for classifying variables in Bash. Table 3-1 shows the
 |                     | Variables | The user can delete them. They store values that can be changed. | `filename="README.txt"` |
 
 Let's consider each type of variable.
+
+### Declaration Mechanism
+
+#### User-Defined Variables
+
+The purpose of user variables is obvious from their name. The user declares them for his purposes. Such variables usually store intermediate results of the script, its state and frequently used constants.
+
+To declare the user-defined variable, specify its name, put an equal sign, and type its value.
+
+Here is an example. We declare a variable called `filename`. Its value equals the filename `README.txt`. The declaration of the variable looks like this:
+{line-numbers: false, format: Bash}
+```
+filename="README.txt".
+```
+
+Spaces before and after the equal sign are not allowed. Other programming languages allow them, but Bash does not. It leads to an error when Bash handles the following declaration:
+{line-numbers: false, format: Bash}
+```
+filename = "README.txt"
+```
+
+Bash misinterprets this line. It assumes that you call the command with the `filename` name. Then you pass there two parameters: `=` and `"README.txt"`.
+
+Only Latin characters, numbers and the underscore are allowed in variable names. The name must not start with a number. Letter case is important. It means that `filename` and `FILENAME` are two different variables.
+
+Suppose we have declared a variable `filename`. Then Bash allocates the memory area for that. It writes the `README.txt` string there. You can read this value back by specifying the variable name. But when you do that, Bash should understand your intention. If you put a dollar sign before the variable name, it would be a hint for Bash. Then it treats the word `filename` as the variable name.
+
+When you reference the variable in a command or script, it should look like this:
+{line-numbers: false, format: Bash}
+```
+$filename
+```
+
+Bash handles words with a dollar sign in a special way. When it encounters such a word, it runs the **parameter expansion** mechanism. The mechanism replaces all occurrences of a variable name by its value. Here is the command for example:
+{line-numbers: false, format: Bash}
+```
+cp $filename ~
+```
+
+After parameter expansion, the command looks like this:
+{line-numbers: false, format: Bash}
+```
+cp README.txt ~
+```
+
+There are nine kinds of expansions that Bash does. There is a strict order in which the interpreter performs them. The order is important. If you miss it, errors can occur. Let's consider an example of such an error.
+
+Suppose we manipulate the "my file.txt" file in the script. For the sake of convenience, we put the filename into a variable. Its declaration looks like this:
+{line-numbers: false, format: Bash}
+```
+filename="my file.txt"
+```
+
+Then we use the variable in the `cp` call. Here is the command:
+{line-numbers: false, format: Bash}
+```
+cp $filename ~
+```
+
+Bash does word splitting after parameter expansion. They are two different expansion mechanisms. When both of them are done, the `cp` call looks the following:
+{line-numbers: false, format: Bash}
+```
+cp my file.txt ~
+```
+
+This command leads to an error. Bash passes two parameters to the `cp` utility: "my" and "file.txt". There are no such files.
+
+Another error happens if the variable's value contains a special character. Here is an example:
+{line-numbers: true, format: Bash}
+```
+filename="*file.txt"
+rm $filename
+```
+
+The `rm` utility deletes all files ending in `file.txt`. The globbing mechanism causes such behavior. It happens because Bash does globbing after parameter expansion too. Then it substitutes files of the current directory whose names match the "*file.txt" pattern. It leads to unexpected results. Here is an example of the possible command:
+{line-numbers: false, format: Bash}
+```
+rm report_file.txt myfile.txt msg_file.txt
+```
+
+When referencing variables, always apply double-quotes. They prevent unwanted Bash expansions. Here are the examples:
+{line-numbers: true, format: Bash}
+```
+filename1="my file.txt"
+cp "$filename1" ~
+
+filename2="*file.txt"
+rm "$filename2"
+```
+
+Thanks to the quotes, Bash inserts the variables' values as it is:
+{line-numbers: true, format: Bash}
+```
+cp "my file.txt" ~
+rm "*file.txt"
+```
+
+We already know several [Bash expansions](http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions). Table 3-2 gives their complete list and order of execution. 
+
+{caption: "Table 3-2. Bash expansions", width: "100%"}
+| Order of Execution | Expansion | Description | Example |
+| --- | --- | --- | --- |
+| 1 | [Brace Expansion](https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html) | It generates a set of strings by the specified pattern with braces. | `echo a{d,c,b}e` |
+|  | | | |
+| 2 | [Tilde Expansion](https://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html) | Bash replaces the tilde by the value of the `HOME` variable. | `cd ~` |
+|  | | | |
+| 3 | [Parameter Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html) | Bash replaces parameters and variables by their values. | `echo "$PATH"` |
+|  | | | |
+| 4 | [Arithmetic Expansion](https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html) | Bash replaces arithmetic expressions by their results. | `echo $((4+3))` |
+|  | | | |
+| 5 | [Command Substitution](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html) | Bash replaces the command with its output. | `echo $(< README.txt)` |
+|  | | | |
+| 6 | [Process Substitution](https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html) | Bash replaces the command with its output. Unlike Command Substitution, it is done [asynchronously](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)). The command's input and output are bound to a temporary file. | `diff <(sort file1.txt) <(sort file2.txt)` |
+|  | | | |
+| 7 | [Word Splitting](https://www.gnu.org/software/bash/manual/html_node/Word-Splitting.html) | Bash splits command-line arguments into words and passes them as separate parameters. | `cp file1.txt file2.txt ~` |
+|  | | | |
+| 8 | [Filename Expansion](https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html) (globbing) | Bash replaces patterns with filenames. | `rm ~/delete/*` |
+|  | | | |
+| 9 | Quote Removal | Bash removes all unshielded \, ' and " characters that were not derived from one of the expansions. | `cp "my file.txt" ~` |
+
+{caption: "Exercise 3-1. Testing the Bash expansions", format: text, line-numbers: false}
+```
+Run the example of each Bash expansion from Table 3-2 in the terminal.
+Figure out how the final command turned out.
+Come up with your own examples.
+```
+
+The dollar sign before a variable name is a shortened form of parameter expansion. Its full form looks the following:
+{line-numbers: false, format: Bash}
+```
+${filename}
+```
+
+Use the full form to avoid ambiguity. Here is an example when the text follows the variable name:
+{line-numbers: true, format: Bash}
+```
+prefix="my"
+name="file.txt"
+cp "$prefix_$name" ~
+```
+
+In this case, Bash looks for a variable named "prefix_". It happens because the interpreter appends the underscore to the variable name. The full form of the parameter expansion solves this problem:
+{line-numbers: false, format: Bash}
+```
+cp "${prefix}_${name}" ~
+```
+
+There is an alternative solution. Enclose each variable name in double-quotes. Here is an example:
+{line-numbers: false, format: Bash}
+```
+cp "$prefix"_"$name" ~
+```
+
+The full form of parameter expansion helps when the variable has not been defined. In that case, you can insert the specified value instead. Do it like this:
+{line-numbers: false, format: Bash}
+```
+cp file.txt "${directory:-~}"
+```
+
+Here Bash checks if the `directory` variable is defined and has a non-empty value. If it is, Bash performs a regular parameter expansion. Otherwise, it inserts the value that follows the minus character. It is the user's home directory in our example.
+
+The full form of parameter expansion has several variations. Table 3-3 shows all of them.
+
+{caption: "Table 3-3. The full form of parameter expansion", width: "100%"}
+| Variation | Description|
+| --- | --- |
+| `${parameter:-word}` | If the "parameter" variable is not declared or has an empty value, Bash inserts the specified "word" value instead. Otherwise, it inserts the variable's value. |
+|  | |
+| `${parameter:=word}` | If a variable is not declared or has an empty value, Bash assigns it the specified value. Then it inserts this value. Otherwise, Bash inserts the variable's value. You cannot override positional and special parameters in this way. |
+|  | |
+| `${parameter:?word}` | If the variable is not declared or has an empty value, Bash prints the specified value on the error stream. Then, it terminates the script with a non-zero exit status. Otherwise, Bash inserts the variable's value. |
+|  | |
+| `${parameter:+word}` | If the variable is not declared or has an empty value, Bash skips the expansion. Otherwise, it inserts the specified value. |
+
+{caption: "Exercise 3-2. The full form of parameter expansion", format: text, line-numbers: false}
+```
+Write a script that searches for files with TXT extension in the current directory.
+The script ignores subdirectories.
+Copy or move all found files to the user's home directory.
+When calling the script, you can choose whether to copy or move the files.
+If no action is specified, the script chooses to copy the files.
+```
+
