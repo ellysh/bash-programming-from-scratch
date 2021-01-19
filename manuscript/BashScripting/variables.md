@@ -239,3 +239,88 @@ When calling the script, you can choose whether to copy or move the files.
 If no action is specified, the script chooses to copy the files.
 ```
 
+#### Internal variables
+
+The user can declare variables. Bash also can do that. In this case, they are called **internal** or **shell variables**. The interpreter assigns the default values to them. The user can change some shell variables.
+
+Internal variables have two functions:
+
+1. Passing information from the shell to the application it runs.
+
+2. Storing the current state of the interpreter itself.
+
+The variables are divided into two groups:
+
+1. Bourne Shell variables.
+
+2. Bash variables.
+
+The first group of variables comes from Bourne Shell. Bash needs it for POSIX compatibility. Table 3-4 shows the frequently used of these variables.
+
+{caption: "Table 3-4. Bourne Shell variables", width: "100%"}
+| Name | Value |
+| --- | --- |
+| `HOME` | The home directory of the current user. Bash uses this variable for doing tilde expansion and processing the `cd` call without parameters. |
+|  | |
+| [`IFS`](http://mywiki.wooledge.org/IFS) | It contains a list of delimiter characters. The word splitting mechanism uses these characters to split the strings into words. The default delimiters are space, [tab](https://en.wikipedia.org/wiki/Tab_key#Tab_characters) and a line break. |
+|  | |
+| `PATH` | It contains a list of paths. Bash uses the list to look for utilities and programs when the user runs them. Colons separate the paths in the list. |
+|  | |
+| `PS1` | It is a command prompt. The prompt can include [control characters](https://www.gnu.org/software/bash/manual/html_node/Controlling-the-Prompt.html#Controlling-the-Prompt). Bash replaces them with specific values (for example, the current user's name). |
+|  | |
+| `SHELLOPTS` | A list of [shell options](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html#The-Shopt-Builtin). They change the operating mode of interpreter. Colons separate the options in the list. |
+
+In addition to the inherited Bourne Shell variables, Bash introduces new ones. Table 3-5 shows them. The list is incomplete. There are some extra variables, but they are rarely used.
+
+{caption: "Table 3-5. Bash variables", width: "100%"}
+| Name | Value |
+| --- | --- |
+| `BASH` | The full path to the Bash executable file. This file corresponds to the current Bash process. |
+|  | |
+| `BASHOPTS` | A list of Bash-specific [shell options](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html#The-Shopt-Builtin). They change the operating mode of Bash. Colons separate the options in the list. |
+|  | |
+| `BASH_VERSION` | The version of the running Bash interpreter. |
+|  | |
+| `GROUPS` | A list of groups to which the current user belongs. |
+|  | |
+| `HISTCMD` | The number of the current command in the command history. It shows you how many items are in history. |
+|  | |
+| `HISTFILE` | The path to the file that stores the command history. The default value is `~/.bash_history`. |
+|  | |
+| `HISTFILESIZE` | The maximum allowed number of lines in the command history. The default value is 500. |
+|  | |
+| `HISTSIZE` | The maximum allowed amount of items in the command history. The default value is 500. |
+|  | |
+| `HOSTNAME` | The name of the current computer as a node on the computer network. |
+|  | |
+| `HOSTTYPE` | A string describing the hardware platform on which Bash is running. |
+|  | |
+| `LANG` | [Locale settings](https://en.wikipedia.org/wiki/Locale_(computer_software)) for the user interface. They define the user's language, region and some special characters. Some settings are overridden by variables `LC_ALL`, `LC_COLLATE`, `LC_CTYPE`, `LC_MESSAGES`, `LC_NUMERIC`, `LC_TYPE`. |
+|  | |
+| `MACHTYPE` | A string describing the system on which Bash is running. It includes information from the `HOSTTYPE` and `OSTYPE` variables. |
+|  | |
+| `OLDPWD` | The previous working directory, which was set by the `cd` command. |
+|  | |
+| `OSTYPE` | A string describing the OS on which Bash is running. |
+|  | |
+| `POSIXLY_CORRECT` | If this variable is defined, Bash runs in the [POSIX compatible mode](https://www.gnu.org/software/bash/manual/html_node/Bash-POSIX-Mode.html#Bash-POSIX-Mode). |
+|  | |
+| `PWD` | The current directory that the `cd` command has set. |
+|  | |
+| `RANDOM` | Each time the user reads this variable, Bash returns a random number between 0 and 32767. When the user writes the variable, Bash assigns a new initializing number ([seed](https://en.wikipedia.org/wiki/Random_seed)) to the [pseudorandom number generator](https://en.wikipedia.org/wiki/Pseudorandom_number_generator). |
+|  | |
+| `SECONDS` | The number of seconds elapsed since the current Bash process started. |
+|  | |
+| `SHELL` | The path to the shell executable file for the current user. Each user can use his own shell program. |
+|  | |
+| `SHLVL` | The nesting level of the current Bash instance. This variable is incremented by one each time you start Bash from itself. |
+|  | |
+| `UID` | The ID number of the current user. |
+
+The internal variables are divided into three groups depending on the allowed actions with them. These are the groups:
+
+1. Bash assigns a value to a variable at startup. It remains unchanged throughout the session. The user can read it, but changing is prohibited. Examples: `BASHOPTS`, `GROUPS`, `SHELLOPTS`, `UID`.
+
+2. Bash assigns a default value to a variable at startup. User actions or other events change this value. Some variables can be explicitly re-assigned, but this can disrupt the interpreter. Examples: `HISTCMD`, `OLDPWD`, `PWD`, `SECONDS`, `SHLVL`.
+
+3. Bash assigns a default value to the variable at startup. The user can change it. Examples: `HISTFILESIZE`, `HISTSIZE`.
