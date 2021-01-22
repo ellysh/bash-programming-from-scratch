@@ -8,7 +8,7 @@ There was a generation of the first programming languages (for example [**assemb
 
 Suppose you work on a computer with 32-bit processors. Then a memory address has a length of 4 bytes. It is the number from 0 to 4294967295. This number is twice larger for 64-bit processors. It is inconvenient to remember and operate with such big numbers. That is why modern programming languages allow you to replace a variable address with its name. This name is translated into memory address while compiling or interpreting the program. Thus, the compiler or interpreter takes care of "remembering" large numbers.
 
-Why do we need variables? Our experience with `PATH` and position parameters has shown that variables store some data. It is needed for one of the following purposes:
+Why do we need variables? Our experience with `PATH` and positional parameters has shown that variables store some data. It is needed for one of the following purposes:
 
 1. To transfer information from one part of a program or system to another.
 
@@ -324,3 +324,182 @@ The internal variables are divided into three groups depending on the allowed ac
 2. Bash assigns a default value to a variable at startup. User actions or other events change this value. Some variables can be explicitly re-assigned, but this can disrupt the interpreter. Examples: `HISTCMD`, `OLDPWD`, `PWD`, `SECONDS`, `SHLVL`.
 
 3. Bash assigns a default value to the variable at startup. The user can change it. Examples: `HISTFILESIZE`, `HISTSIZE`.
+
+#### Special Parameters
+
+Bash declare special parameters and assign values to them. It works in the same way as for shell variables.
+
+Special parameters pass information from a shell to a launching application and vice versa. We have already considered positional parameters. All of them are special parameters.
+
+Table 3-6 shows frequently used special parameters.
+
+{caption: "Table 3-6. Bash Special Parameters", width: "100%"}
+| Name | Value |
+| --- | --- |
+| `$*` | It contains all positional parameters passed to the script. Parameters start with the `$1` variable but not with `$0`. If you skip double-quotes (`$*`), Bash inserts each positional parameter as a separate word. With double-quotes ("$*"), Bash handles it as a single quoted string. The string contains all the parameters separated by the first character of the internal variable `IFS`. |
+|  | |
+| `$@` | The array that contains all positional parameters passed to the script. Parameters start with the `$1` variable. If you skip double-quotes (`$@`), Bash handles each array's element as an unquoted string. Word splitting happens in this case. With double-quotes ("$@"), Bash handles each element as a quoted string without word splitting. |
+|  | |
+| `$1`, `$2`... | It contains the value of the corresponding positional parameter. `$1` matches the first parameter. `$2` matches the second one, etc. The numbers are given in the decimal system. |
+|  | |
+| `$?` | The exit status of the last executed command in the foreground mode. If a pipeline was executed, the parameter stores the exit status of the last command in the pipeline. |
+|  | |
+| `$-` | It contains options for the current interpreter instance. |
+|  | |
+| `$$` | The process ID of the current interpreter instance. If you use it in the subshell, Bash inserts the PID of the parent process. |
+|  | |
+| `$!` | The process ID of the last command that was launched in the background mode. |
+|  | |
+| `$0` | The name of the shell or script that is currently running. |
+|  | |
+
+You cannot change special Bash parameters directly. For example, the following redeclaration of `$1` does not work:
+{line-numbers: false, format: Bash}
+```
+1="new value"
+```
+
+If you want to redeclare positional parameters, use the `set` command. It redeclares all parameters at once. There is no option to change a single parameter only. Here is the form of the `set` call:
+{line-numbers: false, format: Bash}
+```
+set -- NEW_VALUE_OF_$1 NEW_VALUE_OF_$2 NEW_VALUE_OF_$3...
+```
+
+What to do if you need to change a single positional parameter? Suppose you call the script with four parameters. For example, like this:
+{line-numbers: false, format: Bash}
+```
+./my_script.sh arg1 arg2 arg3 arg4
+```
+
+You want to replace the third parameter `arg3` with the `new_arg3` value. Here is the `set` call for that:
+{line-numbers: false, format: Bash}
+```
+set -- "${@:1:2}" "new_arg3" "${@:4}"
+```
+
+Let's consider this call in detail. Bash replaces the first argument "${@:1:2}" by the first two elements of the `$@` array. It leads that `$1` and `$2` parameters get their previous values. Then there is the new value for the parameter `$3`. Now it equals "new_arg3". Then there is the "${@:4}" value. Here Bash inserts all elements of the `$@` array starting from `$4`. It means that all these parameters get their previous values.
+
+All special parameters from Table 3-6 are available in the POSIX-compatible mode.
+
+### Scope
+
+#### Environment Variables
+
+Variables are divided into **scopes** (scope) in any software system. A scope is a part of a program or system where the variable name remains associated with its value. In other words, you can convert the variable name into its address in the scope of that variable only. Outside the scope, the same name can point to another variable.
+
+A scope is called **global** if it spreads to the whole system. For example, the variable called `filename` is in the global scope. Then you can access it by its name from any part of the system.
+
+Bash keeps all its internal variables in the global scope. They are called **environment variables**. It means that all internal variables are environment variables. The user can declare his variable in the global scope too. Then it becomes an environment variable.
+
+Why does Bash store variables in the global scope? It happens because Unix has a special set of settings. They affect the behavior of the applications the user runs. An example is locale settings. According to them, each running application adapts its interface. Applications share such kinds of settings through environment variables.
+
+Suppose one process spawns a child process. The child process inherits all environment variables of the parent. Thus, all utilities and applications launched from the shell inherit its environment variables. This way, global Unix settings are spread to all user programs.
+
+The child process can change its environment variables. Then it spawns another process. This new process inherits the changed variables. However, when the child changes its environment variables, it does not affect the corresponding variables of the parent process.
+
+The `export` built-in command declares an environment variable. Here is an example of doing that:
+{line-numbers: false, format: Bash}
+```
+export BROWSER_PATH="/opt/firefox/bin"
+```
+
+You can declare the variable and then add it to the global scope. Call the `export` command in this way:
+{line-numbers: true, format: Bash}
+```
+BROWSER_PATH="/opt/firefox/bin"
+export BROWSER_PATH
+```
+
+Sometimes you want to declare the environment variables for the specific application only. Then list the variables and their values before the application call. Here is an example:
+{line-numbers: false, format: Bash}
+```
+MOZ_WEBRENDER=1 LANG="en_US.UTF-8" /opt/firefox/bin/firefox
+```
+
+Here the Firefox browser receives the specified `MOZ_WEBRENDER` and `LANG` variables. They can differ from the system-wide settings.
+
+Suppose that you use another interpreter as the shell. An example is Bourne Shell. Then you should apply the `env` utility. It declares environment variables for the launching application. Here is an example:
+{line-numbers: false, format: Bash}
+```
+env MOZ_WEBRENDER=1 LANG="en_US.UTF-8" /opt/firefox/bin/firefox
+```
+
+If you call the `env` utility without parameters, it prints all declared environment variables for the current interpreter process. Try to get this output in your terminal:
+{line-numbers: false, format: Bash}
+```
+env
+```
+
+The `export` command and the `env` utility print the same thing if called without parameters. Prefer to use `export` instead of `env`. There are two reasons for that. First, the `export` output is sorted. Second, all variable values are enclosed in double-quotes. They prevent you from making a mistake if there is a line break in some value.
+
+Environment variable names have uppercase letters only. Therefore, it is considered good practice to name local variables in lower case. It prevents you from accidentally using one variable instead of another.
+
+#### Local Variables
+
+We know about the user-defined variables. The user can declare them in several ways. Depending on his choice, the new variable comes to the **local scope** or global scope (environment).
+
+There are two ways to declare the global scope variable:
+
+1. Add the `export` command to the variable declaration.
+
+2. Pass the variable when launching the program. You can do it with the `env` utility when using a shell other than Bash.
+
+If you do not apply any of these options, your variable comes to the local scope. It is called the **local variable**. It is available in the current instance of the interpreter.  Child processes (except subshell) does not inherit it.
+
+Here is an example. Suppose that you declare a variable in the terminal window like this: 
+{line-numbers: false, format: Bash}
+```
+filename="README.txt"
+```
+
+Now you can output its value in the same terminal window. Call the following `echo` command for that:
+{line-numbers: false, format: Bash}
+```
+echo "$filename"
+```
+
+The same command works well in a subshell. Just add parentheses to spawn a subshell for the specific command. It looks like this:
+{line-numbers: false, format: Bash}
+```
+(echo "$filename")
+```
+
+However, if you read the variable from a child process, you get an empty value. You can start a child process by calling the Bash explicitly in the terminal window. Here is an example:
+{line-numbers: false, format: Bash}
+```
+bash -c 'echo "$filename"'
+```
+
+The `-c` parameter passes a command to be executed by the Bash child process. A similar Bash call occurs implicitly when running the script from a shell.
+
+We enclose the `echo` call in the single-quotes when passing it to the `bash` command. The quotes disable all Bash expansions for the string inside. This behavior differs from the double-quotes. They disable all expansions except command substitution and parameter expansion. If we use double-quotes in our `bash` call, the parameter expansion happens. Then Bash inserts the variable's value in the call. The call would look like this:
+{line-numbers: false, format: Bash}
+```
+bash -c "echo README.txt"
+```
+
+We are not interested in such a call. Instead, we want to check how the child process reads the local variable. The parent process should not put its value into the `bash` call.
+
+If you change a local variable in the subshell, the parent process keeps its old value. For example, the following `echo` command prints the "README.txt" filename:
+{line-numbers: true, format: Bash}
+```
+filename="README.txt"
+(filename="CHANGELOG.txt")
+echo "$filename"
+```
+
+This output confirms that changing the local variable in the subshell does not affect the parent process.
+
+When you declare a local variable, it comes in the shell variables list. The list includes all local and environment variables that are available in the current interpreter process. The `set` command prints this list when called without parameters. Here is an example of how to find the `filename` variable there:
+{line-numbers: false, format: Bash}
+```
+set | grep filename=
+```
+
+There is the following line in the command's output:
+{line-numbers: false, format: Bash}
+```
+filename=README.txt
+```
+
+It means that the `filename` variable is in the list of shell variables.
