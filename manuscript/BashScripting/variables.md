@@ -45,7 +45,7 @@ There are four attributes for classifying variables in Bash. Table 3-1 shows the
 |  | | | |
 |            | Integer | It stores an integer. | `declare -i number=10/2 ; echo "$number"` |
 |  | | | |
-|            | Numerically indexed array | It stores a numbered list of lines. | `cities=("London" "New York" "Berlin") ; echo "${cities[1]}"` |
+|            | Indexed array | It stores a numbered list of lines. | `cities=("London" "New York" "Berlin") ; echo "${cities[1]}"` |
 |  | | | `cities[0]="London" ; cities[1]="New York" ; cities[2]="Berlin" ; echo "${cities[1]}"` |
 |  | | | |
 |            | [**Associative array**](https://en.wikipedia.org/wiki/Associative_array) | It is a data structure with elements that are key-value pairs. Each key and value are strings. | `declare -A cities=( ["Alice"]="London" ["Bob"]="New York" ["Eve"]="Berlin" ) ; echo "${cities[Bob]}"` |
@@ -589,3 +589,141 @@ Here is an example of how a real array stores its elements in memory. Suppose we
 The indexing of arrays' elements starts with zero. It means that the first element has the 0 index. The second one has the 1 index and so on. In our example, the first element with the 0 index equals the number 5. The second element equals 6. Elements follow each other in memory. Their indexes match the memory offset from the beginning of the array. Thus, the element with the 3 index has three bytes offset and equals the number 8.
 
 Let's come back to the question about naming the Bash "arrays". Only the authors of the language can answer it. However, we can guess. The name "array" gives the user a hint on how to work with them. When the user has experience in another language, he knows how to operate with a regular array. This way, he can start using Bash "arrays" immediately. The user does not need knowledge on how Bash stores these "arrays" internally.
+
+#### Attributes
+
+The Bash language does not have the type system. It stores all scalar variables in memory as strings. But Bash has composite types that are arrays. The Bash array is the combination of strings.
+
+When you declare the Bash variable, you should choose if it is scalar or composite. You can do that by specifying metadata for the variable. Such metadata is called **attributes** in Bash. The variable's attributes also define its constancy and scope.
+
+The `declare` built-in command specifies the variable's attributes. The command prints all local and environment variables when calling without parameters. The `set` command prints the same output.
+
+The `declare` command has the `-p` option. It adds variable attributes to the output.
+
+If you want information on a particular variable, pass its name to the `declare` command. Here is an example for the `PATH` variable:
+{line-numbers: false, format: Bash}
+```
+declare -p PATH
+```
+
+The `declare` command also prints information about declared [**subroutines**](https://en.wikipedia.org/wiki/Subroutine). They are called **functions** in Bash. A function is a program fragment or an independent block of code that performs a certain task.
+
+Suppose you are interested in declarations of the function but not in variables. Then use the `-f` option of the `declare` command. It filters out variables from the output. The `declare` call looks the following in this case:
+{line-numbers: false, format: Bash}
+```
+declare -f
+```
+
+You can specify the function name right after the `-f` option. Then the `declare` command prints information about this function only. Here is an example for the function `quote`:
+{line-numbers: false, format: Bash}
+```
+declare -f quote
+```
+
+This command displays the declaration of the function.
+
+The `quote` function receives a string on the input. It encloses the string in single-quotes. If the string already contains the single-quotes, the function escapes them. You can call the function in the same way as a built-in Bash command. Here is an example:
+{line-numbers: false, format: Bash}
+```
+quote "this is a 'test' string"
+```
+
+The `declare` command without the `-p` option does not print the function declaration. It means that the following call shows nothing:
+{line-numbers: false, format: Bash}
+```
+declare quote
+```
+
+The `declare` command shows information about already declared variables and functions. Also, the command sets attributes for new variables.
+
+Table 3-7 shows the frequently used options of the `declare` command.
+
+{caption: "Table 3-7. The `declare` command options and the corresponding variables' attributes", width: "100%"}
+| Option | Definition |
+| --- | --- |
+| `-a` | The declared variable is an indexed array. |
+|  | |
+| `-A` | The declared variable is an associative array. |
+|  | |
+| `-g` | It declares a variable in the global scope of the script. The variable does not come to the environment. |
+|  | |
+| `-i` | It declares an integer variable. When you assign it a value, Bash treats it as an arithmetic expression. |
+|  | |
+| `-r` | It declares a constant. The constant cannot change its value after declaration. |
+|  | |
+| `-x` | It declares an environment variable. |
+
+Here are examples of declaration variables with attributes. First, let's compare integer and string variables. Execute the following two commands in the terminal window:
+{line-numbers: true, format: Bash}
+```
+declare -i sum=11+2
+text=11+2
+```
+
+We declared two variables named `sum` and `text`. The `sum` variable has the integer attribute. Therefore, its value equals 13 that is the sum of 11 and 2. The `text` variable is equal to the "11+2" string.
+
+Bash stores both variables as strings in memory. The `-i` option does not specify the variable's type. Instead, it limits the allowed values of the variable.
+
+Try to assign a string to the `sum` variable. Here are a couple of possible ways for doing that:
+{line-numbers: true, format: Bash}
+```
+declare -i sum="test"
+sum="test"
+```
+
+Each of these commands set the `sum` value to zero.
+
+Suppose you have declared an integer variable. Then you do not need a Bash expansion for arithmetic operations on it. The following commands do correct calculations:
+{line-numbers: true, format: Bash}
+```
+sum=sum+1       # 13 + 1 = 14
+sum+=1          # 14 + 1 = 15
+sum+=sum+1      # 15 + 15 + 1 = 31
+```
+
+The calculation results come after the hash symbol. Bash ignores everything after this symbol. Such lines are called **comments**.
+
+Now execute the same commands with the string variable. Their results differ:
+{line-numbers: true, format: Bash}
+```
+text=text+1     # "text+1"
+text+=1         # "text+1" + "1" = "text+11"
+text+=text+1    # "text+11" + "text" + "1" = "text+11text+1"
+```
+
+Here Bash does string concatenation instead of arithmetic operations on numbers. You should apply the arithmetic expansion. Then Bash does arithmetic calculations instead. Here is an example:
+{line-numbers: true, format: Bash}
+```
+text=11
+text=$(($text + 2)) # 11 + 2 = 13
+```
+
+The `-r` option of the `declare` command makes a constant. The call looks like this:
+{line-numbers: false, format: Bash}
+```
+declare -r filename="README.txt"
+```
+
+Whenever you change the value of the `filename` constant or delete it, Bash prints an error message. Therefore, both following commands fail:
+{line-numbers: true, format: Bash}
+```
+filename="123.txt"
+unset filename
+```
+
+I> Use the `unset` command for removing variables. The command cannot remove constants.
+
+The `declare` command with the `-x` option declares an environment variable. It has the same effect as the `export` command in the declaration. Thus, the following two commands are equivalent:
+{line-numbers: true, format: Bash}
+```
+export BROWSER_PATH="/opt/firefox/bin"
+declare -x BROWSER_PATH="/opt/firefox/bin"
+```
+
+The good practice is to use the `export` command instead of `declare` with the `-x` option. Such a decision improves the code readability. You don't need to remember what the `-x` option means. For the same reason, prefer the `readonly` command instead of `declare` with the `-r` option. Both commands declare a constant. But `readonly` is easier to remember.
+
+The `readonly` command declares a variable in the global scope of the script. The `declare` command with the `-r` option has another result. If you call `declare` in the body of a function, you declare a local variable. It is not available outside the function. Use the `-g` option to get the same behavior as `readonly`. Here is an example:
+{line-numbers: false, format: Bash}
+```
+declare -gr filename="README.txt"
+```
