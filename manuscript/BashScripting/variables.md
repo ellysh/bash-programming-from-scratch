@@ -727,3 +727,193 @@ The `readonly` command declares a variable in the global scope of the script. Th
 ```
 declare -gr filename="README.txt"
 ```
+
+#### Indexed Arrays
+
+Bourne Shell has scalar variables only. The interpreter stores them as strings in memory. Such variables were not enough for users. Therefore, Bash developers have added arrays. When do you need an array?
+
+Strings have a serious limitation. When you write a value to the scalar variable, it is a single unit. For example, you save a list of files in the variable called `files`. You separate filenames by spaces in this list. However, the `files` variable stores a single string from the Bash point of view. This fact leads to errors.
+
+Here is an example. The POSIX standard allows any characters in filenames except the null character (NULL). NULL means the end of a filename. The same character means the end of a string in Bash. Therefore, a string variable can contain NULL at the end only. It turns out that you have no reliable way to separate filenames in a string. You cannot use NULL. But any other delimiter character can occur in these names.
+
+The delimiter problem prevents processing of the `ls` utility output reliably. The utility cannot separate its output units with NULL. It leads to a recommendation to avoid parsing of the `ls` output. Also, do not use `ls` in variable declarations like this:
+{line-numbers: false, format: Bash}
+```
+files=$(ls Documents/*.txt)
+```
+
+This declaration writes all TXT files of the `Documents` directory to the `files` variable. If there are spaces or line breaks in the filenames, it will be hard to restore them.
+
+Bash arrays solve this problem. An array stores a list of separate units. It is simple to read them in their original form. Therefore, use arrays to store filenames instead of strings with the `ls` output. Here is a better declaration of the `files` variable:
+{line-numbers: false, format: Bash}
+```
+declare -a files=(Documents/*.txt)
+```
+
+This command declares and **initializes the array**. Initializing means assigning values to the array's elements. You can do that in the declaration or afterward.
+
+Bash can deduce the array type of the variable by itself. This mechanism works when you skip the `declare` command in a variable declaration. Bash adds the appropriate attribute automatically. Here is an example:
+{line-numbers: false, format: Bash}
+```
+files=(Documents/*.txt)
+```
+
+The command declares the indexed array `files`.
+
+Suppose that you know the array elements in advance. In this case, you can assign them explicitly in the declaration. It looks like this:
+{line-numbers: false, format: Bash}
+```
+files=("/usr/share/doc/bash/README" "/usr/share/doc/flex/README.md" "/usr/share/doc/xz/README")
+```
+
+When assigning elements of an array, you can read them from other variables. Here is an example:
+{line-numbers: true, format: Bash}
+```
+bash_doc="/usr/share/doc/bash/README"
+flex_doc="/usr/share/doc/flex/README.md"
+xz_doc="/usr/share/doc/xz/README"
+files=("$bash_doc" "$flex_doc" "$xz_doc")
+```
+
+This command writes values of the variables `bash_doc`, `flex_doc` and `xz_doc` to the `files` array. If you change these variables after this declaration, it does not affect the array.
+
+When declaring an array, you can explicitly specify an index for each element. Do it like this:
+{line-numbers: true, format: Bash}
+```
+bash_doc="/usr/share/doc/bash/README"
+flex_doc="/usr/share/doc/flex/README.md"
+xz_doc="/usr/share/doc/xz/README"
+files=([0]="$bash_doc" [1]="$flex_doc" [5]="/usr/share/doc/xz/README")
+```
+
+Here there are no spaces before and after each equal sign. Remember this rule: when you declare any variable in Bash, there are no spaces before or after the equal sign.
+
+Instead of initializing the entire array at once, you can assign its elements separately. Here is an example:
+{line-numbers: true, format: Bash}
+```
+files[0]="$bash_doc"
+files[1]="$flex_doc"
+files[5]="/usr/share/doc/xz/README
+```
+
+There are gaps in the array indexes in the last two examples. It is not a mistake. Bash allows arrays with such gaps. They are called **sparse arrays**.
+
+Suppose that we have declared the array. Now there is a question of how to read its elements. The following expansion prints all of them:
+{line-numbers: false, format: Bash}
+```
+$ echo "${files[@]}"
+/usr/share/doc/bash/README /usr/share/doc/flex/README.md /usr/share/doc/xz/README
+```
+
+You see the `echo` command at the first line. There is its output in the second line.
+
+I> Here, the $ character means the command line prompt. The `echo` command follows it. There is its output on the next line.
+
+It can be useful to print indexes of elements instead of their values. For doing that, add an exclamation mark in front of the array name in the parameter expansion. Do it like this:
+{line-numbers: true, format: Bash}
+```
+$ echo "${!files[@]}"
+0 1 5
+```
+
+You can calculate the element index with a formula when accessing it. Specify the formula in square brackets. Here are examples for reading and writing the fifth element:
+{line-numbers: true, format: Bash}
+```
+echo "${files[4+1]}"
+files[4+1]="/usr/share/doc/xz/README
+```
+
+You can use variables in the formula. Bash accepts both integer and string variables there. Here is another way to access the fifth element of the array:
+{line-numbers: true, format: Bash}
+```
+i=4
+echo "${files[i+1]}"
+files[i+1]="/usr/share/doc/xz/README
+```
+
+Bash can insert the sequential array elements at once. To do that, specify the starting index, colon and the number of elements. Here is an example:
+{line-numbers: true, format: Bash}
+```
+$ echo "${files[@]:1:2}"
+/usr/share/doc/flex/README.md /usr/share/doc/xz/README
+```
+
+This `echo` call prints two elements, starting from the first. The elements' indexes are not important in this case. We get the filenames with indexes 1 and 5.
+
+Starting with version 4, Bash provides the `readarray` command. It is also known as `mapfile`. The command reads the contents of a text file into an indexed array. Let's see how to use it.
+
+Suppose we have the file named `names.txt`. It contains names of some persons:
+{line-numbers: true, format: Bash}
+```
+Alice
+Bob
+Eve
+Mallory
+```
+
+We want to create an array with strings of this file. The following command does that:
+{line-numbers: false, format: Bash}
+```
+readarray -t names_array < names.txt
+```
+
+The command writes the `names.txt` file contents to the `names_array` array.
+
+{caption: "Exercise 3-3. Declaration of arrays", format: text, line-numbers: false}
+```
+Try all the following variants of the array declarations:
+
+1. Using the declare command.
+
+2. Without the declare command.
+
+3. The globbing mechanism provides values for array elements.
+
+4. Specify all array elements in the declaration.
+
+5. Specify the elements separately after the array declaration.
+
+6. Assign to array elements the values of the existing variables.
+
+7. Read the array elements from a text file.
+
+Print the array contents using the `echo` command for each case.
+```
+
+We have learned how to declare and initialize indexed arrays. Here are some more examples of using them. Suppose the `files` array contains a list of filenames. You want to copy the first file in the list. The following `cp` call does that:
+{line-numbers: false, format: Bash}
+```
+cp "${files[0]}" ~/Documents
+```
+
+W> Most programming languages number the elements of arrays and characters of strings from zero, but not from one. Bash follows this rule too.
+
+When reading an array element, we apply the full form of the parameter expansion with curly brackets. Put the index of the element in square brackets after the variable name.
+
+When you use the @ symbol instead of the element's index, Bash inserts all array elements. Here is an example:
+{line-numbers: false, format: Bash}
+```
+cp "${files[@]}" ~/Documents
+```
+
+You can get the size of the array. Put the # character in front of its name. Then specify the @ character as the element's index. You get the following parameter expansion:
+{line-numbers: false, format: Bash}
+```
+echo "${#files[@]}"
+```
+
+When reading array elements, always use double-quotes. They prevent word splitting.
+
+Use the `unset` command to remove an array element. Here is an example of removing the fourth element:
+{line-numbers: false, format: Bash}
+```
+unset 'files[3]'
+```
+
+Do not forget about numbering array's elements from zero. Also, the single-quotes are mandatory here. They turn off all Bash expansions.
+
+The `unset` command can clear the whole array. Here is an example:
+{line-numbers: false, format: Bash}
+```
+unset files
+```
