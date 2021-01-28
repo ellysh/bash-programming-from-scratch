@@ -82,3 +82,61 @@ if CONDITION; then ACTION_1; else ACTION_2; fi
 ```
 
 Bash executes ACTION_2 if CONDITION returns the non-zero exit status. The condition is false in this case. Otherwise, Bash executes the ACTION_1.
+
+You can extend the `if-else` statement by the `elif` blocks. Such a block adds an extra condition and the corresponding action. Bash executes the action if the condition equals true.
+
+Here is an example. Suppose you choose one of three actions depending on the value of a variable. The following `if` statement provides this behavior:
+{line-numbers: true}
+```
+If CONDITION_1
+then
+  ACTION_1
+elif CONDITION_2
+then
+  ACTION_2
+else
+  ACTION_3
+fi
+```
+
+There is no limitation for the number of `elif` blocks in the statement. You can add as many of them as you need.
+
+Let's extend our example of file comparison. We want to print the message in both cases: when the files match and when they do not. The `if-else` statement does the job. It looks like this:
+{line-numbers: true, format: Bash}
+```
+if cmp file1.txt file2.txt &> /dev/null
+then
+  echo "Files file1.txt and file2.txt are the same."
+else
+  echo "Files file1.txt and file2.txt differ."
+fi
+```
+
+It is time to come back to our backup script. The script has a block of commands. The result of the `bsdtar` utility decides if Bash should execute this block. When we meet the code block and condition, it is a hint to apply the `if` statement here.
+
+We apply the `if-else` statement to the `bsdtar` call and handling its result. Then we get the following code:
+```
+if bsdtar -cjf "$1".tar.bz2 "$@"
+then
+  echo "bsdtar - OK" > results.txt
+else
+  echo "bsdtar - FAILS" > results.txt
+  exit 1
+fi
+```
+
+Do you agree that it is easier to read the code now? We can simplify it even more. The [**early return**](https://medium.com/swlh/return-early-pattern-3d18a41bba8) pattern does that. Replace the `if-else` statement with `if` like this:
+{line-numbers: true, format: Bash}
+```
+if ! bsdtar -cjf "$1".tar.bz2 "$@"
+then
+  echo "bsdtar - FAILS" > results.txt
+  exit 1
+fi
+
+echo "bsdtar - OK" > results.txt
+```
+
+The code behaves the same as with the `if-else` statement. The logical negation inverts the `bsdtar` utility result. Now, if it fails, the condition of the `if` statement becomes true. Then the script prints the "bsdtar - FAILS" message to the log file and terminates. Otherwise, the script skips the command block of the `if` statement. The further `echo` call prints the "bsdtar - OK" message to the log file.
+
+The early return pattern is a useful technique that makes your code cleaner and easier to read. The idea behind it is to terminate the program as early as possible when an error appears. This solution allows you to avoid the nested `if` statements.
