@@ -140,3 +140,106 @@ echo "bsdtar - OK" > results.txt
 The code behaves the same as with the `if-else` statement. The logical negation inverts the `bsdtar` utility result. Now, if it fails, the condition of the `if` statement becomes true. Then the script prints the "bsdtar - FAILS" message to the log file and terminates. Otherwise, the script skips the command block of the `if` statement. The further `echo` call prints the "bsdtar - OK" message to the log file.
 
 The early return pattern is a useful technique that makes your code cleaner and easier to read. The idea behind it is to terminate the program as early as possible when an error appears. This solution allows you to avoid the nested `if` statements.
+
+Here is an example. Imagine the algorithm that does five actions. Each action depends on the result of the previous one. If the previous action fails, the algorithm stops. We can implement this algorithm with the following nested `if` statements:
+{line-numbers: true}
+```
+if ACTION_1
+then
+  if ACTION_2
+  then
+    if ACTION_3
+    then
+      if ACTION_4
+      then
+        ACTION_5
+      fi
+    fi
+  fi
+fi
+```
+
+These nested statements look confusing. If you add the `else` blocks for handling errors, this code becomes even harder to read.
+
+The nested `if` statements make the code hard to read. It is a serious problem. The early return pattern solves it. Let's apply the pattern to our algorithm. Then we get the following code:
+{line-numbers: true}
+```
+if ! ACTION_1
+then
+  # error handling
+fi
+
+if ! ACTION_2
+then
+  # error handling
+fi
+
+if ! ACTION_3
+then
+  # error handling
+fi
+
+if ! ACTION_4
+then
+  # error handling
+fi
+
+ACTION_5
+```
+
+We got the same algorithm. Its behavior did not change. There are still five actions. If any of them fails, the algorithm stops. But the early return pattern made the code simpler and clearer.
+
+We use [**comments**](https://en.wikipedia.org/wiki/Comment_(computer_programming)) in the last example. They look like this: "# error handling". A comment is a string or part of a string that the interpreter ignores. In Bash, a comment is anything that comes after the hash symbol.
+
+I> The usefulness of comments is the subject of endless debates in the programming community. They are needed to explain the code. However, some people consider that comments are a sign of incomprehensible, poorly written code. If you just started learning to program, comment your code without doubts. Explain the complex constructions in your scripts. You can forget what do they mean afterward. Thus, you save your time in the future when you come back to the old code.
+
+Assume that each action of the algorithm corresponds to one short command. The exit command handles all errors. There is no output to the log file. In this case, the || operator can replace the `if` statement. Then the code remains simple and clear. It will look like this:
+{line-numbers: true}
+```
+ACTION_1 || exit 1
+ACTION_2 || exit 1
+ACTION_3 || exit 1
+ACTION_4 || exit 1
+ACTION_5
+```
+
+There is only one case when the && and || operators are more expressive than the `if` statement. The case is short commands do actions and error handling.
+
+Let's rewrite the backup script using the `if` statement. Listing 3-11 shows the result.
+
+{caption: "Listing 3-11. The backup script with the early return pattern", line-numbers: true, format: Bash}
+![`make-backup-if.sh`](code/BashScripting/make-backup-if.sh)
+
+We replaced the && and || operators in the `bsdtar` call with the if statement. The behavior of the script has not changed.
+
+Logical operators and the `if` statement are not equivalent in general. Here is an example. Suppose there is an expression of three commands A, B and C:
+{line-numbers: false}
+```
+A && B || C
+```
+
+It might seem that the following `if-else` statement gives the same behavior:
+{line-numbers: false}
+```
+if A
+then
+  B
+else
+  C
+fi
+```
+
+If A is true, then Bash executes B. Otherwise, it executes C. But there is another behavior in the expression with logical operators. Here, if A is true, then Bash executes B. Then C execution depends on the result of B. If B is true, Bash skips C. If B is false, it executes C. Thus, execution of C depends on both A and B. There is no such dependence in the `if-else` statement.
+
+{caption: "Exercise 3-4. The if statement", format: text, line-numbers: false}
+```
+Here is the Bash command:
+( grep -RlZ "123" target | xargs -0 cp -t . && echo "cp - OK" || ! echo "cp - FAILS" ) && ( grep -RLZ "123" target | xargs -0 rm && echo "rm - OK" || echo "rm - FAILS" )
+
+It looks for the string "123" in the files of the directory named "target".
+If the file contains the string, it is copied to the current directory.
+If there is no string in the file, it is removed from the target directory.
+
+Make the script from this command.
+Replace the && and || operators with `if-else` statements.
+```
