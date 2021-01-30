@@ -486,3 +486,139 @@ The script should print all files from one directory that absent
 in another one.
 ```
 
+### Case statement
+
+Programs often choose their actions depending on some values. If the variable has one value, the program does one thing. When the value differs, it does another thing. The condition statements provide such a behavior.
+
+We have considered the `if` statement. There is an alternative `case` statement in Bash. It is more convenient than `if` in some cases.
+
+Let's look at an example. Suppose you are writing a script for archiving documents. The script has three operating modes:
+
+1. Archiving with compression.
+2. Archiving without compression.
+3. Unarchiving.
+
+You can choose the mode by the command-line option. Table 3-12 shows an example of possible options.
+
+{caption: "Table 3-12. Options of the archiving script", width: "50%"}
+| Option | Operating mode  |
+| --- | --- |
+| `-a` | Archiving with compression |
+| `-c` | Archiving without compression |
+| `-x` | Unarchiving |
+
+I> Always follow the [POSIX agreement](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) when choosing scripts' options and parameters format.
+
+You can check the script option in the `if` statement. Listing 3-12 shows an example of doing that.
+
+{caption: "Listing 3-12. The script for archiving documents", line-numbers: true, format: Bash}
+![`archiving.sh`](code/BashScripting/archiving.sh)
+
+The `$1` position parameter keeps the script option. We write it to the `operation` variable for convenience. Then depending on this variable, we choose parameters for the `bsdtar` call. The `if` statement with two `elif` blocks checks the `operation` value.
+
+Now we replace the `if` statement with the `case` one. Listing 3-13 shows the result.
+
+{caption: "Listing 3-13. The script for archiving documents", line-numbers: true, format: Bash}
+![`archiving-case.sh`](code/BashScripting/archiving-case.sh)
+
+Let's call our script `archiving-case.sh`. Then we can launch it in one of the following ways:
+{line-numbers: true, format: Bash}
+```
+./archiving-case.sh -a
+./archiving-case.sh -b
+./archiving-case.sh -x
+```
+
+If you pass any other parameters to the script, it prints the error message and terminates.
+
+W> Always call the `exit` command when handling errors in a script. It should return the non-zero exit status in this case.
+
+The `case` statement compares a string with a list of patterns. Each pattern has a corresponding code block. When the string matches the pattern, Bash executes the corresponding code block.
+
+Each `case` block consists of the following elements:
+
+1. A pattern or a list of patterns separated by vertical bars.
+
+2. Right parenthesis.
+
+3. A code block.
+
+4. Two semicolons. They mark the end of the code block.
+
+Bash checks patterns of the `case` blocks one by one. If the string matches the first pattern, Bash executes its code block. Then it skips other patterns. Instead, Bash executes the command that follows the `case` statement.
+
+The `*` pattern without quotes matches any string. It is usually placed at the end of the list. The corresponding code block handles cases when none of the patterns match the string. It usually means an error.
+
+At first sight, it may seem that the `if` and `case` statements are equivalent. They are not. They allow you to achieve the same behavior.
+
+Let's compare the statements from Listings 3-12 and 3-13. First, we write them in a general form. Here is the result for the `if` statement:
+{line-numbers: true}
+```
+if CONDITION_1
+then
+  ACTION_1
+elif CONDITION_2
+then
+  ACTION_2
+elif CONDITION_3
+then
+  ACTION_3
+else
+  ACTION_4
+fi
+```
+
+The `case` statement looks like this:
+{line-numbers: true}
+```
+case STRING in
+  PATTERN_1)
+    ACTION_1
+     ;;
+
+  PATTERN_2)
+    ACTION_2
+    ;;
+
+  PATTERN_3)
+    ACTION_3
+    ;;
+
+  PATTERN_4)
+    ACTION_4
+    ;;
+esac
+```
+
+The difference between the constructs is evident now. First, `if` checks the results of Boolean expressions. The `case` statement compares the string with the patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is true and false. The `if` statement is more convenient for such checking.
+
+The second difference between `if` and `case` is the number of conditions. Each branch of the `if` statement checks a separate Boolean expression. In general, these expressions are independent of each other.  In our example, they check the same variable, but that is a particular case. The `case` statement checks one string that you pass to it.
+
+The `if` and `case` statements are fundamentally different. They are not interchangeable. In each case, use the statement depending on the nature of the check. The following questions will help you to make the right choice:
+
+* How many conditions should you check? Use `if` for checking several conditions.
+
+* Would it be enough to check one string only? Use `case` when the answer is yes.
+
+* Do you need compound Boolean expressions? Use `if` when the answer is yes.
+
+There are two possible delimiters between case blocks:
+
+1. Two semicolons `;;`.
+2. Semicolons and ampersand `;&`.
+
+The ampersand delimiter is allowed in Bash, but it is not part of the POSIX standard. When Bash meets this delimiter, it executes the next block's code without checking its pattern. It can be useful when you want to start executing an algorithm from a specific step. Also, you can avoid code duplication in some cases with the ampersand delimiter.
+
+Here is an example of a code duplication problem. We write a script that archives PDF documents and copies the resulting file. The script receives an option to choose the action to do. For example, the `-a` option means archiving and `-c` means copying. Suppose that the script always has to do the copying after archiving. In this case, we get code duplication.
+
+Listing 3-14 shows the `case` statement where the `cp` call is duplicated.
+
+{caption: "Listing 3-14. The script for archiving and copying PDF documents", line-numbers: true, format: Bash}
+![`copy-archiving-duplication.sh`](code/BashScripting/copy-archiving-duplication.sh)
+
+We can avoid code duplication by adding the `;&` separator between the `-a` and `-c` blocks. Listing 3-15 shows the changed script.
+
+{caption: "Listing 3-15. The script for archiving and copying PDF documents", line-numbers: true, format: Bash}
+![`copy-archiving.sh`](code/BashScripting/copy-archiving.sh)
+
+The `;&` delimiter is useful in some cases. However, use it carefully. You can easily confuse the delimiters when reading. This way, you misread `;;` instead of `;&` and misunderstand the code.

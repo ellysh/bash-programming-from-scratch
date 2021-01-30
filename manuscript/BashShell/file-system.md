@@ -697,7 +697,7 @@ Because of the quotes, Bash does not unfold the pattern. It passes the pattern a
 {caption: "Figure 2-19. The result of processing a search pattern by `grep`", width: "100%"}
 ![grep error](images/BashShell/grep-error.png)
 
-Bash does not include hidden files and directories when it substitutes the pattern `*`. Therefore, the `grep` utility does not get them as input in our example. The search pattern for hidden files is `.*`. You can search for all kinds of files at once. Specify two templates separated by a space in this case. There is an example command:
+Bash does not include hidden files and directories when it substitutes the pattern `*`. Therefore, the `grep` utility does not get them as input in our example. The search pattern for hidden files is `.*`. You can search for all kinds of files at once. Specify two patterns separated by a space in this case. There is an example command:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" * .*
