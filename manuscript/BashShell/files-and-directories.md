@@ -100,7 +100,7 @@ The rm utility cannot remove a directory unless you do not pass an extra option 
 rm -d ~/docs
 ```
 
-If the directory contains files or subdirectories, call the utility with the `-r` or `--recursive` option. Such a call looks following:
+If the directory contains files or subdirectories, call the utility with the `-r` or `--recursive` option. Such a call looks this way:
 {line-numbers: false, format: Bash}
 ```
 rm -r ~/docs

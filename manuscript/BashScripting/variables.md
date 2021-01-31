@@ -115,7 +115,7 @@ Then we use the variable in the `cp` call. Here is the command:
 cp $filename ~
 ```
 
-Bash does word splitting after parameter expansion. They are two different expansion mechanisms. When both of them are done, the `cp` call looks the following:
+Bash does word splitting after parameter expansion. They are two different expansion mechanisms. When both of them are done, the `cp` call looks like this:
 {line-numbers: false, format: Bash}
 ```
 cp my file.txt ~
@@ -183,7 +183,7 @@ Figure out how the final command turned out.
 Come up with your own examples.
 ```
 
-The dollar sign before a variable name is a shortened form of parameter expansion. Its full form looks the following:
+The dollar sign before a variable name is a shortened form of parameter expansion. Its full form looks this way:
 {line-numbers: false, format: Bash}
 ```
 ${filename}

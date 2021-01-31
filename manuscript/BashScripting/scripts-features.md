@@ -546,7 +546,7 @@ Here is an example. Suppose you call the backup script this way:
 make-backup.sh "one two three"
 ```
 
-Then substitution of the "$*" value gives the following:
+Then substitution of the "$*" value gives the following result:
 {line-numbers: false, format: Bash}
 ```
 "one two three"

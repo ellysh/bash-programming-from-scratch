@@ -185,7 +185,7 @@ If several disks are attached to your computer, it is useful to display their mo
 {caption: "Figure 2-11. The output of the `mount` utility"}
 ![Output mount](images/BashShell/mount-command.png)
 
-Consider this output as a table with four columns. Their values are the following:
+Consider this output as a table with four columns. These are their values:
 
 1. The disk, its partition or directory. It means the thing that is mounted to the root file system. 
 
@@ -470,7 +470,7 @@ Figure 2-17 shows the result of searching the HTML files.
 {caption: "Figure 2-17. The output of the `find` utility", height: "30%"}
 ![find output](images/BashShell/find-html.png)
 
-Let's add the `-exec` action to the search command. It calls the `cp` utility. This utility copies files and directories to the specified path. The first parameter of `cp` is the object to copy. The second parameter is the path to copy to.  The final command looks the following:
+Let's add the `-exec` action to the search command. It calls the `cp` utility. This utility copies files and directories to the specified path. The first parameter of `cp` is the object to copy. The second parameter is the path to copy to.  The final command looks this way:
 {line-numbers: false, format: Bash}
 ```
 find / -path "*/doc/bash/*" -name "*.html" -exec cp {} ~ \;
@@ -626,7 +626,7 @@ The `grep` utility is another search tool. It searches for files based on their 
 
 When to use the `find` utility and when to use `grep`? Use `find` for searching a file or directory by name, path or [**metadata**](https://en.wikipedia.org/wiki/Metadata). Metadata is additional information about an object. These are examples of the file metadata: size, time of creation and last modification, access rights. Use the `grep` utility to find a file when you know nothing about it except its contents.
 
-Let's look at an example. It shows you how to choose the right utility for searching. We are looking for a documentation file. We know that it contains the phrase "free software". If we apply the `find` utility, the search algorithm looks following:
+Let's look at an example. It shows you how to choose the right utility for searching. We are looking for a documentation file. We know that it contains the phrase "free software". If we apply the `find` utility, the search algorithm looks like this:
 
 1. Find all the files with the name `README` using the `find` utility.
 
@@ -764,7 +764,7 @@ The package manager `pacman` can install some of these utilities in your MSYS2 e
 {caption: "Exercise 2-4. Searching for files with the `grep` utility", line-numbers: false}
 ```
 Write a grep call to find system utilities with a free license.
-The preferred licenses for open-source software are the following:
+Here are preferred licenses for open-source software:
 
 1. GNU General Public License
 2. MIT license

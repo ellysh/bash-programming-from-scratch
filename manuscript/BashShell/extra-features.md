@@ -348,7 +348,7 @@ dca
 dec
 ```
 
-The `-r` option reverts the order. If you apply this option, the utility prints the following:
+The `-r` option reverts the order. If you apply this option, the utility prints these lines:
 {line-numbers: true, format: text}
 ```
 dec

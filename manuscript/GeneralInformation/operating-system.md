@@ -161,7 +161,7 @@ There are computers with multiple processors or with [multi-core processors](htt
 
 #### User Interface
 
-Modern operating systems solve different tasks. These tasks depend on the type of computer where the OS is running. The main computer types are the following:
+Modern operating systems solve different tasks. These tasks depend on the type of computer where the OS is running. Here are the main types of computers:
 
 * [Personal computers](https://en.wikipedia.org/wiki/Personal_computer) (PC) and notebooks.
 * Cell phones and tablets.
