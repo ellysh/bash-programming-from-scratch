@@ -486,7 +486,7 @@ The script should print all files from one directory that absent
 in another one.
 ```
 
-### Case statement
+### Case Statement
 
 Programs often choose their actions depending on some values. If the variable has one value, the program does one thing. When the value differs, it does another thing. The condition statements provide such a behavior.
 
@@ -623,7 +623,7 @@ We can avoid code duplication by adding the `;&` separator between the `-a` and 
 
 The `;&` delimiter is useful in some cases. However, use it carefully. You can easily confuse the delimiters when reading. This way, you misread `;;` instead of `;&` and misunderstand the code.
 
-### Alternative to the case statement
+### Alternative to the Case Statement
 
 The case statement and the associative array solve similar tasks. The array makes the relationship between data (key-value). The case statement does the same between data and commands (value-action).
 
