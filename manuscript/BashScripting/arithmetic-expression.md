@@ -256,3 +256,17 @@ Represent the following two-bytes integers in two's complement and add them:
 
 * 12868 + (-1219)
 ```
+
+#### Converting Numbers
+
+We learned how a computer represents numbers in memory. When would you need it in practice?
+
+Modern programming languages take care of converting numbers into the correct format. For example, you declare a signed integer variable in decimal notation. You do not need to worry about how the computer stores it in memory. If the variable's value becomes negative, the computer makes two's complement representation without your involvement.
+
+In some cases, you want to treat a variable as a set of bits. Then declare it as a positive integer. Do all operations on it in hexadecimal. Do not convert the variable's value to decimal. This way, you avoid the problems of converting numbers.
+
+The issue arises when you want to read data from some device. Such a task often occurs in [**system software development**](https://en.wikipedia.org/wiki/System_software). This domain includes the development of device drivers, OS kernels and modules, system libraries and network protocol stacks.
+
+Here is an example. Suppose that you write a driver for a peripheral device. The device periodically sends data to the CPU. For example, it is the results of some measurements. Interpret them correctly is your task. The computer cannot do it for you in most cases. It happens because the computer and the device represent the numbers differently. You know this difference. Thus, you should apply your knowledge about numbers representation and convert them properly.
+
+There is another task that every programmer faces. It is [**debugging**](https://en.wikipedia.org/wiki/Debugging). Debugging a program is searching and eliminating its errors. For example, there is an integer overflow in the arithmetic expression. Knowing numbers representation helps you find and solve the problem.
