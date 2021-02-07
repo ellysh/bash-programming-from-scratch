@@ -270,3 +270,286 @@ The issue arises when you want to read data from some device. Such a task often 
 Here is an example. Suppose that you write a driver for a peripheral device. The device periodically sends data to the CPU. For example, it is the results of some measurements. Interpret them correctly is your task. The computer cannot do it for you in most cases. It happens because the computer and the device represent the numbers differently. You know this difference. Thus, you should apply your knowledge about numbers representation and convert them properly.
 
 There is another task that every programmer faces. It is [**debugging**](https://en.wikipedia.org/wiki/Debugging). Debugging a program is searching and eliminating its errors. For example, there is an integer overflow in the arithmetic expression. Knowing numbers representation helps you find and solve the problem.
+
+### Operator ((
+
+Bash performs integer arithmetic in **math context**. Its syntax resembles the C language.
+
+Suppose that you want to store the result of adding two numbers in a variable. Declare it with the `-i` integer attribute. Then assign its value in the declaration. Here is an example:
+{line-numbers: false, format: Bash}
+```
+declare -i var=12+7
+```
+
+Bash assigned the number 19 to the variable but not the "12+7" string. When you add the `-i` attribute to the declaration, Bash calculates the assigned value in the mathematical context. It happened in our example.
+
+You can declare the mathematical context explicitly. The `let `built-in command does that.
+
+Suppose you declare the variable without the `-i` attribute. Then the `let` command allows you to assign an arithmetic expression result to the variable. Here is an example:
+{line-numbers: false, format: Bash}
+```
+let text=5*7
+```
+
+The `text` variable equals 35 in the result.
+
+When declaring the variable with the `-i` attribute, you do not need the `let` command. It looks like this:
+{line-numbers: false, format: Bash}
+```
+declare -i var
+var=5*7
+```
+
+Now the `var` variable equals 35 too.
+
+Declaring a variable with the `-i` attribute creates the mathematical context implicitly. It can lead to errors. Therefore, try to avoid using the `-i` attribute. It does not affect the way how the Bash stores the variable in memory. Instead, converting a string to a number and back takes place every time you assign the variable.
+
+The `let` command allows you to treat a string variable as an integer variable. This way, you can do the following assignments:
+{line-numbers: true, format: Bash}
+```
+let var=12+7
+let var="12 + 7"
+let "var = 12 + 7"
+let 'var = 12 + 7'
+```
+
+All four commands give the same result. They set the variable's value to 19.
+
+The `let` command takes parameters on input. Each of them must be a valid arithmetic expression. If there are spaces in the expression, Bash splits it into parts because of word splitting. In this case, `let` computes each part of the expression separately. It can lead to an error.
+
+The following command demonstrates the issue:
+{line-numbers: false, format: Bash}
+```
+let var=12 + 7
+```
+
+Here the `let` command receives three expressions after word splitting. These are the expressions:
+
+* var=12
+* +
+* 7
+
+When calculating the second one, `let` reports about an error. The plus means an arithmetic addition. It requires two operands. But in our case, there are no operands at all.
+
+Suppose that you pass correct expressions to the `let` command. Then the command evaluates them one by one. Here are the examples:
+{line-numbers: true, format: Bash}
+```
+let a=1+1 b=5+1
+let "a = 1 + 1" "b = 5 + 1"
+let 'a = 1 + 1' 'b = 5 + 1'
+```
+
+All three commands give the same result. The variable `a` gets the value of 2. The variable `b` gets the value of 6.
+
+You can prevent word splitting of the `let` parameters. Use single or double-quotes for that.
+
+The `let` command has a synonym that is the (( operator. Bash skips word splitting inside the operator. Therefore, you can skip quotes there. Always use the (( operator instead of the `let` command. This way, you will avoid mistakes.
+
+I> The relationship of the (( operator and the `let` command resembles that of `test` and the [[ operator. In both cases, use operators rather than commands.
+
+The (( operator has two forms. The first one is called [**arithmetic evaluation**](https://wiki.bash-hackers.org/syntax/ccmd/arithmetic_eval). It is a synonym for the `let` command. The arithmetic evaluation looks like this:
+{line-numbers: false, format: Bash}
+```
+((var = 12 + 7))
+```
+
+Here we use opening double-parentheses instead of the `let` command. There are closing double-parentheses at the end. This form of the (( operator returns exit status zero if it succeeds. It returns exit status one if it fails. After calculating the expression, Bash replaces it with its exit status.
+
+The second form of the (( operator is called [**arithmetic expansion**](https://wiki.bash-hackers.org/syntax/expansion/arith). It looks like this:
+{line-numbers: false, format: Bash}
+```
+var=$((12 + 7))
+```
+
+Here we put a dollar sign before the (( operator. In this case, Bash calculates the value of the expression. Then Bash inserts this value in place of the expression. This behavior differs from the first form of the (( operator. Bash inserts the exit status there.
+
+I> The second form of the (( operator is part of the POSIX standard. Use it for writing portable code. The first form of the operator is available in Bash, ksh and zsh interpreters only.
+
+You can skip the dollar sign before variables names in the (( operator. Bash still inserts their values correctly in this case. For example, here are two equivalent expressions for calculating the `result` variable:
+{line-numbers: true, format: Bash}
+```
+a=5 b=10
+result=$(($a + $b))
+result=$((a + b))
+```
+
+Both expressions assign the value of 15 to the `result` variable.
+
+Do not use the dollar sign in the (( operator. It makes your code clearer.
+
+I> Bash has an obsolete form of arithmetic expansion that is the "$[ ]" operator. Never use it. There is a GNU utility called `expr` for calculating arithmetic expressions. Bash needs it for launching old Bourne Shell scripts. Never use `expr` when developing new scripts.
+
+Table 3-17 shows the operations that Bash allows in arithmetic expressions.
+
+{caption: "Table 3-17. The operations in arithmetic expressions", width: "100%"}
+| Operation | Description | Example |
+| --- | --- | --- |
+| | **Calculations** | |
+|  | | |
+| `*` | Multiplication | `echo "$((2 * 9)) = 18"` |
+|  | | |
+| `/` | Division | `echo "$((25 / 5)) = 5"` |
+|  | | |
+| `%` | The remainder of division  | `echo "$((8 % 3)) = 2"` |
+|  | | |
+| `+` | Addition | `echo "$((7 + 3)) = 10"` |
+|  | | |
+| `-` | Subtraction | `echo "$((8 - 5)) = 3"` |
+|  | | |
+| `**` | Exponentiation | `echo "$((4**3)) = 64"` |
+|  | | |
+|  | | |
+| | **Bitwise operations** | |
+|  | | |
+| `~` | Bitwise NOT | `echo "$((~5)) = -6"` |
+|  | | |
+| `<<` | Bitwise left shift | `echo "$((5 << 1)) = 10"` |
+|  | | |
+| `>>` | Bitwise right shift | `echo "$((5 >> 1)) = 2"` |
+|  | | |
+| `&` | Bitwise AND | `echo "$((5 & 4)) = 4"` |
+|  | | |
+| `|` | Bitwise OR | `echo "$((5 | 2)) = 7"` |
+|  | | |
+| `^` | [Bitwise XOR](https://en.wikipedia.org/wiki/Exclusive_or) | `echo "$((5 ^ 4)) = 1"` |
+|  | | |
+|  | | |
+| | **Assignments** | |
+|  | | |
+| `=` | Ordinary assignment | `echo "$((num = 5)) = 5"` |
+|  | | |
+| `*=` | Multiply and assign the result | `echo "$((num *= 2)) = 10"` |
+|  | | |
+| `/=` | Divide and assign the result | `echo "$((num /= 2)) = 5"` |
+|  | | |
+| `%=` | Get the remainder of the division and assign it | `echo "$((num %= 2)) = 1"` |
+|  | | |
+| `+=` | Add and assign the result | `echo "$((num += 7)) = 8"` |
+|  | | |
+| `-=` | Subtract and assign the result | `echo "$((num -= 3)) = 5"` |
+|  | | |
+| `<<=` | Bitwise left shift and assign the result | `echo "$((num <<= 1)) = 10` |
+|  | | |
+| `>>=` | Bitwise right shift and assign the result | `echo "$((num >>= 2)) = 2"` |
+|  | | |
+| `&=` | Bitwise AND and assign the result | `echo "$((num &= 3)) = 2"` |
+|  | | |
+| `^=` | Bitwise XOR and assign the result | `echo "$((num^=7)) = 5"` |
+|  | | |
+| `|=` | Bitwise OR and assign the result | `echo "$((num |= 7)) = 7"` |
+|  | | |
+|  | | |
+| | **Comparisons** | |
+|  | | |
+| `<` | Less than | `((num < 5)) && echo "The \"num\" variable is less than 5"` |
+|  | | |
+| `>` | Greater than | `((num > 5)) && echo "The \"num\" variable is greater than 3"` |
+|  | | |
+| `<=` | Less than or equal | `((num <= 20)) && echo "The \"num\" variable is less or equal 20"` |
+|  | | |
+| `>=` | Greater than or equal | `((num >= 15)) && echo "The \"num\" variable is greater or equal 15"` |
+|  | | |
+| `==` | Equal | `((num == 3)) && echo "The \"num\" variable is equal to 3"` |
+|  | | |
+| `!=` | Not equal | `((num != 3)) && echo "The \"num\" variable is not equal to 3"` |
+|  | | |
+|  | | |
+| | **Logical operations** | |
+|  | | |
+| `!` | Logical NOT | `(( ! num )) && echo "The \"num\" variable is FALSE"` |
+|  | | |
+| `&&` | Logical AND | `(( 3 < num && num < 5 )) && echo "The \"num\" variable is greater than 3 but less than 5"` |
+|  | | |
+| `||` | Logical OR | `(( num < 3 || 5 < num )) && echo "The \"num\" variable is less than 3 or greater than 5"` |
+|  | | |
+|  | | |
+| | **Other operations** | |
+|  | | |
+| `num++` | Postfix increment | `echo "$((num++))"` |
+|  | | |
+| `num--` | Postfix decrement | `echo "$((num--))"` |
+|  | | |
+| `++num` | Prefix increment | `echo "$((++num))"` |
+|  | | |
+| `--num` | Prefix decrement | `echo "$((--num))"` |
+|  | | |
+| `+num` | Unary plus or multiplication of a number by 1 | `a=$((+num))"` |
+|  | | |
+| `-num` | Unary minus or multiplication of a number by -1 | `a=$((-num))"`|
+| `УСЛОВИЕ ? ДЕЙСТВИЕ1 : ДЕЙСТВИЕ2` | [Ternary operator](https://en.wikipedia.org/wiki/%3F:) | `a=$(( b < c ? b : c ))` |
+|  | | |
+| `ДЕЙСТВИЕ1, ДЕЙСТВИЕ2` | The list of expressions | `((a = 4 + 5, b = 16 - 7))` |
+|  | | |
+| `( ДЕЙСТВИЕ1 )` | Grouping of expressions (subexpression) | `a=$(( (4 + 5) * 2 ))`|
+
+Bash performs all operations in order of their priorities. The operations with a higher priority come first.
+
+Table 3-18 shows the priority of operations.
+
+{caption: "Table 3-18. Priority of operations in arithmetic expressions", width: "100%"}
+| Priority | Operation | Description |
+| --- | --- | --- |
+| 1 | `( ДЕЙСТВИЕ1 )` | Grouping of expressions |
+|  | | |
+| 2 | `num++, num--` | Postfix increment and decrement |
+|  | | |
+| 3 | `++num, --num` | Prefix increment and decrement |
+|  | | |
+| 4 | `+num, -num` | Unary plus and minus |
+|  | | |
+| 5 | `~, !` | Bitwise and logical NOT |
+|  | | |
+| 6 | `**` | Exponentiation |
+|  | | |
+| 7 | `*, /, %` | Multiplication, division and the remainder of division |
+|  | | |
+| 8 | `+, -` | Addition and subtraction |
+|  | | |
+| 9 | `<<, >>` | Bitwise shifts |
+|  | | |
+| 10 | `<, <=, >, >=` | Comparisons |
+|  | | |
+| 11 | `==, !=` | Equal and not equal |
+|  | | |
+| 12 | `&` | Bitwise AND |
+|  | | |
+| 13 | `^` | Bitwise XOR |
+|  | | |
+| 14 | `|` | Bitwise OR |
+|  | | |
+| 15 | `&&` | Logical AND |
+|  | | |
+| 16 | `||` | Logical OR |
+|  | | |
+| 17 | `УСЛОВИЕ ? ДЕЙСТВИЕ1 : ДЕЙСТВИЕ2` | Ternary operator |
+|  | | |
+| 18 | `=, *=, /=, %=, +=, -=, <<=, >>=, &=, ^=, |=` | Assignments |
+|  | | |
+| 19 | `ДЕЙСТВИЕ1, ДЕЙСТВИЕ2` | The list of expressions |
+
+You can change the order of execution using parentheses "( )". Their contents are called **subexpression**. Bash calculates subexpressions first. If there is more than one subexpression, Bash calculates them in the left-to-right order.
+
+Suppose your code uses a numeric constant. You can specify its value in any numeral system. Use a prefix to select a numeral system. Table 3-19 shows the list of allowable prefixes.
+
+{caption: "Table 3-19. The prefixes for numeral systems", width: "100%"}
+| Prefix | Numeral System | Example] |
+| --- | --- | --- |
+| `0` | Octal | `echo "$((071)) = 57"` |
+| `0x` | Hexadecimal | `echo "$((0xFF)) = 255"` |
+| `0X` | Hexadecimal | `echo "$((0XFF)) = 255"` |
+| `<основание>#` | The numeral system with a base from 2 to 64 | `echo "$((16#FF)) = 255"` |
+| | | `echo "$((2#101)) = 5"` |
+
+When printing a number to the screen or file, Bash always converts it in decimal. The `printf` command changes the format of the number output. You can use it this way:
+{line-numbers: false, format: Bash}
+```
+printf "%x\n" 250
+```
+
+This command prints the number 250 in hexadecimal.
+
+You can format the variable's value in the same way:
+{line-numbers: false, format: Bash}
+```
+printf "%x\n" $var
+```
