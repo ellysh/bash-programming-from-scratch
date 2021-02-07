@@ -71,7 +71,7 @@ There are two reasons why SMR is not widespread nowadays:
 
 Take your time and try to understand SMR. Without getting it, you won't understand the other two ways of representing integers.
 
-## Ones' Complement
+#### Ones' Complement
 
 SMR has two disadvantages. They have led to technical issues when using the representation in practice. Therefore, the engineers have looked for an alternative approach to store numbers in memory. This way, they came to ones' complement representation.
 
@@ -553,3 +553,164 @@ You can format the variable's value in the same way:
 ```
 printf "%x\n" $var
 ```
+
+### Arithmetic Operations
+
+Let's start with the simplest mathematical operations that are arithmetic operations. Programming languages use usual symbols to denote them:
+
+* `+` addition
+* `-` subtraction
+* `/` division
+* `*` multiplication
+
+Two more operations are often used in programming. These are exponentiation and [division with remainder](https://en.wikipedia.org/wiki/Euclidean_division).
+
+Suppose that you want to raise the `a` number to the power of `b`. You can write it this way: a^b^. Here `a` is the base and `b` is the exponent. For example, raising two to the power of seven is written as 2^7^. You can write this operation with two asterisks in Bash:
+{line-numbers: false}
+```
+2**7
+```
+
+Calculating the remainder of the division is a complex but essential operation in programming. Let's take a closer look at it. Suppose we have divided one integer number by another. A result is a fractional number. In this case, we say that the division produced a [**remainder**](https://en.wikipedia.org/wiki/Remainder).
+
+For example, let's divide 10 (the dividend) by 3 (the divisor). If we round the result, we get 3.33333 (the quotient). In this case, the remainder of the division is 1. To find it, we should multiply the divisor 3 by the integer part of the quotient 3 (the incomplete quotient). Then subtract the result from the dividend 10. It gives us the remainder, which is equal to 1.
+
+Let's write our calculations in formulas. We can introduce the following notation for that:
+
+* `a` is a dividend
+* `b` is a divisor
+* `q` is an incomplete quotient
+* `r` is a remainder
+
+Using the notation, we can write the formula for calculating the dividend:
+{line-numbers: false}
+```
+a = b * q + r
+```
+
+Then we derive the formula for finding the remainder:
+{line-numbers: false}
+```
+r = a - b * q
+```
+
+The choice of an incomplete quotient `q` raises questions. Sometimes several numbers fit this role. The restriction helps to choose the right one. The `q` quotient must be such that the absolute value of the `r` remainder is less than the `b` divisor. In other words, you should fulfill the following inequality:
+{line-numbers: false}
+```
+|r| < |b|
+```
+
+The percent sign denotes the operation of finding the remainder in Bash. Some languages use the same symbol for the [**modulo operation**](https://en.wikipedia.org/wiki/Modulo_operation). These two operations [are not the same](https://rob.conery.io/2018/08/21/mod-and-remainder-are-not-the-same). They give the same results only when the signs of the dividend and the divisor match.
+
+For example, let's calculate the remainder and modulo when dividing 19 by 12 and -19 by -12. We get these results:
+{line-numbers: false}
+```
+19 % 12 = 19 - 12 * 1 = 7
+19 modulo 12 = 19 - 12 * 1 = 7
+
+-19 % -12 = -19 - (-12) * 1 = -7
+-19 modulo -12 = -19 - (-12) * 1 = -7
+```
+
+Now consider cases when the signs of the dividend and the divisor differ. Here are the results:
+{line-numbers: false}
+```
+19 % -12 = 19 - (-12) * (-1) = 7
+19 modulo -12 = 19 - (-12) * (-2) = -5
+
+-19 % 12 = -19 - 12 * (-1) = -7
+-19 modulo 12 = -19 - 12 * (-2) = 5
+```
+
+The reminder and the modulo are different for the same pairs of numbers.
+
+The same formula calculates the remainder and modulo. But the choice of the `q` incomplete quotient differs. For calculating the reminder, you get `q` this way:
+{line-numbers: false}
+```
+q = a / b
+```
+
+You should round the result to the lowest [absolute number](https://en.wikipedia.org/wiki/Absolute_value). It means discarding all decimal places.
+
+Calculation of the incomplete quotient for finding the modulo depends on the signs of `a` and `b`. If the signs are the same, the formula for the quotient stays the same:
+{line-numbers: false}
+```
+q = a / b
+```
+
+If the signs differ, here is another formula:
+{line-numbers: false}
+```
+q = (a / b) + 1
+```
+
+In both cases, you should round the result to the lowest absolute number.
+
+When one speaks of the remainder of division `r`, he usually assumes that both the divisor a and the divisor b are positive. That is why reference books often mention the following condition for `r`:
+{line-numbers: false}
+```
+0 ≤ r < |b|
+```
+
+However, you can get a negative remainder when dividing numbers with different signs. Remember a simple rule: the `r` remainder always has the same sign as the `a` dividend. If the signs of `r` and `a` differ, you have found the modulo but not the reminder.
+
+Always keep in mind the difference between the remainder and the modulo. Some programming languages calculate the remainder in the % operator, while others calculate it in the `modulo` operator. It leads to confusion.
+
+If in doubt about your calculations, check them. The % Bash operator always computes the remainder of a division. Suppose you want to find the remainder of dividing 32 by -7. This command shows it to you:
+{line-numbers: false, format: Bash}
+```
+echo $((32 % -7))
+```
+
+The remainder of the division is four.
+
+Now find the modulo for the same pair of numbers. Use the [online calculator](https://planetcalc.com/8326) for that. Enter the dividend32 in the "Expression" field. Then enter the divisor 7 in the "Modulus" field. Click the "CALCULATE" button. You will get two results:
+
+* The "Result" field shows 4.
+* The "Symmetric representation" field shows -3.
+
+The second answer -3 is the modulo. The first one is the reminder.
+
+When do you need the remainder of a division in programming? The most common task is to check a number for parity. For example, it helps to control the integrity of transmitted data in computer networks. This approach is called [**the parity bit**](https://en.wikipedia.org/wiki/Parity_bit).
+
+I> To check a number for parity, you should find the remainder of its division by 2. If the remainder is zero, then the number is even. Otherwise, it is odd.
+
+There is another task where you need to calculate the remainder. It is the converting of time units. Suppose you want to convert 128 seconds into minutes. Then you should count the number of minutes in 128 seconds. The next step is to add the remainder to the result.
+
+The first step is calculating the number of minutes. Divide 128 by 60 to do that. The result is an incomplete quotient of 2. It means that 128 seconds contains 2 minutes. Calculate the remainder of dividing 128 by 60 to find the remaining seconds. Here is the result:
+{line-numbers: false}
+```
+r = 128 - 60 * 2 = 8
+```
+
+The remainder equals 8. It means that 128 seconds equals two minutes and eight seconds.
+
+Calculating the remainder is useful when working with loops. Suppose that you want to act on every 10th iteration of the loop. Then you need to check the remainder of dividing the loop counter by 10. If the remainder is zero, then the current iteration is a multiple of 10. Thus, you should act on this iteration.
+
+The modulo operation is widely used in [**cryptography**](https://en.wikipedia.org/wiki/Modulo_operation#Properties_(identities)).
+
+{caption: "Exercise 3-8. Modulo and the remainder of a division", format: text, line-numbers: false}
+```
+Calculate the remainder of a division and modulo:
+
+* 1697 % 13
+* 1697 modulo 13
+
+* 772 % -45
+* 772 modulo -45
+
+* -568 % 12
+* -568 modulo 12
+
+* -5437 % -17
+* -5437 modulo -17
+```
+
+### Bitwise operations
+
+[**Bitwise operations**](https://en.wikipedia.org/wiki/Bitwise_operation) are another type of mathematical operations. Software developers use them often. The operations get their name because they operate each bit of a number individually.
+
+#### Bitwise negation
+
+We start with the simplest bitwise operation that is the negation. It is also called bitwise NOT. The tilde symbol indicates this operation in Bash.
+
