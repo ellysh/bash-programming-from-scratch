@@ -252,7 +252,7 @@ Represent the following integers in two's complement and add them:
 * 79 + (-46)
 * -97 + 96
 
-Represent the following two-bytes integers in two's complement and add them:
+Represent the following two-byte integers in two's complement and add them:
 
 * 12868 + (-1219)
 ```
@@ -714,3 +714,85 @@ Calculate the remainder of a division and modulo:
 
 We start with the simplest bitwise operation that is the negation. It is also called bitwise NOT. The tilde symbol indicates this operation in Bash.
 
+Swap the value of each bit of a number to perform bitwise negation. It means that you replace each one to zero and vice versa.
+
+Here is an example for doing bitwise NOT of number 5:
+{line-numbers: false}
+```
+5 = 101
+~5 = 010
+```
+
+The bitwise NOT is a simple operation when we are talking about mathematics. However, using it in programming causes difficulties. First, you should know how many bytes the number occupies.
+
+Suppose that the two-byte variable stores the number 5 in our example. Then it looks like this in memory:
+{line-numbers: false}
+```
+00000000 00000101
+```
+
+Bitwise NOT for these bits gives us the following result:
+{line-numbers: false}
+```
+11111111 11111010
+```
+
+What does this result mean? If the variable is an unsigned integer, the result equals the number 65530 in SMR. If the variable is a signed integer, it is the two's complement value. The result equals -6 in this case.
+
+Bash commands and operators represent integers in different ways. For example, `echo` always outputs numbers as signed integers. The `printf` command allows you to specify the output format: signed or unsigned integer.
+
+There are no types in the Bash language. Bash stores
+all scalar variables as strings. Therefore, it interprets integers when it inserts them into arithmetic expressions. The interpretation (signed or unsigned) depends on the context.
+
+Bash allocates 64 bits of memory space for each integer regardless of its sign. Table 3-20 shows maximum and minimum allowed integers in Bash.
+
+{caption: "Table 3-20. Maximum and minimum allowed integers in Bash", width: "100%"}
+| Integer | Hexadecimal | Decimal |
+| --- | --- | --- |
+| Maximum positive signed | 7FFFFFFFFFFFFFFF | 9223372036854775807 |
+| Minimum negative signed | 8000000000000000 | -9223372036854775808 |
+| Maximum unsigned | FFFFFFFFFFFFFFFF | 18446744073709551615 |
+
+The following examples show how Bash interprets integers in `echo`, `printf`, and the (( operator:
+{line-numbers: true, format: Bash}
+```
+$ echo $((16#FFFFFFFFFFFFFFFF))
+-1
+
+$ printf "%llu\n" $((16#FFFFFFFFFFFFFFFF))
+18446744073709551615
+
+$ if ((18446744073709551615 == 16#FFFFFFFFFFFFFFFF)); then echo "ok"; fi
+ok
+
+$ if ((-1 == 16#FFFFFFFFFFFFFFFF)); then echo "ok"; fi
+ok
+
+$ if ((18446744073709551615 == -1)); then echo "ok"; fi
+ok
+```
+
+The last example of comparing the numbers 18446744073709551615 and -1 shows that Bash stores signed and unsigned integers in memory the same way. But their interpretation depends on the context.
+
+Let's come back to the bitwise negation of the number 5. Bash gave us the result 0xFFFFFFFFFFFFFFFFFA in hexadecimal. You can print this 64-bit number as a positive or negative integer this way:
+{line-numbers: true, format: Bash}
+```
+$ echo $((~5))
+-6
+
+$ printf "%llu\n" $((~5))
+18446744073709551610
+```
+
+The numbers 18446744073709551610 and -6 are equal in terms of Bash. It happens because all their bits in memory are the same.
+
+{caption: "Exercise 3-9. Bitwise NOT", format: text, line-numbers: false}
+```
+Apply bitwise NOT for the following unsigned two-byte integers:
+
+* 56
+* 1018
+* 58362
+
+Repeat the calculations for the case when these integers are signed.
+```
