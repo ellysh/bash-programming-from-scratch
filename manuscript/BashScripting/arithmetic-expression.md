@@ -796,3 +796,245 @@ Apply bitwise NOT for the following unsigned two-byte integers:
 
 Repeat the calculations for the case when these integers are signed.
 ```
+
+#### Bitwise AND, OR and XOR
+
+The bitwise AND operation resembles the logical AND. The result of the logical AND is "true" when both operands are "true". Any other values of operands lead to the "false" result.
+
+Operands of the bitwise AND are two numbers. You can do this operation in three steps:
+
+1. Represent numbers in the two's complement.
+
+2. If one number has fewer bits than another, add zeros to its left side.
+
+3. Apply the logical AND operation to each pair of numbers' bits. The pair means two bits from each number that have the same position. 
+
+Here is an example. We want to calculate the bitwise AND for numbers 5 and 3. First, we should represent them in the two's complement like this:
+{line-numbers: false}
+```
+5 = 101
+3 = 11
+```
+
+Number 3 has fewer bits than 5. Thus, we add an extra zero on its left side. This way, we get the following representation:
+{line-numbers: false}
+```
+3 = 011
+```
+
+Now we apply the logical AND for bit pairs of the numbers. For convenience, let's write the numbers in columns like this:
+{line-numbers: false}
+```
+101
+011
+---
+001
+```
+
+The result is 001. We can translate it in decimal:
+{line-numbers: false}
+```
+001 = 1
+```
+
+It means that the bitwise AND operation with numbers 5 and 3 gives 1.
+
+The ampersand sign denotes the bitwise AND operation in Bash. Here is the command to repeat our calculations and print the result:
+{line-numbers: false, format: Bash}
+```
+echo $((5 & 3))
+```
+
+The bitwise OR operation works similarly as bitwise AND. But instead of the logical AND, you should perform the logical OR on bit pairs of the numbers.
+
+For example, we want to calculate the bitwise OR for the numbers 10 and 6. First, write them in the two's complement like this:
+{line-numbers: false}
+```
+10 = 1010
+6 = 110
+```
+
+One bit is missing in the number 6. Let's extend it by one zero to get four bits:
+{line-numbers: false}
+```
+6 = 0110
+```
+
+Now perform the logical OR on bit pairs of the numbers:
+{line-numbers: false}
+```
+1010
+0110
+----
+1110
+```
+
+The last step is converting the result in decimal:
+{line-numbers: false}
+```
+1110 = 14
+```
+
+We got the number 14.
+
+The vertical bar denotes the bitwise OR in Bash. Here is the command to check our calculations:
+{line-numbers: false, format: Bash}
+```
+echo $((10 | 6))
+```
+
+The bitwise exclusive OR (XOR) operation is similar to the bitwise OR. Here the logical OR is replaced by the **exclusive OR**. The exclusive OR returns "false" only if both operands are the same. In other cases, the result equals "true".
+
+Let's calculate the exclusive OR for the numbers 12 and 5. Here is their representation in the two's complement:
+{line-numbers: false}
+```
+12 = 1100
+5 = 101
+```
+
+We should supplement the number 5 to four bits:
+{line-numbers: false}
+```
+5 = 0101
+```
+
+Perform a bitwise exclusive OR for each pair of bits:
+{line-numbers: false}
+```
+1100
+0101
+----
+1001
+```
+
+Convert the result to the decimal:
+{line-numbers: false}
+```
+1001 = 9
+```
+
+The caret symbol denotes the exclusive OR in Bash. The following command repeats our calculations:
+{line-numbers: false, format: Bash}
+```
+echo $((12 ^ 5))
+```
+
+{caption: "Exercise 3-10. Bitwise AND, OR and XOR", format: text, line-numbers: false}
+```
+Perform bitwise AND, OR and XOR for the following unsigned two-byte integers:
+
+* 1122 and 908
+* 49608 and 33036
+```
+
+#### Bit Shifts
+
+A bit shift is a changing of the bit positions in a number.
+
+There are three types of bit shifts:
+
+1. Logical
+2. Arithmetic
+3. Circular
+
+The simplest shift is the logical one. Let's take a look at it first.
+
+Any bit shift operation takes two operands. The first one is the integer. The operation shifts its bits. The second operand is the number of bits to shift.
+
+You should represent the integer in the two's complement for doing the logical bit shift. Suppose that you do a shift in the right direction by two bits. Then you discard the two rightmost bits of the integer. Instead of them, add two zeros on the left side.
+
+You can do the shift to the left in the same way. Discard two leftmost bits of the integer. Then add two zeroes on the right side.
+
+Here is an example. Perform a logical shift of unsigned single-byte integer 58 to the right by three bits. First, represent the number in the two's complement:
+{line-numbers: false}
+```
+58 = 0011 1010
+```
+
+Then discard the three bits on the right side like this:
+{line-numbers: false}
+```
+0011 1010 >> 3 = 0011 1
+```
+
+Then add zeros to the left side of the result:
+
+{line-numbers: false}
+```
+0011 1 = 0000 0111 = 7
+```
+
+The result of the shift is the number 7.
+
+Now shift the number 58 to the left by three bits. We get the following result:
+{line-numbers: false}
+```
+0011 1010 << 3 = 1 1010 = 1101 0000 = 208
+```
+
+Here we follow the same algorithm as for the right shift. First, discard the outermost bits on the left side. Then add zeros to the right side.
+
+Now let's consider the second type of shift that is the arithmetic shift. If you do it to the left, you follow the logical shift algorithm. The steps are entirely the same.
+
+The arithmetic shift to the right differs from the logical shift to the right. When performing it, you should discard the bits on the right side. Then complete the result with the bits on the left side. Their value should match the highest bit of the integer. If it equals one, add ones to the right. Otherwise, add zeros. This way, we keep the sign of the integer unchanged after the shifting.
+
+For example, let's do an arithmetic shift of the signed one-byte integer -105 to the right by two bits.
+
+First, we represent the number in the two's complement like this:
+{line-numbers: false}
+```
+-105 = 1001 0111
+```
+
+Now do the arithmetic shift to the right by two bits. We get:
+{line-numbers: false}
+```
+1001 0111 >> 2 -> 1001 01 -> 1110 0101
+```
+
+The highest bit of the integer equals one in our case. Thus, we complement the result with two ones on the left side.
+
+This way, we got a negative number in the two's complement. Let's convert it to SMR and get the decimal like this:
+{line-numbers: false}
+```
+1110 0101 = 1001 1011 = -27
+```
+
+The result of the shift is the number -27.
+
+Bash has operators << and >>. They do arithmetic shifts. The following commands repeat our calculations:
+{line-numbers: true, format: Bash}
+```
+$ echo $((58 >> 3))
+7
+
+$ echo $((58 << 3))
+464
+
+$ echo $((-105 >> 2))
+-27
+```
+
+Bash gives another result for shifting 58 to the left by three bits. We got 208 in this case. It happens because Bash always operates with eight-byte integers.
+
+The last type of bit shift is circular. You can rarely meet it when programming. Therefore, most programming languages do not have built-in operators for circular shifts.
+
+In the cyclic shift, the discarded bits appear in the vacated place at the other side of the number.
+
+Here is an example of the circular shift of the number 58 to the right by three bits:
+{line-numbers: false}
+```
+0011 1010 >> 3 = 010 0011 1 = 0100 0111 = 71
+```
+
+We have discarded bits 010 on the right side. Then they appeared on the left side of the result.
+
+{caption: "Exercise 3-11. Bit shifts", format: text, line-numbers: false}
+```
+Perform arithmetic bit shifts of the following signed two-byte integers:
+
+* 25649 >> 3
+* 25649 << 2
+* -9154 >> 4
+* -9154 << 3
+```

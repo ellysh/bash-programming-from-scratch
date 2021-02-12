@@ -62,7 +62,7 @@ The CONDITION here is the `cmp` utility call. The utility compares the contents 
 
 When we call a utility in the `if` condition, its exit status matters only. Therefore, we redirect the `cmp` output to the [`/dev/null`](https://en.wikipedia.org/wiki/Null_device) file. It is a special system file. Writing there always succeeds. OS deletes all data that you write there.
 
-If the contents of the `file1.txt` and `file2.txt` files match, the `cmp` utility returns the zero status. Then the `if` condition equals true. In this case, the `echo` command prints the message.
+If the contents of the `file1.txt` and `file2.txt` files match, the `cmp` utility returns the zero status. Then the `if` condition equals "true". In this case, the `echo` command prints the message.
 
 We have considered a simple case. When the condition is met, the script does an action. But there are cases where a condition selects one of two possible actions. The `if-else` statement works in this way. Here is the statement in the general form:
 {line-numbers: true}
@@ -81,9 +81,9 @@ The same `if-else` written in one line looks like this:
 if CONDITION; then ACTION_1; else ACTION_2; fi
 ```
 
-Bash executes ACTION_2 if CONDITION returns the non-zero exit status. The condition is false in this case. Otherwise, Bash executes the ACTION_1.
+Bash executes ACTION_2 if CONDITION returns the non-zero exit status. The condition is "false" in this case. Otherwise, Bash executes the ACTION_1.
 
-You can extend the `if-else` statement by the `elif` blocks. Such a block adds an extra condition and the corresponding action. Bash executes the action if the condition equals true.
+You can extend the `if-else` statement by the `elif` blocks. Such a block adds an extra condition and the corresponding action. Bash executes the action if the condition equals "true".
 
 Here is an example. Suppose you choose one of three actions depending on the value of a variable. The following `if` statement provides this behavior:
 {line-numbers: true}
@@ -137,7 +137,7 @@ fi
 echo "bsdtar - OK" > results.txt
 ```
 
-The code behaves the same as with the `if-else` statement. The logical negation inverts the `bsdtar` utility result. Now, if it fails, the condition of the `if` statement becomes true. Then the script prints the "bsdtar - FAILS" message to the log file and terminates. Otherwise, the script skips the command block of the `if` statement. The further `echo` call prints the "bsdtar - OK" message to the log file.
+The code behaves the same as with the `if-else` statement. The logical negation inverts the `bsdtar` utility result. Now, if it fails, the condition of the `if` statement becomes "true". Then the script prints the "bsdtar - FAILS" message to the log file and terminates. Otherwise, the script skips the command block of the `if` statement. The further `echo` call prints the "bsdtar - OK" message to the log file.
 
 The early return pattern is a useful technique that makes your code cleaner and easier to read. The idea behind it is to terminate the program as early as possible when an error appears. This solution allows you to avoid the nested `if` statements.
 
@@ -229,7 +229,7 @@ else
 fi
 ```
 
-If A is true, then Bash executes B. Otherwise, it executes C. But there is another behavior in the expression with logical operators. Here, if A is true, then Bash executes B. Then C execution depends on the result of B. If B is true, Bash skips C. If B is false, it executes C. Thus, execution of C depends on both A and B. There is no such dependence in the `if-else` statement.
+If A is "true", then Bash executes B. Otherwise, it executes C. But there is another behavior in the expression with logical operators. Here, if A is "true", then Bash executes B. Then C execution depends on the result of B. If B is "true", Bash skips C. If B is "false", it executes C. Thus, execution of C depends on both A and B. There is no such dependence in the `if-else` statement.
 
 {caption: "Exercise 3-4. The `if` statement", format: text, line-numbers: false}
 ```
@@ -250,7 +250,7 @@ We got acquainted with the `if` statement. It calls a built-in Bash command or u
 
 For example, let's solve a task. We should check if the text file contains a phrase. When the phrase present, our script prints the message in the log file.
 
-We can solve the task by combining the `if` statement and the `grep` utility. Put the `grep` call in the `if` condition. Then if the utility succeeds, it returns zero exit status. In this case, the `if` condition equals true and the script prints the message.
+We can solve the task by combining the `if` statement and the `grep` utility. Put the `grep` call in the `if` condition. Then if the utility succeeds, it returns zero exit status. In this case, the `if` condition equals "true" and the script prints the message.
 
 The `grep` utility prints its results on the output stream. We do not need this output when calling the utility in the `if` condition. The `-q` option disables the `grep` output. Finally, we get the following `if` statement:
 {line-numbers: true, format: Bash}
@@ -590,7 +590,7 @@ case STRING in
 esac
 ```
 
-The difference between the constructs is evident now. First, `if` checks the results of Boolean expressions. The `case` statement compares the string with the patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is true and false. The `if` statement is more convenient for such checking.
+The difference between the constructs is evident now. First, `if` checks the results of Boolean expressions. The `case` statement compares the string with the patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is "true" and "false". The `if` statement is more convenient for such checking.
 
 The second difference between `if` and `case` is the number of conditions. Each branch of the `if` statement checks a separate Boolean expression. In general, these expressions are independent of each other.  In our example, they check the same variable, but that is a particular case. The `case` statement checks one string that you pass to it.
 

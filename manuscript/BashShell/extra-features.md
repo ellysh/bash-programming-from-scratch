@@ -720,7 +720,7 @@ Suppose the `cp` utility completes successfully. It returns the zero code in thi
 
 It is not clear how do we use the result of the && operator in our example. The answer is we do not. Logical operators are needed to calculate Boolean expressions. But they are often used for their side effect in Bash. This side effect is a strict order of operands evaluation.
 
-Let's consider the case when the `cp` utility finishes with an error in our example. Then it returns a non-zero exit status. It is equivalent to the "false" value for Bash. In this case, the && operator can already calculate the value of the whole Boolean expression. It does not need to calculate the right operand. Because If at least one operand of the boolean AND is "false", the entire expression is "false". Thus, the exit status of the `echo` command is not required. Then the && operator does not execute it. In this case, there is no "OK" output in the log file.
+Let's consider the case when the `cp` utility finishes with an error in our example. Then it returns a non-zero exit status. It is equivalent to the "false" value for Bash. In this case, the && operator can already calculate the value of the whole Boolean expression. It does not need to calculate the right operand. Because If at least one operand of the logical AND is "false", the entire expression is "false". Thus, the exit status of the `echo` command is not required. Then the && operator does not execute it. In this case, there is no "OK" output in the log file.
 
 Now you get the [**short-circuit evaluation**](https://en.wikipedia.org/wiki/Short-circuit_evaluation). It means calculation only those operands that are sufficient to deduce the value of the whole Boolean expression.
 
