@@ -1038,3 +1038,168 @@ Perform arithmetic bit shifts of the following signed two-byte integers:
 * -9154 >> 4
 * -9154 << 3
 ```
+
+#### Using Bitwise Operations
+
+Bitwise operations are widely used in system programming. It happens because working with computer networks and peripheral devices requires translating data from one format to another.
+
+Here is an example. Suppose you are working with a peripheral device. The byte order on the device is big-endian. Your computer uses another order, which is little-endian.
+
+Now suppose that the device sends an unsigned integer to the computer. It equals 0xAABB in hexadecimal. Because of the different byte orders, your computer cannot receive the integer as it is. You should convert the integer to 0xBBAA. Then the computer reads it correctly.
+
+Here are the steps for converting the 0xAABB integer into the computer's byte order:
+
+1. Read the lowest (rightmost) byte of the integer and shift it to the left by eight bits, i.e. one byte. The following Bash command does that:
+{line-numbers: false, format: Bash}
+```
+little=$(((0xAABB & 0x00FF) << 8))
+```
+
+2. Read the highest (leftmost) byte of the number and shift it to the right by eight bits. Here is the command:
+{line-numbers: false, format: Bash}
+```
+big=$(((0xAABB & 0xFF00) >> 8))
+```
+
+3. Connect the highest and lowest bytes with the bitwise OR this way:
+{line-numbers: false, format: Bash}
+```
+result=$((little | big))
+```
+
+Bash wrote the converting result to the `result` variable. It is equal to 0xBBAA.
+
+The following command does all steps of our calculation at once:
+{line-numbers: false, format: Bash}
+```
+value=0xAABB
+result=$(( ((value & 0x00FF) << 8) | ((value & 0xFF00) >> 8) ))
+```
+
+Here is another example of using bitwise operations. They are essential for computing bitmasks. We are already familiar with file permission masks in the Unix environment. Suppose that a file has the permissions "-rw-r--r--". This mask looks like this in binary:
+{line-numbers: false}
+```
+0000 0110 0100 0100
+```
+
+We want to check if the owner of the file has the right to execute it. We can do that by calculating the bitwise AND for the file's permissions and the mask 0000 0001 0000 0000 0000. Here is the calculation:
+{line-numbers: false}
+```
+0000 0110 0100 0100 & 0000 0001 0000 0000 = 0000 0000 0000 0000 = 0
+```
+
+The result is zero. It means that the owner cannot execute the file.
+
+The bitwise OR adds bits to the bitmask. We can add the execution permission to the file owner. The calculation looks like this:
+{line-numbers: false}
+```
+0000 0110 0100 0100 | 0000 0001 0000 0000 = 0000 0111 0100 0100 = -rwxr--r--
+```
+
+I> The numbering of bits in an integer starts at zero. It usually goes from right to left.
+
+We performed the bitwise OR for the file's permissions and the mask 0000 0001 0000 0000 0000. The only eighth bit of the mask equals one. We use it to change the eighth bit of the permissions. This bit can have any value. It does not matter in this calculation. The bitwise OR sets it to one regardless of its current value. If we do not change the permissions bit, the corresponding bit in the mask equals zero.
+
+The bitwise AND removes bits from the bitmask. For example, let's remove the file owner's permission to write. Here is the calculation:
+{line-numbers: false}
+```
+0000 0111 0100 0100 & 1111 1101 1111 1111 = 0000 0101 0100 0100 = -r-xr--r--
+```
+
+We set the ninth bit of the permissions to zero. To do that, we calculate the bitwise AND for the permissions and the mask 1111 1101 1111 1111 1111. The ninth bit of the mask equals zero and all other bits are ones. Therefore, the bitwise AND changes the ninth bit of the permissions only.
+
+The OS performs mask operations every time you access a file. This way, it checks your access rights.
+
+Here is the last example of using bitwise operations. Until recently, software developers used bit shifts as an alternative to multiplication and division by a power of two. For example, the bit shift to the left by two bits corresponds to multiplication by 2^2^ (i.e. four). Let's check it with the following Bash command:
+{line-numbers: true, format: Bash}
+```
+$ echo $((3 << 2))
+12
+```
+
+The bit shift gave a correct result. Multiplying 3 by 4 is equal to 12.
+
+Such tricks reduce the number of processor clock cycles to perform multiplication and division. These optimizations are now unnecessary due to the development of compilers and processors. Compilers automatically select the fastest assembly instructions when generating code. Processors execute these instructions in parallel with [several threads](https://en.wikipedia.org/wiki/Hyper-threading). Therefore, today software developers tend to write code that is easier to read and understand. They do not care about optimizations as they do it before. Multiplication and division operations are better for reading the code than bit shifts.
+
+Cryptography and computer graphics algorithms use bit operations a lot.
+
+### Logical Operations
+
+The [[ operator is inconvenient for comparing integers in the `if` statement. This operator uses two-letter abbreviations for expressing the relations between numbers. For example, the `-gt` abbreviation means greater. The (( operator fits the `if` condition better. You can use usual number comparison symbols (>, <, =) there.
+
+Here is an example. Suppose that you want to compare the variable with 5. The following `if` construction does that:
+{line-numbers: true, format: Bash}
+```
+if ((var < 5))
+then
+  echo "The variable is less than 5"
+fi
+```
+
+Here we use the (( operator in the arithmetic evaluation form. You can replace it by the `let` command. It provides the same result:
+{line-numbers: true, format: Bash}
+```
+if let "var < 5"
+then
+  echo "The variable is less than 5"
+fi
+```
+
+However, you should always prefer to use the (( operator.
+
+There is an important difference between arithmetic evaluation and expansion. According to the POSIX standard, any program or command returns the zero exit status when executed successfully. It returns the status between 1 and 255 in case of an error. The shell interprets the exit status like this: zero means "true" and nonzero means "false". If you apply this rule, the logical result of the arithmetic expansion is inverted. There is no inversion for the arithmetic evaluation result.
+
+Arithmetic evaluation is synonymous with the `let` command. Therefore, it follows the POSIX standard just like any other command. The shell executes the arithmetic expansion in the context of another command. Thus, its result depends on the interpreter's implementation.
+
+Suppose that you use the (( operator in the arithmetic expansion form. Then Bash interprets its result this way: if the condition in the (( operator equals "true", it returns one. Otherwise, the operator returns zero. The C language deduces logical expressions in the same way.
+
+Here is an example for comparing the results of arithmetic expansion and evaluation. There is a Bash command that compares a variable with a number. It looks like this:
+{line-numbers: false, format: Bash}
+```
+((var < 5)) && echo "The variable is less than 5"
+```
+
+There is an arithmetic evaluation in this command. Therefore, if the variable is less than 5, the (( operator succeeds. It returns the zero exit status according to the POSIX standard.
+
+When you use the operator (( in the form of an arithmetic expansion, it gives another result. The following command makes the same comparison:
+{line-numbers: false, format: Bash}
+```
+echo "$((var < 5))"
+```
+
+When the condition is true, the `echo` command prints the number one. If you are familiar with the C language, you expect the same result.
+
+Logical operations are used in the arithmetic evaluation form of the (( operator in most cases. They work in the same way as the Bash logical operators.
+
+Here is an example of applying the logical operation. The following `if` condition compares the variable with two numbers:
+{line-numbers: true, format: Bash}
+```
+if ((1 < var && var < 5))
+then
+  echo "The variable is less than 5 but greater than 1"
+fi
+```
+
+This condition is true when both expressions are true.
+
+The logical OR works similarly:
+{line-numbers: true, format: Bash}
+```
+if ((var < 1 || 5 < var))
+then
+  echo "The variable is less than 1 or greater than 5"  
+fi
+```
+
+The condition is true if at least one of the expressions is true.
+
+The logical NOT is rarely applied to numbers themselves. It negates an expression in most cases. If you apply the logical NOT to a number, its output corresponds to the POSIX standard. In other words, zero means "true" and nonzero means "false". Here is an example:
+{line-numbers: true, format: Bash}
+```
+if ((! var))
+then
+  echo "The vraiable equals true or zero"
+fi
+```
+
+This condition is true if the variable is zero.
