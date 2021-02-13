@@ -1203,3 +1203,101 @@ fi
 ```
 
 This condition is true if the variable is zero.
+
+### Increment and Decrement
+
+The increment and decrement operations first appeared in the [programming language B](https://en.wikipedia.org/wiki/B_(programming_language)). Ken Thompson and Dennis Ritchie developed it in 1969 while working at Bell Labs. Dennis Ritchie later transferred these operations to his new language called C. Bash copied them from C.
+
+First, let's consider the assignment operations. It helps to get the meaning of increment and decrement. A regular assignment in arithmetic evaluation looks like this:
+{line-numbers: false, format: Bash}
+```
+((var = 5))
+```
+
+This command assigns the integer 5 to the variable.
+
+Bash allows you to combine an assignment with arithmetic or bitwise operation. Here is an example of simultaneous addition and assignment:
+{line-numbers: false, format: Bash}
+```
+((var += 5))
+```
+
+The command performs two actions:
+
+1. It adds the integer 5 to the current value of the `var` variable.
+
+2. It writes the result to the variable `var`.
+
+All other assignment operations work the same way. First, they do a mathematical or bitwise operation. Second, they assign the result to the variable. The assignments' syntax makes the code shorter and clearer.
+
+Now we are ready to consider the increment and decrement operations. They have two forms: postfix and prefix. They are written in different ways. The ++ and -- signs come after the variable name in the postfix form. They come before the variable name in the prefix form.
+
+Here is an example of the prefix increment:
+{line-numbers: false, format: Bash}
+```
+((++var))
+```
+
+This command provides the same result as the following assignment operation:
+{line-numbers: false, format: Bash}
+```
+((var+=1))
+```
+
+The increment operation increases the variable's value by one. The decrement operation decreases it by one.
+
+Why does it make sense to introduce separate operations for adding and subtracting one? The Bash language has similar assignments like += and -=.
+
+The most probable reason to add increment and decrement to the programming language is a [loop counter](https://en.wikipedia.org/wiki/For_loop#Loop_counters). This counter keeps the number of loop iterations. When you want to interrupt the loop, you check its counter in a condition. The result defines if you should interrupt the loop or not.
+
+Increment and decrement make it easier to serve the loop counter. Besides that, modern processors perform these operations at the hardware level. Therefore, they work faster than addition and subtraction combined with the assignment.
+
+What is the difference between prefix and postfix forms of increment? If the expression consists only of an increment operation, it gives the same result for both forms.
+
+For example, the following two commands increase the variable's value by one:
+{line-numbers: true, format: Bash}
+```
+((++var))
+((var++))
+```
+
+The difference between the increment forms appears when assigning the result to a variable. Here is an example:
+{line-numbers: true, format: Bash}
+```
+var=1
+((result = ++var))
+```
+
+After these two commands, both variables `result` and `var` store the integer 2. It means that the prefix increment first adds one and then returns the result.
+
+If you break the prefix increment into steps, you get the following commands:
+{line-numbers: true, format: Bash}
+```
+var=1
+((var = var + 1))
+((result = var))
+```
+
+The postfix increment behaves differently. Here we change the increment's form in our example:
+{line-numbers: true, format: Bash}
+```
+var=1
+((result = var++))
+```
+
+These commands write the integer 1 to the `result` variable and the integer 2 to the `var` variable. Thus, postfix increment returns the value first. Then it adds one.
+
+If you break the postfix increment into steps, you get the following commands:
+{line-numbers: true, format: Bash}
+```
+var=1
+((tmp = var))
+((var = var + 1))
+((result = tmp))
+```
+
+Note the order of steps in the postfix increment. First, it increments the `var` variable by one. Then it returns the past value of `var`. Therefore, the increment requires the temporary variable `tmp` to store the past value.
+
+The postfix and prefix forms of decrement work similarly to increment.
+
+Always use the prefix increment and decrement instead of the postfix form. First, the CPU performs them faster. The reason is it does not need to save the past value of the variable in the registers. Second, it is easier to make an error using the postfix form. It happens because of the non-obvious assignment order.
