@@ -1301,3 +1301,53 @@ Note the order of steps in the postfix increment. First, it increments the `var`
 The postfix and prefix forms of decrement work similarly to increment.
 
 Always use the prefix increment and decrement instead of the postfix form. First, the CPU performs them faster. The reason is it does not need to save the past value of the variable in the registers. Second, it is easier to make an error using the postfix form. It happens because of the non-obvious assignment order.
+
+### Ternary Operator
+
+The ternary operator is also known as the conditional operator and **ternary if**. It first appeared in the programming language [ALGOL](https://en.wikipedia.org/wiki/ALGOL). The operator turned out to be convenient and in demand by programmers. Therefore, the languages of the next generation ([BCPL](https://en.wikipedia.org/wiki/BCPL) and C) inherited ternary if. Then it comes to almost all modern languages: C++, C#, Java, Python, PHP, etc.
+
+A ternary operator is a compact form of the `if` statement.
+
+Here is an example. Suppose that there is the following `if` statement in the script:
+{line-numbers: true, format: Bash}
+```
+if ((var < 10))
+then
+  ((result = 0))
+else
+  ((result = var))
+fi
+```
+
+Here the `result` variable gets the zero value if `var` is less than 10. Otherwise, `result` gets the value of `var`.
+
+The ternary operator can provide the same behavior as our `if` statement. The operator looks like this:
+{line-numbers: false, format: Bash}
+```
+((result = var < 10 ? 0 : var))
+```
+
+Here we replaced six lines of the `if` statement with one line.
+
+A ternary operator consists of a conditional expression and two actions. It looks like this in the general form:
+{line-numbers: false}
+```
+(( CONDITION ? ACTION_1 : ACTION_2 ))
+```
+
+If the CONDITION is true, Bash executes the ACTION_1. Otherwise, it executes the ACTION_2. This behavior matches the `if` statement. Let's write it down in the general form too:
+{line-numbers: true}
+```
+if CONDITION
+then
+  ACTION_1
+else
+  ACTION_2
+fi
+```
+
+Compare the ternary operator and the `if` statement.
+
+Unfortunately, Bash only allows the ternary operator in arithmetic evaluation and expansion. It means that the operator accepts only arithmetic expressions as actions. You cannot call commands and utilities as it happens in the code blocks of the `if` statement. There is no such restriction in other programming languages.
+
+Use the ternary operator as often as possible. It is considered a good practice. The operator makes your code compact and easy to read. The less code has less room for potential errors.
