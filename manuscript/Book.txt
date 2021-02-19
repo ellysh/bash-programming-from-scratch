@@ -20,3 +20,4 @@ mainmatter:
   BashScripting/variables.md
   BashScripting/conditional-statement.md
   BashScripting/arithmetic-expression.md
+  BashScripting/loop-operators.md

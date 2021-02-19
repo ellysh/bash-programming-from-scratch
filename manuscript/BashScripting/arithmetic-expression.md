@@ -1151,7 +1151,7 @@ There is an important difference between arithmetic evaluation and expansion. Ac
 
 Arithmetic evaluation is synonymous with the `let` command. Therefore, it follows the POSIX standard just like any other command. The shell executes the arithmetic expansion in the context of another command. Thus, its result depends on the interpreter's implementation.
 
-Suppose that you use the (( operator in the arithmetic expansion form. Then Bash interprets its result this way: if the condition in the (( operator equals "true", it returns one. Otherwise, the operator returns zero. The C language deduces logical expressions in the same way.
+Suppose that you use the (( operator in the arithmetic expansion form. Then Bash interprets its result this way: if the condition in the (( operator equals "true", it returns one. Otherwise, the operator returns zero. The C language deduces Boolean expressions in the same way.
 
 Here is an example for comparing the results of arithmetic expansion and evaluation. There is a Bash command that compares a variable with a number. It looks like this:
 {line-numbers: false, format: Bash}

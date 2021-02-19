@@ -62,7 +62,7 @@ cp -f ~/photo.tar.bz2 /d &&
   echo "cp - FAILS" >> results.txt
 ```
 
-Let's consider how this command works. For convenience, we will rewrite it in the form of a logical expression. The Latin letter replaces each command and utility call. Then we get the following result:
+Let's consider how this command works. For convenience, we will rewrite it in the form of a Boolean expression. The Latin letter replaces each command and utility call. Then we get the following result:
 {line-numbers: false, format: Bash}
 ```
 B && O1 || F1 && C && O2 || F2
@@ -101,7 +101,7 @@ B && O1 || F1 && C && O2 || F2
 
 Why does Bash call the `cp` utility after an error in `bsdtar`? It happens because the `echo` command always succeeds. It returns zero code, which means "true". Thus, the "O1", "F1", "O2" and "F2" operands are always "true".
 
-Now we focus on the `bsdtar` call and corresponding `echo` commands. They match the following part of the logical expression:
+Now we focus on the `bsdtar` call and corresponding `echo` commands. They match the following part of the Boolean expression:
 {line-numbers: false, format: Bash}
 ```
 B && O1 || F1

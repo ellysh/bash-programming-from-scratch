@@ -1,105 +1,107 @@
-## Операторы цикла
+## Loop Constructs
 
-Условные операторы управляют [**порядком выполнения**](https://ru.wikipedia.org/wiki/Порядок_выполнения) программы. Порядок выполнения — это последовательность исполнения операторов, команд и инструкций программы.
+Conditional statements manage the [**control flow**](https://en.wikipedia.org/wiki/Control_flow) of a program. The control flow is the order in which the operators and commands of a program are executed.
 
-Условный оператор выбирает ветвь исполнения в зависимости от логического выражения. Иногда этого недостаточно. Нужны дополнительные средства для управления порядком выполнения. [**Операторы цикла**](https://ru.wikipedia.org/wiki/Цикл_(программирование)) решают задачи, с которыми не справляются условные операторы.
+The conditional operator chooses a branch of execution depending on the Boolean expression. This operator is not enough sometimes. You want additional features to manage the control flow. [**Loop constructs**](https://en.wikipedia.org/wiki/Control_flow#Loops) solve tasks that the conditional operator cannot handle.
 
-Оператор цикла многократно повторяет один и тот же блок команд. Однократное выполнение этого блока называется **итерацией цикла**. На каждой итерации проверяется условие цикла. В зависимости от результата, цикл продолжается или прекращается.
+The loop construct repeats the same block of commands multiple times. The single execution of this block is called the **loop iteration**. At each iteration, the loop checks its condition. The check result defines to perform the next iteration or not.
 
-### Повторение команд
+### Repetition of Commands
 
-Зачем в программе повторять один и тот же блок команд? Чтобы ответить на этот вопрос, рассмотрим несколько примеров.
+Why do you need to repeat the same block of commands in a program? Several examples will help us to answer this question.
 
-Утилита find нам уже знакома. Она ищет файлы и каталоги на жёстком диске. Если в вызов утилиты добавить опцию `-exec`, можно указать действие. Оно выполнится над каждым найденным объектом.
+We are already familiar with the `find` utility. It looks for files and directories on the hard disk. If you add the `-exec` option to the `find` call, you can specify an action. The utility performs this action on each object found.
 
-Например, следующая команда удалит все PDF документы пользователя в каталоге `~/Documents`:
+For example, the following command deletes all PDF documents in the `~/Documents` directory:
 {line-numbers: false, format: Bash}
 ```
 find ~/Documents -name "*.pdf" -exec rm {} \;
 ```
 
-В этом случае find несколько раз вызовет утилиту rm. На каждом вызове ей передаётся очередной результат поиска find. Получается, что утилита find выполняет оператор цикла. Цикл завершится после обработки всех найденных файлов.
+In this case, `find` calls the `rm` utility several times. It passes the next found file on each call. It means that the `find` utility executes a loop. The loop ends when all the files found have been processed.
 
-Утилита du — это ещё один пример повторения действий. Утилита оценивает объём использованного дискового пространства на дисках. У du есть необязательный параметр. Это путь, с которого начинается оценка.
+The `du` utility is another example of the repetition of commands. The utility estimates the amount of disk space used on the disks. It has an optional parameter. The parameter sets the path where the estimation starts.
 
-Вот пример вызова утилиты:
+You can call `du` like this, for example:
 {line-numbers: false, format: Bash}
 ```
 du ~/Documents
 ```
 
-Для выполнения этой команды утилита рекурсивно обойдёт все подкаталоги `~/Documents`. Размер каждого найденного файла добавится к конечному результату. Это означает, что инкремент результата оценки повторяется снова и снова.
+Here the utility recursively traverses all `~/Documents` subdirectories. It adds the size of each file found to the final result. This way, incrementing the result value repeats over and over again.
 
-Утилита du выполняет цикл для прохода по всем файлам в каждом найденном ею каталоге. Размер каждого файла читается и прибавляется к конечному результату.
+The `du` utility has an internal loop. It traverses over all files and subdirectories. There are the same actions on each loop iteration. The only difference is the checked file system object.
 
-Повторение операций часто встречается в математических расчётах. Каноничный пример — это вычисление [**факториала**](https://ru.wikipedia.org/wiki/Факториал). Факториалом числа N называется произведение последовательных натуральных чисел от 1 до N включительно.
+Repetition of operations happens in mathematical calculations often. A canonical example is the calculation of [**factorial**](https://en.wikipedia.org/wiki/Factorial). The factorial of the number N is a multiplication of natural numbers from 1 to N inclusive.
 
-Например, факториал числа 4 вычисляется так:
+Here is an example of calculating the factorial of number 4:
 {line-numbers: false, format: Bash}
 ```
 4! = 1 * 2 * 3 * 4 = 24
 ```
 
-Факториал легко вычислить с помощью оператора цикла. Для этого цикл должен последовательно перебрать целые числа от 1 до N. Каждое число умножается на конечный результат. В этом случае повторяется операция умножения.
+You can calculate the factorial easily by using the loop operator. The loop should pass through the integers from 1 to N in sequence. Multiply each integer to the final result on the loop iteration. This way, you repeat the multiplication operation several times.
 
-В качестве последнего примера повторения действий рассмотрим события в компьютерной системе.
+Here is the last example of repetition actions in a computer system. Repetition helps to manage some events.
 
-Представьте, что вы пишете программу. Она загружает на компьютер файлы из интернета. Для начала программа устанавливает соединение с сервером. Если сервер не отвечает, у программы есть два варианта действий. Первый — завершить выполнение с ненулевым кодом возврата. Второй — ожидать ответа. Второй вариант предпочтительнее. Есть много причин, по которым ответ от сервера задерживается. Например, перегружена сеть или сам сервер. Двух-трёхсекундного ожидания будет достаточно, чтобы получить ответ. Тогда наша программа продолжит работу.
+Suppose that you write a program. It downloads files to your computer from the Internet. First, the program establishes a connection to a server. If the server doesn't respond, the program has two options to do. The first one is to terminate with a non-zero exit status. The second option is to wait for the server's response. This option is preferable. There are many reasons why the server's response delays. There is an overload of the network or the server, for example. A couple of seconds waiting is enough to get a response. Then our program can continue to work.
 
-Возникает вопрос: как в программе ожидать наступление события? Самый простой способ — использовать оператор цикла. Условием выхода из него будет наступление ожидаемого события. В нашем примере цикл завершится при получении ответа от сервера. Цикл продолжается пока событие не наступило. При этом его блок команд пустой. Такая техника называется **активным ожиданием** событий или [**busy-waiting**](https://en.wikipedia.org/wiki/Busy_waiting).
+Now the question arises: how can you wait for the event to occur in the program? The easiest way is to use the loop operator. Its condition should check if the event occurs. In this case, the operator stops.
 
-Вместо пустого блока команд в цикле ожидания можно останавливать программу на короткое время. Тогда ОС сможет работать над другой задачей, пока ваша программа остановлена.
+Let's come back to our example. The loop should stop when the program receives a response from the server. While it does not happen, the loop continues. You do not need any actions on each loop's iteration. Thus, you can leave this code block empty. This technique is called [**busy waiting**](https://en.wikipedia.org/wiki/Busy_waiting).
 
-Мы рассмотрели несколько примеров, когда программа повторяет одни и те же действия. Запишем задачи, решаемые в каждом примере:
+You can optimize the busy waiting. Replace the loop's empty code block with a command that stops the program for a short while. This way, OS gets a chance to execute another task while your program is waiting.
 
-1. Однообразная обработка нескольких сущностей. Например, результатов поиска утилиты find.
+We have considered several examples where the program repeats the same actions. Let's write down the tasks that we have solved in each example. Here is the list:
 
-2. Накопление конечного результата из промежуточных данных. Например, сбор статистики утилитой du.
+1. Process of multiple entities monotonously. The `find` utility processes the search results this way.
 
-3. Математические расчёты. Например, вычисление факториала.
+2. Apply the intermediate data to accumulate the final result. The `du` utility does it for collecting statistics.
 
-4. Ожидание наступления какого-либо события. Например, получение ответа от сервера по сети.
+3. Mathematical calculations. You can calculate factorial using the loop operator.
 
-Список далеко не полный. Это наиболее часто встречающиеся в программировании задачи, для решения которых требуются оператор цикла.
+4. Wait for some event to happen. You can wait for the server's response in a busy waiting loop.
 
-### Оператор while
+The list is far from being complete. These are just the most common programming tasks that require a loop operator.
 
-В Bash есть два оператора цикла: while и for. Сначала познакомимся с оператором while. Он проще чем for.
+### While Statement
 
-Синтаксис while напоминает условный оператор if. В общем виде он выглядит так:
+There are two loop operators in Bash: `while` and `for`. First, we will consider the `while` statement. It works simpler than `for`.
+
+The `while` syntax resembles the `if` statement. It looks like this in general:
 {line-numbers: true, format: Bash}
 ```
-while УСЛОВИЕ
+while CONDITION
 do
-    ДЕЙСТВИЕ
+  ACTION
 done
 ```
 
-Оператор можно записать в одну строку:
+You can write the `while` statement in one line:
 {line-numbers: false, format: Bash}
 ```
-while УСЛОВИЕ; do ДЕЙСТВИЕ; done
+while CONDITION; do ACTION; done
 ```
 
-В конструкции while УСЛОВИЕМ и ДЕЙСТВИЕМ может быть одна команда или блок команд. Точно так же как в операторе if. ДЕЙСТВИЕ называется **телом цикла** (loop body).
+The CONDITION is a single command or block of commands. The same is true for the ACTION. It resembles the `if` statement again. The ACTION is called the **loop body**.
 
-Выполнение while начинается с проверки УСЛОВИЯ. Если команда УСЛОВИЯ вернула нулевой код, оно считается истинным. В этом случае выполняется ДЕЙСТВИЕ. Дальше опять проверяется УСЛОВИЕ. Если оно по-прежнему истинно, снова выполняется ДЕЙСТВИЕ. Цикл прервётся тогда, когда УСЛОВИЕ станет ложным.
+Bash checks the CONDITION of the `while` statement first. If the CONDITION command returns null exist status, it equals "true". In this case, Bash executes the ACTION. Then it checks the CONDITION again. If it is still true, the ACTION is performed again. The loop execution stops when the CONDITION becomes "false".
 
-Используйте цикл while, когда количество итераций заранее неизвестно. Например, при активном ожидании какого-то события.
+Use the while loop when you do not know the number of iterations beforehand. The example is busy waiting for some event.
 
-Для примера напишем скрипт. Он проверит доступность сервера в интернете. Для такой проверки отправим серверу запрос. Как только сервер пришлёт ответ, наш скрипт выведет сообщение и завершится.
+Let's write a script with the `while` statement. It should check if the server is available on the Internet. The simplest way for that is by sending a request to the server. When the server replies, the script displays a message and stops.
 
-Чтобы отправить серверу запрос, вызовем утилиту [ping](https://ru.wikipedia.org/wiki/Ping). Утилита использует [ICMP](https://ru.wikipedia.org/wiki/ICMP) **протокол**. Протокол — это соглашение о формате сообщений между компьютерами в сети. ICMP протокол описывает формат сообщений для обслуживания сети. Они нужны, например, чтобы проверить доступность какого-то компьютера.
+We can call the [`ping`](https://en.wikipedia.org/wiki/Ping_(networking_utility)) utility to send a request to the server. The utility uses the [ICMP](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol) **protocol**. The protocol is an agreement for the format of the messages between the computers on the network. The ICMP protocol describes the format of the messages to serve the network. You need them, for example, to check if some computer is available.
 
-В качестве входного параметра утилита ping принимает [URL](https://ru.wikipedia.org/wiki/URL) или [IP-адрес](https://ru.wikipedia.org/wiki/IP-адрес) целевого **хоста**. Хостом называется любой подключённый к сети компьютер или устройство.
+The `ping` utility takes one mandatory input parameter. It is [URL](https://en.wikipedia.org/wiki/URL) or [IP address](https://en.wikipedia.org/wiki/IP_address) of the target **host**. A host is any computer or device connected to the network.
 
-Команда для вызова утилиты ping выглядит так:
+Here is the command to call the `ping` utility:
 {line-numbers: false, format: Bash}
 ```
 ping google.com
 ```
 
-В качестве целевого хоста мы указали сервер Google. Утилита будет отправлять ему ICMP-сообщения. Сервер будет отвечать на каждое из них. Вывод утилиты выглядит так:
+We have specified the Google server as the target host. The utility sends ICMP messages to it. The server replies to each of them. The output of the utility looks like this:
 {line-numbers: true, format: Bash}
 ```
 PING google.com (172.217.21.238) 56(84) bytes of data.
@@ -107,102 +109,106 @@ PING google.com (172.217.21.238) 56(84) bytes of data.
 64 bytes from fra16s13-in-f14.1e100.net (172.217.21.238): icmp_seq=2 ttl=51 time=18.5 ms
 ```
 
-Это информация о каждом отправленном ICMP-сообщении и ответе на него. Сейчас утилита работает в бесконечном цикле. Чтобы её остановить, нажмите комбинацию клавиш Ctrl+C.
+You see information about each ICMP message sent by the utility. The "time" field means the delay between sending the request and receiving the server's response.
 
-Чтобы проверить доступность сервера, достаточно отправить ему одно ICMP-сообщение. Укажем это с помощью опции `-c` утилиты ping. Команда станет выглядеть так:
+The utility runs in an infinite loop by default. You can stop it by pressing Ctrl+C.
+
+You do not need to send several requests to check the availability of a server. It is sufficient to send a single ICMP message instead. The `-c` option of the `ping` utility specifies the number of messages to send. Here is an example of how to use it:
 {line-numbers: false, format: Bash}
 ```
 ping -c 1 google.com
 ```
 
-Если сервер `google.com` доступен, утилита вернёт код ноль. В противном случае код будет ненулевым.
+If the `google.com` server is available, the utility returns the zero exit status. Otherwise, it returns non-zero.
 
-Утилита ping ожидает ответ от сервера, пока её не прервёт пользователь. С помощью опции `-W` ограничим время ожидания одной секундой. Получится такая команда:
+The `ping` utility waits for the server's response until you do not interrupt it. The `-W` option limits the waiting time to one second. Using the option, we get the following command:
 {line-numbers: false, format: Bash}
 ```
 ping -c 1 -W 1 google.com
 ```
 
-У нас готово условие для конструкции while. Запишем конструкцию целиком:
+Now we have the condition for the `while` statement. Let's write the whole statement like this:
 {line-numbers: true, format: Bash}
 ```
 while ! ping -c 1 -W 1 google.com &> /dev/null
 do
-    sleep 1
+  sleep 1
 done
 ```
 
-Нас не интересует вывод утилиты ping. Поэтому перенаправим его в файл `/dev/null`.
+The output of the `ping` utility is not interested in our case. Therefore, we redirect it to the `/dev/null` file.
 
-В условии цикла результат вызова ping инвертирован. Поэтому тело цикла выполняется до тех пор, пока утилита возвращает отличный от нуля код. Другими словами цикл выполняется, пока сервер недоступен.
+We invert the `ping` result in the `while` condition. Therefore, Bash executes the loop's body as long as the utility returns a non-zero exit status. It means that the loop continues as long as the server is unavailable.
 
-В теле цикла вызывается утилита sleep.
-Она останавливает выполнение скрипта на указанное количество секунд. В нашем примере остановка длится одну секунду.
+We call the `sleep` utility in the loop's body. It stops the script for the specified number of seconds. The stop lasts for one second in our case.
 
-I> Для параметра утилиты sleep можно указать суффикс. Секундам соответствует суффикс s (например, 5s), минутам — m, часам — h и дням — d.
+I> You can specify a suffix for the parameter when using the `sleep` utility. It defines units of time. The suffix
+"s" matches seconds. It is "m" for minutes, "h" for hours and "d" for days.
 
-Листинг 3-18 демонстрирует полный скрипт для проверки доступности сервера.
+Listing 3-18 shows a complete script for checking server availability.
 
-{caption: "Листинг 3-18. Скрипт для проверки доступности сервера", line-numbers: true, format: Bash}
+{caption: "Listing 3-18. Script for checking server availability", line-numbers: true, format: Bash}
 ![`while-ping.sh`](code/BashScripting/while-ping.sh)
 
-У конструкции while есть альтернативная форма until. В ней ДЕЙСТВИЕ выполняется до тех пор, пока УСЛОВИЕ ложно. То есть цикл выполняется, пока УСЛОВИЕ возвращает отличный от нуля код. С помощью формы until можно инвертировать условие while.
+The `while` statement has an alternative form called `until`. Here the ACTION is executed as long as the CONDITION is "false". It means that the loop continues as long as the CONDITION returns a non-zero exit status. Use the `until` statement when you want to invert the condition of the `while` loop.
 
-В общем виде конструкция until выглядит так:
+Here is the `until` statement in general:
 {line-numbers: true}
 ```
-until УСЛОВИЕ
+until CONDITION
 do
-    ДЕЙСТВИЕ
+  ACTION
 done
 ```
 
-Запись unitl в одну строку похожа на while:
+You can write it in one line the same way as `while`:
 {line-numbers: false}
 ```
-until УСЛОВИЕ; do ДЕЙСТВИЕ; done
+until CONDITION; do ACTION; done
 ```
 
-Заменим конструкцию while на until в листинге 3-18. Для этого удалим отрицание результата утилиты ping. Получится скрипт, приведённый в листинге 3-19.
+Let's replace the `while` statement with `until` in Listing 3-18. You should remove the negation of the `ping` utility result for that. Listing 3-19 shows the resulting script.
 
-{caption: "Листинг 3-19. Скрипт для проверки доступности сервера", line-numbers: true, format: Bash}
+{caption: "Listing 3-19. Script for checking server availability", line-numbers: true, format: Bash}
 ![`until-ping.sh`](code/BashScripting/until-ping.sh)
 
-Поведение скриптов в листингах 3-18 и 3-19 полностью совпадает.
+The scripts in Listing 3-18 and Listing 3-19 behave the same.
 
-Выбирайте форму while или until в зависимости от условия цикла. Старайтесь составлять условия без отрицаний. Отрицания усложняют чтение кода.
+Choose the `while` or `until` statement depending on the loop condition. Try to avoid negations in conditions. Negations make the code harder to read.
 
-#### Бесконечный цикл
+#### Infinite Loop
 
-Конструкция while часто применяется в [**бесконечных циклах**](https://ru.wikipedia.org/wiki/Бесконечный_цикл). Такие циклы выполняются всё время, пока работает программа.
+The `while` statement fits well to implement [**infinite loops**](https://en.wikipedia.org/wiki/Infinite_loop). This kind of loop continues as long as the program is running.
 
-Бесконечные циклы встречаются в системном ПО, которое работает до отключения питания компьютера. Например, в ОС или прошивках микроконтроллеров. Такие циклы также применяются в компьютерных играх и программах-мониторах для сбора статистики.
+You can find infinite loops in system software that runs until the computer is powered off. Examples are OS or microcontroller firmware. Computer games and monitor programs for collecting statistics also use such loops.
 
-Цикл while станет бесконечным, если его условие всегда истинно. Самый простой способ задать такое условие — вызвать встроенную команду интерпретатора true. Например, так:
+The `while` loop becomes infinite if its condition is always true. The easiest way to set such a condition is to call the `true` command. Here is an example of using it:
 {line-numbers: true, format: Bash}
 ```
 while true
 do
-    sleep 1
+  sleep 1
 done
 ```
 
-Команда true всегда возвращает истину. То есть её код возврата ноль. У true есть симметричная команда false. Она всегда возвращает единицу, то есть ложь.
+The `true` command always returns the "true" value. It means that it returns zero exit status. There is the symmetric command called `false`. It always returns exit status one that matches the "false" value.
 
-I> В большинстве языков программирования true и false являются [**литералами**](https://ru.wikipedia.org/wiki/Литерал_(информатика)). Литералы — это зарезервированными слова. В случае true и false они обозначают значения истина и ложь.
+I> Words "true" and "false" are [**literals**](https://en.wikipedia.org/wiki/Literal_(computer_programming)) in most programming languages. Literals are reserved words for representing fixed values. In our case, they represent the "true" and "false" values.
 
-Команду true в условии while можно заменить на двоеточие. Тогда получим следующее:
+You can replace the `true` command in the `while` condition with a colon. This way, you get the following:
 {line-numbers: true, format: Bash}
 ```
 while :
 do
-    sleep 1
+  sleep 1
 done
 ```
 
-Команда двоеточие — это синонимом true. Она нужна для [совместимости](https://stackoverflow.com/questions/3224878/what-is-the-purpose-of-the-colon-gnu-bash-builtin) с Bourne shell. В нём команды true и false отсутствуют. В POSIX-стандарт включены все три команды: двоеточие, true и false.
+The colon is synonymous with the `true` command. The synonymous solves the [compatibility task](https://stackoverflow.com/questions/3224878/what-is-the-purpose-of-the-colon-gnu-bash-builtin) with the Bourne shell. This shell does not have `true` and `false` commands. Therefore, Bourne shell scripts use colons and Bash should support them.
 
-Рассмотрим пример бесконечного цикла. Напишем скрипт для вывода статистики об использовании дискового пространства. Для этого воспользуемся утилитой df. При вызове без параметров она выведет следующее:
+The POSIX standard includes all three commands: colon, `true`, and `false`. However, avoid using a colon in your scripts. It is a deprecated syntax that makes your code harder to understand.
+
+Here is an example of an infinite loop. We want to write a script that displays statistics of disk space usage. The `df` utility can help us in this case. It prints the following when called without parameters:
 {line-numbers: true, format: Bash}
 ```
 $ df
@@ -211,7 +217,7 @@ C:/msys64       41940988  24666880  17274108  59% /
 Z:             195059116 110151748  84907368  57% /z
 ```
 
-Занятое (Used) и свободное (Available) дисковое пространство указано в байтах. Добавим в вызов утилиты опцию `-h`. Тогда вместо байтов получим килобайты, мегабайты, гигабайты и терабайты. Также добавим опцию `-T`. Она покажет тип файловой системы для каждого диска. Вывод утилиты станет таким:
+The utility shows "Used" and "Available" disk space in bytes. We can add the `-h` option to the utility call. Then it shows kilobytes, megabytes, gigabytes and terabytes instead of bytes. Also, we add an option `-T`. It shows the file system type for each disk. This way, we get the following output:
 {line-numbers: true, format: Bash}
 ```
 $ df -hT
@@ -220,119 +226,119 @@ C:/msys64      ntfs   40G   24G   17G  59% /
 Z:             hgfs  187G  106G   81G  57% /z
 ```
 
-Чтобы вывести информацию обо всех точках монтирования, добавьте опцию `-a`.
+If you want to get information about all mount points, add the `-a` option.
 
-Напишем бесконечный цикл, в теле которого вызывается утилита df. Получится простейший скрипт для наблюдения за файловой системой. Скрипт приведён в листинге 3-20.
+Now let's write an infinite loop. It calls the `df` utility on each iteration. This way, we get a simple script to monitor the file system. Listing 3-20 shows the script.
 
-{caption: "Листинг 3-20. Скрипт для наблюдения за файловой системой", line-numbers: true, format: Bash}
+{caption: "Listing 3-20. The script to monitor the file system", line-numbers: true, format: Bash}
 ![`while-df.sh`](code/BashScripting/while-df.sh)
 
-В начале цикла вызывается утилита clear. Она очищает окно терминала от текста. Благодаря этому, в окне останется вывод нашего скрипта без лишней информации.
+The first action of the cycle iteration is the `clear` utility call. It clears the terminal window of text. Thanks to this step, the terminal shows the output of our script only.
 
-При работе с Bash часто возникает задача циклического выполнения команды. Для этого есть специальная утилита watch. Она входит в состав пакета procps. Чтобы установить этот пакет в окружение MSYS2, выполните следующую команду:
+Executing a command in a cycle is a common task that arises when working with Bash. The `watch` utility solves this task. The utility is a part of the `procps` package. The following command installs this package to the MSYS2 environment:
 {line-numbers: false, format: Bash}
 ```
 pacman -S procps
 ```
 
-Теперь скрипт из листинга 3-20 можно заменить одной командой:
+Now you can replace the script from listing 3-20 with a single command. It looks like this:
 {line-numbers: false, format: Bash}
 ```
 watch -n 2 "df -hT"
 ```
 
-Опция `-n` утилиты watch задаёт интервал между вызовами команды. Команда для исполнения указывается после всех опций.
+The `-n` option of the `watch` utility specifies the interval between command calls. The command to execute follows all utility options.
 
-Опция watch `-d` подсвечивает разницу в выводе команды, выполненной на текущей итерации и на прошлой. Благодаря этому, легче отследить произошедшие изменения.
+The `-d` utility option highlights the difference in the command's output at the current iteration and the last iteration. This way, it is easier to keep track of changes that have occurred.
 
-#### Чтение стандартного потока ввода
+#### Reading a Standard Input Stream
 
-Цикл while хорошо подходит для обработки потока ввода. Рассмотрим пример такой задачи. Напишем скрипт, который прочитает ассоциативный массив из текстового файла.
+The `while` loop fits well for handling an input stream. Here is an example of such a task. We want to write a script that reads a text file. The script makes an associative array from the file's content.
 
-Листинг 3-10 демонстрирует скрипт для работы с контактами. Они хранятся в коде скрипта. Из-за этого контакты неудобно редактировать. Пользователь должен знать синтаксис Bash. Иначе он допустит ошибку при инициализации элемента массива, и скрипт перестанет работать.
+Listing 3-10 shows the script for managing the list of contacts. The script stores contacts in the format of the Bash array declaration. It makes adding a new person to the list inconvenient. The user must know the Bash syntax. Otherwise, he can make a mistake when initializing an array element. It will break the script.
 
-Проблему редактирования можно решить. Поместим контакты в отдельный текстовый файл. При старте скрипт будет загружать из него все контакты. Так мы разделим данные и код.
+We can solve the problem of editing the contacts list. Let's put the list in a separate text file. Our script should read it at startup. This way, we separate data and code. It is a well-known and good practice in software development.
 
-Листинг 3-21 демонстрирует один из вариантов формата файла с контактами.
+Listing 3-21 shows a possible format of the file with contacts.
 
-{caption: "Листинг 3-21. Файл с контактами `contacts.txt`", line-numbers: true, format: text}
+{caption: "Listing 3-21. The file with contacts `contacts.txt`", line-numbers: true, format: text}
 ![`contacts.txt`](code/BashScripting/contacts.txt)
 
-Напишем скрипт для чтения этого файла. Удобнее читать контакты сразу в ассоциативный массив. Тогда механизм поиска контакта по имени останется таким же эффективным, как и раньше.
+Let's write a script to read this file. It is convenient to read the list of contacts directly into the associative array. This way, we keep the searching mechanism over the list as effective as before.
 
-Для чтения файла нам понадобится цикл. Перед его выполнением мы не знаем, сколько итераций понадобиться. Значит, нам нужен цикл while.
+When reading the file, we should process its lines in the same manner. It means that we will repeat our actions. Therefore, we need a loop statement. At the beginning of the loop, we don't know the size of the file.  Thus, we do not know the number of iterations to do. The `while` statement fits this case perfectly.
 
-Почему число итераций цикла неизвестно? Файл контактов надо читать построчно. Каждая его строка хранит одну запись. Скрипт читает запись, добавляет её в ассоциативный массив и переходит к следующей строке файла. Получается, что число итераций цикла равно числу строк. Но размер файла нам неизвестен, пока мы не прочитаем его полностью. Поэтому число итераций также неизвестно.
+Why do we not know the number of iterations in advance? It happens because the script reads the file line by line. It cannot count the lines before it reads them all. We can make two loops. The first one counts the lines. The second loop processes them. However, this solution works slower and less ineffective.
 
-Для чтения строк файла применим встроенную команду интерпретатора read. Она читает строку из стандартного потока ввода. Затем сохраняет строку в переменную. Имя переменной передаётся в команду как параметр. Например:
+We can use the `read` built-in command for reading lines of the file. The command receives a string from the standard input stream. Then it writes the string into the specified variable. You can pass the variable's name as a parameter. Here is an example for doing that:
 {line-numbers: false, format: Bash}
 ```
 read var
 ```
 
-После запуска этой команды пользователь должен ввести строку. Она сохранится в переменной `var`. Если вызвать read без параметров, введённая строка сохранится в зарезервированной переменной `REPLY`.
+Run this command. Then type the string and press Enter. The `read` command writes your string into the `var` variable. You can call `read` without parameters. It writes the string into the reserved variable `REPLY` in this case.
 
-Команда read читает введённую пользователем строку. При этом read удаляет из строки символы обратного слэша \. Они экранируют специальные символы. Поэтому read считает слэши ненужными. Чтобы отключить эту функцию, используйте опцию `-r`. В противном случае некоторые символы из ввода могут потеряться.
+When `read` receives the string, it removes backslashes \ there. They escape special characters. Therefore, the `read` command considers the backslashes unnecessary. The `-r` option disables this feature. Use it always to prevent losing characters of the input string.
 
-Команде read можно передать на вход несколько имён переменных. В этом случае введённый пользователем текст разделится на части. Разделителями будут символы из зарезервированной переменной `IFS`. По умолчанию это пробел, знак табуляции и перевод строки.
+You can pass several variable names to the `read` command. Then it divides the input text into parts. The command uses the delimiters from the reserved variable `IFS` in this case. Default delimiters are spaces, tabs and line breaks.
 
-Рассмотрим пример. Предположим, что вводимые пользователем строки сохраняются в двух переменных с именами `path` и `file`. Вызов read в этом случае выглядит так:
+Here is an example of multiple variables for the `read` command. Suppose that we want to store the input string into two variables. They are called `path` and `file`. The following command reads them:
 {line-numbers: false, format: Bash}
 ```
 read -r path file
 ```
 
-Дальше пользователь вводит следующий текст:
+The user types the following string for this command:
 {line-numbers: false, format: text}
 ```
 ~/Documents report.txt
 ```
 
-Тогда путь `~/Documents` попадёт в переменную `path`, а имя файла `report.txt` в `file`.
+Then the `read` command writes the `~/Documents` path into the `path` variable. The filename `report.txt` comes into the `file` variable.
 
-Если путь содержит пробелы, произойдёт ошибка. Предположим, пользователь ввёл следующее:
+If the path or filename contains spaces, an error occurs. Suppose the user type the following string:
 {line-numbers: false, format: text}
 ```
 ~/My Documents report.txt
 ```
 
-Тогда в переменную `path` попадёт строка `~/My`. В `file` запишется всё остальное: `Documents report.txt`. Не забывайте про такое поведение утилиты read.
+Then the command writes the `~/My` string into the `path` variable. The `file` variable stores the rest part of the input: `Documents report.txt`. This is a wrong result. Don't forget about such behavior when using the `read` command.
 
-Проблему разделения строки можно решить. Для этого переопределим зарезервированную переменную `IFS`. В качестве разделителя укажем только запятую:
+We can solve the problem of splitting the input string. This can be done by redefining the `IFS` variable. Here is an example to specify comma as only one possible delimiter:
 {line-numbers: false, format: text}
 ```
 IFS=$',' read -r path file
 ```
 
-В этом примере мы применили специфичный для Bash [вид кавычек](http://mywiki.wooledge.org/Quotes) `$'...'`. В них не выполняются никакие подстановки. Но некоторые управляющие последовательности разрешены: `\n` (новая строка), `\\` (экранированный обратный слэш), `\t` (табуляция) и `\xnn` (байты в шестнадцатеричной системе).
+Here we have applied the Bash-specific [type of quotes](http://mywiki.wooledge.org/Quotes) `$'...'`. Bash does not perform any expansions inside them. At the same time, you can place some control sequences there: `\n` (new line), `\\\` (escaped backslash), `\t` (tabulation) and `\xnn` (bytes in hexadecimal).
 
-Теперь следующий ввод пользователя обработается корректно:
+The new `IFS` declaration allows to process the following input string properly:
 {line-numbers: true, format: text}
 ```
 ~/My Documents,report.txt
 ```
 
-Путь и имя файла разделены запятой. При этом она не встречается ни в пути, ни в имени. Поэтому ввод пользователя обработается корректно. Строка `~/My Documents` попадёт в переменную `path`, а `report.txt` — в `file`.
+The comma separates the path and filename. Therefore, the `read` command writes the `~/My Documents` string into the `path` variable. The `report.txt` string comes into the `file` variable.
 
-Команда read читает данные со стандартного потока ввода. Это значит, что ей на вход можно перенаправить содержимое файла.
+The `read` command receives data from the standard input stream. It means that you can redirect the file's content to the command.
 
-Для примера прочитаем первую строку файла `contacts.txt` из листинга 3-21. Это сделает следующая команда:
+Here is an example to read the first line of the `contacts.txt` file from Listing 3-21. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 read -r contact < contacts.txt
 ```
 
-После выполнения этой команды в переменную `contact` запишется строка "Alice=alice@gmail.com". 
+This command writes the "Alice=alice@gmail.com" string into the `contact` variable.
 
-Имя и контактные данные можно записать в разные переменные. Для этого в качестве разделителя укажем знак равно =. Получим такую команду read:
+We can write the name and contact information into two different variables. Let's define the equal sign as a delimiter to do that. Then our `read` command looks like this:
 {line-numbers: false, format: Bash}
 ```
 IFS=$'=' read -r name contact < contacts.txt
 ```
 
-Теперь имя `Alice` запишется в переменную `name`, а адрес электронной почты в `contact`.
+Now the `name` variable gets the "Alice" name. The e-mail address comes into the `contact` variable.
 
-Чтобы прочитать весь файл `contacts.txt`, напишем такой цикл while:
+Let's try the following `while` loop for reading the entire `contacts.txt` file:
 {line-numbers: true, format: Bash}
 ```
 while IFS=$'=' read -r name contact < "contacts.txt"
@@ -341,20 +347,20 @@ do
 done
 ```
 
-К сожалению, это не сработает. Произойдёт **зацикливание**. Зацикливанием называется бесконечное повторение тела цикла из-за ошибки. Причина проблемы в том, что read всегда читает только первую строку файла и возвращает нулевой код возврата. Нулевой код в условии цикла приведёт к повторному выполнению его тела снова и снова.
+Unfortunately, it does not work. Here we got an infinite loop accidentally. It happens because the `read` command always reads only the first line of the file. Then the command returns the zero exit status. The zero status leads to the loop body execution. It happens over and over again.
 
-Чтобы цикл while последовательно прошёл по всем строкам из потока ввода, его надо записать в следующей форме:
+We should force the `while` loop to pass through all lines of the file. The following form of the loop does it:
 {line-numbers: true, format: Bash}
 ```
-while УСЛОВИЕ
+while CONDITION
 do
-  ДЕЙСТВИЕ
-done < ФАЙЛ
+  ACTION
+done < FILE
 ```
 
-Чтобы обработать ввод пользователя с клавиатуры, в качестве файла укажите `/dev/tty`. Тогда цикл будет обрабатывать ввод до тех пор, пока пользователь не нажмёт сочетание клавиш Ctrl+D.
+You can handle the input from the keyboard this way. Specify the `/dev/tty` file in this case. The loop will read keystrokes until you press Ctrl+D.
 
-Правильный вариант цикла while для чтения файла `contacts.txt` выглядит так:
+Here is the right `while` loop to read the `contacts.txt` file:
 {line-numbers: true, format: Bash}
 ```
 while IFS=$'=' read -r name contact
@@ -363,420 +369,13 @@ do
 done < "contacts.txt"
 ```
 
-Этот цикл выведет на экран всё содержимое файла контактов.
+This loop prints the entire contents of the contact file.
 
-Нам остался последний шаг. На каждой итерации цикла будем добавлять в массив элемент, соответствующий значениям переменных `name` и `contact`.
+There is the last step left to finish our task. We should write the `name` and `contact` variables to the array on each iteration. The `name` variable is the key and `contact` is the value.
 
-Конечный вариант скрипта для работы с файлом контактов приведён в листинге 3.22
+Listing 3-22 shows the final version of the script for reading the contacts from the file.
 
-{caption: "Листинг 3-22. Скрипт для работы с файлом контактов", line-numbers: true, format: Bash}
+{caption: "Listing 3-22. The script for managing the contacts", line-numbers: true, format: Bash}
 ![`while-contacts.sh`](code/BashScripting/while-contacts.sh)
 
-Мы получили такое же поведение, как у скрипта из листинга 3-10.
-
-### Оператор for
-
-Кроме while в Bash есть оператор цикла for. Используйте его, когда количество итераций известно заранее.
-
-У оператора for есть две формы. Первая нужна для последовательной обработки слов в строке. Во второй форме условием цикла выступает арифметическое выражение.
-
-### Первая форма for
-
-Начнём с первой формы for. В общем виде она выглядит так:
-{line-numbers: true, format: Bash}
-```
-for ПЕРЕМЕННАЯ in СТРОКА
-do
-    ДЕЙСТВИЕ
-done
-```
-
-В однострочном виде эта же конструкция записывается так:
-{line-numbers: false, format: Bash}
-```
-for ПЕРЕМЕННАЯ in СТРОКА; do ДЕЙСТВИЕ; done
-```
-
-ДЕЙСТВИЕМ в конструкции for может быть одна команда или блок команд. Точно так же как в операторе while.
-
-Перед первой итерацией цикла Bash выполнит все подстановки в условии конструкции for. Что это значит? Предположим, что вместо СТРОКИ вы указали команду. Тогда перед началом цикла команда выполнится и её вывод заменит СТРОКУ. Если указать шаблон — он будет развёрнут.
-
-Дальше СТРОКА разделяется на слова. Разделители читаются из переменной `IFS`. Затем выполняется первая итерация цикла. Во время итерации первое слово из СТРОКИ будет доступно в теле цикла как значение ПЕРЕМЕННОЙ. На второй итерации в ПЕРЕМЕННУЮ запишется второе слово СТРОКИ и т.д. Цикл завершится после прохода по всем словам СТРОКИ.
-
-Рассмотрим пример цикла for. Напишем скрипт для обработки слов в строке. Строка передаётся в скрипт первым параметром.
-
-Листинг 3-23 демонстрирует код скрипта.
-
-{caption: "Листинг 3-23. Скрипт для обработки слов в строке", line-numbers: true, format: Bash}
-![`for-string.sh`](code/BashScripting/for-string.sh)
-
-Обратите внимание, что позиционный параметр `$1` не надо заключать в кавычки. Если это сделать, не сработает word splitting. Входная строка не разделится на слова. Тогда тело цикла выполнится один раз. При этом в переменную `word` запишется вся входная строка. Это не то, что нам нужно. Скрипт должен обработать каждое слово строки по отдельности.
-
-Передаваемую в скрипт строку надо заключить в кавычки. Тогда она целиком попадёт в позиционный параметр `$1`. Например:
-{line-numbers: false, format: Bash}
-```
-./for-string.sh "this is a string"
-```
-
-Проблему кавычек при передаче строки в скрипт можно решить. Замените в условии цикла позиционный параметр `$1` на `$@`. Получится такая конструкция for:
-{line-numbers: true, format: Bash}
-```
-for word in $@
-do
-  echo "$word"
-done
-```
-
-Теперь сработают оба варианта вызова скрипта:
-{line-numbers: true, format: Bash}
-```
-./for-string.sh this is a string
-./for-string.sh "this is a string"
-```
-
-У условия цикла for есть краткая форма. Она перебирает все входные параметры скрипта. Мы записали условие цикла так:
-{line-numbers: false, format: Bash}
-```
-for word in $@
-```
-
-Тот же самый результат даст следующее условие:
-{line-numbers: true, format: Bash}
-```
-for word
-do
-  echo "$word"
-done
-```
-
-Мы просто отбросили "in $@" в условии. Поведение цикла от этого не изменилось.
-
-Немного усложним задачу. Предположим, что скрипт получает на вход список путей. Их разделяют запятые. В самих путях могут встречаться пробелы. Чтобы правильно обработать такой ввод, переопределим переменную `IFS`.
-
-Листинг 3-24 демонстрирует цикл for для обработки списка путей.
-
-{caption: "Листинг 3-24. Скрипт для обработки списка путей", line-numbers: true, format: Bash}
-![`for-path.sh`](code/BashScripting/for-path.sh)
-
-Через переменную `IFS` мы указали единственный разделитель слов — запятую. Поэтому цикл for при разделении строки `$1` будет ориентироваться на запятые, а не на пробелы.
-
-Скрипт можно вызвать например так:
-{line-numbers: false, format: Bash}
-```
-./for-path.sh "~/My Documents/file1.pdf,~/My Documents/report2.txt"
-```
-
-В этом случае кавычки для строки с путями обязательны. Если их опустить и заменить в скрипте параметр `$1` на `$@`, возникнет ошибка. Во время вызова скрипта произойдёт word splitting. При этом разделители прочитаются из переменной `IFS` окружения. То есть до нашего переопределения `IFS` в скрипте. Поэтому строка с путями разделится пробелами.
-
-Если в одном из путей встретится запятая, опять же возникнет ошибка.
-
-Цикл for позволяет пройти по элементам индексируемого массива. Это работает так же, как перебор слов в строке. Листинг 3-25 демонстрирует пример.
-
-{caption: "Листинг 3-25. Скрипт для обработки всех элементов массива", line-numbers: true, format: Bash}
-![`for-array.sh`](code/BashScripting/for-array.sh)
-
-Предположим, вам нужны только первые три элемента. Тогда в условии цикла можно подставить не весь массив, а только нужные элементы. Например, как в листинге 3-26.
-
-{caption: "Листинг 3-26. Скрипт для обработки первых трёх элементов массива", line-numbers: true, format: Bash}
-![`for-elements.sh`](code/BashScripting/for-elements.sh)
-
-Другой вариант — перебирать в цикле не сами элементы, а их индексы. Запишем индексы нужных элементов через пробел. Затем пройдём по ним в цикле. Получится следующее:
-{line-numbers: true, format: Bash}
-```
-array=(Alice Bob Eve Mallory)
-
-for i in 0 1 2
-do
-    echo "${array[i]}"
-done
-```
-
-Цикл пройдёт только по элементам с индексами 0, 1 и 2.
-
-Нужные индексы элементов можно указать через подстановку фигурных скобок. Например, так:
-{line-numbers: true, format: Bash}
-```
-array=(Alice Bob Eve Mallory)
-
-for i in {0..2}
-do
-    echo "${array[i]}"
-done
-```
-
-Результат будет тем же — скрипт выведет первые три элемента массива.
-
-Не используйте индексы элементов при обработке массивов с пропусками. Вместо этого подставляйте нужные элементы массива в условии цикла, как в листингах 3-25 и 3-26.
-
-### Обработка списка файлов
-
-Цикл for подходит для обработки списка файлов. Для решения этой задачи важно правильно составить условие цикла. При этом часто совершают ряд типичных ошибок. Рассмотрим их на примерах.
-
-Напишем скрипт для вывода типов файлов в текущем каталоге. Вывести тип файла можно утилитой file.
-
-Главная ошибка при составлении условия цикла for — пренебрежение шаблонами (globbing). Вместо шаблона в качестве СТРОКИ часто подставляют вывод утилит ls или find. Например, так:
-{line-numbers: true, format: Bash}
-```
-for filename in $(ls)
-for filename in $(find . - type f)
-```
-
-Это неправильно. Такое решение приведёт к следующим проблемам:
-
-1. Word splitting разделит на части имена файлов и каталогов с пробелами.
-
-2. Если имя файла содержит символ звёздочка *, перед итерацией цикла выполнится подстановка шаблонов. Результат подстановки запишется в переменную `filename` вместо настоящего имени файла.
-
-3. Вывод утилиты ls зависит от региональных настроек. Из-за этого некоторые символы национального алфавита в именах файлов могут поменяться на знаки вопроса. Тогда цикл for не сможет обработать эти файлы.
-
-Всегда используйте шаблоны в цикле for для перебора имён файлов. Это единственное правильное решение задачи.
-
-Для нашей задачи условие цикла выглядит так:
-{line-numbers: false, format: Bash}
-```
-for filename in *
-```
-
-Листинг 3-27 демонстрирует полную версию скрипта.
-
-{caption: "Листинг 3-27. Скрипт для вывода типов файлов", line-numbers: true, format: Bash}
-![`for-file.sh`](code/BashScripting/for-file.sh)
-
-Не забывайте про двойные кавычки при подстановке переменной `filename`. Это предотвратит word splitting в именах файлов с пробелами.
-
-Шаблон в условии цикла for сработает, если надо пройти по файлам из конкретного каталога. Такой шаблон выглядит, например, так:
-{line-numbers: false, format: Bash}
-```
-for filename in /usr/share/doc/bash/*
-```
-
-Шаблон может отфильтровать файлы с определённым расширением или именем. Например:
-{line-numbers: false, format: Bash}
-```
-for filename in ~/Documents/*.pdf
-```
-
-В Bash начиная с версии 4 шаблоны позволяют обходить каталоги рекурсивно. Например:
-{line-numbers: true, format: Bash}
-```
-shopt -s globstar
-
-for filename in **
-```
-
-Чтобы это сработало, включите опцию интерпретатора `globstar` с помощью команды shopt.
-
-Вместо шаблона `**` Bash подставит список всех подкаталогов и файлов в них, начиная с текущего каталога. Этот механизм можно совмещать с обычными шаблонами.
-
-Например, пройдём по всем файлам с расширением PDF из домашнего каталога пользователя. Условие цикла for для этого выглядит так:
-{line-numbers: true, format: Bash}
-```
-shopt -s globstar
-
-for filename in ~/**/*.pdf
-```
-
-Скрипт из листинга 3-27 можно заменить следующим вызовом утилиты find:
-{line-numbers: false, format: Bash}
-```
-find . -maxdepth 1 -exec file {} \;
-```
-
-Такое решение эффективнее, чем цикл for. Оно компактнее и работает быстрее из-за меньшего числа операций.
-
-Когда стоит обрабатывать файлы в цикле for, а когда утилитой find? Используйте find, когда файлы можно обработать одной короткой командой. Если для обработки нужны условные операторы или блок команд, вызов find становится громоздким. В этом случае цикл for предпочтительнее.
-
-В скрипте из листинга 3-27 конструкцию for можно заменить на while. Чтобы получить список файлов для обработки, вызовем утилиту find. При этом важно использовать её опцию `-print0`. Листинг 3-28 демонстрирует результат.
-
-{caption: "Листинг 3-28. Скрипт для вывода типов файлов", line-numbers: true, format: Bash}
-![`while-file.sh`](code/BashScripting/while-file.sh)
-
-В этом скрипте есть несколько важных решений. Рассмотрим их подробнее. Первый вопрос: зачем переменной `IFS` присваивать пустое значение? Без этого word splitting разделит вывод команды find пробелами, табуляцией и переводом строк. Тогда имена файлов с этими символами обработаются неправильно.
-
-Второе важное решение — опция `-d` команды read. Она определяет символ для разделения текста на входе команды. В переменную `filename` запишется часть текста до очередного разделителя.
-
-В нашем примере разделитель для команды read пустой. Это означает NUL-символ. Его можно указать и явно. Например, так:
-{line-numbers: false, format: Bash}
-```
-while IFS= read -r -d $'\0' filename
-```
-
-Благодаря опции `-d`, команда read правильно обработает вывод утилиты find. Утилита вызвана с опцией `-print0`. Это значит, что найденные файлы в выводе разделит NUL-символ.
-
-Обратите внимание, что указать NUL-символ в качестве разделителя через переменную `IFS` нельзя. Другими словами следующий вариант не сработает:
-{line-numbers: false, format: Bash}
-```
-while IFS=$'\0' read -r filename
-```
-
-Проблема в [особенности интерпретации](https://mywiki.wooledge.org/IFS) переменной `IFS`. Если её значение пустое, Bash вообще не выполняет word splitting.
-
-В скрипте из листинга 3-28 осталось ещё одно неочевидное решение. Вывод утилиты find передаётся в цикл while через подстановку процесса. Почему не подходит подстановка команды? Например, такая:
-{line-numbers: true, format: Bash}
-```
-while IFS= read -r -d '' filename
-do
-  file "$filename"
-done < $(find . -maxdepth 1 -print0)
-```
-
-Так перенаправить результат выполнения команды нельзя. Оператор < связывает поток ввода с указанным файловым дескриптором. Но при подстановке команды никакого дескриптора нет. Bash вызывает утилиту find и подставляет её вывод вместо `$(...)`. При подстановке процессов вывод find запишется во временный файл. У него есть дескриптор. Поэтому перенаправление потоков сработает.
-
-У подстановки процессов есть одна проблема. Эта подстановка не входит в POSIX-стандарт. Если вам важно следовать стандарту, используйте конвейер. Листинг 3-29 демонстрирует такое решение.
-
-{caption: "Листинг 3-29. Скрипт для вывода типов файлов", line-numbers: true, format: Bash}
-![`while-file-pipe.sh`](code/BashScripting/while-file-pipe.sh)
-
-Комбинация цикла while и утилиты find предпочтительнее for в одном случае: если вы обрабатываете файлы и условие их поиска сложное.
-
-При комбинации while и find всегда используйте NUL-символ в качестве разделителя. Так вы избежите проблем обработки имён файлов с пробелами.
-
-### Вторая форма for
-
-Во второй форме оператора for условием цикла выступает арифметическое выражение. Разберёмся, в каких случаях оно понадобится. Рассмотрим примеры.
-
-Предположим, нам нужен скрипт для расчёта факториала. Решение задачи зависит от способа ввода данных. Первый вариант — число для расчёта известно заранее. Тогда подойдёт первая форма цикла for. Листинг 3-30 демонстрирует такой вариант скрипта.
-
-{caption: "Листинг 3-30. Скрипт для расчёта факториала числа 5", line-numbers: true, format: Bash}
-![`for-factorial-brace.sh`](code/BashScripting/for-factorial-brace.sh)
-
-Второй вариант — пользователь передаёт число для расчёта через входной параметром скрипта. Для решения такой задачи попробуем следующий вариант условия цикла for:
-{line-numbers: false, format: Bash}
-```
-for i in {1..$1}
-```
-
-Ожидается, что Bash выполнит подстановку фигурных скобок для целых чисел от одного до значения параметра `$1`. Это не сработает.
-
-Согласно таблице 3-2, подстановка фигурных скобок выполняется до подстановки параметров. Поэтому в условии цикла вместо строки "1 2 3 4 5" получится строка "{1..$1}". Bash не распознал подстановку фигурных скобок, потому что верхняя граница диапазона — не число. Дальше строка "{1..$1}" запишется в переменную `i`. Из-за этого оператор (( не сможет обработать её корректно.
-
-Утилита seq решит нашу проблему. Она генерирует последовательность целых или дробных чисел.
-
-Таблица 3-21 демонстрирует способы вызова утилиты seq.
-
-{caption: "Таблица 3-21. Способы вызова утилиты seq", width: "100%"}
-| Число параметров | Описание параметров | Пример команды | Результат |
-| --- | --- | --- | --- |
-| 1 | Последнее число в генерируемой последовательности. Последовательность начинается с единицы. | `seq 5` | 1 2 3 4 5 |
-| 2 | Первое и последнее число в последовательности. | `seq -3 3` | -2 -1 0 1 2 |
-| 3 | Первое число, шаг и последнее число в последовательности. | `seq 1 2 5` | 1 3 5 |
-
-Числа в выводе утилиты seq разделяются переводом строки `\n`. Опция `-s` позволяет указать другой разделитель. Перевод строки входит в список стандартных разделителей переменной `IFS`. Поэтому в конструкции for опция `-s` для seq не нужна.
-
-В таблице 3-21 перевод строки заменён на пробел в столбце "Результат" для удобства.
-
-Воспользуемся утилитой seq, чтобы написать параметризуемый скрипт для расчёта факториала. Он приведён в листинге 3-31.
-
-{caption: "Листинг 3-31. Скрипт для расчёта факториала", line-numbers: true, format: Bash}
-![`for-factorial-seq.sh`](code/BashScripting/for-factorial-seq.sh)
-
-Это решение работает. Однако, его нельзя назвать эффективным. В условии цикла for вызывается внешняя утилита. Такой вызов сравним с запуском обычной программы. Например, калькулятора. Для создания нового процесса ядро ОС выполняет несколько сложных операций. По меркам процессора они занимают значительное время. Поэтому старайтесь обходиться встроенными средствами Bash везде, где это возможно.
-
-Для решения задачи нам пригодится вторая форма оператора for. В общем виде она выглядит так:
-{line-numbers: true, format: Bash}
-```
-for (( ВЫРАЖЕНИЕ_1; ВЫРАЖЕНИЕ_2; ВЫРАЖЕНИЕ_3 ))
-do
-    ДЕЙСТВИЕ
-done
-```
-
-В однострочном виде эта конструкция записывается так:
-{line-numbers: false, format: Bash}
-```
-for (( ВЫРАЖЕНИЕ_1; ВЫРАЖЕНИЕ_2; ВЫРАЖЕНИЕ_3 )); do ДЕЙСТВИЕ; done
-```
-
-Цикла for с арифметическим условием работает так:
-
-1. ВЫРАЖЕНИЕ_1 выполняется однократно перед первой итерацией цикла.
-
-2. Цикл выполняется до тех пор, пока ВЫРАЖЕНИЕ_2 остаётся истинным. Как только оно вернуло ложь в качестве результата, цикл завершается.
-
-3. В конце каждой итерации выполняется ВЫРАЖЕНИЕ_3.
-
-Заменим вызов утилиты seq на арифметическое выражение в листинге 3-31. Результат приведён в листинге 3-32.
-
-{caption: "Листинг 3-32. Скрипт для расчёта факториала", line-numbers: true, format: Bash}
-![`for-factorial.sh`](code/BashScripting/for-factorial.sh)
-
-Скрипт стал работать быстрее. Теперь он использует только встроенные операторы Bash. Для их исполнения не нужно создавать новые процессы.
-
-Рассмотрим алгоритм конструкции for в скрипте:
-
-1. Перед первой итерацией цикла объявляется переменная `i`. Это счётчик цикла. Ему присваивается единица.
-
-2. Счётчик цикла сравнивается с входным параметром: "i <= $1". Если условие выполняется, возвращается нулевой код возврата.
-
-3. Если условие вернуло ноль, выполняется первая итерация цикла. В противном случае цикл завершается.
-
-4. В теле цикла вычисляется арифметическое выражение "result *= i". В результате значение переменной `result` будет умножено на `i`.
-
-5. После выполнения первой итерации, вычисляется третье выражение `++i` в условии цикла. В результате значение переменной `i` станет равно двум.
-
-6. Переход ко второму шагу алгоритма с проверкой условия "i <= $1". Если условие по-прежнему истинно, выполняется следующая итерация цикла.
-
-I> В общем случае для переменных в операторе (( и команде let знака доллара $ не нужен. Однако, в нашем условии цикла он необходим. Без него Bash не поймёт, что имеется ввиду позиционный параметр `$1`, а не целое число единица.
-
-В цикле мы используем префиксную форму инкремента. Она выполняется быстрее, чем постфиксная.
-
-Используйте вторую форму оператора for, если счётчик цикла рассчитывается по формуле. Других эффективных решений в этом случае нет.
-
-### Управление циклом
-
-Цикл завершается согласно своему условию. Кроме условия есть дополнительные средства для управления циклом. Они позволяют прервать его выполнение или пропустить текущую итерацию. Рассмотрим их подробнее.
-
-#### break
-
-Встроенная команда break немедленно прекращает выполнение цикла. Она полезна для обработки ошибок или выхода из бесконечного цикла.
-
-Для примера напишем скрипт. Он ищет элемент индексируемого массива с определённым значением. Как только элемент найден, нет смысла продолжать цикл. Можно сразу выйти из него. Листинг 3-33 демонстрирует такой скрипт.
-
-{caption: "Листинг 3-33. Скрипт поиска элемента в массиве", line-numbers: true, format: Bash}
-![`for-break.sh`](code/BashScripting/for-break.sh)
-
-Искомый элемент массива передаётся в скрипт в параметре `$1`.
-
-Результат поиска хранится в переменной `is_found`. В конструкции if сравнивается текущий элемент массива и искомый. Если они равны, переменной `is_found` присваивается единица. Затем выполнение цикла прерывается командой break.
-
-После цикла в операторе if проверяется значение `is_found`. В зависимости от результата выводится сообщение.
-
-Используйте команду break, чтобы вынести из тела цикла всё лишнее. Чем меньше тело цикла, тем проще его прочитать и понять. Например, в листинге 3-33 можно вывести результат поиска прямо в цикле. Тогда переменная `is_found` не нужна. С другой стороны обработка найденного элемента может быть сложной. Помещать такую обработку в тело цикла — плохая идея.
-
-Если не имеет смысла выполнять скрипт после завершения цикла, команда break не подойдёт. Вместо неё используйте команду exit. Например, если во входных данных скрипта обнаружилась ошибка. Также exit подойдёт, если результат работы цикла обрабатывается в его теле.
-
-Заменим команду break на exit в листинге 3-33. Результат приведён в листинге 3-34.
-
-{caption: "Листинг 3-34. Скрипт поиска элемента в массиве", line-numbers: true, format: Bash}
-![`for-exit.sh`](code/BashScripting/for-exit.sh)
-
-Скрипты из листингов 3-33 и 3-34 дадут одинаковый результат.
-
-С помощью команды exit мы обработали результат поиска в теле цикла. В данном случае это сократило наш код и сделало его проще. Но при сложной обработке результата эффект будет обратный.
-
-#### continue
-
-Встроенная команда continue прекращает исполнение текущей итерации цикла. При этом цикл не завершится. Он продолжит выполняться со следующей итерации.
-
-Рассмотрим пример. Предположим, что надо рассчитать сумму положительных чисел в массиве. Отрицательные числа нас не интересуют. С помощью конструкции if проверим знак в теле цикла. Если знак положительный — добавим число к результату. Получим скрипт, как в листинге 3-35.
-
-{caption: "Листинг 3-35. Скрипт для расчёта суммы положительных чисел в массиве", line-numbers: true, format: Bash}
-![`for-sum.sh`](code/BashScripting/for-sum.sh)
-
-Если `element` больше нуля, его значение добавляется к результату `sum`.
-
-Воспользуемся командой continue, чтобы получить такое же поведение. Результат приведён в листинге 3-36.
-
-{caption: "Листинг 3-36. Скрипт для расчёта суммы положительных чисел в массиве", line-numbers: true, format: Bash}
-![`for-continue.sh`](code/BashScripting/for-continue.sh)
-
-Мы инвертировали условие конструкции if. Теперь оно истинно для отрицательных чисел. В этом случае вызовется команда continue. Она прервёт текущую итерацию цикла. Операция сложения после if не выполнится. Вместо этого начнётся следующая итерация со следующим элементом массива.
-
-На самом деле мы применили технику раннего возврата в контексте цикла. Используйте команду continue, чтобы обработать ошибки. Также она пригодится для условий, когда выполнять тело цикла до конца не имеет смысла. Так вы избежите вложенных конструкций if. В результате код станет понятнее и чище.
-
-{caption: "Упражнение 3-12. Использование операторов цикла", format: text, line-numbers: false}
-```
-Напишите игру "Больше-Меньше". В ней один участник загадывает число от 1 до 100. Второй участник пытается его отгадать за семь попыток.
-
-Ваш скрипт должен загадать число. Пользователь вводит вариант ответа. Скрипт отвечает больше или меньше вариант чем загаданное число. Затем пользователь пытается отгадать число ещё шесть раз.
-```
+This script behaves the same way as one in Listing 3-10.
