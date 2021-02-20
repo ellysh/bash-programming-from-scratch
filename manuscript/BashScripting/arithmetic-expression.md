@@ -716,7 +716,7 @@ We start with the simplest bitwise operation that is the negation. It is also ca
 
 Swap the value of each bit of a number to perform bitwise negation. It means that you replace each one to zero and vice versa.
 
-Here is an example for doing bitwise NOT of number 5:
+Here is an example of doing bitwise NOT of number 5:
 {line-numbers: false}
 ```
 5 = 101
@@ -807,7 +807,7 @@ Operands of the bitwise AND are two numbers. You can do this operation in three 
 
 2. If one number has fewer bits than another, add zeros to its left side.
 
-3. Apply the logical AND operation to each pair of numbers' bits. The pair means two bits from each number that have the same position. 
+3. Apply the logical AND operation to each pair of numbers' bits. The pair means two bits from each number that have the same position.
 
 Here is an example. We want to calculate the bitwise AND for numbers 5 and 3. First, we should represent them in the two's complement like this:
 {line-numbers: false}
@@ -1187,7 +1187,7 @@ The logical OR works similarly:
 ```
 if ((var < 1 || 5 < var))
 then
-  echo "The variable is less than 1 or greater than 5"  
+  echo "The variable is less than 1 or greater than 5"
 fi
 ```
 

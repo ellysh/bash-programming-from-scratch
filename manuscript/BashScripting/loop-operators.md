@@ -270,7 +270,7 @@ When reading the file, we should process its lines in the same manner. It means 
 
 Why do we not know the number of iterations in advance? It happens because the script reads the file line by line. It cannot count the lines before it reads them all. We can make two loops. The first one counts the lines. The second loop processes them. However, this solution works slower and less ineffective.
 
-We can use the `read` built-in command for reading lines of the file. The command receives a string from the standard input stream. Then it writes the string into the specified variable. You can pass the variable's name as a parameter. Here is an example for doing that:
+We can use the `read` built-in command for reading lines of the file. The command receives a string from the standard input stream. Then it writes the string into the specified variable. You can pass the variable's name as a parameter. Here is an example of doing that:
 {line-numbers: false, format: Bash}
 ```
 read var
@@ -379,3 +379,258 @@ Listing 3-22 shows the final version of the script for reading the contacts from
 ![`while-contacts.sh`](code/BashScripting/while-contacts.sh)
 
 This script behaves the same way as one in Listing 3-10.
+
+### For Statement
+
+There is another loop statement in Bash called `for`. Unlike `while`, use it when you know the number of iterations in advance.
+
+The `for` statement has two forms. The first one processes words in a string sequentially. The second form applies an arithmetic expression in the loop's condition.
+
+#### The First Form of For
+
+Let's start with the first form of the `for` statement. It looks like this in general:
+{line-numbers: true, format: Bash}
+```
+for VARIABLE in STRING
+do
+  ACTION
+done
+```
+
+You can write the same construction in a single line like this:
+{line-numbers: false, format: Bash}
+```
+for VARIABLE in STRING; do ACTION; done
+```
+
+The ACTION in the `for` statement is a single command or a block of commands. It is the same as in the `while` statement.
+
+Bash performs all expansions in the `for` condition before starting the first iteration of the loop. What does it mean? Suppose you specified the command instead of a STRING. Then Bash executes this command and replaces it with its output. Also, you can specify a pattern instead of STRING. Then Bash expands it before starting the loop.
+
+BASH splits the STRING into words when there are no commands or patterns left in the `for` condition. It takes separators for splitting from the `IFS` variable.
+
+Then Bash executes the first iteration of the loop. The first word of the STRING is available via VARIABLE inside the loop body on the first iteration. Then Bash writes the second word of the STRING to the VARIABLE and starts the second iteration. It happens again and again until we pass all words of the STRING.
+
+Here is an example of the `for` loop. We want to write a script to print words in a string one by one. The script receives the string via the first parameter.
+
+Listing 3-23 shows the script.
+
+{caption: "Listing 3-23. The script for printing words of a string", line-numbers: true, format: Bash}
+![`for-string.sh`](code/BashScripting/for-string.sh)
+
+Here you should not enclose the position parameter `$1` in quotes. Quotes prevent word splitting, but we want it in this case. Otherwise, Bash passes the whole string to the first iteration of the `for` loop. Then the loop finishes. We do not want this behavior. The script should process each word of the string separately.
+
+When you call the script, you should enclose the input string in double-quotes. Then the whole string comes into the `$1` parameter. Here is an example of calling the script:
+
+There is a way to get rid of the double-quotes when calling the script. Replace the `$1` parameter in the `for` condition with `$@`. Then the loop statement becomes like this:
+{line-numbers: true, format: Bash}
+```
+for word in $@
+do
+  echo "$word"
+done
+```
+
+Now both following script calls work properly:
+{line-numbers: true, format: Bash}
+```
+./for-string.sh this is a string
+./for-string.sh "this is a string"
+```
+
+The `for` loop condition has a short form. Use it when you want to pass through all input parameters of the script. This short form looks like this:
+{line-numbers: true, format: Bash}
+```
+for word
+do
+  echo "$word"
+done
+```
+
+It does the same as the script in Listing 3-23. We just dropped the "in $@" part in the condition. It did not change the loop behavior.
+
+Let's make the task a bit more complicated. Suppose the script receives a list of paths on input. Commas separate them. The paths may contain spaces. We should redefine the `IFS` variable to process such input correctly.
+
+Listing 3-24 shows the `for` loop to print the list of paths.
+
+{caption: "Listing 3-24. The script for printing the list of paths", line-numbers: true, format: Bash}
+![`for-path.sh`](code/BashScripting/for-path.sh)
+
+We have specified only one allowable delimiter in the `IFS` variable. The delimiter is the comma. Therefore, the `for` loop ignores spaces when splitting the input string.
+
+You can call the script this way:
+{line-numbers: false, format: Bash}
+```
+./for-path.sh "~/My Documents/file1.pdf,~/My Documents/report2.txt"
+```
+
+Here double-quotes for the input string are mandatory. You cannot replace the `$1` parameter with `$@` in the `for` condition and omit quotes. This will lead to an error. The error happens because Bash does word splitting when calling the script. This word splitting applies spaces as delimiters. It happens before our redeclaration of the `IFS` variable. Thus, Bash ignores our change of the variable in this case
+
+If there is a comma in one of the paths, it leads to an error.
+
+The `for` loop can pass through the elements of an indexed array. It works the same way as processing words in a string. Listing 3-25 shows an example of doing that.
+
+{caption: "Listing 3-25. The script for printing all elements of the array", line-numbers: true, format: Bash}
+![`for-array.sh`](code/BashScripting/for-array.sh)
+
+Suppose you need the first three elements. Then you should expand only the elements you need in the loop condition. Listing 3-26 shows how to do that.
+
+{caption: "Listing 3-26. The script for printing the first three elements of the array", line-numbers: true, format: Bash}
+![`for-elements.sh`](code/BashScripting/for-elements.sh)
+
+There is another option to pass through the array. You can iterate over the indexes instead of the array's elements. Write the string with indexes of the elements you need. Spaces should separate them. Put the string into the `for` condition. Then the loop gives you an index on each iteration. The loop looks like this:
+{line-numbers: true, format: Bash}
+```
+array=(Alice Bob Eve Mallory)
+
+for i in 0 1 2
+do
+  echo "${array[i]}"
+done
+```
+
+This loop passes only through elements with indexes 0, 1 and 2.
+
+You can apply the brace expansion to specify the indexes list. Here is an example:
+{line-numbers: true, format: Bash}
+```
+array=(Alice Bob Eve Mallory)
+
+for i in {0..2}
+do
+  echo "${array[i]}"
+done
+```
+
+The loop behaves the same way. It prints the first three elements of the array.
+
+Do not iterate over the element's indexes when processing arrays with gaps. Expand the array's elements in the loop condition instead. Listing 3-25 and Listing 3-26 show how to do that.
+
+#### Files Processing
+
+The `for` loop fits well for processing a list of files. When solving this task, you should compose the loop condition correctly. There are several common mistakes here. Let's consider them by examples.
+
+The first example is a script that prints types of files in the current directory. We can do it by calling the `file` utility for each file.
+
+The most common mistake when composing the `for` loop condition is neglecting patterns (globbing). Users often call the `ls` or `find` utility to get the STRING. It happens this way:
+{line-numbers: true, format: Bash}
+```
+for filename in $(ls)
+for filename in $(find . - type f)
+```
+
+This is wrong. Such a solution leads to the following problems:
+
+1. Word splitting breaks names of files and directories with spaces.
+
+2. If the filename contains an asterisk, Bash performs globbing before starting the loop. Then it writes the expansion result to the `filename` variable. This way, you lose the actual filename.
+
+3. The output of the `ls` utility depends on the regional settings. Therefore, you can get question marks instead of the national alphabet characters in filenames. Then the `for` loop cannot process these files.
+
+Always use patterns in the `for` loop to enumerate filenames. It is the only correct solution for this task.
+
+We should write the following `for` loop condition in our case:
+{line-numbers: false, format: Bash}
+```
+for filename in *
+```
+
+Listing 3-27 shows the complete script.
+
+{caption: "Listing 3-27. The script for printing the file types", line-numbers: true, format: Bash}
+![`for-file.sh`](code/BashScripting/for-file.sh)
+
+Do not forget to use double-quotes when accessing the `filename` variable. They prevent word splitting of filenames with spaces.
+
+You can still use the pattern in the `for` loop condition if you want to process files from a specific directory. Here is an example of such a pattern:
+{line-numbers: false, format: Bash}
+```
+for filename in /usr/share/doc/bash/*
+```
+
+A pattern can filter out files with a specific extension or name. It looks like this:
+{line-numbers: false, format: Bash}
+```
+for filename in ~/Documents/*.pdf
+```
+
+There is a new feature for patterns in Bash version 4. You can pass through directories recursively. Here is an example:
+{line-numbers: true, format: Bash}
+```
+shopt -s globstar
+
+for filename in **
+```
+
+This feature is disabled by default. Activate it by enabling the `globstar` interpreter option with the `shopt` command.
+
+When Bash meets the `**` pattern, it inserts a list of all subdirectories and their files starting from the current directory. You can combine this mechanism with regular patterns.
+
+For example, let's process all files with the PDF extension from the user's home directory. The following `for` loop condition does that:
+{line-numbers: true, format: Bash}
+```
+shopt -s globstar
+
+for filename in ~/**/*.pdf
+```
+
+There is another common mistake when using the `for` loop. Sometimes you just do not need it. For example, you can replace the script in Listing 3-27 with the following `find` call:
+{line-numbers: false, format: Bash}
+```
+find . -maxdepth 1 -exec file {} \;
+```
+
+This command is more efficient than the `for` loop. It is compact and works faster because of fewer operations to do.
+
+When should you use the `for` loop instead of the `find` utility? Use `find` when one short command processes found files. If you need a conditional statement or block of commands for this job, use the `for` loop.
+
+There are cases when patterns are not enough in the `for` loop condition. You want to do a complex search with checking file types, for example. In this case, use the `while` loop instead of `for`.
+
+Let's replace the `for` loop in Listing 3-27 with `while`. The `find` utility will provide us a list of files. But we should call it with the `-print0` option. This way, we avoid word splitting issues. Listing 3-28 shows how to combine the `find` utility and `while` loop properly.
+
+{caption: "Listing 3-28. The script for printing the file types", line-numbers: true, format: Bash}
+![`while-file.sh`](code/BashScripting/while-file.sh)
+
+There are several tricky solutions in this script. Let's take a closer look at them. The first question is why we need to assign an empty value to the `IFS` variable? If we keep the variable unchanged, Bash splits the `find` output by default delimiters (spaces, tabs and line breaks). It can break filenames with these characters.
+
+The second solution is applying the `-d` option of the `read` command. The option defines a delimiter character for splitting the input text. When using it, the `filename` variable gets the part of the string that comes before the next delimiter.
+
+The `-d` option specifies the empty delimiter. It means a NULL character. You can also specify it explicitly. Do it like this:
+{line-numbers: false, format: Bash}
+```
+while IFS= read -r -d $'\0' filename
+```
+
+Thanks to the `-d` option, the read command handles the `find` output correctly. There is the `-print0` option in the utility call. It means that `find` separates found files by a NULL character. This way, we reconcile the `read` input format and the `find` output.
+
+Note that you cannot specify a NULL character as a delimiter using the `IFS` variable. In other words, the following solution does not work:
+{line-numbers: false, format: Bash}
+```
+while IFS=$'\0' read -r filename
+```
+
+The problem comes from the peculiarity when [interpreting the `IFS` variable](https://mywiki.wooledge.org/IFS). If the variable is empty, Bash does not do word splitting at all. When you assign a NULL character to the variable, it means an empty value for Bash.
+
+There is the last tricky solution in Listing 3-28. We use process substitution for passing the `find` output to the `while` loop. Why did we not use the command substitution instead? We can do it like this:
+{line-numbers: true, format: Bash}
+```
+while IFS= read -r -d '' filename
+do
+  file "$filename"
+done < $(find . -maxdepth 1 -print0)
+```
+
+Unfortunately, this redirection does not work. The < operator couples the input stream and the specified file descriptor. But there is no file descriptor when using the command substitution. Bash calls the `find` utility and inserts its output instead of `$(...)`. When you use process substitution, Bash writes the `find` output to a temporary file. This file has a descriptor. Therefore, the stream redirection works fine.
+
+There is only one issue with process substitution. It is not part of the POSIX standard. If you need to follow the standard, use a pipeline instead. Listing 3-29 demonstrates how to do it.
+
+{caption: "Listing 3-29. The script for printing the file types", line-numbers: true, format: Bash}
+![`while-file-pipe.sh`](code/BashScripting/while-file-pipe.sh)
+
+Combine the `while` loop and `find` utility only when you have both following cases at the same time:
+
+1. You need a conditional statement or code block to process files.
+
+2. You have a complex condition for searching files.
+
+When combining `while` and `find`, always use a NULL character as a delimiter. This way, you avoid the word splitting problems.
