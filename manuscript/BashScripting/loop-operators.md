@@ -729,3 +729,73 @@ I> In the general case, you do not need the dollar sign for variables names in t
 We use the prefix increment form in the loop. It works faster than the postfix form.
 
 Use the second form of the `for` whenever you should calculate the loop counter. There are no other effective solutions in this case.
+
+### Controlling the Loop Execution
+
+The loop stops according to its condition. There are additional ways to control the loop execution. They allow you to interrupt it or skip the current iteration. Let's consider them in detail.
+
+#### break
+
+The `break` command stops the loop immediately. It is useful for handling an error or finishing an infinite loop.
+
+Here is an example. We want to write the script that searches an array's element by value. When the script finds it, there is no reason to continue the loop. We can finish it immediately with the `break` command. Listing 3-33 shows how to do it.
+
+{caption: "Listing 3-33. The script for searching an array's element", line-numbers: true, format: Bash}
+![`for-break.sh`](code/BashScripting/for-break.sh)
+
+The script receives an element's value to search via the `$1` parameter.
+
+The `is_found` stores the search result. The `if` statement checks the value of the current array's element. If it matches the `$1` parameter, we set the `is_found` variable to one. Then we interrupt the loop with the `break` command.
+
+There is the `if` statement after the loop. It checks the `is_found` variable. Then the `echo` command prints if the searching has succeeded.
+
+Use the `break` command to take as much as possible out of the loop body. When the loop body is short, it is easier to read and understand.
+
+Here is an example. We can print the searching result right in the loop body in Listing 3-33. Then we do not need to store the result in the `is_found` variable. On the other hand, the processing of the found element can be complex. In this case, take it out of the loop body.
+
+Sometimes it does not make sense to continue the script when interrupting the loop. Use the `exit` command instead of `break` in this case.
+
+For example, it can be an error in the input data that we catch in the loop body. Then printing an error message and calling the `exit` command is the best choice to stop the script.
+
+The `exit` command makes your code cleaner if you process the result in the loop body. Just call `exit` when you are done.
+
+Let's replace the `break` command with `exit` in Listing 3-33. Listing 3-34 shows the result.
+
+{caption: "Listing 3-34. The script for searching an array's element", line-numbers: true, format: Bash}
+![`for-exit.sh`](code/BashScripting/for-exit.sh)
+
+Using the `exit` command, we handle the search result in the loop body. In this case, it has shortened our code and made it simpler. But you get the opposite effect if the result processing requires a block of commands.
+
+The scripts in Listing 3-33 and Listing 3-34 give the same result.
+
+#### continue
+
+The `continue` command skips the current loop iteration. The loop does not stop in this case. It starts the next iteration instead.
+
+Here is an example. Suppose we want to calculate the sum of positive integers in an array. Thus, we should distinguish the signs of the integers. The `if` statement fits well for this task. If the integer's sign is positive, we add the integer to the result. Listing 3-35 shows the final script.
+
+{caption: "Listing 3-35. The script for calculating the sum of positive integers in an array", line-numbers: true, format: Bash}
+![`for-sum.sh`](code/BashScripting/for-sum.sh)
+
+If the `element` variable is greater than zero, we add it to the result `sum`.
+
+Let's use the `continue` command to get the same behavior. Listing 3-36 shows the result.
+
+{caption: "Listing 3-36. The script for calculating the sum of positive integers in an array", line-numbers: true, format: Bash}
+![`for-continue.sh`](code/BashScripting/for-continue.sh)
+
+We have inverted the condition of the `if` statement. Now it is "true" for negative numbers. Bash calls the `continue` command in this case. The command interrupts the current loop iteration. It means that all further operations are ignored. Then the next iteration starts with the next array element.
+
+We have applied the early return pattern in the context of the loop.
+
+Use the `continue` command to handle errors. It is also helpful for conditions where it does not make sense to execute the loop body to the end. This way, you avoid the nested `if` statements. This solution makes your code cleaner.
+
+{caption: "Exercise 3-12. Loop Constructs", format: text, line-numbers: false}
+```
+Write a game called "More or Fewer". The first participant chooses a number from 1 to 100.
+The second participant tries to guess it in seven tries.
+
+Your script chooses a number. The user enters his guess.
+The script answers if the guess is more or less than the chosen number.
+The user then tries to guess the number six more times.
+```
