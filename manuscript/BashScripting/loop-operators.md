@@ -634,3 +634,98 @@ Combine the `while` loop and `find` utility only when you have both following ca
 2. You have a complex condition for searching files.
 
 When combining `while` and `find`, always use a NULL character as a delimiter. This way, you avoid the word splitting problems.
+
+#### The Second Form of For
+
+The second form of the `for` statement allows you to specify an arithmetic expression as a condition. Let's consider cases when do you need it.
+
+Suppose we need a script to calculate the factorial. The solution for this task depends on the way we enter the data. The first option is we have a predefined integer. Then the first form of the `for` loop fits well. Listing 3-30 shows this solution.
+
+{caption: "Listing 3-30. The script for calculating the factorial for integer 5", line-numbers: true, format: Bash}
+![`for-factorial-brace.sh`](code/BashScripting/for-factorial-brace.sh)
+
+The second option is to receive the integer as an input parameter of the script. We can try the following loop's condition to process the `$1` parameter:
+{line-numbers: false, format: Bash}
+```
+for i in {1..$1}
+```
+
+We expect that Bash will do brace expansion for integers from one to the `$1` value. However, it does not work this way.
+
+According to Table 3-2, the brace expansion happens before the parameter expansion. Thus, the loop condition gets the string "{1...$1}" instead of "1 2 3 4 5". Bash does not recognize the brace expansion because the upper bound of the range is not an integer. Then Bash writes the "{1...$1}" string to the `i` variable. Therefore, the following (( operator fails.
+
+The `seq` utility can solve our problem. It generates a sequence of integers or fractions.
+
+Table 3-21 shows the ways to call the `seq` utility.
+
+{caption: "Table 3-21. The ways to call the `seq` utility", width: "100%"}
+| Number of parameters | Description | Example | Result |
+| --- | --- | --- | --- |
+| 1 | The parameter defines the last number in the generated sequence. The sequence starts with one. | `seq 5` | 1 2 3 4 5 |
+|  | | | |
+| 2 | The parameters are the first and last numbers of the sequence. | `seq -3 3` | -2 -1 0 1 2 |
+|  | | | |
+| 3 | The parameters are the first number, step and last numbers of the sequence. | `seq 1 2 5` | 1 3 5 |
+
+The `seq` utility splits integers on the output by line breaks. The `-s` option allows you to specify another delimiter. The `IFS` variable contains the line break symbol. Therefore, you do not need the `-s` option in our case.
+
+There are line breaks instead of spaces in the "Result" column of Table 3-21. This is done for convenience.
+
+Let's apply the `seq` utility and write the script to calculate a factorial for any integer. Listing 3-31 shows this script.
+
+{caption: "Listing 3-31. The script for calculating a factorial", line-numbers: true, format: Bash}
+![`for-factorial-seq.sh`](code/BashScripting/for-factorial-seq.sh)
+
+This solution works properly. However, it is ineffective. The performance overhead comes because of calling the external `seq` utility. It costs the same time as launching an application (for example, Windows Calculator). The OS kernel performs several complicated operations whenever Bash creates a new process. They take significant time on the processor's scale. Therefore, apply the built-in Bash commands whenever possible.
+
+We need the second form of the `for` statement to solve the task effectively. This form looks like this in general:
+{line-numbers: true, format: Bash}
+```
+for (( EXPRESSION_1; EXPRESSION_2; EXPRESSION_3 ))
+do
+  ACTION
+done
+```
+
+You can write it in one line this way:
+{line-numbers: false, format: Bash}
+```
+for (( EXPRESSION_1; EXPRESSION_2; EXPRESSION_3 )); do ACTION; done
+```
+
+Bash executes the `for` loop with an arithmetic condition this way:
+
+1. Bash calculates the EXPRESSION_1 once before the first iteration of the loop.
+
+2. The loop continues as long as EXPRESSION_2 remains true. The loop stops when it returns "false".
+
+3. Bash calculates the EXPRESSION_3 at the end of each iteration.
+
+Let's replace the `seq` utility call with the arithmetic expression in Listing 3-31. Listing 3-32 shows the result.
+
+{caption: "Listing 3-32. The script for calculating a factorial", line-numbers: true, format: Bash}
+![`for-factorial.sh`](code/BashScripting/for-factorial.sh)
+
+This script works faster. It uses Bash built-in commands only. There is no need to create new processes here.
+
+The `for` statement in the script follows this algorithm:
+
+1. Declare the `i` variable before the first iteration of the loop. Assign it integer 1. The variable is a loop counter.
+
+2. Compare the loop counter with the input parameter `$1`.
+
+3. If the counter is smaller than the `$1` parameter, do the loop iteration.
+
+4. If the counter is greater than the parameter, stop the loop.
+
+5. Calculate the arithmetic expression "result *= i" in the loop's body. It multiplies the `result` variable by `i`.
+
+6. When the loop iteration is done, calculate the "++i" expression of the `for` condition. It increments the `i` variable by one.
+
+7. Go to the 2nd step of the algorithm.
+
+I> In the general case, you do not need the dollar sign for variables names in the (( operator and `let` command. However, it is necessary for code in Listing 3-32. Without the sign, Bash confuses the `$1`parameter and literal 1.
+
+We use the prefix increment form in the loop. It works faster than the postfix form.
+
+Use the second form of the `for` whenever you should calculate the loop counter. There are no other effective solutions in this case.
