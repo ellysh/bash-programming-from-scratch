@@ -1,93 +1,103 @@
-## Функции
+## Functions
 
-Bash относится к [**процедурным языкам программирования**](https://ru.wikipedia.org/wiki/Процедурное_программирование). Процедурные языки позволяют разделить программу на логические части — **подпрограммы**. Подпрограмма — это самостоятельный блок кода, который решает конкретную задачу. Подпрограммы вызываются из основной программы.
+Bash is [**procedural programming language**](https://en.wikipedia.org/wiki/Procedural_programming). Procedural languages allow you to divide a program into logical parts called [**subroutine**](https://en.wikipedia.org/wiki/Subroutine). A subroutine is an independent block of code that solves a specific task. A program calls subroutines when it is necessary.
 
-В современных языках подпрограммы называются **функциями**. Мы уже сталкивались с ними, когда знакомились с командой declare. Теперь рассмотрим подробнее, как функции устроены и для чего нужны.
+Subroutines are called **functions** in modern programming languages. We have already met functions when considering the `declare` command. Now let's study the structure and purposes of functions.
 
-### Парадигмы программирования
+### Programming Paradigms
 
-Для начала разберёмся с терминологией. Она поможет понять, зачем вообще нужны функции.
+We should start with the terminology. It will help us to understand why functions have appeared and which tasks they solve.
 
-Что такое процедурное программирование? Это одна из [**парадигм**](https://ru.wikipedia.org/wiki/Парадигма_программирования) разработки ПО. Парадигма — это набор идей, методов и принципов, которые определяют способ написания программ.
+What is procedural programming? It is one of [**paradigms**](https://en.wikipedia.org/wiki/Programming_paradigm) of software development. A paradigm is a set of ideas, methods and principles that define how to write programs.
 
-Современные языки следуют одной из двух доминирующих сегодня парадигм:
+There are two dominant paradigms today. Most modern programming languages follow one of them. The paradigms are the following:
 
-1. Императивное программирование. Разработчик явно указывает машине, как ей изменять своё состояние. Другими словами он задаёт полный алгоритм вычисления результата.
+1. [**Imperative programming**](https://en.wikipedia.org/wiki/Imperative_programming). The developer explicitly specifies to the computer how to change its state. In other words, he writes a complete algorithm for calculating the result.
 
-2. Декларативное программирование. Разработчик указывает свойства желаемого результата, но не алгоритм его вычисления.
+2. [**Declarative programming**](https://en.wikipedia.org/wiki/Declarative_programming). The developer specifies the properties of the desired result but not the algorithm to calculate it.
 
-Bash следует первой парадигме. Это императивный язык.
+Bash follows the first paradigm. It is an imperative language.
 
-Императивная и декларативная парадигмы определяют общие принципы написания программы. В рамках одной парадигмы есть различные методологии (подходы). Методология предлагает конкретные приёмы программирования. Так у императивной парадигмы есть две основных методологии:
+The imperative and declarative paradigms define general principles for writing a program. There are different methodologies (i.e. approaches) within the same paradigm. Each methodology offers specific programming techniques.
 
-1. Процедурное программирование.
+The imperative paradigm has two dominant methodologies:
 
-2. Объектно-ориентированное программирование.
+1. Procedural programming.
 
-Эти методологии предлагают по-разному структурировать исходный код программы. Bash следует первой методологии. 
+2. [**Object-oriented programming**](https://en.wikipedia.org/wiki/Object-oriented_programming).
 
-Рассмотрим процедурное программирование подробнее. Процедурный язык предоставляет средства для объединения наборов команд в независимые блоки кода. Эти блоки кода называются процедурами или функциями. Функцию можно вызвать из любого места программы. На вход она принимает параметры. Этот механизм похож на передачу параметров командной строки в скрипт. Поэтому функцию иногда называют программой в программе или подпрограммой.
+These methodologies suggest structuring the source code of a program in different ways. Bash follows the first methodology.
 
-Основная задача функций — управление сложностью программ. Чем больше объём исходного кода, тем сложнее его сопровождать и поддерживать в рабочем состоянии. Ситуацию усугубляют повторяющиеся фрагменты кода. Они разбросаны по всей программе и могут содержать ошибки. После исправления ошибки в одном таком фрагменте, надо найти и исправить все остальные. Если фрагмент вынести в функцию, то достаточно исправить ошибку только в ней.
+Let's take a closer look at procedural programming. This methodology suggests features for combining the program's instruction sets into independent blocks of code. These blocks are called subroutines or functions.
 
-Рассмотрим пример повторяющегося фрагмента кода. Представьте, что вы пишете большую программу. Чтобы обработать ошибки, программа выводит в поток ошибок текстовые сообщения. Тогда в исходном коде появится много мест с вызовом команды echo. Например, таких:
+You can call a function from any place of a program. The function can receive input parameters. This mechanism works similarly to passing command-line parameters to a script. This is a reason why a function is called "a program inside a program" sometimes.
+
+The main task of the functions is to manage the complexity of a program. The larger the size of the source code, the harder it is to maintain. Repeating code fragments make this situation worse. They are scattered throughout the program and may contain errors. After fixing a mistake in one fragment, you have to find and fix all the rest. If you put the fragment into a function, it is enough to fix the error only there.
+
+Here is an example of a repeating code fragment. Suppose that you are writing a large program. The program prints text messages to the error stream when handling errors. Then there will be many places in the source code where you call the `echo` command. These calls can look like this:
 {line-numbers: false, format: Bash}
 ```
->&2 echo "Произошла ошибка N"
+>&2 echo "The N error has happened"
 ```
 
-В какой-то момент вы решаете, что лучше записывать все ошибки в файл. Тогда анализировать их станет легче. Пользователи вашей программы могут перенаправить поток ошибок в лог-файл сами. Но, предположим, что не все умеют пользоваться перенаправлением. Поэтому программа должна сама писать сообщения в лог-файл.
+At some point, you decide that it is better to write all errors in a log file. Then it will be easier to analyze them. Users of your program may redirect the error stream to the log file themselves. But let's assume that some of them do not know how to use redirection. Thus, the program must write messages into the log file by itself.
 
-Внесём изменение в программу. Для этого нужно пройти по всем местам обработки ошибок. Каждый вызов команды echo надо заменить на следующий:
+Let's change the program. You have to go through all places where it handles the errors. Then you should replace the `echo` calls there with the following one:
 {line-numbers: false, format: Bash}
 ```
-echo "Произошла ошибка N" >> debug.log
+echo "The N error has happened" >> debug.log
 ```
 
-Если по невнимательности пропустить и не исправить какой-то вызов echo, его вывод не попадёт в лог-файл. Этот вывод может оказаться важным. Без него вы не поймёте, почему программа не работает у пользователя.
+If you miss one `echo` call accidentally, its output does not come into the log file. But this specific output can be critical. Without it, you would not understand why the program fails for the user.
 
-Мы рассмотрели одну из сложностей сопровождения программ. Она часто встречается при изменении кода, написанного ранее. В нашем примере проблема возникла из-за нарушения принципа разработки "не повторяйся" ([**don’t repeat yourself**](https://ru.wikipedia.org/wiki/Don’t_repeat_yourself) или DRY). Один и тот же код вывода ошибок копировался снова и снова в разные места программы. Так делать нельзя.
+We have considered one of the difficulties of maintaining programs. It often occurs when you change the existing code. The root cause of the problem is a violation of the [**don't repeat yourself**](https://en.wikipedia.org/wiki/Don't_repeat_yourself) or DRY development principle. The same error handling code was copied over and over again in different places of the program. You should not do that.
 
-Функции решают проблему дублирования кода. Чем-то это решение напоминает циклы. Отличие в том, что цикл многократно исполняет набор команд в одном месте программы. В отличие от цикла функция позволяет исполнять одни и те же команды в разных местах программы.
+Functions solve the problem of code duplication. This solution somewhat resembles loops. The difference is that a loop executes a set of commands in one place of the program cyclically. In contrast to a loop, a function executes the same set of commands at different program places.
 
-Функция улучшит читаемость кода программы. Она объединяет набор команд в единый блок. Если дать блоку говорящее имя, станет очевидна решаемая им задача. В программе функция вызывается по своему имени. Благодаря этому, программу станет легче читать. Вместо десятка строк тела функции, будет стоять её имя. Оно объяснит читателю, что происходит в функции.
+Using functions improves the readability of the program's code. It combines a set of commands into a single block. If you give the block a speaking name, the task it solves becomes obvious. You can call the function by its name. It makes the program easier to read. Instead of a dozen lines of the function's body, there will be just its name. It explains to the reader what is going on in the function.
 
-### Функции в командном интерпретаторе
+### Using Functions in Shell
 
-Функции доступны в обоих режимах Bash: командный интерпретатор и исполнение скриптов. Начнём с командного интерпретатора.
+The functions are available in both Bash modes: the command interpreter and script execution. First, let's consider how they work in the command interpreter.
 
-В общем виде функция объявляется так:
+Here is the function's declaration in general:
 {line-numbers: true, format: Bash}
 ```
-ИМЯ_ФУНКЦИИ()
+FUNCTION_NAME()
 {
-    ДЕЙСТВИЕ
+  ACTION
 }
 ```
 
-В одну строку функцию можно объявить так:
+You can also declare the function in one line this way:
 {line-numbers: false, format: Bash}
 ```
-ИМЯ_ФУНКЦИИ() { ДЕЙСТВИЕ ; }
+FUNCTION_NAME() { ACTION ; }
 ```
 
-Обратите внимание на обязательную точку с запятой перед закрывающей фигурной скобкой }.
+The semicolon before the closing curly bracket is mandatory here.
 
-Тело функции ДЕЙСТВИЕ может быть одной командой или блоком команд.
+The ACTION is a single command or a block of commands. It is called the **function body**.
 
-На имена функций в Bash накладываются те же ограничения, что и на имена переменных. В них допустимы только символы латинского алфавита, числа и знак подчёркивания _. Имя не должно начинаться с числа.
+Function names follow the same restrictions as variable names in Bash. They allow Latin characters, numbers and the underscore character. The name must not begin with a number.
 
-Рассмотрим, как объявлять и использовать функции в командном интерпретаторе. Предположим, вам нужна статистика использования оперативной памяти. Эта информация доступна через файловую систему [**proc**](https://ru.wikipedia.org/wiki/Procfs) или procfs. Через proc можно узнать список работающих процессов, состояние ОС и оборудования компьютера. Эта информация доступна через файлы, находящихся по системному пути `/proc`.
+Let's look at how to declare and use functions in the shell. Suppose you need statistics about memory usage. This statistics are available via the special file system [**proc**](https://en.wikipedia.org/wiki/Procfs) or procfs. This file system provides the following information:
 
-Статистика использования оперативной памяти доступна в файле `/proc/meminfo`. Прочитаем его с помощью утилиты cat:
+* The list of running processes.
+* The state of the OS.
+* The state of the computer's hardware.
+
+There are files in the `/proc` system path. You can read the required information from these files.
+
+RAM usage statistics are available in the `/proc/meminfo` file. We can read it with the `cat` utility this way:
 {line-numbers: false, format: Bash}
 ```
 cat /proc/meminfo
 ```
 
-Вывод команды зависит от вашей системы. Для окружения MSYS2 он даст меньше информации, для Linux-системы — больше. 
+The output of this command depends on your OS. The `/proc/meminfo` file contains less information for the MSYS2 environment and more for the Linux system.
 
-Для MSYS2 содержимое файла `meminfo` будет примерно таким:
+Here is an example of the `meminfo` file contents for the MSYS2 environment:
 {line-numbers: true, format: Bash}
 ```
 MemTotal:        6811124 kB
@@ -100,565 +110,196 @@ SwapTotal:       1769472 kB
 SwapFree:        1636168 kB
 ```
 
-Таблица 3-22 объясняет значение каждого поля.
+Table 3-22 explains the meaning of each field of this file.
 
-{caption: "Таблица 3-22. Поля в файле `meminfo`", width: "100%"}
-| Поле | Значение |
+{caption: "Table 3-22. Fields of the `meminfo` file", width: "100%"}
+| Field | Description |
 | --- | --- |
-| MemTotal | Объём доступной в системе RAM. |
-| MemFree | Объём не используемой в данный момент RAM. Считается как LowFree + HighFree. |
-| HighTotal | Объём доступной памяти в области RAM выше 860 мегабайтов. |
-| HighFree | Объём не используемой памяти в области RAM выше 860 мегабайтов. |
-| LowTotal | Объём доступной памяти в области RAM ниже 860 мегабайтов. |
-| LowFree | Объём не используемой памяти в области RAM ниже 860 мегабайтов. |
-| SwapTotal | Объём доступной памяти в [**области подкачки**](https://ru.wikipedia.org/wiki/Подкачка_страниц) на жёстком диске. |
-| SwapFree | Объём не используемой памяти в области подкачки. |
+| MemTotal | The total amount of usable RAM in the system |
+|  | |
+| MemFree | The amount of unused RAM at the moment. It is equal to sum of fields LowFree + HighFree. |
+|  | |
+| HighTotal | The total amount of usable RAM in the high region (above 860 MB). |
+|  | |
+| HighFree | The amount of unused RAM in the high region (above 860 MB). |
+|  | |
+| LowTotal | The total amount of usable RAM in the non-high region. |
+|  | |
+| LowFree | The amount of unused RAM in the non-high region. |
+|  | |
+| SwapTotal | The total amount of physical [**swap**](https://en.wikipedia.org/wiki/Memory_paging#Unix_and_Unix-like_systems) memory. |
+|  | |
+| SwapFree | The amount of unused swap memory |
 
-Подробнее значения полей файла `meminfo` рассматриваются в [статье](http://markelov.blogspot.com/2009/01/linux-procmeminfo.html).
+This [article](https://www.thegeekdiary.com/understanding-proc-meminfo-file-analyzing-memory-utilization-in-linux/) provides more details about fields of the `meminfo` file.
 
-Чтобы не набирать команду чтения файла `meminfo` каждый раз, объявим функцию с коротким именем. Например, так:
+Typing the `cat` command for printing the `meminfo` file content takes time. We can declare the function with a short name for that. Here is an example of this function:
 {line-numbers: false, format: Bash}
 ```
 mem() { cat /proc/meminfo; }
 ```
 
-Это однострочное объявление функции с именем `mem`. Её можно вызвать так же, как любую Bash-команду. Например:
+This is a one-line declaration of the `mem` function. Now you can call it the same way as any regular Bash command. Do it like this:
 {line-numbers: false, format: Bash}
 ```
 mem
 ```
 
-Функция выведет статистику использования памяти.
+The function prints statistics on memory usage.
 
-Команда unset удаляет объявленную ранее функцию. Удалим нашу функцию `mem` следующей командой:
+The `unset` command removes the previously declared function. For example, the following call removes our `mem` function:
 {line-numbers: false, format: Bash}
 ```
 unset mem
 ```
 
-Предположим, что переменная и функция объявлены с одинаковыми именами. Чтобы удалить именно функцию, используйте опцию `-f` команды unset. Например, так:
+Suppose a variable and a function are declared with the same name. Use the `-f` option to remove the function. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 unset -f mem
 ```
 
-Объявление функции можно добавить в файл `~/.bashrc`. Тогда функция будет доступна при каждом запуске командной оболочки.
+You can add the function declaration to the `~/.bashrc` file. Then the function will be available every time you start the shell.
 
-В командной строке мы объявили функцию `mem` в однострочном формате. Его удобнее и быстрее набирать. В файле `~/.bashrc` важна наглядность. Там функцию `mem` лучше объявить в стандартном виде. Например, так:
+We declared the `mem` function in single-line format when using command-line. It is a convenient and fast way to type. But clarity is more important when declaring the function in the file `~/.bashrc`. Therefore, it is better to declare the `mem` function in a standard format there. Do it like this:
 {line-numbers: true, format: Bash}
 ```
 mem()
 {
-    cat /proc/meminfo
+  cat /proc/meminfo
 }
 ```
 
-#### Отличие функций от псевдонимов
+#### Difference Between Functions and Aliases
 
-Мы объявили функцию `mem` для вывода статистики использования оперативной памяти. То же поведение даст следующий псевдоним:
+We have declared the `mem` function. It prints statistics on memory usage. The following alias does the same thing:
 {line-numbers: false, format: Bash}
 ```
 alias mem="cat /proc/meminfo"
 ```
 
-Если функции и псевдонимы работают одинаково, что выбрать?
+It looks like functions and aliases work the same way. What should you choose then?
 
-Функции и псевдонимы похожи в одном — это встроенные механизмы Bash. С точки зрения пользователя они сокращают ввод длинных команд. Но принцип работы этих механизмов принципиально различается.
+Functions and aliases have one similar aspect only. They are built-in Bash mechanisms. From the user's point of view, they reduce the input of long commands. But these mechanisms work in completely different ways.
 
-Псевдоним заменяет один текст на другой во введённой пользователем команде. Другими словами Bash находит в команде текст, который совпадает с именем alias. Затем заменяет этот текст на значение псевдонима и исполняет получившуюся команду.
+An alias replaces one text with another in a typed command. In other words, Bash finds text in the command that matches the alias name. Then it replaces that text with the alias value. Finally, Bash executes the resulting command.
 
-Предположим, вы определили псевдоним для утилиты cat. Он добавляет опцию `-n` в вызов утилиты. Благодаря опции, в вывод добавляются номера строк. Псевдоним выглядит так:
+Here is an example of an alias. Suppose you have declared an alias for the `cat` utility. It adds the `-n` option to the utility call. The option adds line numbers to the `cat` output. The alias declaration looks like this:
 {line-numbers: false, format: Bash}
 ```
 alias cat="cat -n"
 ```
 
-Теперь каждый раз когда в команде встречается слово "cat", Bash подставит вместо него "cat -n". Например, вы вводите команду:
+Whenever you type a command that starts with the word "cat", Bash replaces it with the "cat -n". For example, you type this command:
 {line-numbers: false, format: Bash}
 ```
 cat ~/.bashrc
 ```
 
-После подстановки псевдонима она выглядит так:
+When Bash inserts an alias value, the command becomes like this:
 {line-numbers: false, format: Bash}
 ```
 cat -n ~/.bashrc
 ```
 
-Подстановка заменила только слово "cat" на "cat -n". Следующий далее путь до файла не изменился.
+Bash has replaced the word "cat" with "cat -n". It did not change the parameter, i.e. the path to the file.
 
-Теперь рассмотрим, как работают функции. В отличие от псевдонима тело функции не подставляется в команду. Когда Bash встречает имя функции в команде, он исполняет её тело.
+I> You can force Bash to insert an alias before executing the command. Type the command and press the Ctrl+Alt+E keystroke for doing that.
 
-Пример. Попробуем с помощью функции получить то же поведение, как у псевдонима для утилиты cat. Если бы функции работали как alias, такое определение решило бы задачу:
+Now let's look at how functions work. Suppose that Bash meets the function name in the typed command. Unlike an alias, the shell does not replace the function's name with its body. Instead, Bash executes the function's body.
+
+Here is an example to explain the difference. We want to write the function that behaves the same way as the `cat` alias. If Bash functions work as aliases, the following declaration solves our task:
 {line-numbers: false, format: Bash}
 ```
 cat() { cat -n; }
 ```
 
-Тогда в следующей команде Bash просто добавит опцию `-n`.
+We expect that Bash will add the `-n` option to the following command:
 {line-numbers: false, format: Bash}
 ```
 cat ~/.bashrc
 ```
 
-Но это не сработает. Bash не подставляет тело функции в команду. Bash его исполняет и подставляет в команду результат.
+However, it would not work. Bash does not insert the body of the function in the command. The shell executes the body and inserts the result into the command.
 
-В нашем случае утилита cat будет вызвана с опцией `-n`, но без параметра `~/.bashrc`. Это совершенно не то что нужно.
+In our example, Bash calls the `cat` utility with the `-n` option but without the `~/.bashrc` parameter. We do not want such behavior.
 
-Чтобы решить задачу, передадим имя файла в функцию в качестве параметра. Это работает так же, как передача параметра в команду или скрипт. После вызова функции укажите список параметров, разделённых пробелами.
+We can solve the problem by passing the filename to the function as a parameter. This works just like passing a parameter to a command or script. You can call the function and specify its parameters, separated by spaces.
 
-В общем виде вызов функции и передача в неё параметров выглядит так:
+Calling a function and passing parameters to it looks like this in general:
 {line-numbers: false, format: Bash}
 ```
-ИМЯ_ФУНКЦИИ ПАРАМЕТР1 ПАРАМЕТР2 ПАРАМЕТР3
+FUNCTION_NAME PARAMETER_1 PARAMETER_2 PARAMETER_3`
 ```
 
-Чтобы прочитать параметры в теле функции, используйте переменные `$1`, `$2`, `$3` и т.д. Прочитать сразу все параметры можно через переменную `$@`.
+You can read parameters in the function's body via names `$1`, `$2`, `$3`, etc. The `$@` array stores all received parameters.
 
-Исправим объявление функции `cat`. Все её входные параметры передадим в утилиту cat:
+Let's correct the declaration of the `cat` function. We will pass all parameters of the function to the `cat` utility input. Then the declaration becomes like this:
 {line-numbers: false, format: Bash}
 ```
 cat() { cat -n $@; }
 ```
 
-Такая функция тоже не заработает. Дело в том, что при её выполнении произойдёт **рекурсия**. Рекурсией называется вызов функции из неё же самой.
+This function would not work either. The problem happens because of unintentional **recursion**. When the function calls itself, it is called recursion.
 
-Перед выполнением команды "cat -n $@" Bash проверит список объявленных функций. В списке будет функция с именем `cat`. Её тело выполняется в данный момент, но это не важно. Поэтому вместо вызова утилиты Bash вызовет функцию `cat`. Этот вызов повторится снова и снова. Возникнет бесконечная рекурсия, которая похожа на бесконечный цикл.
+Bash checks the list of declared functions before executing the command "cat -n $@". There is the `cat` function in the list. Bash executes its body at the moment, but it does not change anything. Thus, the shell calls the `cat` function again instead of calling the `cat` utility. The call repeats over and over again. It leads to the infinite recursion, which is similar to an infinite loop.
 
-Рекурсия — вовсе не ошибка в поведении интерпретатора. Это мощный механизм, который значительно упрощает сложные алгоритмы (например, обход [**графа**](https://ru.wikipedia.org/wiki/Граф_(математика)) или [**дерева**](https://ru.wikipedia.org/wiki/Дерево_(структура_данных))).
+Recursion is not a mistake of Bash's behavior. It is a powerful mechanism that simplifies complex algorithms. The example of such algorithms is the traversing a [**graph**](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) or [**tree**](https://en.wikipedia.org/wiki/Tree_(data_structure)).
 
-Ошибка в нашем объявлении функции `cat`. Рекурсивный вызов произошел случайно и привел к зацикливанию. Решить эту проблему можно двумя способами:
+The mistake occurred in our declaration of the `cat` function. The recursive call happened by accident and led to a loop. There are two ways to solve this problem:
 
-1. Использовать встроенную команду command.
+1. Use the `command` built-in.
 
-2. Переименовать функцию так, чтобы её имя отличалось от имени утилиты.
+2. Rename the function so that its name differs from the utility name.
 
-Рассмотрим первое решение. В качестве параметров command получает команду. Если в команде встречаются имена псевдонимов и функций, Bash не станет их обрабатывать. Тело псевдонима не подставится. Функция не вызовется.
+Let's look at the first solution. The `command` built-in receives a command as parameters. If there are aliases and function names there, Bash ignores them. It does not insert the alias value instead of its name. It does not call a function. Instead, Bash executes the command as it is.
 
-Применим команду command в объявлении функции `cat`. Получим следующее:
+If we apply the `command` built-in in the `cat` function, we get the following result:
 {line-numbers: false, format: Bash}
 ```
 cat() { command cat -n "$@"; }
 ```
 
-Второе решение — просто переименовать функцию. Такой вариант сработает:
+Now Bash calls the `cat` utility instead of the `cat` function.
+
+The second solution is renaming the function. For example, this version works well:
 {line-numbers: false, format: Bash}
 ```
 cat_func() { cat -n "$@"; }
 ```
 
-Всегда помните о проблеме случайной рекурсии. Не давайте функциям имена, совпадающие с именами команд интерпретатора и GNU-утилит.
+Always be aware of the problem of unintentional recursion. Keep the names of the functions unique. They should not match the names of built-in Bash commands and GNU utilities.
 
-Подведём итоги сравнения функций и псевдонимов в командном интерпретаторе. Если нужно просто сократить длинную команду, используйте alias.
+Here is a summary of our comparison of functions and aliases. If you want to shorten a long command, use an alias.
 
-Функция нужна только в следующих случаях:
+You need a function in the following cases only:
 
-1. Для выполнения действия нужны условные операторы, циклы или блок команд.
+1. You need a conditional statement, loop, or code block to perform a command.
 
-2. Параметры команды находятся не в конце.
+2. The parameters are not at the end of the command.
 
-Рассмотрим пример второго случая — команду, которую нельзя заменить псевдонимом. Сократим вызов утилиты find для поиска файлов в указанном каталоге. Поиск в домашнем каталоге выглядит так:
+The second case needs an example. Let's shorten the `find` utility call. It should search for files in the specified directory. When you search in the home directory, the call looks like this:
 {line-numbers: false, format: Bash}
 ```
 find ~ -type f
 ```
 
-С помощью псевдонима для этой команды параметризовать путь не получится. Следующий вариант не заработает: 
+We cannot write an alias that takes the target path as a parameter. The following solution does not work:
 {line-numbers: false, format: Bash}
 ```
 alias="find -type f"
 ```
 
-Проблема в том, что путь должен идти до опции `-type`.
+The target path should come before the `-type` option. This is a problem for the alias.
 
-Заменим псевдоним на функцию. В её теле можно выбрать позицию для подстановки параметра в вызов find. Например, так:
+However, we can use the function in this case. We can choose the position to insert the parameter in the `find` call. The function declaration looks like this:
 {line-numbers: false, format: Bash}
 ```
 find_func() { find $1 -type f; }
 ```
 
-### Функции в скриптах
-
-В скриптах функции объявляются точно так же, как в командном интерпретаторе. Допускаются оба варианта объявления: стандартный и однострочный.
-
-Для примера вернёмся к проблеме обработки ошибок в большой программе. Объявим следующую функцию для вывода сообщений об ошибках:
-{line-numbers: true, format: Bash}
-```
-print_error()
-{
-    >&2 echo "Произошла ошибка: $@"
-}
-```
-
-Текст, объясняющий причину ошибки, передаётся в функцию через параметр. Допустим, наша программа читает файл на диске. Но файл оказался недоступен. Тогда сообщить о проблеме можно так:
+Now we can call it for searching files in the home directory this way:
 {line-numbers: false, format: Bash}
 ```
-print_error "файл readme.txt не найден"
+find_func ~
 ```
-
-Предположим, что требования к программе изменились. Теперь сообщения об ошибках нужно выводить в лог-файл. Для этого достаточно исправить объявление функции `print_error`. Команда echo изменится на следующую:
-{line-numbers: true, format: Bash}
-```
-print_error()
-{
-    echo "Произошла ошибка: $@" >> debug.log
-}
-```
-
-После изменения функции все сообщения об ошибках выводятся в файл `debug.log`. Менять что-либо в местах вызова функции не нужно.
-
-Встречаются ситуация, когда одна функция должна вызвать другую. Это допустимо в Bash. В общем случае функцию можно вызвать из любого места программы.
-
-Рассмотрим пример. Предположим, интерфейс программы надо перевести на другой язык. Такая процедура называется [**локализацией**](https://ru.wikipedia.org/wiki/Локализация_программного_обеспечения). Сообщения об ошибках лучше выводить на понятном пользователю языке. Для этого продублируем текст всех сообщений на всех языках, поддерживаемых программой. Как это сделать?
-
-Самое простое решение — присвоить каждой ошибке уникальный код. Такая практика часто встречается в системном программировании. Применим этот подход в нашей программе. Тогда функция `print_error` в качестве параметра будет принимать код ошибки.
-
-Код ошибки можно выводить прямо в лог-файл. Но тогда пользователю понадобится информация о значениях кодов. Удобнее выводить текст сообщения, как и раньше. Для этого код ошибки надо конвертировать в текст на нужном языке. Для этой задачи объявим специальную функцию.
-
-Напишем функцию для конвертирования кода ошибки в сообщение. Для конвертирования применим конструкцию case. Каждый блок case соответствует определённому коду ошибки. Объявление функции выглядит так:
-{line-numbers: true, format: Bash}
-```
-code_to_error()
-{
-  case $1 in
-    1)
-      echo "Не найден файл"
-      ;;
-    2)
-      echo "Нет прав для чтения файла"
-      ;;
-  esac
-}
-```
-
-Теперь перепишем объявление функции `print_error` так:
-{line-numbers: true, format: Bash}
-```
-print_error()
-{
-  echo "$(code_to_error $1) $2" >> debug.log
-}
-```
-
-Вызов функции `print_error` выглядит, например, так:
-{line-numbers: false, format: Bash}
-```
-print_error 1 "readme.txt"
-```
-
-В результате вызова в лог-файл запишется строка:
-{line-numbers: false, format: text}
-```
-Не найден файл readme.txt
-```
-
-Первым параметром в функцию передаётся код ошибки. Вторым параметром — имя файла, который привёл к проблеме.
-
-Сопровождать механизм вывода сообщений об ошибках в нашей программе стало проще. Предположим, надо добавить вывод ошибок на другом языке. Для этого достаточно объявить две функции:
-
-* `code_to_error_ru` для сообщений на русском.
-
-* `code_to_error_en` для сообщений на английском.
-
-Чтобы выбрать правильную функцию, можно проверить значение переменной `LANGUAGE` в функции `print_error`.
-
-I> Если переменная `LANGUAGE` недоступна в вашей системе, используйте переменную `LANG`.
-
-Наше решение с конвертированием кода ошибок — это учебный пример. Для локализации скриптов у Bash есть специальный механизм. В нём используются PO-файлы с текстами на разных языках. Подробнее об этом механизме читайте в [статье BashFAQ](https://mywiki.wooledge.org/BashFAQ/098?highlight=(Localization)).
-
-{caption: "Упражнение 3-13. Использование функций", format: text, line-numbers: false}
-```
-Для вывода сообщений об ошибках на русском и английском языках напишите следующие функции:
-
-* print_error
-* code_to_error_ru
-* code_to_error_en
-
-Реализуйте функции code_to_error двумя способами:
-
-* с конструкцией case.
-* с ассоциативным массивом.
-```
-
-#### Возврат значения из функции
-
-Чтобы вернуть значение из функции, процедурные языки имеют встроенную команду. Обычно она называется return. В Bash эта команда тоже есть. Но её поведение отличается. Команда return в Bash не возвращает значение. Она передаёт код возврата, то есть целое число от 0 до 255.
-
-Полный алгоритм вызова и выполнения функции выглядит так:
-
-1. При выполнении команды встречается имя функции.
-
-2. Интерпретатор переходит в тело функции и исполняет его с первой команды.
-
-3. Если в теле функции встречается команда return, выполнение функции прекращается. Bash переходит в место её вызова. В специальный параметр `$?` записывается код возврата функции. Это параметр команды return.
-
-4. Если в теле функции нет return, Bash выполняет его до последней команды. После этого интерпретатор переходит в место вызова функции.
-
-В других процедурных языках команда return возвращает переменную любого типа: число, строку или массив. Такое же поведение можно получить и в Bash. Для этого есть три способа:
-
-1. Подстановка команд.
-
-2. Глобальная переменная.
-
-3. Вызывающая сторона указывает глобальную переменную.
-
-Рассмотрим пример каждого из трёх способов.
-
-В прошлом разделе мы написали функции `code_to_error` и `print_error` для вывода сообщений об ошибках. Они выглядят так:
-{line-numbers: true, format: Bash}
-```
-code_to_error()
-{
-  case $1 in
-    1)
-      echo "Не найден файл"
-      ;;
-    2)
-      echo "Нет прав для чтения файла"
-      ;;
-  esac
-}
-
-print_error()
-{
-  echo "$(code_to_error $1) $2" >> debug.log
-}
-```
-
-Здесь работает первый способ возврата значения. Вызов функции `code_to_error` помещается в подстановку команды. Благодаря этому, Bash подставит в место вызова функции всё, что она выведет на консоль.
-
-В нашем примере функция `code_to_error` выводит сообщение об ошибке через команду echo. Далее Bash подставляет этот вывод в тело функции `print_error`. В результате получается команда echo, состоящая из двух частей:
-
-1. Вывод функции `code_to_error`. Это сообщение об ошибке.
-
-2. Входной параметр `$2` функции `print_error`. Это имя файла, доступ к которому вызвал ошибку.
-
-Составная команда в функции `print_error` выводит полное сообщение об ошибке в лог-файл.
-
-Второй способ вернуть значение из функции — записать его в глобальную переменную. Такая переменная доступна в любом месте скрипта. То есть и в теле функции, и в месте её вызова.
-
-I> Все объявленные в скрипте переменные являются глобальными по умолчанию. У этого правила есть одно исключение. Его мы рассмотрим далее.
-
-Перепишем функции `code_to_error` и `print_error`. Сохраним результат `code_to_error` в глобальной переменной. Затем прочитаем эту переменную в функции `print_error`. Получится следующее:
-{line-numbers: true, format: Bash}
-```
-code_to_error()
-{
-  case $1 in
-    1)
-      error_text="Не найден файл"
-      ;;
-    2)
-      error_text="Нет прав для чтения файла"
-      ;;
-  esac
-}
-
-print_error()
-{
-  code_to_error $1
-  echo "$error_text $2" >> debug.log
-}
-```
-
-Результат функции `code_to_error` записывается в переменную `error_text`. Затем значения параметра `$2` и `error_text` подставляются в команду echo в функции `print_error`. Так получается сообщение для вывода в лог-файл.
-
-Возвращать значение из функции через глобальную переменную опасно. Это чревато конфликтом имён. Для примера предположим, что в скрипте есть другая переменная `error_text`. Она никак не связана с выводом в лог-файл. Тогда любой вызов функции `code_to_error` перезапишет значение этой переменной. Это приведёт к ошибкам во всех местах использования `error_text` вне функции.
-
-Решить проблему конфликта имён поможет **соглашение об именовании переменных**. Такое соглашение — это один из пунктов [**стандарта оформления кода**](https://ru.wikipedia.org/wiki/Стандарт_оформления_кода) (coding style). Любой крупный программный проект должен иметь такой стандарт.
-
-Вот пример соглашения об именовании переменных:
-
-* Все глобальные переменные, через которые функции возвращают значения, имеют префикс знак подчёркивания _.
-
-Будем следовать этому соглашению. Тогда переменная для возврата значения из функции `code_to_error` должна называться `_error_text`. Проблема решится, но лишь отчасти. Предположим, одна функция вызывает другую (вложенный вызов). Случайно они возвращают свои значения через переменные с одинаковыми именами. Это приведёт к ошибке.
-
-Третий способ возврата значения из функции решает проблему конфликта имён. Вызывающая сторона задаёт имя глобальной переменной. Функция записывает свой результат в переменную с этим именем.
-
-Как работает передача имени переменной в функцию? Имя передаётся через параметр функции, как и любое другое значение. Дальше, функция использует команду eval. Эта команда конвертирует текст в Bash-команду. Имя переменной хранится в виде текста. Поэтому без eval обратиться к переменной не получится.
-
-Перепишем функцию `code_to_error`. Вместо одного параметра будем передавать в неё два:
-
-1. Код ошибки в `$1`.
-
-2. Имя глобальной переменной для возврата значения в `$2`.
-
-Получится такой код:
-{line-numbers: true, format: Bash}
-```
-code_to_error()
-{
-  local _result_variable=$2
-
-  case $1 in
-    1)
-      eval $_result_variable="'Не найден файл'"
-      ;;
-    2)
-      eval $_result_variable="'Нет прав для чтения файла'"
-      ;;
-  esac
-}
-
-print_error()
-{
-  code_to_error $1 "error_text"
-  echo "$error_text $2" >> debug.log
-}
-```
-
-На первый взгляд код мало отличается от предыдущего варианта. Но это не так. Мы получили дополнительную гибкость поведения. Теперь вызывающая сторона выбирает имя глобальной переменной для возврата значения. Это имя явно указывается в коде вызова. Поэтому обнаружить конфликт и решить его стало проще.
-
-#### Область видимости переменных
-
-Конфликт имён — это серьёзная проблема. Она возникает в Bash, когда функции объявляют переменные в глобальном пространстве имён. В результате имена двух переменных могу совпасть. Тогда к ним обращаются разные функции в разные моменты времени. Это приводит к путанице и потере данных.
-
-Чтобы решить конфликт имён в Bash, ограничивайте [**область видимости**](https://ru.wikipedia.org/wiki/Пространство_имён_(программирование)) переменных. Рассмотрим этот механизм подробнее.
-
-Если объявить переменную с ключевым словом local, её область видимости ограничится телом функции. Другими словами, переменная будет доступна только в теле функции.
-
-Наш последний вариант функции `code_to_error` выглядит так:
-{line-numbers: true, format: Bash}
-```
-code_to_error()
-{
-  local _result_variable=$2
-
-  case $1 in
-    1)
-      eval $_result_variable="'Не найден файл'"
-      ;;
-    2)
-      eval $_result_variable="'Нет прав для чтения файла'"
-      ;;
-  esac
-}
-```
-
-Здесь переменная `_result_variable` объявлена как локальная. Это значит, что она доступна для чтения и записи только в теле `code_to_error` и любых вызываемых ею функциях. 
-
-В Bash область видимости локальной переменной ограничена временем исполнения функции, в которой она объявлена. Такая область видимости называется [**динамической**](https://ru.wikipedia.org/wiki/Область_видимости#Лексические_vs._динамические_области_видимости). В современных языках чаще встречается **лексическая** область видимости. При этом подходе переменная доступна только в теле функции, но не за его пределами (например, в вызываемых функциях).
-
-Локальные переменные не попадают в глобальную область видимости. Это гарантирует, что никакая функция не перезапишет их случайно.
-
-{caption: "Упражнение 3-14. Область видимости переменных", format: text, line-numbers: false}
-```
-Какой текст выведет на консоль скрипт из листинга 3-37 после выполнения?
-```
-
-{caption: "Листинг 3-37. Скрипт для тестирования области видимости переменной", line-numbers: true, format: Bash}
-![`quiz-variable-scope.sh`](code/BashScripting/quiz-variable-scope.sh)
-
-Неосторожное обращение с локальными переменными приводит к ошибкам. Проблема в том, что локальная переменная скрывает глобальную с тем же именем. Рассмотрим пример.
-
-Предположим, вы пишете функцию для обработки файла. Например, она с помощью утилиты grep ищет шаблон в файле. Функция выглядит так:
-{line-numbers: true, format: Bash}
-```
-check_license()
-{
-    local filename="$1"
-    grep "General Public License" "$filename"
-}
-```
-
-Теперь допустим, что в начале скрипта объявлена глобальная переменная с именем `filename`. Например:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-filename="$1"
-```
-
-Выполнится ли функция `check_license` корректно? Да выполнится, благодаря **сокрытию глобальной переменной**. Сокрытие работает так. При обращении к имени `filename` в теле функции Bash подставит локальную переменную, а не глобальную. Это происходит потому, что локальная переменная объявлена позже глобальной. Из-за сокрытия в теле функции нельзя получить доступ к глобальной переменной `filename`.
-
-Случайное сокрытие переменных приводит к ошибкам. Старайтесь исключить саму возможность такой ситуации. Для этого добавляйте префикс или постфикс для имён локальных переменных. Например, символ подчёркивания в конец имени.
-
-Глобальная переменная становится недоступна в теле функции только после объявления локальной переменной с тем же именем. Рассмотрим следующий вариант функции `check_license`:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-filename="$1"
-
-check_license()
-{
-    local filename="$filename"
-    grep "General Public License" "$filename"
-}
-```
-
-Здесь локальная переменная `filename` инициализируется значением глобальной переменной с тем же именем. Причина в том, что подстановка переменных выполняется до операции присваивания. То есть в момент присваивания подставляется значение параметра скрипта `$1`. Например, если в скрипт передать имя файла `README`, то присваивание выглядит так:
-{line-numbers: false, format: Bash}
-```
-    local filename="README"
-```
-
-В Bash начиная с версии 4.2 изменилось ограничение области видимости массивов. Если объявить индексируемый и ассоциативный массив в функции, он по умолчанию попадёт в локальную область видимости. Чтобы объявить массив глобальным, используйте опцию `-g` команды declare.
-
-Вот пример объявления локального массива `files`:
-{line-numbers: true, format: Bash}
-```
-check_license()
-{
-    declare files=(Documents/*.txt)
-    grep "General Public License" "$files"
-}
-```
-
-В следующем примере массив `files` попадёт в глобальную область видимости:
-{line-numbers: true, format: Bash}
-```
-check_license()
-{
-    declare -g files=(Documents/*.txt)
-    grep "General Public License" "$files"
-}
-```
-
-Мы познакомились с функциями в Bash. Вот общие рекомендации по их использованию:
-
-1. Тщательно выбирайте имена для функций. Каждое имя сообщает читателю кода, что делает функция.
-
-2. В функциях объявляйте только локальные переменные. Используйте соглашение об их именовании. Так вы решите конфликт имён локальных и глобальных переменных.
-
-3. Не используйте глобальные переменные в функциях. Вместо этого передавайте значение глобальной переменной в функцию через параметр.
-
-4. Не используйте ключевое слово function при объявлении переменных. Оно есть в Bash, но отсутствует в POSIX-стандарте.
-
-Рассмотрим подробнее последний совет. Следующий вариант объявления функции не рекомендуется:
-{line-numbers: true, format: Bash}
-```
-function check_license()
-{
-    declare files=(Documents/*.txt)
-    grep "General Public License" "$files"
-}
-```
-
-Ключевое слово function полезно только в одном случае. Оно решает конфликт между именем функции и псевдонимом (alias).
-
-Например, следующее объявление функции не заработает без слова function:
-{line-numbers: true, format: Bash}
-```
-alias check_license="grep 'General Public License'"
-
-function check_license()
-{
-    declare files=(Documents/*.txt)
-    grep "General Public License" "$files"
-}
-```
-
-После такого объявления функцию можно вызвать, если поставить перед ней слэш \. Например, так:
-{line-numbers: false, format: Bash}
-```
-\check_license
-```
-
-Без слэша Bash подставит значение псевдонима:
-{line-numbers: false, format: Bash}
-```
-check_license
-```
-
-В скриптах имена псевдонимов и функций конфликтуют редко. Каждый скрипт запускается в новом процессе Bash. В нём нет пользовательских alias из файла `.bashrc`. Конфликт имён может произойти по ошибке в режиме командного интерпретатора.
