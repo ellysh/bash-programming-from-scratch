@@ -28,6 +28,6 @@ First of all, we will consider Bash as a replacement for the graphical user inte
 
 Please do not consider learning Bash as a necessary but useless exercise. Every professional programmer faces tasks of automating some processes and executing commands on a Unix-like system. In both cases, Bash knowledge is indispensable.
 
-If you are not able to complete some example or exercise, do not be upset. It means that the book does not disclose material sufficiently. Please [write] (mailto:petrsum@gmail.com) to me about this. We will consider it out together.
+If you are not able to complete some example or exercise, do not be upset. It means that the book does not disclose material sufficiently. Please [write](mailto:petrsum@gmail.com) to me about this. We will consider it out together.
 
 There is a list of terms at the end of the book. There you can clarify an unknown concept that you met while reading the book.
