@@ -404,3 +404,132 @@ Write two versions of the "code_to_error" function:
 * Using the "case" statement.
 * Using an associative array.
 ```
+
+#### Returning a Function's Result
+
+Procedural languages have a reserved word for returning the function's result. It is called `return` in most cases. Bash also has a command with this name. But it has another purpose. The `return` command in Bash does not return a value. Instead, it passes a function's exit status, which is an integer between 0 and 255.
+
+The complete algorithm for calling and executing the function looks like this:
+
+1. Bash meets the function name in the command.
+
+2. The interpreter goes to the body of the function and executes it from the first command.
+
+3. If Bash meets the `return` command in the function body, it stops executing it. The interpreter jumps to the place where the function is called. The special parameter `$?` stores the exit status of the function.
+
+4. If there is no `return` command in the function's body, Bash executes it until the last command. Then, the interpreter jumps to the place where the function is called.
+
+In procedural languages, the `return` command returns the variable of any type from a function. It can be a number, a string or an array. You need other mechanisms for doing that in Bash. There are three options:
+
+1. Command Substitution.
+
+2. A global variable.
+
+3. The caller specifies a global variable.
+
+Let's look at examples of using these approaches.
+
+We wrote the functions `code_to_error` and `print_error` to print error messages in the last section. They look like this:
+{line-numbers: true, format: Bash}
+```
+code_to_error()
+{
+  case $1 in
+    1)
+      echo "File not found:"
+      ;;
+    2)
+      echo "Permission to read the file denied:"
+      ;;
+  esac
+}
+
+print_error()
+{
+  echo "$(code_to_error $1) $2" >> debug.log
+}
+```
+
+Here we have used the first approach for returning the function's result. We put the `code_to_error` call into the command substitution statement. Thus, Bash inserts whatever the function prints to the console into the place of the call.
+
+The `code_to_error` function prints the error message via the `echo` command in our example. Then Bash inserts this output into the body of the `print_error` function. There is only one `echo` call there. It consists of two parts:
+
+1. Output of the `code_to_error` function. This is the error message.
+
+2. The input parameter `$2` of the `print_error` function. This is the name of the file, which we tried to access but got an error.
+
+The `echo` command of the `print_error` function accumulates all data and prints the final error message to the log file.
+
+The second way to return a value from a function is to write it to a global variable. This kind of variable is available anywhere in the script. Thus, you can access it in the function's body and the place where it is called.
+
+I> All variables declared in the script are global by default. There is one exception to this rule. We will discuss it later.
+
+Let's apply the global variable approach to our case. We should rewrite the `code_to_error` and `print_error` functions. The first one will store its result in a global variable. Then `print_error` reads it. The resulting code looks like this:
+{line-numbers: true, format: Bash}
+```
+code_to_error()
+{
+  case $1 in
+    1)
+      error_text="File not found:"
+      ;;
+    2)
+      error_text="Permission to read the file denied:"
+      ;;
+  esac
+}
+
+print_error()
+{
+  code_to_error $1
+  echo "$error_text $2" >> debug.log
+}
+```
+
+The `code_to_error` function writes its result to the `error_text` global variable. Then the `print_error` function combines this variable with the `$2` parameter to make a final error message and print it to the log file.
+
+Returning the function result via a global variable is the error-prone solution. It may cause a naming conflict. For example, assume that there is another variable called `error_text` in the script. It has nothing to do with the output to the log file. Then any `code_to_error` call will overwrite the value of that variable. This will cause errors in all places where `error_text` is used outside the `code_to_error` and `print_error` functions.
+
+**Variable naming convention** can solve the problem of naming conflict. The convention is an agreement of how to name the variables in all parts of the project's code. This agreement is one of the clauses of [**code style**](https://en.wikipedia.org/wiki/Programming_style) guide. Any large program project must have such a guide.
+
+Here is an example of a variable naming convention:
+
+> All global variables, which functions use to return values, should have an underscore sign prefix in their names.
+
+Let's follow this convention. Then we should rename the `error_text` variable to `_error_text`. We solved the problem in our specific case. But there are cases when the issue still can happen. Suppose one function calls another, i.e. there is a nested call. What happens if both functions use the variable called the same to return their values? We get the naming conflict again.
+
+The third way to return a function's result solves the name conflict problem. The idea is to let the caller code a way to specify the global variable's name. Then the called function writes its result to that variable.
+
+How to pass a variable name to the called function? We can do it via the function's input parameter. Next, the function calls the `eval` command. This command converts the specified text into a Bash command. It is required because we pass the variable's name as a text. Bash does not allow referring to the variable using text. So, `eval` resolves this obstacle.
+
+Let's change the `code_to_error` function. We will pass two following parameters there:
+
+1. The error code in the `$1` parameter.
+
+2. The name of the global variable to store the result. We use the `$2` parameter for that.
+
+This way, we get the following code:
+{line-numbers: true, format: Bash}
+```
+code_to_error()
+{
+  local _result_variable=$2
+
+  case $1 in
+    1)
+      eval $_result_variable="'File not found:'"
+      ;;
+    2)
+      eval $_result_variable="'Permission to read the file denied:'"
+      ;;
+  esac
+}
+
+print_error()
+{
+  code_to_error $1 "error_text"
+  echo "$error_text $2" >> debug.log
+}
+```
+
+At first glance, the code is almost the same as it was before. But it is not. Now it behaves more flexibly. The `print_error` function chooses the global variable's name to get the `code_to_error` result. The caller code explicitly specifies this name. Therefore, it is easier to find and resolve naming conflicts.
