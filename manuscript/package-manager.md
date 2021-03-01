@@ -1,125 +1,130 @@
-# Пакетный менеджер
+# Package Manager
 
-Мы познакомились со встроенными командами Bash и со стандартным набором GNU-утилит. Эти утилиты устанавливаются в Unix-окружение по умолчанию. Их возможностей может оказаться недостаточно для решения вашей задачи. Эта проблема решается установкой дополнительных программ и утилит.
+We are already familiar with the basic Bash built-in commands and the standard set of GNU utilities. These tools are installed in the Unix environment by default. It can happen that their features are not enough to solve your task. You can solve this problem by installing additional programs and utilities.
 
-Подходы к установке программ в Windows и Unix-окружение отличаются. Рассмотрим, как правильно устанавливать и обновлять ПО в любом Unix-окружении или Linux дистрибутиве.
+Installing software in the Unix environment is not the same as in Windows. Let's look at how to properly install and update software in any Unix environment or Linux distribution.
 
-## Репозиторий
+## Repository
 
-Любое ПО устанавливается в Unix-окружение из [**репозитория**](https://help.ubuntu.ru/wiki/репозиторий) (software repository). Репозиторием называется сервер-хранилище всех доступных приложений. Эти приложения собираются **мейнтейнерами** из исходного кода открытого ПО. Большинство мейнтейнеров — это добровольцы и энтузиасты свободного ПО.
+Whenever you install software in the Unix environment, you should use [**repository**](https://help.ubuntu.com/community/Repositories). A repository is a server that stores all available applications. **Maintainers** take open sources of these applications and build them. Most maintainers are volunteers and free software enthusiasts.
 
-Каждое приложение в репозитории хранится в виде файла. Эти файлы имеют специальный формат. Например, deb, RPM, zst и т.д. Разные Linux-дистрибутивы используют разные форматы. Файл с приложением называется **пакетом** (package). Пакет — это модуль для установки ПО в систему.
+The repository stores each application as a separate file. This file has a special format. The format depends on the Linux distribution. Thus, each Linux distribution has its own software repository. Examples of the formats are deb, RPM, zst, etc. A file with an application is called a **package**. A package is a unit for installing software in a system.
 
-Репозиторий хранит пакеты с приложениями и библиотеками. Кроме этого в репозитории есть метаинформация обо всех пакетах. Она хранится в одном или нескольких файлах. Эта метаинформация называется **индексом пакетов**.
+The repository stores packages with applications and libraries. Besides, the repository has meta-information about all packages. One or more files store this meta-information. They are called **the package index**.
 
-Устанавливать пакеты в Unix-окружение можно сразу из нескольких репозиториев. Например, один репозиторий предлагает новые версии пакетов, а другой их специальные сборки. В зависимости от требований можно выбрать из какого репозитория устанавливать пакет.
+You can install packages in a Unix environment from several repositories at once. For example, one repository provides new versions of packages, and another offers special builds of them. Depending on your requirements, you can choose the repository for installing the package.
 
-## Работа с пакетами
+## Package Operating
 
-Для работы с репозиторием каждое Unix-окружение предлагает специальную программу. Она называется [**пакетным менеджером**](https://ru.wikipedia.org/wiki/Система_управления_пакетами) (package manager).
+The Unix environment provides a special program to work with the repository. It is called [**package manager**](https://en.wikipedia.org/wiki/Package_manager).
 
-Зачем нужен пакетный менеджер? Например, в Windows его нет. Здесь пользователи вручную загружают программы из интернета и устанавливают их.
+Why does the Unix environment need a package manager? For example, Windows does not have one. Users of this OS download programs from the Internet and install them manually.
 
-Главная задача пакетного менеджера — отслеживать **зависимости пакетов**. Предположим, что программа из одного пакета использует возможности программы или библиотеки из другого. Тогда говорят, что первый пакет зависит от второго.
+The package manager installs and removes packages in the Unix environment. Its main task is to keep track of **package dependencies**. Suppose a program from one package uses features of an application or library from another package. Then the first package depends on the second one.
 
-Зависимость пакетов предотвращает многократную установку одного и того же приложения или библиотеки в систему. Вместо этого нужные пакеты устанавливаются однократно. Все зависящие от них программы знают место их установки на диске и используют их совместно.
+Package dependency prevents the same application or library from being installed multiple times on the system. Instead, the packages you need are installed once. All dependent programs know where to install them on disk and share them.
 
-Всегда устанавливайте приложения в Unix-окружение или ОС Linux через пакетный менеджер. Единственное исключение из этого правила — проприетарные программы. Их приходится устанавливать вручную. В большинстве случаев такие программы распространяются в одном пакете. Он включает все необходимые зависимости (библиотеки и приложения).
+Package dependency prevents duplicating of applications and libraries in your system. It is enough to install all required packages once. Then all dependent programs know where to access files from these packages.
 
-Алгоритм установки пакета из репозитория выглядит так:
+Install applications in a Unix environment or Linux system using the package manager only. This rule has one exception. If you need a proprietary program, you have to install it manually. Usually, such a program is distributed in a single package. It includes all dependencies (necessary libraries and applications). There is no need to track dependencies in this case. Therefore, you can install the program without the package manager.
 
-1. Загрузить из репозитория индекс пакетов.
+Here is the algorithm to install a package from the repository:
 
-2. Найти нужное приложение или библиотеку в индексе пакетов.
+1. Download a package index from the repository.
 
-3. Загрузить на локальный компьютер пакет с приложением или библиотекой из репозитория.
+2. Find the required application or library in the package index.
 
-4. Установить загруженный пакет.
+3. Download the package with the application or library from the repository.
 
-Все эти шаги выполняет пакетный менеджер. Вам нужно только знать его интерфейс и вызывать с правильными параметрами.
+4. Install the downloaded package.
 
-Окружение MSYS2 использует пакетный менеджер [pacman](https://wiki.archlinux.org/index.php/Pacman_(Русский)). Он впервые появился в дистрибутиве Arch Linux. Рассмотрим команды для работы с репозиторием на примере pacman.
+The package manager does all these steps. You need to know its interface and call it with the right parameters.
 
-Чтобы загрузить из репозитория индекс пакетов, выполните команду:
+The MSYS2 environment uses the package manager [`pacman`](https://wiki.archlinux.org/index.php/Pacman). It is designed for the Arch Linux distribution. The `pacman` manager operates packages, which have a simple format. You do not need any special skills or experience to build applications and libraries into these packages.
+
+Let's take the `pacman` manager as an example and look at the commands for working with the repository.
+
+The following command downloads a package index from the repository:
 {line-numbers: false, format: Bash}
 ```
 pacman -Syy
 ```
 
-Следующая команда найдёт пакет в загруженном индексе. Просто укажите ключевое слово для поиска:
+This command finds the package by the keyword in the loaded index:
 {line-numbers: false, format: Bash}
 ```
-pacman -Ss КЛЮЧЕВОЕ_СЛОВО
+pacman -Ss KEYWORD
 ```
 
-Предположим, вы ищете утилиту для работы с документами MS Word. Тогда следующая команда найдёт подходящий для этого пакет:
+Suppose you are looking for a utility for accessing MS Word documents. Then the following command finds the right package for that:
 {line-numbers: false, format: Bash}
 ```
 pacman -Ss word
 ```
 
-В списке результатов будут два пакета:
+The list of results will contain two packages:
 
 * mingw-w64-i686-antiword
 * mingw-w64-x86_64-antiword
 
-Это сборки утилиты antiword для 32-разрядных и 64-разрядных систем. Утилита antiword конвертирует документы MS Word в текстовый формат.
+These are builds of the `antiword` utility for 32-bit and 64-bit systems. The utility converts MS Word documents to text format.
 
-Для установки пакета выполните команду:
+Run the command to install the package:
 {line-numbers: false, format: Bash}
 ```
-pacman -S ИМЯ_ПАКЕТА
+pacman -S PACKAGE_NAME
 ```
 
-Чтобы установить утилиту antiword, выполните следующее:
+This command installs the `antiword` utility:
 {line-numbers: false, format: Bash}
 ```
 pacman -S mingw-w64-x86_64-antiword
 ```
 
-В результате pacman установит antiword и все пакеты, необходимые для её работы.
+As a result, `pacman` will install `antiword` and all the packages that it needs for running.
 
-Теперь утилита запускается следующей командой:
+Now you can launch the `antiword` utility by the following command:
 {line-numbers: false, format: Bash}
 ```
 antiword
 ```
 
-Вы установили пакет в систему. Если он стал ненужным, его можно удалить. При этом все его зависимости тоже будут удалены, если ими не пользуются другие приложения. Для удаления пакета выполните команду:
+You have installed a package in the system. If it becomes unnecessary, uninstall it. The package manager will uninstall all dependencies of the package if other applications do not use them. Here is the command to uninstall a package:
 {line-numbers: false, format: Bash}
 ```
-pacman -Rs ИМЯ_ПАКЕТА
+pacman -Rs PACKAGE_NAME
 ```
 
-Чтобы удалить утилиту antiword, выполните команду:
+This command uninstalls the `antiword` utility:
 {line-numbers: false, format: Bash}
 ```
 pacman -Rs mingw-w64-x86_64-antiword
 ```
 
-Вы установили в систему несколько пакетов. Через некоторое время в репозитории появятся их новые версии. Вы можете обновить свои пакеты до новый версий. Для этого выполните команду:
+Suppose you have installed several packages in your system. After a while, their new versions appear in the repository. You decide to upgrade your packages to the new versions. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 pacman -Syu
 ```
 
-В результате все установленные в систему пакеты обновятся до текущих версий в репозитрии.
+The command updates all installed packages to their actual versions in the repository.
 
-Мы рассмотрели основные команды pacman. Другие пакетные менеджеры работают по такому же принципу. Они выполняют те же действия, что и pacman. Единственное их отличие в названии и параметрах командной строки.
+We have considered the basic `pacman` commands. Other package managers work along the same lines. They follow the same steps as `pacman` to install and remove packages. The only differences are their name and their command-line parameters.
 
-Таблица 4-1 демонстрирует команды для работы с пакетами в различных дистрибутивах Linux.
+Table 4-1 shows the commands for working with packages in different Linux distributions.
 
-{caption: "Таблица 4-1. Команды для работы с пакетами", width: "100%"}
-| Команда | MSYS2 и Arch Linux | Ubuntu | CentOS | Fedora |
+{caption: "Table 4-1. The commands for working with packages", width: "100%"}
+| Command | MSYS2 and Arch Linux | Ubuntu | CentOS | Fedora |
 | --- | --- | --- | --- | --- |
-| Получить индекс пакетов | `pacman -Syy` | `apt-get update` | `yum check-update` | `dnf check-update` |
+| Download a package index | `pacman -Syy` | `apt-get update` | `yum check-update` | `dnf check-update` |
 |  | | | | |
-| Поиск пакета по ключевому слову | `pacman -Ss КЛЮЧЕВОЕ_СЛОВО` | `apt-cache search КЛЮЧЕВОЕ_СЛОВО` | `yum search КЛЮЧЕВОЕ_СЛОВО` | `dnf search КЛЮЧЕВОЕ_СЛОВО` |
+| Search for a package by the keyword
+ | `pacman -Ss KEYWORD` | `apt-cache search KEYWORD` | `yum search KEYWORD` | `dnf search KEYWORD` |
 |  | | | | |
-| Установить пакет из репозитория | `pacman -S ИМЯ_ПАКЕТА` | `apt-get install ИМЯ_ПАКЕТА` | `yum install ИМЯ_ПАКЕТА` | `dnf install ИМЯ_ПАКЕТА` |
+| Install the package from the repository | `pacman -S PACKAGE_NAME` | `apt-get install PACKAGE_NAME` | `yum install PACKAGE_NAME` | `dnf install PACKAGE_NAME` |
 |  | | | | |
-| Установить пакета из локального файла | `pacman -U ИМЯ_ФАЙЛА` | `dpkg -i ИМЯ_ФАЙЛА` | `yum install ИМЯ_ФАЙЛА` | `dnf install ИМЯ_ФАЙЛА` |
+| Install the package from the local file | `pacman -U FILENAME` | `dpkg -i FILENAME` | `yum install FILENAME` | `dnf install FILENAME` |
 |  | | | | |
-| Удалить установленный пакет | `pacman -Rs ИМЯ_ПАКЕТА` | `apt-get remove ИМЯ_ПАКЕТА` | `yum remove ИМЯ_ПАКЕТА` | `dnf erase ИМЯ_ПАКЕТА` |
+| Remove the installed package | `pacman -Rs PACKAGE_NAME` | `apt-get remove PACKAGE_NAME` | `yum remove PACKAGE_NAME` | `dnf erase PACKAGE_NAME` |
 |  | | | | |
-| Обновить все установленные пакеты | `pacman -Syu` | `apt-get upgrade` | `yum update` | `dnf upgrade` |
+| Update all installed packages | `pacman -Syu` | `apt-get upgrade` | `yum update` | `dnf upgrade` |

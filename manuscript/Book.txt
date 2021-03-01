@@ -22,3 +22,5 @@ mainmatter:
   BashScripting/arithmetic-expression.md
   BashScripting/loop-operators.md
   BashScripting/functions.md
+
+  package-manager.md
