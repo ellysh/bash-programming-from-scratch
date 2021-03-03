@@ -16,7 +16,7 @@ So what is wrong with existing books? Many of them focus on a specific language 
 
 Books of another type teach you some programming language by examples. When you study such a book, your progress goes faster. But there is one problem here. Many readers do not find the motivation to work with examples. The author offers you to read and understand a lot of code. Often, this code demonstrates a specific principle and does not have a practical use case. So, such examples are not attractive to readers.
 
-Modern general-purpose languages are complex. It means that you should know a lot about the language before dealing with real-life cases. Here we meet a vicious circle. Examples are not interesting because they are useless. But useful real-life cases are too hard to understand.
+Modern [**general-purpose languages**](https://en.wikipedia.org/wiki/General-purpose_language) are complex. It means that you should know a lot about the language before dealing with real-life cases. Here we meet a vicious circle. Examples are not interesting because they are useless. But useful real-life cases are too hard to understand.
 
 The approach of this book differs. Book's introduction considers general theory about a computer. Here we pay attention to the reasons for the technical solutions of the past. These solutions have defined the basic functions of a modern computer. Coming from the reasons will help you to learn material easily.
 

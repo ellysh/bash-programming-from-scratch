@@ -1,48 +1,60 @@
-# Заключение
+# Finalwords
 
-На этом завершается наш ознакомительный курс по языку Bash. Мы рассмотрели только азы программирования на Bash и использования его в качестве командного интерпретатора. Многие темы остались за рамками этой книги: [работа со строками](https://www.opennet.ru/docs/RUS/bash_scripting_guide/x4171.html), [регулярные выражения](https://www.opennet.ru/docs/RUS/bash_scripting_guide/c11895.html), [потоковый редактор sed](https://www.opennet.ru/docs/RUS/bash_scripting_guide/a14586.html#AEN14605), [язык обработки входного потока awk](https://www.opennet.ru/docs/RUS/bash_scripting_guide/x14802.html) и т.д. Все эти темы важны, но они представляют собой материал для углубленного изучения. Для автоматизации несложных задач и ежедневного использования командного интерпретатора Bash вы вполне можете обойтись и без них. Если же вы планируете применять Bash для сложных приложений, обязательно ознакомьтесь с этими темами.
+Here we finish our introduction to Bash. We have covered the basics of the language only. This book leaves many topics out of the scope. They are required for advanced Bash development. Most probably, you would not need them for daily work with a computer.
 
-Возможно, вам понравилось программировать и вы нашли это занятие полезным для себя. Что делать дальше после прочтения этой книги?
+These advanced topics can be interesting for you if you want to go deeper in Bash:
 
-Прежде всего надо признать, что интерпретатор Bash не является **языком программирования общего назначения**. Под этим термином понимаются языки, созданные с целью разработки приложений для различных прикладных областей. В них отсутствуют конструкции, применимые только в какой-то одной области и бесполезные в других.
+* [Manipulating Strings](https://tldp.org/LDP/abs/html/string-manipulation.html).
 
-Если язык Bash скорее является [**предметно-ориентированным**](https://ru.wikipedia.org/wiki/Предметно-ориентированный_язык), а не общего назначения, значит ли это что он плохой? Вовсе нет. Bash — это мощный вспомогательный инструмент разработчика ПО. Сегодня этот язык может применяться для интеграции больших программных проектов, задач тестирования, сборки и автоматизации программ и некоторых других задач. Но вряд ли вы найдёте коммерческий проект, целиком и полностью реализованный на Bash. Этот язык отлично справляется с задачами, для которых он создавался. Но во многих прикладных областях он уступает более современным языкам общего назначения.
+* [Regular Expressions](https://tldp.org/LDP/abs/html/x17129.html).
 
-Обычно языки программирования не создаются сами по себе ради развлечения. В своё время автор практически каждого из них столкнулся с конкретной прикладной задачей, которую было неудобно решать с помощью существующих на тот момент языков. Поэтому сильные стороны современных языков общего назначения проявляются только в одной или нескольких прикладных областях. Исходя из этого, прикладная область во многом определит набор языков, на которых вы сможете в ней работать.
+* [The `sed` stream editor](https://tldp.org/LDP/abs/html/x23170.html).
 
-Итак, следующим шагом после прочтения этой книги будет выбор интересной для вас прикладной области. Почитайте в интернете статьи и подумайте сами, какая сфера разработки ПО интересна вам больше всего. Только определившись с ней, делайте следующий шаг и выбирайте язык программирования.
+* [The `awk` text processing language](https://tldp.org/LDP/abs/html/awk.html).
 
-Таблица 5-1 может стать отправной точкой для вашего знакомства с прикладными областями и используемых в них языках.
+These topics are important. They are material for advanced study. You can skip them if you are using Bash for simple tasks and basic automation. Learn these topics if you are going to write complex applications in Bash.
 
-{caption: "Таблица 5-1. Прикладные области разработки ПО", width: "100%"}
-| Прикладная область | Языки программирования |
+Perhaps you enjoyed programming. You found it useful. What to do next after reading this book?
+
+First of all, let's admit that Bash is not a general-purpose programming language. This term refers to languages for developing applications in various [**domains**](https://en.wikipedia.org/wiki/Domain_(software_engineering)). Such languages do not contain constructs that are suitable for one domain only and useless in another.
+
+Bash is the [**domain-specific language**](https://en.wikipedia.org/wiki/Domain-specific_language). Does that mean it is useless? No, it does not. Bash is a powerful auxiliary tool for each software developer. Today it is used for integrating large projects, testing, building software and automating routine tasks. You would not find a commercial project written in Bash only. This language copes well with the tasks for which it was created. But it is inferior to modern general-purpose languages in many application domains.
+
+Nobody creates a programming language just for fun. Its author faced some applied tasks. The languages existing at that time were not suitable to solve them. Then this developer wrote the new language that is focused on specific tasks. Therefore, modern general-purpose languages have advantages in a few domains only. No language fits any type of task perfectly. This leads that the applied domain dictates you the language for software development.
+
+So, you have read this book. Now it is time to choose an applied domain that interests you. Read articles on the Internet. Think about it: which area of software development is right for you? Only after answering this question, choose a programming language for further study.
+
+Table 5-1 is your starting point for getting to know the applied domains. It also lists the languages used in them.
+
+{caption: "Table 5-1. Applied domains of software development", width: "100%"}
+| Domain | Programming language |
 | --- | --- |
-| [Приложения для мобильных устройств](https://ru.wikipedia.org/wiki/Мобильное_приложение) | Java, C, C++, HTML5, JavaScript |
+| [Mobile applications](https://en.wikipedia.org/wiki/Mobile_app) | Java, C, C++, HTML5, JavaScript |
 |  | |
-| [Web-разработка](https://ru.wikipedia.org/wiki/Веб-приложение) ([фронтэнд](https://ru.wikipedia.org/wiki/Фронтенд_и_бэкенд)) | JavaScript, PHP, HTML5, CSS, SQL |
+| [Web applications](https://en.wikipedia.org/wiki/Web_application) ([front end](https://en.wikipedia.org/wiki/Front_end_and_back_end)) | JavaScript, PHP, HTML5, CSS, SQL |
 |  | |
-| [Web-разработка](https://ru.wikipedia.org/wiki/Веб-приложение) ([бэкэнд](https://ru.wikipedia.org/wiki/Фронтенд_и_бэкенд)) | JavaScript, PHP, Ryby, Perl, C#, Java, Go |
+| [Web applications](https://en.wikipedia.org/wiki/Web_application) ([back end](https://en.wikipedia.org/wiki/Front_end_and_back_end)) | JavaScript, PHP, Ryby, Perl, C#, Java, Go |
 |  | |
-| [Высоконагруженное серверное ПО](https://ru.wikipedia.org/wiki/Сервер_(программное_обеспечение)) | C++, Python, Ruby, SQL |
+| [High Load Systems](https://en.wikipedia.org/wiki/Server_(computing)) | C++, Python, Ruby, SQL |
 |  | |
-| [Системное администрирование](https://ru.wikipedia.org/wiki/Системный_администратор) | Bash, Python, Perl, Ruby |
+| [System administration](https://en.wikipedia.org/wiki/System_administrator) | Bash, Python, Perl, Ruby |
 |  | |
-| [Встраиваемые системы](https://ru.wikipedia.org/wiki/Встраиваемая_система) | C, C++, Ассемблер |
+| [Embedded systems](https://en.wikipedia.org/wiki/Embedded_system) | C, C++, Ассемблер |
 |  | |
-| [Машинное обучение](https://ru.wikipedia.org/wiki/Машинное_обучение) и [анализ данных](https://ru.wikipedia.org/wiki/Анализ_данных) | Python, Java, C++ |
+| [Machine learning ](https://en.wikipedia.org/wiki/Machine_learning) and [data analysis](https://en.wikipedia.org/wiki/Data_analysis) | Python, Java, C++ |
 |  | |
-| [Информационная безопасность](https://ru.wikipedia.org/wiki/Информационная_безопасность) | C, C++, Python, Bash |
+| [Information security](https://en.wikipedia.org/wiki/Information_security) | C, C++, Python, Bash |
 |  | |
-| [Корпоративное ПО](https://ru.qwe.wiki/wiki/Enterprise_software) | Java, C#, C++, SQL |
+| [Enterprise software](https://en.wikipedia.org/wiki/Enterprise_software) | Java, C#, C++, SQL |
 |  | |
-| [Компьютерные игры](https://ru.wikipedia.org/wiki/Компьютерная_игра) | C++ |
+| [Video games](https://en.wikipedia.org/wiki/Video_game) | C++ |
 
-К сожалению, чтобы стать высококлассным специалистом, знания одного только языка программирования будет недостаточно. Также потребуется знание технологий, которые активно применяются в этой области. Например, специалисту по информационной безопасности необходимо хорошо знать устройство сетей и операционных систем. Понимание необходимых для изучения технологий придёт с вашим профессиональным ростом.
+It is not enough to know a programming language to become a high-class developer. It is necessary to know the technologies that are used in the specific applied domain. For example, an information security expert must understand the architecture of computer networks and operating systems. As you grow professionally, you will come to understand what technologies you need to learn.
 
-После того, как вы определились с интересующей вас областью и языком, запишитесь на бесплатный онлайн-курс. Благодаря этой книге, вы уже знакомы с основами программирования. Поэтому изучение нового языка пойдёт для вас намного быстрее. Вы обнаружите, что многие конструкции Python или С++ уже знакомы вам из Bash. Другие же концепции этих языков вам придётся изучить с нуля. Не теряйте мотивации, активно применяйте полученные знания на практике и учитесь на своих ошибках. Тогда вы обязательно добьётесь желаемого результата.
+Suppose you have chosen your applied domain and programming language. Now it is time to enroll in a free online course. This book has introduced you to the basics of programming. So, learning a new language will go faster. The statements of Python or C++ will seem familiar to you from Bash. However, these languages have concepts that you will have to learn from scratch. Do not lose your motivation. Apply the new knowledge into practice and learn from your mistakes. This is the only way to get results.
 
-Надеюсь, что вы узнали для себя что-то новое из этой книги и приятно провели с ней время. Если она вам понравилась, поделитесь ею с вашими друзьями. Также я буду вам благодарен, если вы уделите несколько минут своего времени для написания отзыва о книге на [Goodreads](https://www.goodreads.com/book/show/53883360-bash).
+I hope you learned something new from this book and had an enjoyable time reading it. If you like the book, please share it with your friends. I would also appreciate it if you would take a few minutes to write a review on [Goodreads](https://www.goodreads.com/book/show/57301128-bash-programming-from-scratch).
 
-Если у вас остались какие-то вопросы или возникли замечания по материалу книги, обязательно напишите о них мне на почту [petrsum@gmail.com](mailto:petrsum@gmail.com). Также вы можете задать свои вопросы в "Issues" [GitHub репозитория книги](https://github.com/ellysh/bash-programming-from-scratch-ru).
+If you have any questions or comments about the book, write me to [petrsum@gmail.com](mailto:petrsum@gmail.com). Also, ask questions in the "Issues" section of the [GitHub repository of the book](https://github.com/ellysh/bash-programming-from-scratch/issues).
 
-Большое вам спасибо за то, что вы прочитали "Программирование на Bash с нуля".
+Thank you for reading "Bash programming from scratch"!
