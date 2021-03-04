@@ -58,3 +58,15 @@ I hope you learned something new from this book and had an enjoyable time readin
 If you have any questions or comments about the book, write me to [petrsum@gmail.com](mailto:petrsum@gmail.com). Also, ask questions in the "Issues" section of the [GitHub repository of the book](https://github.com/ellysh/bash-programming-from-scratch/issues).
 
 Thank you for reading "Bash programming from scratch"!
+
+# Acknowledgements
+
+Nobody writes a book alone. Several people helped me write this book. Some of them suggested me a general idea. Others gave me comments and advices. These are the people I want to thank.
+
+Thanks to Sophia Kayunova for the wish to learn how to program. It led me to the idea of writing a programming guide for my friends.
+
+Thanks to Vitaly Lipatov for introducing me to Linux and Bash. He laid the foundation of my professional skills.
+
+Thanks to Ruslan Piasetskyi for consulting on Bash. He explained to me the idioms and pitfalls of the language.
+
+Thanks also to everyone who supported me and motivated me to finish this work.
