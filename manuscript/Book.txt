@@ -26,3 +26,5 @@ mainmatter:
   package-manager.md
 
   finalwords.md
+
+  glossary.md
