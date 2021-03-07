@@ -20,7 +20,7 @@
 grep "GNU" README.txt
 ```
 
-[**Arithmetic Expansion**](https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html#Arithmetic-Expansion) calculates an arithmetic expression and substitutes its result into the Bash command or statement. Here is an example of the expansion:
+[**Arithmetic expansion**](https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html#Arithmetic-Expansion) calculates an arithmetic expression and substitutes its result into the Bash command or statement. Here is an example of the expansion:
 {line-numbers: false, format: Bash}
 ```
 echo $((4+3))
@@ -47,7 +47,7 @@ echo $((4+3))
 
 [**Bash script**](https://www.gnu.org/software/bash/manual/html_node/Shell-Scripts.html#Shell-Scripts) is a text file containing interpreter commands. Bash executes scripts in non-interactive mode.
 
-[**Best Practices**](http://mywiki.wooledge.org/BashGuide/Practices) are recommended approaches for using a programming language or technology. An example of best practice for Bash is enclosing strings in double quotes to avoid word splitting.
+[**Best practices**](http://mywiki.wooledge.org/BashGuide/Practices) are recommended approaches for using a programming language or technology. An example of best practice for Bash is enclosing strings in double quotes to avoid word splitting.
 
 [**Bottleneck**](https://en.wikipedia.org/wiki/Bottleneck_(software)) is a component or resource of a computer system that limits its performance or throughput.
 
@@ -55,7 +55,7 @@ echo $((4+3))
 
 [**Bourne shell**](https://en.wikipedia.org/wiki/Bourne_shell) is a command-line interpreter developed by Stephen Bourne. It replaced the original [Ken Thompson's interpreter](https://en.wikipedia.org/wiki/Thompson_shell) in [Unix version 7](https://en.wikipedia.org/wiki/Version_7_Unix). The [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) contains all features of the Bourne shell. But the shell misses some features from the standard.
 
-[**Brace Expansion**](http://mywiki.wooledge.org/BraceExpansion) is a Bash mechanism for generating words from given parts. The POSIX standard misses this mechanism.
+[**Brace expansion**](http://mywiki.wooledge.org/BraceExpansion) is a Bash mechanism for generating words from given parts. The POSIX standard misses this mechanism.
 Here is an example of the brace expansion:
 {line-numbers: false, format: Bash}
 ```
@@ -73,6 +73,8 @@ cp test.txt test.md test.log Documents
 
 [**Child process**](https://en.wikipedia.org/wiki/Child_process) a process spawned by another process called the parent.
 
+[**Code style**](https://en.wikipedia.org/wiki/Programming_style) is a set of rules and conventions for writing the source code for programs. The rules help several programmers write, read, and understand common source code.
+
 **Command** is the text entered after the command prompt. This text matches the action that the interpreter performs on its own or with another application's help.
 
 [**Command-line parameter**](https://stackoverflow.com/a/36495940/6562278) is a type of the command's argument. It passes information to the program. The parameter can also be a part of some option. For example, it specifies the selected mode of the program's operation.
@@ -84,6 +86,12 @@ find ~/Documents -name README
 The first parameter `~/Documents` specifies the path to start the search. The second parameter `README` refers to the option `-name`. It specifies the file or directory name for searching.
 
 [**Command prompt**](https://www.gnu.org/software/bash/manual/html_node/Controlling-the-Prompt.html#Controlling-the-Prompt) is a sequence of characters. The shell prints a prompt when it is ready to process the user's command.
+
+[**Command substitution**](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html#Command-Substitution) is the Bash mechanism that replaces a command's call to its output. The subshell executes the command call. Here is an example:
+{line-numbers: false, format: Bash}
+```
+echo "$(date)"
+```
 
 [**Compiler**](https://en.wikipedia.org/wiki/Compiler) is a program for translating source code from a programming language to the machine code.
 
@@ -99,23 +107,48 @@ The first parameter `~/Documents` specifies the path to start the search. The se
 
 ## E
 
+[**Endianness**](https://en.wikipedia.org/wiki/Endianness) is the byte order the computer uses to store numbers in memory. The CPU defines the supported endianness. There are two commonly used options today: big-endian and little-endian. Some CPUs support both (bi-endian). Here is an example of storing a four-byte number 0x0A0B0C0D for different orders:
+{line-numbers: false, format: Bash}
+```
+0A 0B 0C 0D     big-endian
+0D 0C 0B 0A     little-endian
+```
+
 [**Environment variables**](http://mywiki.wooledge.org/Environment) is an unordered set of variables that the child process copies from the parent one. The `env` utility changes environment variables at the program startup. If you call the utility without parameters, it prints all variables declared in the current shell.
 
+[**Error-prone**](https://en.wiktionary.org/wiki/error-prone) (error-prone) is a definition of failed programming techniques and solutions. These solutions work correctly in particular cases but cause errors with certain input data or conditions. An example of an error-prone solution is handling the `ls` utility output in the pipeline:
+{line-numbers: false, format: Bash}
+```
+ls | grep "test"
+```
+
 [**Escape sequence**](https://en.wikipedia.org/wiki/Escape_sequence) is a set of characters that have no meaning of their own. Instead, they control the output device. For example, the line break character `\n` commands the output device to start a new line.
+
+[**Exit status**](https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html#Exit-Status) is an integer value from 0 to 255 that the shell command returns when finishing. The zero status means successful execution of the command. All other codes indicate an error.
 
 ## F
 
 [**File descriptor**](https://en.wikipedia.org/wiki/File_descriptor) is an abstract pointer to a file or communication channel (stream, pipeline or network socket). Descriptors are part of the POSIX interface. They are non-negative integers.
 
+[**Filename expansion**](https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html#Filename-Expansion) is a Bash mechanism that replaces patterns to filenames. The patterns can contain the following wildcards: ?, *, [. Here is an example:
+{line-numbers: false, format: Bash}
+```
+rm -rf *
+```
+
 [**Filename extension**](https://en.wikipedia.org/wiki/Filename_extension) is a suffix of the filename. The extension defines the type of file.
 
 [**File system**](https://en.wikipedia.org/wiki/File_system) is a set of rules to store and read data from storage media.
+
+[**Foreground**](https://www.gnu.org/software/bash/manual/html_node/Job-Control-Basics.html#Job-Control-Basics) is a default process execution mode in Bash. When used, the process identifier belongs to the [identifier group](https://en.wikipedia.org/wiki/Process_group) of the terminal. The executed process handles keyboard interrupts.
 
 **Function** is another name for a subroutine.
 
 ## G
 
 [**General-purpose programming language**](https://en.wikipedia.org/wiki/General-purpose_programming_language) is a language that you can use to develop applications for various applied domains. It does not contain constructs that are useful in one domain and useless in others.
+
+[**Globbing**](https://mywiki.wooledge.org/glob?action=show&redirect=globbing) or glob is another name for filename expansion in Bash.
 
 [**Glob pattern**](https://en.wikipedia.org/wiki/Glob_(programming)) is a search query. It includes regular and [wildcard characters](https://en.wikipedia.org/wiki/Wildcard_character) (* and ?). The wildcards correspond to any characters. For example, the "R*M?" pattern matches strings that begin with R and whose penultimate letter is M.
 
@@ -127,7 +160,9 @@ The first parameter `~/Documents` specifies the path to start the search. The se
 
 ## I
 
-[**Idiom**](https://en.wikipedia.org/wiki/Programming_idiom) is a way to express a typical construct using a specific programming language. An idiom is a template for implementing an algorithm or data structure. Here is the Bash idiom for processing a list of files in the `for` loop:
+[**Idiom**](https://en.wikipedia.org/wiki/Programming_idiom) is a way to express a typical construct using a specific programming language. An idiom is a template for implementing an algorithm or data structure.
+Here is the Bash idiom for processing a list of
+files in the `for` loop:
 {line-numbers: true, format: Bash}
 ```
 for file in ./*.txt
@@ -136,7 +171,9 @@ do
 done
 ```
 
-[**Interpreter**](https://en.wikipedia.org/wiki/Interpreter_(computing) is a program that executes instructions. Instructions are written in a programming language. You do not need the compilation step for executing them.
+[**Input field separator**](https://mywiki.wooledge.org/IFS) (IFS) is a list of characters. Bash uses them as separators when processing input strings. For example, it uses them for word splitting. The default separators are space, tab and a line break.
+
+[**Interpreter**](https://en.wikipedia.org/wiki/Interpreter_(computing)) is a program that executes instructions. Instructions are written in a programming language. You do not need the compilation step for executing them.
 
 [**Iteration**](https://en.wikipedia.org/wiki/Iteration#Computing) is a single execution of a commands block in the loop's body.
 
@@ -149,6 +186,8 @@ done
 [**Linked list**](https://en.wikipedia.org/wiki/Linked_list) is a data structure consisting of elements or nodes. Their positions in the list do not match their placement in memory. Therefore, each node has a pointer to the next node. Such an organization of the list leads to efficient insertion and deletion operations.
 
 [**Linux distribution**](https://en.wikipedia.org/wiki/Linux_distribution) is an operating system based on the Linux kernel and the [GNU packages](https://en.wikipedia.org/wiki/List_of_GNU_packages). The OS is combined from packages of ready-to-run programs and libraries. There is a package manager application for operating them.
+
+**Linux environment** is another name for a POSIX environment.
 
 [**Literal**](https://en.wikipedia.org/wiki/Literal_(computer_programming)) is a notation in the source code of the program. It represents a fixed value. There are different ways to write literals depending on the data type. Most programming languages support literals for integers, [floating point numbers](https://en.wikipedia.org/wiki/Floating-point_arithmetic) and strings. Here is an example of the string literal `~/Documents` in Bash:
 {line-numbers: true, format: Bash}
@@ -186,7 +225,16 @@ ls -lah
 
 [**Parameter**](http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameters) is an entity that stores some value. A parameter may have no name, unlike a variable.
 
+[**Parameter expansion**](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html#Shell-Parameter-Expansion) is the Bash mechanism that replaces a variable name by its value. Here are two examples:
+{line-numbers: false, format: Bash}
+```
+echo "$PATH"
+echo "${var:-empty}"
+```
+
 [**Pipeline**](https://en.wikipedia.org/wiki/Pipeline_(Unix)) is a mechanism for process communication in Unix-like operating systems. The mechanism is based on passing messages. A pipeline is also two or more processes with connected input and output streams. The output stream of one process is sent directly to the other's input stream.
+
+[**Portable operating system interface**](https://en.wikipedia.org/wiki/POSIX) (POSIX) is a set of standards. They describe the interfaces between programs and OS, its shell and the utility interfaces. POSIX supports the compatibility of the Unix family OSes. It allows programs to migrate between systems easily.
 
 [**Positional parameters**](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameters.html#Shell-Parameters) contain all command-line arguments that the Bash script receives on calling. Parameter names match the order of arguments. Here is an example of using the first positional parameter in a script:
 {line-numbers: false, format: Bash}
@@ -194,9 +242,23 @@ ls -lah
 cp "$1" ~
 ```
 
+**POSIX environment** is a software environment fully or partially compatible with the POSIX standard. The full compatibility is available only when the OS kernel, shell and file system supports POSIX. Environments like [Cygwin](https://en.wikipedia.org/wiki/Cygwin) provide partial compatibility only.
+
+[**POSIX shell**](https://www.grymoire.com/Unix/Sh.html) is a standard for POSIX systems that describes a minimum set of shell features. If the shell provides these features, it is considered POSIX compatible. The standard does not restrict additional features and extensions in any way. The standard is based on the ksh88 implementation of the [Korn shell](https://en.wikipedia.org/wiki/KornShell). This interpreter appeared later than the Bourne shell. Therefore, the Bourne shell misses some features of the POSIX standard.
+
 [**Process**](https://en.wikipedia.org/wiki/Process_(computing)) is an instance of a computer program that is being executed by the CPU.
 
+[**Process substitution**](https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html#Process-Substitution) is the Bash mechanism that resembles command substitution. It executes the command and provides its output to the Bash process. The mechanism transfers data via temporary files. Here is an example:
+{line-numbers: false, format: Bash}
+```
+diff <(sort file1.txt) <(sort file2.txt)
+```
+
 [**Programming paradigm**](https://en.wikipedia.org/wiki/Programming_paradigm) a set of ideas, methods and principles that define how to write programs.
+
+## Q
+
+[**Quote removal**](https://www.gnu.org/software/bash/manual/html_node/Quote-Removal.html#Quote-Removal) is the Bash mechanism that removes the following unescaped characters: \, ' and ".
 
 ## R
 
@@ -230,6 +292,8 @@ set -x
 
 [**Shell variables**](http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_02.html) are variables that the shell sets (for example, `PATH`). They store temporary data, settings and states of the OS or Unix environment. The user can read the values of these variables. Only some of them are writable.  The `set` command prints values of the shell variables.
 
+[**Short-circuit evaluation**](https://en.wikipedia.org/wiki/Short-circuit_evaluation) (short-circuit) is the approach to limit calculations when deducing Boolean expression. The idea is to calculate only those operands that are sufficient to deduce the whole expression's value.
+
 [**Special parameters**](http://mywiki.wooledge.org/BashGuide/Parameters) are set by the interpreter. They perform the following tasks:
 
 1. Store the interpreter's state.
@@ -242,15 +306,25 @@ Special parameters are read-only. An example of such a parameter is `$?`.
 
 [**Subroutine**](https://en.wikipedia.org/wiki/Subroutine) is a fragment of a program that performs a single task. The fragment is an independent code block. It can be called from any place in the program.
 
+[**Subshell**](http://mywiki.wooledge.org/SubShell) is a way of grouping shell commands. A child process executes the grouped commands. Variables defined in the child process are not available in the parent process. Here is an example of executing commands in a subshell:
+{line-numbers: false, format: Bash}
+```
+(ps aux | grep "bash")
+```
+
 [**Symbolic link**](https://en.wikipedia.org/wiki/Symbolic_link) is a special type of file. Instead of data, it contains a pointer to another file or directory.
 
 [**Synchronous**](https://en.wiktionary.org/wiki/synchronous) means events or actions that occur in the main program flow.
 
 ## T
 
+[**Tilde expansion**](https://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html#Tilde-Expansion) (tilde expansion) is the Bash mechanism that replaces the ~ character by the user's home directory. The shell takes the path to the directory from the `HOME` variable.
+
 [**Time-sharing**](https://en.wikipedia.org/wiki/Time-sharing) is the approach when several users utilize computer resources simultaneously. It is achieved by multitasking and multiprogramming.
 
 ## U
+
+[**Unix environment**](https://ccrma.stanford.edu/guides/planetccrma/Unix.html) is another name for a POSIX environment.
 
 [**Utility software**](https://en.wikipedia.org/wiki/Utility_software) is a special program for managing the OS or hardware.
 
@@ -267,3 +341,9 @@ filename="README.txt"
 [**Vulnerability**](https://en.wikipedia.org/wiki/Vulnerability_(computing)) is a bug or flaw in the computing system. An attacker can perform unauthorized actions using the vulnerability.
 
 ## W
+
+[**Word splitting**](https://www.gnu.org/software/bash/manual/html_node/Word-Splitting.html#Word-Splitting) is the Bash mechanism that splits command-line arguments into words. Then it passes them to the command as separate parameters. The mechanism uses the characters from the `IFS` variable as delimiters. It skips arguments that are enclosed in quotes. Here is an example:
+{line-numbers: false, format: Bash}
+```
+cp file1.txt file2.txt "my file.txt" ~
+```
