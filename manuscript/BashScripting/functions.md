@@ -396,8 +396,8 @@ Our solution with the error codes conversion is just an example for demonstratio
 Write the following functions to display error messages in English and German:
 
 * print_error
-* code_to_error_ru
 * code_to_error_en
+* code_to_error_de
 
 Write two versions of the "code_to_error" function:
 

@@ -47,7 +47,7 @@ echo $((4+3))
 
 [**Bash script**](https://www.gnu.org/software/bash/manual/html_node/Shell-Scripts.html#Shell-Scripts) is a text file containing interpreter commands. Bash executes scripts in non-interactive mode.
 
-[**Best practices**](http://mywiki.wooledge.org/BashGuide/Practices) are recommended approaches for using a programming language or technology. An example of best practice for Bash is enclosing strings in double quotes to avoid word splitting.
+[**Best practices**](http://mywiki.wooledge.org/BashGuide/Practices) are recommended approaches for using a programming language or technology. An example of best practice for Bash is enclosing strings in double-quotes to avoid word splitting.
 
 [**Bottleneck**](https://en.wikipedia.org/wiki/Bottleneck_(software)) is a component or resource of a computer system that limits its performance or throughput.
 
