@@ -1,8 +1,8 @@
-# Ответы
+# Solutions for Exercises
 
-## Общая информация
+## General Information
 
-##### Упражнение 1-1. Перевод чисел из BIN в HEX
+##### Exercise 1-1. Numbers conversion from binary to hexadecimal
 
 {line-numbers: false}
 ```
@@ -13,7 +13,7 @@
 * 1111101110001001010100110000000110101101 = 1111 1011 1000 1001 0101 0011 0000 0001 1010 1101 = F B 8 9 5 3 0 1 A D = FB895301AD
 ```
 
-##### Упражнение 1-2. Перевод чисел из HEX в BIN
+##### Exercise 1-2. Numbers conversion from hexadecimal to binary
 
 {line-numbers: false}
 ```
@@ -24,77 +24,88 @@
 * 1E5340ACB38 = 1 E 5 3 4 0 A C B 3 8 = 0001 1110 0101 0011 0100 0000 1010 1100 1011 0011 1000 = 11110010100110100000010101100101100111000
 ```
 
-## Командный интерпретатор Bash
+## Bash Shell
 
-##### Упражнение 2-1. Шаблоны поиска
+##### Exercise 2-1. Glob patterns
 
-{line-numbers: false}
-```
-* README.md
-```
+The correct answer is "README.md".
 
-Строка `00_README.txt` не подходит, потому что шаблон `*ME.??` ожидает два символа после точки. В варианте `README` вообще нет точки, и он тоже не подходит.
+The "00_README.txt" string does not fit. It happens because the "*ME.??"" pattern requires two characters after the dot. But the string has three characters.
 
-##### Упражнение 2-2. Шаблоны поиска
+The "README" string does not fit because it does not have a dot.
 
-Шаблону поиска удовлетворяют три строки:
+##### Exercise 2-2. Glob patterns
+
+The following three lines match the "*/doc?openssl*" pattern:
 
 * `/usr/share/doc/openssl/IPAddressChoice_new.html`
 * `/usr/share/doc_openssl/IPAddressChoice_new.html`
 * `/doc/openssl`
 
-Строка `doc/openssl` не соответствует шаблону `*/doc?openssl*`, потому что в ней нет символа `/` перед `doc`.
+The "doc/openssl" string does not fit. It does not have the slash symbol before the "doc" word.
 
-##### Упражнение 2-3. Поиск файлов утилитой find
+##### Exercise 2-3. Searching for files with the `find` utility
 
-Правильный ответ следующий:
+The following command searches text files in the system paths:
+{line-numbers: false, format: Bash}
+```
+find /usr -name "*.txt"
+```
+
+The `/usr` path stores text files. So, there is no reason to check other system paths.
+
+Now let's count the number of lines in the found files. We should add the `-exec` action with the `wc` utility call to do this. The resulting command looks like this:
 {line-numbers: false, format: Bash}
 ```
 find /usr -name "*.txt" -exec wc -l {} +
 ```
 
-Чтобы найти все TXT файлы, подойдёт также команда:
+You can find all text files on the disk if you start searching from the root directory. Here is the example command:
 {line-numbers: false, format: Bash}
 ```
 find / -name "*.txt"
 ```
 
-Но если вы попробуйте расширить её действием `wc -l`, никакого вывода не будет:
+If you add the `wc` call to the command, it fails when running in the MSYS2 environment. In other words, the following command does not work:
 {line-numbers: false, format: Bash}
 ```
 find / -name "*.txt" -exec wc -l {} +
 ```
 
-Помните сообщение об ошибке, которое выводится при запуске `find` в корневом каталоге? Текст этого сообщения будет передаваться в команду `wc`. Дальше команда будет интерпретировать каждое слово в качестве пути до файла. Очевидно, что эти пути окажутся недействительными и `wc` завершится с ошибкой. Чтобы её избежать, запускать `find` надо в каталоге `/usr`. Все TXT файлы находятся в нём и будут найдены командой.
+The problem happens because of the error message that Figure 2-17 shows. The `find` utility passes the message to the `wc` input. The `wc` utility treats each word it receives as a file path. The error message is not a path. Therefore, `wc` fails.
 
-##### Упражнение 2-4. Поиск файлов утилитой grep
+##### Exercise 2-4. Searching for files with the `grep` utility
 
-Информацию о лицензии приложений логично искать в системном каталоге с документацией `/usr/share/doc`.
+Look for information about application licenses in the `/usr/share/doc` system path. It contains documentation for all installed software.
 
-Для поиска приложений с лицензией [GNU General Public License](https://ru.wikipedia.org/wiki/GNU_General_Public_License) воспользуемся строкой "General Public License":
+If the program has the [GNU General Public License](https://en.wikipedia.org/wiki/GNU_General_Public_License), its documentation contains the "General Public License" line. The following command searches such documents:
 {line-numbers: false, format: Bash}
 ```
 grep -Rl "General Public License" /usr/share/doc
 ```
 
-Также имеет смысл поискать в каталоге `/usr/share/licenses`:
+You also should check the files in the `/usr/share/licenses` path. Here is the command for doing that:
 {line-numbers: false, format: Bash}
 ```
 grep -Rl "General Public License" /usr/share/licenses
 ```
 
-В окружении MSYS2 есть два неспецифичных для Unix каталога установки `/mingw32` и `/mingw64`. Можно проверить и установленные в них программы:
+The MSYS2 environment has two extra paths for installing programs: `/mingw32` and `/mingw64`. They do not match the POSIX standard. The following commands check documents in these paths:
 {line-numbers: true, format: Bash}
 ```
 grep -Rl "General Public License" /mingw32/share/doc
 grep -Rl "General Public License" /mingw64/share
 ```
 
-В случае лицензии MIT можно искать строку "MIT license" в тех же каталогах. Для Apache лицензии подойдёт строка "Apache license", а для BSD - "BSD license".
+You can find applications with other licenses than GNU General Public License. This is the list of licenses and possible lines for searching:
 
-##### Упражнение 2-6. Работа с файлами и каталогами
+* MIT - "MIT license"
+* Apache - "Apache license"
+* BSD - "BSD license"
 
-Прежде всего создадим каталоги, куда будем копировать фотографии:
+##### Exercise 2-6. Operations with files and directories
+
+First, you should create directories for saving photos by each year and month. The following commands do this task:
 {line-numbers: true, format: Bash}
 ```
 mkdir -p ~/photo/2019/11
@@ -102,30 +113,32 @@ mkdir -p ~/photo/2019/12
 mkdir -p ~/photo/2020/01
 ```
 
-Предположим, что все ваши фотографии хранятся в каталоге `D:\Photo`. У него могут быть подкаталоги, но для нашего упражнения это несущественно. С помощью команды `find` найдём все файлы, созданные в ноябре 2019 года. Для этого воспользуемся параметром `-newermt`:
+Suppose that the `D:\Photo` directory contains all photos. You can use the `find` utility for searching files with a creation date equals to November 2019. The `-newermt` option of the utility checks the creation date. Here is an example command:
 {line-numbers: false, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-11-01 ! -newermt 2019-12-01
 ```
 
-Эта команда ищет файлы в каталоге `/d/Photo`, который соответствует пути `D:\Photo` в Windows окружении.
+This command looks for files in the `/d/Photo` directory. It corresponds to the `D:\Photo` path in the Windows environment.
 
-Первое выражение `-newermt 2019-11-01` означает выбрать все файлы, модифицированные начиная с 1 ноября 2019 года. Далее идёт выражение `! -newermt 2019-12-01`. Как вы помните, восклицательный знак означает отрицание. По аналогии с предыдущим выражением, `-newermt 2019-12-01` означает все файлы, модифицированные начиная с 1 декабря 2019 года. Между этими выражениями нет условия. В этом случае используется логическое И. В результате получится высказывание: файлы, созданные после 1 ноября 2019 года, но не позднее 30 ноября 2019 года. Другими словами: файлы за ноябрь месяц.
+The first expression `-newermt 2019-11-01` means to search for files changed since November 1, 2019. The second expression `! -newermt 2019-12-01` excludes files modified since December 1, 2019. The exclamation point before the expression is a negation. There is no condition between expressions. But the find utility inserts the logical AND by default. The resulting expression looks like: "files created after November 1, 2019, but no later than November 30, 2019". It means "files for November".
 
-Теперь к нашей команде `find` добавим действие копирования файлов:
+The file search command is ready. Now add the copy action to it. The result looks like this:
 {line-numbers: false, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-11-01 ! -newermt 2019-12-01 -exec cp {} ~/photo/2019/11 \;
 ```
 
-В результате в каталог `~/photo/2019/11` будут скопированы файлы за ноябрь 2019 года. Выполним аналогичные команды для копирования фотографий за декабрь и январь:
+This command copies the November 2019 files into the `~/photo/2019/11` directory.
+
+Here are similar commands for copying the December and January files:
 {line-numbers: true, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-12-01 ! -newermt 2020-01-01 -exec cp {} ~/photo/2019/12 \;
 find /d/Photo -type f -newermt 2020-01-01 ! -newermt 2020-02-01 -exec cp {} ~/photo/2020/01 \;
 ```
 
-Вы можете заменить команду копирования на переименование, если файлы в каталоге `D:\Photo` вам больше не нужны:
+Let's assume that you do not need old files in the `D:\Photo` directory. Then replace copying action with renaming. The result is the following commands:
 {line-numbers: true, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-11-01 ! -newermt 2019-12-01 -exec mv {} ~/photo/2019/11 \;
@@ -133,105 +146,109 @@ find /d/Photo -type f -newermt 2019-12-01 ! -newermt 2020-01-01 -exec mv {} ~/ph
 find /d/Photo -type f -newermt 2020-01-01 ! -newermt 2020-02-01 -exec mv {} ~/photo/2020/01 \;
 ```
 
-Обратите внимание на масштабируемость такого решения. Независимо от количества файлов в каталоге `D:\Photo` для разделения их по месяцам, нужно всего три команды.
+Note the scalability of our solution. The number of files in the `D:\Photo` directory is not important. You need only three commands to break them up into three months.
 
-##### Упражнение 2-7. Использование конвейеров и перенаправления потоков ввода-вывода
+##### Exercise 2-7. Pipelines and I/O streams redirection
 
-Прежде всего разберёмся, как работает утилита `bsdtar`. Согласно её выводу `--help`, для создания [**архива**](https://ru.wikipedia.org/wiki/Архив_(информатика)) каталога необходимо передать опции `-c` и `-f`, а также имя архива. Например:
+First, let's figure out how the `bsdtar` utility works. Call it with the `--help` option. It shows you a brief help. The help tells you that the utility archives the directory if you apply the `-c` and `-f` options. The name of the archive follows the options. Here is an example call of the `bsdtar` utility:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -c -f test.tar test
 ```
 
-Эта команда создаст архив с именем `test.tar`, в который поместит всё содержимое каталога `test`. Обратите внимание, что [сжатия](https://ru.wikipedia.org/wiki/Сжатие_данных) в результате этой команды не произойдёт. То есть архив будет занимать почти столько же места на диске, сколько и собранные в него файлы. Цели операций архивирования и сжатия различны. Первая нужна для удобства хранения и переноса большого числа файлов. Сжатие позволяет уменьшить объём, занимаемый данными на диске. Часто эти операции совмещают в одну.
+This command creates an archive named `test.tar`. It has the contents of the `test` directory inside. Note that the command does not [compress data](https://en.wikipedia.org/wiki/Data_compression). It means that the archive occupies the same disk space as the files it contains.
 
-Если вы хотите сжать полученный архив, добавьте опцию `-j`:
+The purposes of archiving and compression operations are different. Archiving is for storing and copying large numbers of files. Compression reduces the amount of the occupied disk memory. Often these operations are combined into one. But they are not the same.
+
+To create an archive and compress it, add the `-j` option to the `bsdtar` call. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -c -j -f test.tar.bz2 test
 ```
 
-Обратите внимание, что все опции `-c`, `-j` и `-f` можно записать без пробелов:
+You can combine the `-c`, `-j` and `-f` options into one group. Then you get the following command:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf test.tar.bz2 test
 ```
 
-Мы разобрались, как использовать `bsdtar`. Теперь пришло время написать команду для прохода по каталогу фотографий и созданию архива для каждого месяца. Чтобы найти все каталоги с месяцами, воспользуемся командой `find`:
+Let's write a command to navigate through the catalog of photos. It should create a separate archive for each month.
+
+The following `find` utility call finds directories that match specific months:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/*
 ```
 
-Теперь перенаправим её вывод утилите `xargs`, которая сформирует вызов `bsdtar`:
+Next, we redirect the output of this command to the `xargs` utility. It will generate the `bsdtar` call. Our command looks like this now:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* | xargs -I% bsdtar -cf %.tar %
 ```
 
-Если необходимо сжатие, добавьте опцию `-j` в вызов `bsdtar`:
+We can add the `-j` option to force `bsdtar` to compress archived data. The command became like this:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* | xargs -I% bsdtar -cjf %.tar.bz2 %
 ```
 
-I> Учтите, что сжатие — это значительно более долгая операция чем архивация.
+I> The data compression takes longer than archiving.
 
-В данном случае мы воспользовались параметром `-I` команды `xargs`, чтобы указать место подстановки сформированных ею аргументов. В случае вызова утилиты `bsdtar` этих мест два: имя создаваемого архива и путь до каталога, который следует обработать.
+We pass the `-I` parameter to the `xargs` utility. It specifies where to insert the arguments into the generated command. There are two such places in the `bsdtar` utility call: the archive's name and the directory's path to be processed.
 
-Не забывайте про имена файлов, которые могут содержать символы перевода строки. Чтобы обработать их корректно, добавим опцию `-print0` в вызов утилиты `find`:
+Do not forget about filenames with line breaks. To process them correctly, add the `-print0` option to the `find` utility call. This way, we get the following command:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* -print0 | xargs -0 -I% bsdtar -cjf %.tar.bz2 %
 ```
 
-Если вы хотите, чтобы архивы содержали только файлы без относительных путей (например `2019/11`), воспользуйтесь опцией `--strip-components` утилиты `bsdtar`:
+Suppose that we want to keep the files in the archives without relative paths (e.g. `2019/11`). The `--strip-components` option of `bsdtar` removes them. Here is the command with this option:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* -print0 | xargs -0 -I% bsdtar --strip-components=3 -cjf %.tar.bz2 %
 ```
 
-##### Упражнение 2-8. Использование логических операторов
+##### Exercise 2-8. Logical operators
 
-Будем реализовывать наш алгоритм последовательно шаг за шагом. Первое действие — копирование файла README в домашний каталог пользователя:
+Let's implement the algorithm step by step. The first action is to copy the `README` file to the user's home directory. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~
 ```
 
-Чтобы вывести результат этой команды в лог-файл, воспользуемся оператором `&&` и `echo`:
+Use the && operator and the `echo` command to print the command's result into the log file. The command became like this:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > result.log
 ```
 
-Далее необходимо заархивировать скопированный файл. Для этого воспользуемся утилитой `bsdtar` или `tar`:
+Call the `bsdtar` or `tar` utility to archive a file. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf ~/README.tar.bz2 ~/README
 ```
 
-Выведем её результат аналогично с использованием оператора `&&` и команды `echo`:
+We can print the result of archiving operation using the `echo` command again:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> result.log
 ```
 
-Обратите внимание, что в данном случае `echo` дописывает в конец уже существующего лог-файла.
+In this case, the `echo` command appends a line to the end of the existing log file.
 
-Как объединить получившиеся вызовы `cp` и `bsdtar`? Утилита `bsdtar` должна отработать только в случае успешного выполнения копирования. Значит, надо опять воспользоваться оператором `&&`. В результате получим следующую команду:
+Let's combine the `cp` and `bsdtar` calls into one command. We should call the `bsdtar` utility only if the `README` file has been successfully copied. To achieve this dependency, we put the && operator between the commands. We get the following command:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > result.log && bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> result.log
 ```
 
-Добавим к ней последнее действие — удаление файла `README`:
+The last missing step is deleting the `README` file. We can add it this way:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log && bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> ~/result.log && rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
-Если вы запустите эту команду и все действия выполнятся корректно, вы получите следующий вывод в файле `result.txt`:
+Run this command. If it succeeds, the log file looks like this:
 {line-numbers: true}
 ```
 cp - OK
@@ -239,7 +256,9 @@ bsdtar - OK
 rm - OK
 ```
 
-Согласитесь, что читать получившуюся команду неудобно. Её можно разбить на несколько строк несколькими способами. Bash разрешает перенос строки сразу после логических операторов:
+The command with calls to three utilities in a row looks cumbersome. It is inconvenient to read and edit. Let's break the command into lines. There are several ways to do this.
+
+The first way is to break lines after logical operators. We apply it and get the following:
 {line-numbers: true, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log &&
@@ -247,9 +266,11 @@ bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> ~/result.log &&
 rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
-Попробуйте скопировать эту команду в окно терминала и исполнить. Она должна отработать без ошибок.
+Try to copy this command into a terminal window and execute it. It will run without errors.
 
-Если в вашей команде нет логических операторов, вы можете воспользоваться символом обратный слэш `\`. В нашем случае для примера поставим его перед `&&`:
+The second way to add line breaks is to use the backslash character. Put a line break right after it. Use this method when there are no logical operators in the command.
+
+For example, let's put backslashes before the && operators in our command. Then we get this result:
 {line-numbers: true, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log \
@@ -257,58 +278,78 @@ cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log \
 && rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
-Обратный слэш вы можете вставлять в любое место команды. Важно, чтобы сразу после него шёл перевод строки.
+##### Exercise 3-2. The full form of parameter expansion
 
-## Разработка Bash скриптов
+The `find` utility searches for files recursively. It starts from the specified path and passes through all subdirectories. Use the `-maxdepth` option to exclude subdirectories from the search.
 
-##### Упражнение 3-2. Использование полной формы подстановки параметров
-
-Чтобы ограничить утилиту `find` поиском только в текущем каталоге, воспользуемся параметром `-maxdepth`. Тогда команда поиска файлов с расширением TXT будет выглядеть следующим образом:
+The command for searching TXT files in the current directory looks like this:
 {line-numbers: false, format: Bash}
 ```
 find . -maxdepth 1 -type f -name "*.txt"
 ```
 
-Добавим в неё действие копирования найденных файлов в домашний каталог пользователя:
+Let's add an action to copy the found files to the user's home directory. The command became like this:
 {line-numbers: false, format: Bash}
 ```
 find . -maxdepth 1 -type f -name "*.txt" -exec cp -t ~ {} \;
 ```
 
-Поместим команду в скрипт с именем `txt-copy.sh`. Тогда мы сможем вызвать скрипт и передать ему желаемое действие: копирование или переименование. Проще всего будет передавать имя утилиты (`cp` или `mv`), которую следует вызвать для каждого найденного файла. В таком случае следующая команда будет выполнять копирование:
+Now create a script and name it `txt-copy.sh`. Copy our `find` call into the file.
+
+The script should receive an input parameter. The parameter defines an action to apply for each found file. There are two possible actions: copy or move. It is convenient to pass the utility's name as a parameter. Thus, it can be `cp` or `mv`. The script will call the utility by its name.
+
+According to our idea, the script copies the files when it is called like this:
 {line-numbers: false, format: Bash}
 ```
 ./txt-copy.sh cp
 ```
 
-Для перемещения найденных файлов достаточно заменить `cp` на `mv`:
+When you want to move files, you call the script like this:
 {line-numbers: false, format: Bash}
 ```
 ./txt-copy.sh mv
 ```
 
-Первый параметр, переданный скрипту, сохраняется в перменной `$1`. Подставим её в наш вызов `find`:
+You can access the first parameter of the script by the `$1` name. Place this name in the `-exec` action of the`find` call. This way, we get the following command:
 {line-numbers: false, format: Bash}
 ```
 find . -maxdepth 1 -type f -name "*.txt" -exec "$1" -t ~ {} \;
 ```
 
-Теперь зададим значение по умолчанию. Благодаря этому, будет выполняться копирование, если позиционный параметр `$1` пустой. В итоге наш скрипт будет выглядеть так:
-{line-numbers: true, format: Bash}
+If you do not specify an action, the script should copy the files. It means that the following call is acceptable:
+{line-numbers: false, format: Bash}
 ```
-#!/bin/bash
-find . -maxdepth 1 -type f -name "*.txt" -exec "${1:-cp}" -t ~ {} \;
+./txt-copy.sh
 ```
 
-##### Упражнение 3-4. Использование оператора if
+To make this work, add a default value to the parameter expansion. Listing 5-1 shows the final script that we get this way.
 
-Исходная команда выглядит следующих образом:
+{caption: "Listing 5-1. The script for copying TXT files", line-numbers: true, format: Bash}
+![`find-txt.sh`](code/Answers/find-txt.sh)
+
+##### Exercise 3-4. The if statement
+
+The original command looks like this:
 {line-numbers: false, format: Bash}
 ```
 ( grep -RlZ "123" target | xargs -0 cp -t . && echo "cp - OK" || ! echo "cp - FAILS" ) && ( grep -RLZ "123" target | xargs -0 rm && echo "rm - OK" || echo "rm - FAILS" )
 ```
 
-Обратите внимание на отрицание вывода "cp - FAILS". Если бы не оно, мы могли бы разбить команду на два отдельных вызова. Но в данном случае выполнение прервётся, если первый `grep` не найдёт ни одного файла и команда `cp` не сможет отработать корректно. Поэтому, нам нужен вложенный `if-else` следующего вида:
+Note the negation of the `echo` call with the "cp - FAILS" output. The negation prevents the second `grep` call if the first one fails.
+
+Replace the && operator between `grep` calls with the `if` statement. We get the following code:
+{line-numbers: true, format: Bash}
+```
+if grep -RlZ "123" target | xargs -0 cp -t .
+then
+  echo "cp - OK"
+  grep -RLZ "123" target | xargs -0 rm && echo "rm - OK" || echo "rm - FAILS"
+else
+  echo "cp - FAILS"
+fi
+```
+
+Now replace the || operators in the second `grep` call with the `if` statement. The result looks like this:
 {line-numbers: true, format: Bash}
 ```
 if grep -RlZ "123" target | xargs -0 cp -t .
@@ -325,597 +366,7 @@ else
 fi
 ```
 
-Если применить технику раннего возврата, мы получим следующее:
-{line-numbers: true, format: Bash}
-```
-if ! grep -RlZ "123" target | xargs -0 cp -t .
-then
-  echo "cp - FAILS"
-  exit 1
-fi
+To avoid nested `if` statements, we will apply the early return pattern. We will also add a shebang at the beginning of the script. Listing 5-2 shows the result.
 
-echo "cp - OK"
-
-if grep -RLZ "123" target | xargs -0 rm
-then
-  echo "rm - OK"
-else
-  echo "rm - FAILS"
-fi
-```
-
-Благодаря отрицанию `!` результата работы первого `grep` и следующего далее в конвейере `cp`, мы можем завершить скрипт сразу же после ошибки.
-
-##### Упражнение 3-5. Использование оператора `[[`
-
-Чтобы вывести файлы, которыми отличаются два каталога, их сначала нужно найти. Для поиска воспользуемся утилитой `find`. Тогда поиск файлов в каталоге `dir1` будет выглядеть так:
-{line-numbers: false, format: Bash}
-```
-find dir1 -type f
-```
-
-Вывод этой команды может выглядеть например так:
-{line-numbers: false}
-```
-dir1/test3.txt
-dir1/test1.txt
-dir1/test2.txt
-```
-
-Теперь нам нужно добавить действие с помощью параметра `-exec`, в котором мы проверим существование всех найденных файлов в каталоге `dir2`. Но есть одна проблема — каталог `dir1`, который утилита `find` добавляет к именам найденных файлов. Самый простой способ решить эту проблему — перейти в каталог `dir1` и после этого запустить `find`:
-{line-numbers: true, format: Bash}
-```
-cd dir1
-find . -type f
-```
-
-Теперь вывод будет выглядеть так:
-{line-numbers: false}
-```
-./test3.txt
-./test1.txt
-./test2.txt
-```
-
-Добавим действие `-exec` с проверкой того, что найденный файл присутствует в каталоге `dir2`:
-{line-numbers: true, format: Bash}
-```
-cd dir1
-find . -type f -exec test -e ../dir2/{} \;
-```
-
-Обратите внимание, что в этом случае мы вынужденны использовать команду `test`, а не `[[`. Дело в том, что встроенный интерпретатор `find` не умеет корректно обрабатывать Bash конструкцию `[[`.
-
-Если проверка не прошла, то есть файла нет, будем выводить его имя. Для этого инвертируем нашу проверку `test` и добавим второе `-exec` действие, связанное логическим И с первым. В результате получим следующий скрипт:
-{line-numbers: true, format: Bash}
-```
-cd dir1
-find . -type f -exec test ! -e ../dir2/{} \; -a -exec echo {} \;
-```
-
-Добавим аналогичный вызов `find` для проверки файлов каталога `dir2`:
-{line-numbers: true, format: Bash}
-```
-cd dir1
-find . -type f -exec test ! -e ../dir2/{} \; -a -exec echo {} \;
-
-cd ../dir2
-find . -type f -exec test ! -e ../dir1/{} \; -a -exec echo {} \;
-```
-
-I> Мы написали скрипт сравнения каталогов исключительно в учебных целях. Не используйте его для реальных задач. Лучше применяйте специальную GNU утилиту `diff`.
-
-##### Упражнение 3-6. Использование конструкции `case`
-
-Реализуем скрипт для переключения между конфигурационными файлами с использованием [символьных ссылок](https://ru.wikipedia.org/wiki/Символическая_ссылка). Символьная ссылка — это файл специального типа, который вместо данных содержит указатель на другой файл или каталог системы.
-
-К сожалению, в Unix-окружении, работающем на OS Windows, вместо создания символьной ссылки будет происходить копирование соответствующего файла или каталога. Однако, они будут создаваться корректно на ОС Linux и macOS. Главное преимущество символьной ссылки заключается в том, что при работе с её содержимым вы на самом деле работаете с файлом или каталогом, на который она указывает. Это значит, что все изменения произойдут над этим файлом или каталогом.
-
-Алгоритм нашего скрипта выглядит следующим образом:
-
-1. Удалить существующую символьную ссылку или файл по пути `~/.bashrc`.
-
-2. Проверить опцию командной строки, переданную в скрипт.
-
-3. В зависимости от опции создать символьную ссылку на файл `.bashrc-home` или `.bashrc-work`.
-
-Следующий скрипт реализует алгоритм с помощью конструкции `case`:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-file="$1"
-
-rm ~/.bashrc
-
-case "$file" in
-  "h")
-    ln -s ~/.bashrc-home ~/.bashrc
-    ;;
-
-  "w")
-    ln -s ~/.bashrc-work ~/.bashrc
-    ;;
-
-  *)
-    echo "Указана недопустимая опция"
-    ;; 
-esac
-```
-
-С помощью опции, переданной через позиционный параметр `$1`, выбирается имя файла.
-
-Обратите внимание, что команда создания символьной ссылки остаётся неизменной независимо от опции скрипта. Это верный признак того, что конструкцию `case` можно заменить на ассоциативный массив. Например, следующим образом:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-option="$1"
-
-declare -A files=(
-  ["h"]="~/.bashrc-home"
-  ["w"]="~/.bashrc-work")
-
-if [[ -z "$option" || ! -v files["$option"] ]]
-then
-  echo "Указана недопустимая опция"
-  exit 1
-fi
-
-rm ~/.bashrc
-
-ln -s "${files["$option"]}" ~/.bashrc
-```
-
-Здесь мы используем двойные кавычки при подстановке элемента массива `files`, потому что он является одним параметром в вызове утилиты `ln`. Таким образом мы решаем возможную проблему с пробелами в путях.
-
-##### Упражнение 3-7. Арифметические действия в дополнительном коде
-
-Результаты сложения однобайтовых целых:
-{line-numbers: false}
-```
-* 79 + (-46) = 0100 1111 + 1101 0010 = 1 0010 0001 -> 0010 0000 = 33
-
-* -97 + 96 = 1001 1111 + 0110 0000 = 1111 1111 -> 1111 1110 -> 1000 0001 = -1
-```
-
-Результат сложения двухбайтовых целых:
-{line-numbers: false}
-```
-* 12868 + (-1219) = 0011 0010 0100 0100 + 1111 1011 0011 1101 = 1 0010 1101 1000 0001 -> 0010 1101 1000 0001 = 11649
-```
-
-Для проверки корректности перевода чисел в дополнительный код можно использовать [онлайн-калькулятор](https://planetcalc.com/747/)
-
-##### Упражнение 3-8. Вычисление остатка от деления и modulo
-
-{line-numbers: false}
-```
-* 1697 % 13
-q = 1697 / 13 ~ 130.5385 ~ 130
-r = 1697 - 13 * 130 = 7
-
-* 1697 modulo 13
-q = 1697 / 13 ~ 130.5385 ~ 130
-r = 1697 - 13 * 130 = 7
-
-* 772 % -45
-q = 772 / -45 ~ -17.15556 ~ -17
-r = 772 - (-45) * (-17) = 7
-
-* 772 modulo -45
-q = (772 / -45) - 1 ~ -18.15556 ~ -18
-r = 772 - (-45) * (-18) = -38
-
-* -568 % 12
-q = -568 / 12 ~ -47.33333 ~ -47
-r = -568 - 12 * (-47) = -4
-
-* -568 modulo 12
-q = (-568 / 12) - 1 ~ -48.33333 ~ -48
-r = -568 - 12 * (-48) = 8
-
-* -5437 % -17
-q = -5437 / -17 ~ 319.8235 ~ 319
-r = -5437 - (-17) * 319 = -14
-
-* -5437 modulo -17
-q = -5437 / -17 ~ 319.8235 ~ 319
-r = -5437 - (-17) * 319 = -14
-```
-
-##### Упражнение 3-9. Вычисление побитового отрицания
-
-Сначала вычислим побитовое отрицание для случая беззнаковых двухбайтовых целых.
-{line-numbers: false}
-```
- 56 = 0000 0000 0011 1000
-~56 = 1111 1111 1100 0111 = 65479
-
- 1018 = 0000 0011 1111 1010
-~1018 = 1111 1100 0000 0101 = 64517
-
- 58362 = 1110 0011 1111 1010
-~58362 = 0001 1100 0000 0101 = 7173
-```
-
-Если операция отрицания выполняется над знаковыми двухбайтовыми целыми, результаты будут отличаться.
-{line-numbers: false}
-```
- 56 = 0000 0000 0011 1000
-~56 = 1111 1111 1100 0111 -> 1000 0000 0011 1001 = -57
-
- 1018 = 0000 0011 1111 1010
-~1018 = 1111 1100 0000 0101 -> 1000 0011 1111 1011 = -1019
-```
-
-Число 58362 не может быть представлено в виде знакового двухбайтового целого из-за переполнения. Если записать соответствующие ему биты в переменную такого типа, мы получим -7174. Перевод этого числа в прямой код будет выглядеть следующим образом:
-{line-numbers: false}
-```
-58362 = 1110 0011 1111 1010 -> 1001 1100 0000 0110 = -7174
-```
-
-Теперь выполним побитовое отрицание:
-{line-numbers: false}
-```
-  -7174  = 1110 0011 1111 1010
-~(-7174) = 0001 1100 0000 0101 = 7173
-```
-
-Вы можете проверить результаты побитового отрицания над знаковыми целыми с помощью следующих Bash команд:
-{line-numbers: true, format: Bash}
-```
-$ echo $((~56))
--57
-$ echo $((~1018))
--1019
-$ echo $((~(-7174)))
-7173
-```
-
-Проверить отрицание двухбайтового беззнакого целого 58362 с помощью Bash не получится. Интерпретатор сохранит эту переменную в знаковом четырёхбайтовом целом. Тогда в результате отрицания мы получим:
-{line-numbers: true, format: Bash}
-```
-$ echo $((~58362))
--58363
-```
-
-##### Упражнение 3-10. Вычисление побитовых И, ИЛИ, исключающего ИЛИ
-
-Вычислим битовые операции для случая беззнаковых двухбайтовый целых:
-{line-numbers: false}
-```
-1122 & 908 = 0000 0100 0110 0010 & 0000 0011 1000 1100 = 0000 0000 000 0000 = 0
-
-1122 | 908 = 0000 0100 0110 0010 | 0000 0011 1000 1100 = 0000 0111 1110 1110 = 2030
-
-1122 ^ 908 = 0000 0100 0110 0010 ^ 0000 0011 1000 1100 = 0000 0111 1110 1110 = 2030
-
-
-49608 & 33036 = 1100 0001 1100 1000 & 1000 0001 0000 1100 = 1000 0001 0000 1000 = 33032
-
-49608 | 33036 = 1100 0001 1100 1000 | 1000 0001 0000 1100 = 1100 0001 1100 1100 = 49612
-
-49608 ^ 33036 = 1100 0001 1100 1000 ^ 1000 0001 0000 1100 = 0100 0000 1100 0100 = 16580
-```
-
-Если целые знаковые, то результаты битовых операций для первой пары чисел 1122 и 908 будут теми же. Для второй пары, вычисление будет отличаться.
-
-Сначала выясним значение обоих чисел в прямом коде:
-{line-numbers: false}
-```
-49608 = 1100 0001 1100 1000 -> 1011 1110 0011 1000 = -15928
-
-33036 = 1000 0001 0000 1100 -> 1111 1110 1111 0100 = -32500
-
--15928 & -32500 = 1100 0001 1100 1000 & 1000 0001 0000 1100 = 1000 0001 0000 1000 -> 1111 1110 1111 1000 = -32504
-
--15928 | -32500 = 1100 0001 1100 1000 | 1000 0001 0000 1100 = 1100 0001 1100 1100 -> 1011 1110 0011 0100 = -15924
-
--15928 ^ -32500 = 1100 0001 1100 1000 ^ 1000 0001 0000 1100 = 0100 0000 1100 0100 = 16580
-```
-
-Bash-команды для проверки результатов операций:
-{line-numbers: true, format: Bash}
-```
-$ echo $((1122 & 908))
-0
-$ echo $((1122 | 908))
-2030
-$ echo $((1122 ^ 908))
-2030
-
-$ echo $((49608 & 33036))
-33032
-$ echo $((49608 | 33036))
-49612
-$ echo $((49608 ^ 33036))
-16580
-
-$ echo $((-15928 & -32500))
--32504
-$ echo $((-15928 | -32500))
--15924
-$ echo $((-15928 ^ -32500))
-16580
-```
-
-##### Упражнение 3-11. Вычисление битовых сдвигов
-
-Вычисление операций:
-{line-numbers: false}
-```
-* 25649 >> 3 = 0110 0100 0011 0001 >> 3 = 0110 0100 0011 0 = 0000 1100 1000 0110 = 3206
-
-* 25649 << 2 = 0110 0100 0011 0001 << 2 = 10 0100 0011 0001 -> 1001 0000 1100 0100 -> 1110 1111 0011 1100 = -28476
-
-* -9154 >> 4 = 1101 1100 0011 1110 >> 4 = 1101 1100 0011 -> 1111 1101 1100 0011 -> 1000 0010 0011 1101 = -573
-
-* -9154 << 3 = 1101 1100 0011 1110 << 3 = 1 1100 0011 1110 -> 1110 0001 1111 0000 -> 1001 1110 0001 0000 = -7696
-```
-
-Bash-команды для проверки результатов:
-{line-numbers: true, format: Bash}
-```
-$ echo $((25649 >> 3))
-3206
-$ echo $((25649 << 2))
-102596
-$ echo $((-9154 >> 4))
--573
-$ echo $((-9154 << 3))
--73232
-```
-
-Отличие результатов второй и четвёртой операции связано с восьмибайтовым представлением чисел в Bash.
-
-Вы можете проверить свои расчёты также с помощью [онлайн-калькулятора](https://onlinetoolz.net/bitshift).
-
-##### Упражнение 3-12. Использование операторов цикла
-
-Согласно условию задачи, у игрока есть семь попыток отгадать число. Поэтому применим конструкцию `for` с фиксированным количеством итераций. На каждой итерации будем читать ввод пользователя с помощью команды `read`. Затем сравним введённое число с загаданным. В зависимости от результата будем выводить текст подсказки.
-
-Чтобы загадать случайное число, воспользуемся зарезервированной переменной `RANDOM`. При чтении она возвращает случайное значение от 0 до 32767. В нашем случае требуется число от 1 до 100. Его можно получить из значения `RANDOM` за два шага. Прежде всего рассчитаем остаток от деления `RANDOM` на 100 по следующей формуле:
-{line-numbers: false, format: Bash}
-```
-number=$((RANDOM % 100))
-```
-
-Таким образом мы получим случайное число от 0 до 99. Прибавим к нему единицу, чтобы получить нужный нам диапазон от 1 до 100. Конечная формула расчёта выглядит так:
-{line-numbers: false, format: Bash}
-```
-number=$((RANDOM % 100 + 1))
-```
-
-Полное решение задачи выглядит следующим образом:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-number=$((RANDOM % 100 + 1))
-
-for i in {1..7}
-do
-  echo "Введите число:"
-
-  read input
-
-  if (( input < number))
-  then
-    echo "Число $input меньше искомого"
-  elif (( number < input))
-  then
-    echo "Число $input больше искомого"
-  else
-    echo "Вы отгадали число"
-    exit 0
-  fi  
-done
-
-echo "Вы не отгадали число"
-```
-
-Чтобы успешно отгадать число за семь попыток, вам необходимо применить [**алгоритм двоичного поиска**](https://ru.wikipedia.org/wiki/Двоичный_поиск). Его идея заключается в том, чтобы дробить массив чисел на половины. Рассмотрим пример одной игры "Больше-Меньше", в которой будем использовать этот алгоритм.
-
-В самом начале игры мы ищем число в диапазоне от 1 до 100. Серединой этого диапазона является 50. Поэтому вводим это значение первым. Например, программа нам ответила, что 50 меньше искомого числа. Это значит, что оно находится в диапазоне от 50 до 100. Теперь вводим середину этого диапазона, то есть число 75. Получаем ответ, что 75 тоже меньше искомого. Вывод — искомое число находится между 75 и 100. Середина этого диапазона `x` рассчитывается следующим образом:
-{line-numbers: false, format: text}
-```
-x = 75 + (100 - 75) / 2 = 87.5
-``` 
-
-Вы можете округлить результат в большую или меньшую сторону. Это неважно. Округлим в меньшую и получим число 87 для следующего ввода. Если число до сих пор не было отгадано, продолжаем делить диапазон возможных чисел пополам. В конце концов семи шагов должно хватить для поиска.
-
-##### Упражнение 3-13. Использование функций
-
-Вариант с оператором `case` уже был рассмотрен в примерах раздела "Функции в скриптах". Если мы объединим код функций `print_error` и `code_to_error` в один файл, то получим следующее:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-code_to_error()
-{
-  case $1 in
-    1)
-      echo "Не найден файл"
-      ;;
-    2)
-      echo "Нет прав для чтения файла"
-      ;;
-  esac
-}
-
-print_error()
-{
-  echo "$(code_to_error $1) $2" >> debug.log
-}
-
-print_error 1 "readme.txt"
-```
-
-Переименуем функцию `code_to_error` на `code_to_error_ru`, чтобы её имя отражало язык возвращаемых сообщений.
-
-Далее дополним скрипт функцией `code_to_error_en`, которая будет возвращать текст на английском языке для соответствующего кода ошибки. Эта функция может выглядеть следующим образом:
-{line-numbers: true, format: Bash}
-```
-code_to_error_en()
-{
-  case $1 in
-    1)
-      echo "The following file was not found:"
-      ;;
-    2)
-      echo "You do not have permissions to read the following file:"
-      ;;
-  esac
-}
-```
-
-Теперь нам необходимо выбрать, какую функцию `code_to_error_ru` или `code_to_error_en` вызывать в `print_error`. Для этого будем проверять значение переменной окружения `LANG`. Региональные настройки пользовательского интерфейса хранятся в ней. Тогда полный скрипт будет выглядеть следующим образом:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-code_to_error_ru()
-{
-  case $1 in
-    1)
-      echo "Не найден файл"
-      ;;
-    2)
-      echo "Нет прав для чтения файла"
-      ;;
-  esac
-}
-
-code_to_error_en()
-{
-  case $1 in
-    1)
-      echo "The following file was not found:"
-      ;;
-    2)
-      echo "You do not have permissions to read the following file:"
-      ;;
-  esac
-}
-
-print_error()
-{
-  if [[ "$LANG" == ru_RU* ]]
-  then
-    echo "$(code_to_error_ru $1) $2" >> debug.log
-  else
-    echo "$(code_to_error_en $1) $2" >> debug.log
-  fi
-}
-
-print_error 1 "readme.txt"
-```
-
-Если язык системы русский, в переменной `LANG` встретиться шаблон `ru_Ru*`. В этом случае вызывается функция `code_to_error_ru`. В любом другом случае вызывается `code_to_error_en`.
-
-Конструкцию `if` в функции `print_error` можно заменить на `case`. Например, следующим образом:
-{line-numbers: true, format: Bash}
-```
-print_error()
-{
-  case $LANG in
-    ru_RU*)
-      echo "$(code_to_error_ru $1) $2" >> debug.log
-      ;;
-    en_US*)
-      echo "$(code_to_error_en $1) $2" >> debug.log
-      ;;
-    *)
-      echo "$(code_to_error_en $1) $2" >> debug.log
-      ;;
-  esac
-}
-```
-
-Вариант с `case` будет удобнее, если необходимо поддерживать более двух языков.
-
-В функции `print_error` происходит дублирование кода. В каждом блоке конструкции `case` выполняется одна и та же команда `echo`. Единственное различие между блоками — это вызываемая функция для конвертирования кода ошибки в текст. Чтобы избежать дублирования, воспользуемся переменной `func`, которая будет хранить имя функции для конвертирования. Получим следующий результат:
-{line-numbers: true, format: Bash}
-```
-print_error()
-{
-  case $LANG in
-    ru_RU)
-      local func="code_to_error_ru"
-      ;;
-    en_US)
-      local func="code_to_error_en"
-      ;;
-    *)
-      local func="code_to_error_en"
-      ;;
-  esac
-
-  echo "$($func $1) $2" >> debug.log
-}
-```
-
-Конструкции `case` в функциях `code_to_error_ru` и `code_to_error_en` можно заменить на индексируемые массивы. Например, следующим образом:
-{line-numbers: true, format: Bash}
-```
-code_to_error_ru()
-{
-  declare -a messages
-
-  messages[1]="Не найден файл"
-  messages[2]="Нет прав для чтения файла"
-
-  echo "${messages[$1]}"
-}
-
-code_to_error_en()
-{
-  declare -a messages
-
-  messages[1]="The following file was not found:"
-  messages[2]="You do not have permissions to read the following file:"
-
-  echo "${messages[$1]}"
-}
-```
-
-На самом деле можно сделать один ассоциативный массив, в котором будут собраны все языки и сообщения. В качестве ключа в таком массиве может использоваться комбинация значения переменной `LANGUAGE` и кода сообщения. В результате мы сможем обойтись только одной функцией `print_error`:
-{line-numbers: true, format: Bash}
-```
-#!/bin/bash
-
-print_error()
-{
-  declare -A messages
-
-  messages["ru_RU",1]="Не найден файл"
-  messages["ru_RU",2]="Нет прав для чтения файла"
-
-  messages["en_US",1]="The following file was not found:"
-  messages["en_US",2]="You do not have permissions to read the          following file:"
-
-  echo "${messages[$LANGUAGE,$1]} $2" >> debug.log
-}
-
-print_error 1 "readme.txt"
-```
-
-##### Упражнение 3-14. Область видимости переменных
-
-После выполнения скрипта из листинга 3-36 на консоль будет выведен следующий текст:
-{line-numbers: true, format: text}
-```
-main1: var =
-foo1: var = foo_value
-bar1: var = foo_value
-bar2: var = bar_value
-foo2: var = bar_value
-main2: var = 
-```
-
-Начнём с самого простого вывода "main1" и "main2". Переменная `var` объявлена в функции `foo`. Поэтому она доступна только в ней и в вызываемой из неё функции `bar`. Следовательно, до и после вызова `foo` переменная считается необъявленной.
-
-В выводе "foo1" мы получили только что присвоенное переменной значение `foo_value`. Далее идёт вывод "bar1". Переменная `var` была объявлена в функции `foo`, а `bar` вызывается из неё. Поэтому тело функции `bar` также является областью видимости `var`.
-
-Затем мы присваиваем `var` новое значение `bar_value`. Обратите внимание, что здесь происходит не объявление новой глобальной переменной с именем `var`, а перезапись уже существующей локальной переменной. Поэтому в выводах "bar2" и в "foo2" мы увидим новое значение `bar_value`. Также именно по этой причине мы не увидим значение переменной в выводе "main2".
+{caption: "Listing 5-2. The script for searching a string in files", line-numbers: true, format: Bash}
+![`search-copy-remove.sh`](code/Answers/search-copy-remove.sh)

@@ -28,3 +28,4 @@ mainmatter:
   finalwords.md
 
   glossary.md
+  answers.md

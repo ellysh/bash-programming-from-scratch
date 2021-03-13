@@ -241,7 +241,7 @@ If the file contains the string, it is copied to the current directory.
 If there is no string in the file, it is removed from the target directory.
 
 Make the script from this command.
-Replace the && and || operators with `if-else` statements.
+Replace the && and || operators with the if statements.
 ```
 
 ### Operator [[
