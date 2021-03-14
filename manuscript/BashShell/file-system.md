@@ -746,7 +746,7 @@ The program source code files contain text. The `grep` utility works with text f
 
 You may have liked the grep utility. Now you want to process [PDF](https://en.wikipedia.org/wiki/PDF) and MS Office documents with it. Unfortunately, this approach does not work. The format of these files is not text. The data are encoded there. To process such files, you need another utility. Table 2-6 shows `grep` alternatives for non-text files.
 
-{caption: "Table 2-6. Utilities for text searching in PDF and MS Office files", width: "70%"}
+{caption: "Table 2-6. Utilities for text searching in PDF and MS Office files", width: "70%", column-widths: "20% *"}
 | Utility | Features |
 | --- | --- |
 | [pdftotext](http://www.xpdfreader.com) | It converts a PDF file into text format. |
