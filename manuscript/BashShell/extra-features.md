@@ -656,8 +656,8 @@ Here are the general advices for using pipelines:
 
 {caption: "Exercise 2-7. Pipelines and I/O streams redirection", format: text, line-numbers: false}
 ```
-Write a command to archive photos with the `bsdtar` utility.
-If you are a Linux or macOS user, use the `tar` utility instead.
+Write a command to archive photos with the bsdtar utility.
+If you are a Linux or macOS user, use the tar utility instead.
 The photos are stored in the directory structure from exercises 2-6:
 
 ~/

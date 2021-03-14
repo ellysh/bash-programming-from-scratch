@@ -113,6 +113,6 @@ When you know the utility's name to solve your task, it is simple to get help. B
 
 {caption: "Exercise 2-5. The documentation system", format: text, line-numbers: false}
 ```
-Find documentation on each of the built-in commands and utilities in Table 2-1.
+Find documentation for each of the built-in commands and utilities in Table 2-1.
 Examine the parameters of the ls and find utilities that we did not consider.
 ```

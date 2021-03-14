@@ -877,7 +877,7 @@ Try all the following variants of the array declarations:
 
 7. Read the array elements from a text file.
 
-Print the array contents using the `echo` command for each case.
+Print the array contents using the echo command for each case.
 ```
 
 We have learned how to declare and initialize indexed arrays. Here are some more examples of using them. Suppose the `files` array contains a list of filenames. You want to copy the first file in the list. The following `cp` call does that:

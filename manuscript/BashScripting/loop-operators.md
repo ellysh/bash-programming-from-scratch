@@ -792,7 +792,8 @@ Use the `continue` command to handle errors. It is also helpful for conditions w
 
 {caption: "Exercise 3-12. Loop Constructs", format: text, line-numbers: false}
 ```
-Write a game called "More or Fewer". The first participant chooses a number from 1 to 100.
+Write a game called "More or Fewer". The first participant chooses a number from
+1 to 100.
 The second participant tries to guess it in seven tries.
 
 Your script chooses a number. The user enters his guess.

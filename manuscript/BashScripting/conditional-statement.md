@@ -482,8 +482,7 @@ You can use comparison signs for string only when working with the [[ operator. 
 {caption: "Exercise 3-5. The [[ operator", format: text, line-numbers: false}
 ```
 Write a script to compare two directories named "dir1" and "dir2".
-The script should print all files from one directory that absent
-in another one.
+The script should print all files from one directory that absent in another one.
 ```
 
 ### Case Statement
@@ -737,7 +736,8 @@ Our example has shown that replacing the `case` statement with an associative ar
 There are two configuration files in the user's home directory:
 ".bashrc-home" and ".bashrc-work".
 Write a script to switch between them.
-You can do that by copying one of the files to the path "~/.bashrc" or creating a symbolic link.
+You can do that by copying one of the files to the path "~/.bashrc" or
+creating a symbolic link.
 Solve the task with the "case" statement first.
 Then replace the "case" statement with an associative array.
 ```

@@ -401,7 +401,7 @@ Write the following functions to display error messages in English and German:
 
 Write two versions of the "code_to_error" function:
 
-* Using the "case" statement.
+* Using the case statement.
 * Using an associative array.
 ```
 
