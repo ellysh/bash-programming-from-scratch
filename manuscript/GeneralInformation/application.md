@@ -159,7 +159,7 @@ The hardware works in the binary numeral system. Why do we need the hexadecimal 
 
 Consider converting a number from binary to hexadecimal. The first step is dividing the number into groups of four digits starting from the end. If the last group is less than four digits, add zeros to the left side. Then use Table 1-4 to replace each four-digit group with a hexadecimal number. Here is an example of the conversion:
 ```
-110010011010111 = 110 0100 1101 0111 = 0110 0100 1101 0111 = 6 4 D 7 = 64D7 
+110010011010111 = 110 0100 1101 0111 = 0110 0100 1101 0111 = 6 4 D 7 = 64D7
 ```
 
 {caption: "Exercise 1-1. Numbers conversion from binary to hexadecimal", line-numbers: false}
@@ -229,7 +229,7 @@ Is it worth using programming languages at all? The time to compile a project ca
 
 Listing 1-2 shows the same program in machine code format. It is a hexadecimal representation.
 
-{caption: "Listing 1-2. MAchine code of the program"}
+{caption: "Listing 1-2. Machine code of the program"}
 ![`MachineCode.txt`](code/GeneralInformation/MachineCode.txt)
 
 Even if you don't know the C language, the code in Listing 1-1 looks more evident than Listing 1-2. It is easier to read and edit this code. Perhaps a professional developer can quickly write machine code for a small program. But another programmer will spend a lot of time and effort to figure it out.

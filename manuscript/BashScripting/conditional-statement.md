@@ -494,8 +494,8 @@ We have considered the `if` statement. There is an alternative `case` statement 
 
 Let's look at an example. Suppose you are writing a script for archiving documents. The script has three operating modes:
 
-1. Archiving with compression.
-2. Archiving without compression.
+1. Archiving without compression.
+2. Archiving with compression.
 3. Unarchiving.
 
 You can choose the mode by the command-line option. Table 3-12 shows an example of possible options.
@@ -503,8 +503,8 @@ You can choose the mode by the command-line option. Table 3-12 shows an example 
 {caption: "Table 3-12. Options of the archiving script", width: "50%"}
 | Option | Operating mode  |
 | --- | --- |
-| `-a` | Archiving with compression |
-| `-c` | Archiving without compression |
+| `-a` | Archiving without compression |
+| `-c` | Archiving with compression |
 | `-x` | Unarchiving |
 
 I> Always follow the [POSIX agreement](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) when choosing scripts' options and parameters format.
@@ -525,7 +525,7 @@ Let's call our script `archiving-case.sh`. Then we can launch it in one of the f
 {line-numbers: true, format: Bash}
 ```
 ./archiving-case.sh -a
-./archiving-case.sh -b
+./archiving-case.sh -c
 ./archiving-case.sh -x
 ```
 
