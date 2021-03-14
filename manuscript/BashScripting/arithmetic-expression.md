@@ -476,11 +476,11 @@ Table 3-17 shows the operations that Bash allows in arithmetic expressions.
 | `+num` | Unary plus or multiplication of a number by 1 | `a=$((+num))"` |
 |  | | |
 | `-num` | Unary minus or multiplication of a number by -1 | `a=$((-num))"`|
-| `УСЛОВИЕ ? ДЕЙСТВИЕ1 : ДЕЙСТВИЕ2` | [Ternary operator](https://en.wikipedia.org/wiki/%3F:) | `a=$(( b < c ? b : c ))` |
+| `CONDITION ? ACTION_1 : ACTION_2` | [Ternary operator](https://en.wikipedia.org/wiki/%3F:) | `a=$(( b < c ? b : c ))` |
 |  | | |
-| `ДЕЙСТВИЕ1, ДЕЙСТВИЕ2` | The list of expressions | `((a = 4 + 5, b = 16 - 7))` |
+| `ACTION_1, ACTION_2` | The list of expressions | `((a = 4 + 5, b = 16 - 7))` |
 |  | | |
-| `( ДЕЙСТВИЕ1 )` | Grouping of expressions (subexpression) | `a=$(( (4 + 5) * 2 ))`|
+| `( ACTION_1 )` | Grouping of expressions (subexpression) | `a=$(( (4 + 5) * 2 ))`|
 
 Bash performs all operations in order of their priorities. The operations with a higher priority come first.
 
@@ -489,7 +489,7 @@ Table 3-18 shows the priority of operations.
 {caption: "Table 3-18. Priority of operations in arithmetic expressions", width: "100%"}
 | Priority | Operation | Description |
 | --- | --- | --- |
-| 1 | `( ДЕЙСТВИЕ1 )` | Grouping of expressions |
+| 1 | `( ACTION_1 )` | Grouping of expressions |
 |  | | |
 | 2 | `num++, num--` | Postfix increment and decrement |
 |  | | |
@@ -521,11 +521,11 @@ Table 3-18 shows the priority of operations.
 |  | | |
 | 16 | `||` | Logical OR |
 |  | | |
-| 17 | `УСЛОВИЕ ? ДЕЙСТВИЕ1 : ДЕЙСТВИЕ2` | Ternary operator |
+| 17 | `CONDITION ? ACTION_1 : ACTION_2` | Ternary operator |
 |  | | |
 | 18 | `=, *=, /=, %=, +=, -=, <<=, >>=, &=, ^=, |=` | Assignments |
 |  | | |
-| 19 | `ДЕЙСТВИЕ1, ДЕЙСТВИЕ2` | The list of expressions |
+| 19 | `ACTION_1, ACTION_2` | The list of expressions |
 
 You can change the order of execution using parentheses "( )". Their contents are called **subexpression**. Bash calculates subexpressions first. If there is more than one subexpression, Bash calculates them in the left-to-right order.
 
@@ -537,7 +537,7 @@ Suppose your code uses a numeric constant. You can specify its value in any nume
 | `0` | Octal | `echo "$((071)) = 57"` |
 | `0x` | Hexadecimal | `echo "$((0xFF)) = 255"` |
 | `0X` | Hexadecimal | `echo "$((0XFF)) = 255"` |
-| `<основание>#` | The numeral system with a base from 2 to 64 | `echo "$((16#FF)) = 255"` |
+| `<base>#` | The numeral system with a base from 2 to 64 | `echo "$((16#FF)) = 255"` |
 | | | `echo "$((2#101)) = 5"` |
 
 When printing a number to the screen or file, Bash always converts it in decimal. The `printf` command changes the format of the number output. You can use it this way:

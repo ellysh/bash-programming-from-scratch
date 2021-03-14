@@ -257,7 +257,7 @@ The variables are divided into two groups:
 
 The first group of variables comes from Bourne Shell. Bash needs it for POSIX compatibility. Table 3-4 shows the frequently used of these variables.
 
-{caption: "Table 3-4. Bourne Shell variables", width: "100%"}
+{caption: "Table 3-4. Bourne Shell variables", width: "100%", column-widths: "20%,*"}
 | Name | Value |
 | --- | --- |
 | `HOME` | The home directory of the current user. Bash uses this variable for doing tilde expansion and processing the `cd` call without parameters. |

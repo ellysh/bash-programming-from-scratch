@@ -118,8 +118,7 @@ Table 4-1 shows the commands for working with packages in different Linux distri
 | --- | --- | --- | --- | --- |
 | Download a package index | `pacman -Syy` | `apt-get update` | `yum check-update` | `dnf check-update` |
 |  | | | | |
-| Search for a package by the keyword
- | `pacman -Ss KEYWORD` | `apt-cache search KEYWORD` | `yum search KEYWORD` | `dnf search KEYWORD` |
+| Search for a package by the keyword | `pacman -Ss KEYWORD` | `apt-cache search KEYWORD` | `yum search KEYWORD` | `dnf search KEYWORD` |
 |  | | | | |
 | Install the package from the repository | `pacman -S PACKAGE_NAME` | `apt-get install PACKAGE_NAME` | `yum install PACKAGE_NAME` | `dnf install PACKAGE_NAME` |
 |  | | | | |

@@ -254,7 +254,7 @@ cat README
 
 Figure 2-13 shows the command result.
 
-{caption: "Figure 2-13. The result of the `cd` command", height: "30%"}
+{caption: "Figure 2-13. The result of the `cat` command", height: "30%"}
 ![cat result](images/BashShell/cat-command.png)
 
 I> Some Bash manuals do not recommend using the cat utility to output a file's contents. The utility's purpose is to merge several files and print the result to a standard output stream. Instead of calling cat for a single file, the manuals recommend combining the `echo` command with stream redirection. Here is an example of this approach:
@@ -335,9 +335,9 @@ Table 2-3 shows commonly used conditions for the `find` utility.
 |  | | |
 | `-type d` | Search directories only. | `find -type d` |
 |  | | |
-| `-name <pattern>` | Search for a file or directory with the name | `find -name README` |
-| | that matches a [**glob pattern**](https://en.wikipedia.org/wiki/Glob_(programming)). The pattern is case-sensitive. | `find -name READ*` |
-| | | `find -name READ??` |
+| `-name <pattern>` | Search for a file or directory with the | `find -name README` |
+| | name that matches a [**glob pattern**](https://en.wikipedia.org/wiki/Glob_(programming)). The | `find -name READ*` |
+| | pattern is case-sensitive. | `find -name READ??` |
 |  | | |
 | `-iname <pattern>` | Search for a file or directory with the name that matches a glob pattern. The pattern is case-insensitive. | `find -iname readme` |
 |  | | |
@@ -449,9 +449,9 @@ Table 2-4 shows the options for specifying actions.
 {caption: "Table 2-4. Options for specifying actions on found objects", width: "100%"}
 | Option | Meaning | Example |
 | --- | --- | --- |
-| `-exec команда {} \;`| Execute the specified command on each found object. | `find -name README -type f -exec cp {} ~ \;` |
+| `-exec command {} \;`| Execute the specified command on each found object. | `find -name README -type f -exec cp {} ~ \;` |
 |  | | |
-| `-exec команда {} +`| Execute the specified command once over all found objects. So, the command receives all objects on the input. | ` find -type d -exec cp -t ~ {} +` |
+| `-exec command {} +`| Execute the specified command once over all found objects. So, the command receives all objects on the input. | ` find -type d -exec cp -t ~ {} +` |
 |  | | |
 | `-delete`| Delete each of the found files. The directories are deleted if they are empty. | `find -name README -type f -delete` |
 
@@ -746,7 +746,7 @@ The program source code files contain text. The `grep` utility works with text f
 
 You may have liked the grep utility. Now you want to process [PDF](https://en.wikipedia.org/wiki/PDF) and MS Office documents with it. Unfortunately, this approach does not work. The format of these files is not text. The data are encoded there. To process such files, you need another utility. Table 2-6 shows `grep` alternatives for non-text files.
 
-{caption: "Table 2-6. Utilities for text searching in PDF and MS Office files", width: "100%"}
+{caption: "Table 2-6. Utilities for text searching in PDF and MS Office files", width: "70%"}
 | Utility | Features |
 | --- | --- |
 | [pdftotext](http://www.xpdfreader.com) | It converts a PDF file into text format. |
