@@ -12,7 +12,7 @@ case "$utility" in
     ;;
 
   *)
-    echo "Указана недопустимая опция"
+    echo "Invalid option"
     exit 1
     ;;
 esac

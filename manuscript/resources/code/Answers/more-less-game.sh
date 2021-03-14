@@ -4,20 +4,20 @@ number=$((RANDOM % 100 + 1))
 
 for i in {1..7}
 do
-  echo "Введите число:"
+  echo "Enter the number:"
 
   read input
 
   if (( input < number))
   then
-    echo "Число $input меньше искомого"
+    echo "The number $input is less"
   elif (( number < input))
   then
-    echo "Число $input больше искомого"
+    echo "The number $input is greater"
   else
-    echo "Вы отгадали число"
+    echo "You guessed the number"
     exit 0
   fi
 done
 
-echo "Вы не отгадали число"
+echo "You didn't guess the number"

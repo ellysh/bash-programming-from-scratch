@@ -1,6 +1,6 @@
 ## Extra Bash Features
 
-We have learned the built-in Bash commands and GNU utilities for operating on the file system. Now you can run a program and copy a file in the command line. The graphical interface provides the same features. If you are solving such simple tasks, the interface does not matter.
+We have learned the built-in Bash commands and GNU utilities for operating on the file system. Now you can run a program and copy a file in the command-line. The graphical interface provides the same features. If you are solving such simple tasks, the interface does not matter.
 
 The Bash interpreter provides several features that the GUI does not have. Thanks to them, some tasks are faster to perform in the command-line interface. If you have such a task, knowing Bash saves you time thanks to automation.
 
@@ -67,7 +67,7 @@ What does the `1>` operator mean? It is [redirection](https://en.wikipedia.org/w
 |  | | |
 | 2 | Standard error stream (stderr). | A program outputs the error messages there. The terminal window prints it by default. |
 
-A program operates in the software environment that the OS provides. A thread is a communication channel between the program and the environment. 
+A program operates in the software environment that the OS provides. A thread is a communication channel between the program and the environment.
 
 Early Unix systems have used physical channels for input and output data. The input was tied to the keyboard. The same way the output was tied to the monitor. Streams were introduced as [abstraction](https://en.wikipedia.org/wiki/Abstraction_layer) over these channels. The abstraction makes it possible to work with different objects using the same algorithm. It allows replacing input from a real device with input from a file. Similarly, printing to the screen can be replaced by output to a file. At the same time, the same OS code handles these I/O operations.
 
@@ -101,7 +101,7 @@ Let's take a more complicated example. Some Bash manuals recommend the `echo` co
 echo $( 0< README.txt )
 ```
 
-Here `echo` receives the output of the following command: 
+Here `echo` receives the output of the following command:
 {line-numbers: false, format: Bash}
 ```
 0< README.txt
@@ -224,7 +224,7 @@ find / -path */doc/* -name README > result.txt 2> errors.txt
 
 ### Pipelines
 
-It is inconvenient to create temporary files for sharing data between programs. Managing these files takes extra effort. You should remember their paths and removing them after usage. 
+It is inconvenient to create temporary files for sharing data between programs. Managing these files takes extra effort. You should remember their paths and removing them after usage.
 
 Unix environment provides an alternative solution. It is called [**pipeline**](https://en.wikipedia.org/wiki/Pipeline_(Unix)). This mechanism is more convenient than temporary files. It shares data between programs by passing messages without using the file system.
 
@@ -453,7 +453,7 @@ The pipeline passes the `find` output to the `grep` utility input. Then `grep` p
 
 The `-exec` action behaves in another way. When `find` passes its results to the `-exec` command, it constructs a utility call. The utility receives the names of found files and directories. You can get the same behavior when using the pipeline. Just apply the `xargs` utility for that.
 
-Let's change our command with `find` and `grep`. Now we pass the text to the input stream of the `grep` utility. Then it filters found filenames. Instead of that, we want to filter the contents of the files. In this case, the `grep` utility should receive filenames via command line parameters. The `xargs` utility does this job:
+Let's change our command with `find` and `grep`. Now we pass the text to the input stream of the `grep` utility. Then it filters found filenames. Instead of that, we want to filter the contents of the files. In this case, the `grep` utility should receive filenames via command-line parameters. The `xargs` utility does this job:
 {line-numbers: false, format: Bash}
 ```
 find ~ -type f | xargs grep "bash"
@@ -684,7 +684,7 @@ Your command should provide the following result:
 
 Pipelines allow you to combine several commands. Together they make an algorithm with [**linear sequence**](https://www.cs.utexas.edu/users/mitra/csSpring2017/cs303/lectures/algo.html). The computer executes actions of such an algorithm one by one without any checks.
 
-Suppose we implement a more complex algorithm. There the result of the first command determines the next step. If the command succeeds, the computer does one action. Otherwise, it does another action. Such a dependency is known as [**conditional algorithm**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). The pipeline does not work in this case. 
+Suppose we implement a more complex algorithm. There the result of the first command determines the next step. If the command succeeds, the computer does one action. Otherwise, it does another action. Such a dependency is known as [**conditional algorithm**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). The pipeline does not work in this case.
 
 Here is an example of the conditional algorithm. We want to write a command to copy the directory. Then we should write the operation result to the log file. The "OK" line matches successful copying. The "Error" line means error.
 

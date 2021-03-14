@@ -72,7 +72,7 @@ In addition to the character case, there is another difference. In Unix, directo
 
 ### File System Navigation Commands
 
-How to execute a command in a terminal emulator? There are three steps: 
+How to execute a command in a terminal emulator? There are three steps:
 
 1. Switch to the terminal window.
 2. Type the command.
@@ -128,13 +128,13 @@ The MSYS2 environment includes a set of GNU utilities. These are auxiliary highl
 * `find`
 * `grep`
 
-Often no distinction is made between commands and utilities. Any text after the command line prompt is called a command.
+Often no distinction is made between commands and utilities. Any text after the command-line prompt is called a command.
 
 #### pwd
 
 Let's consider the commands in Table 2-1. We have just started the terminal. The first thing we do is to find out the current directory. The MSYS2 terminal prints it before the command prompt. This output depends on the terminal configuration. If you are running Linux or macOS, the terminal does not print the current directory with the default setup.
 
-After starting the MSYS2 terminal, the home directory of the current user opens. It has the abbreviation that is the tilde symbol ~. You see this symbol before the command line prompt. You can work with the abbreviation ~ in the same way as with an absolute path.
+After starting the MSYS2 terminal, the home directory of the current user opens. It has the abbreviation that is the tilde symbol ~. You see this symbol before the command-line prompt. You can work with the abbreviation ~ in the same way as with an absolute path.
 
 Run the `pwd` built-in command to get the current directory. Figure 2-7 shows how it looks like. The command prints the absolute path to the user's home directory: `/home/ilya.shpigor`.
 
@@ -187,7 +187,7 @@ If several disks are attached to your computer, it is useful to display their mo
 
 Consider this output as a table with four columns. These are their values:
 
-1. The disk, its partition or directory. It means the thing that is mounted to the root file system. 
+1. The disk, its partition or directory. It means the thing that is mounted to the root file system.
 
 2. Mount point. It is the path where the mounted disk is accessible.
 
@@ -257,7 +257,7 @@ Figure 2-13 shows the command result.
 {caption: "Figure 2-13. The result of the `cd` command", height: "30%"}
 ![cat result](images/BashShell/cat-command.png)
 
-I> Some Bash manuals do not recommend using the cat utility to output a file's contents. The utility's purpose is to merge several files and print the result to a standard output stream. Instead of calling cat for a single file, the manuals recommend combining the echo command with stream redirection. Here is an example of this approach:
+I> Some Bash manuals do not recommend using the cat utility to output a file's contents. The utility's purpose is to merge several files and print the result to a standard output stream. Instead of calling cat for a single file, the manuals recommend combining the `echo` command with stream redirection. Here is an example of this approach:
 {line-numbers: false, format: Bash}
 ```
 echo "$(< README.txt)"

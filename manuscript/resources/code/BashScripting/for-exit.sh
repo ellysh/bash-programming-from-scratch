@@ -6,9 +6,9 @@ for element in "${array[@]}"
 do
   if [[ "$element" == "$1" ]]
   then
-    echo "Элемент со значением $1 есть в массиве"
+    echo "The array contains the $1 element"
     exit 0
   fi
 done
 
-echo "Элемента со значением $1 нет в массиве"
+echo "The array does not contain the $1 element"

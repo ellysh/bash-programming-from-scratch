@@ -12,6 +12,6 @@ elif [[ "$operation" == "-x" ]]
 then
     bsdtar -x -f documents.tar*
 else
-    echo "Указана недопустимая опция"
+    echo "Invalid option"
     exit 1
 fi

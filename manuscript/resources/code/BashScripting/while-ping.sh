@@ -5,4 +5,4 @@ do
   sleep 1
 done
 
-echo "Сервер google.com доступен"
+echo "The google.com server is available"

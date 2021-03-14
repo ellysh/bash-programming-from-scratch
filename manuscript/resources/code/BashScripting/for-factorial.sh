@@ -7,4 +7,4 @@ do
   ((result *= i))
 done
 
-echo "Факториал числа $1 равен $result"
+echo "The factorial of $1 is $result"

@@ -11,4 +11,4 @@ do
   fi
 done
 
-echo "Сумма положительных чисел равна $sum"
+echo "The sum of the positive numbers is $sum"

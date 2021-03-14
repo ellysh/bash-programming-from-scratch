@@ -13,4 +13,4 @@ do
   ((sum += element))
 done
 
-echo "Сумма положительных чисел равна $sum"
+echo "The sum of the positive numbers is $sum"

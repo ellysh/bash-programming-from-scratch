@@ -14,6 +14,6 @@ case "$file" in
     ;;
 
   *)
-    echo "Указана недопустимая опция"
+    echo "Invalid option"
     ;;
 esac

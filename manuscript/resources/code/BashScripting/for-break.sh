@@ -14,7 +14,7 @@ done
 
 if [[ "$is_found" -ne "0" ]]
 then
-  echo "Элемент со значением $1 есть в массиве"
+  echo "The array contains the $1 element"
 else
-  echo "Элемента со значением $1 нет в массиве"
+  echo "The array does not contain the $1 element"
 fi

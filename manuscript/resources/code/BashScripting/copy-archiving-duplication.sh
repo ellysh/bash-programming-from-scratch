@@ -13,7 +13,7 @@ case "$operation" in
     ;;
 
   *)
-    echo "Указана недопустимая опция"
+    echo "Invalid option"
     exit 1
     ;;
 esac

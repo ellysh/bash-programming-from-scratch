@@ -427,7 +427,7 @@ The algorithm for switching between configuration files looks like this:
 
 1. Remove the existing symbolic link or file in the `~/.bashrc` path.
 
-2. Check the command line option passed to the script.
+2. Check the command-line option passed to the script.
 
 3. Depending on the option, create a symlink to the `.bashrc-home` or `.bashrc-work` file.
 

@@ -807,7 +807,7 @@ $ echo "${files[@]}"
 
 You see the `echo` command at the first line. There is its output in the second line.
 
-I> Here, the $ character means the command line prompt. The `echo` command follows it. There is its output on the next line.
+I> Here, the $ character means the command-line prompt. The `echo` command follows it. There is its output on the next line.
 
 It can be useful to print indexes of elements instead of their values. For doing that, add an exclamation mark in front of the array name in the parameter expansion. Do it like this:
 {line-numbers: true, format: Bash}
@@ -949,7 +949,7 @@ $ declare -p contacts
 declare -a contacts='([0]="mallory@hotmail.com")'
 ```
 
-It is an indexed array with one element. It happens because Bash converts all string-indexes to zero value. Then every next contact in the initialization list overwrites the previous one. This way, the zero-index element contains the contacts of the last person in the initialization list. 
+It is an indexed array with one element. It happens because Bash converts all string-indexes to zero value. Then every next contact in the initialization list overwrites the previous one. This way, the zero-index element contains the contacts of the last person in the initialization list.
 
 You can specify elements of the array separately. Here is an example:
 {line-numbers: true, format: Bash}
@@ -1012,7 +1012,7 @@ $ echo "${contacts[@]:Bob:2}"
 (697) 955-5984 mallory@hotmail.com
 ```
 
-Bash inserts two elements in this case: 
+Bash inserts two elements in this case:
 
 * The one that corresponds to the `Bob` key.
 * The next one in memory.

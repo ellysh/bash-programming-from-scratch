@@ -17,7 +17,7 @@ Figure 1-1 shows a tabulator, which is built by Hermann Hollerith.
 
 By modern standards, the tabulator works very slowly. There are several reasons for this. First, the data for the calculations are prepared manually. There was no way to punch through the cards automatically. Then loading of punch cards into the computer is also manual work. The tabulator itself contains many mechanical parts: needles to read data, rotating cylinders as counters, dials to output the result. All these mechanics work slowly. It takes about one second to perform one elementary operation. No automation can accelerate these processes.
 
-Tabulators used rotating cylinders for performing calculations. The next generation of computers used [**relays**](https://en.wikipedia.org/wiki/Relay) for that. A relay is a mechanical element that changes its state due to an electric current. 
+Tabulators used rotating cylinders for performing calculations. The next generation of computers used [**relays**](https://en.wikipedia.org/wiki/Relay) for that. A relay is a mechanical element that changes its state due to an electric current.
 
 In 1939, the German engineer [Konrad Zuse](https://en.wikipedia.org/wiki/Konrad_Zuse) designed one of [the first relay computers](https://en.wikipedia.org/wiki/Z2_(computer)) called Z2. Then this computer was improved in 1941 and was named Z3. In these computers, the time for each elementary operation was reduced from seconds to milliseconds. It was achieved thanks to applying relays.
 
@@ -242,7 +242,7 @@ Changes in modern operating systems are taking place, but gradually and slowly. 
 
 Imagine that you wrote a program for Windows and sell it. Sometimes users find errors in the program. You fix them. From time to time, you add new features.
 
-Now imagine that a new version of Windows has been released. Your program does not work on this version. Therefore, your users have two solutions: 
+Now imagine that a new version of Windows has been released. Your program does not work on this version. Therefore, your users have two solutions:
 
 * Wait for the update of your program, which is compatible with the new Windows.
 
@@ -314,7 +314,7 @@ Linus had a goal to write a Unix-compatible OS for his new IBM computer with Int
 
 Linux is just the kernel of OS. It provides memory management, file system, peripherals drivers and processor time scheduler. The general features of the system are available through free [GNU software](https://en.wikipedia.org/wiki/GNU_Project). [Richard Stallman](https://en.wikipedia.org/wiki/Richard_Stallman) has developed this software at MIT. It was also distributed for free. Therefore, Linus included GNU software in his first [Linux distribution](https://en.wikipedia.org/wiki/Linux_distribution).
 
-The first versions of Linux did not have a graphical subsystem. The user should launch all applications from the command line. Only some complex applications had a text interface. With time, Linux got a windowing system. It was called [X Window System](https://en.wikipedia.org/wiki/X_Window_System). Using X Window, the developers started to add a graphical interface to their applications.
+The first versions of Linux did not have a graphical subsystem. The user should launch all applications from the command-line. Only some complex applications had a text interface. With time, Linux got a windowing system. It was called [X Window System](https://en.wikipedia.org/wiki/X_Window_System). Using X Window, the developers started to add a graphical interface to their applications.
 
 The application development culture for Unix and Linux was defined by conditions in which these OSes have evolved. Both systems were developed in university circles. Their users were teachers and students of the IT domain. They understood well how the OS works. So, they fixed software errors willingly.
 

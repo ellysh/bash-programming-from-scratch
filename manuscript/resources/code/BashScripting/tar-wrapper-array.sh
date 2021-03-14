@@ -10,7 +10,7 @@ declare -A utils=(
 
 if [[ -z "$option" || ! -v utils["$option"] ]]
 then
-  echo "Указана недопустимая опция"
+  echo "Invalid option"
   exit 1
 fi
 
