@@ -55,7 +55,7 @@ Let's consider a particular computer model. Its equipment is changed rarely. The
 
 Now we return to the question about the necessity of operating systems. We found out that applications could work without them. Such applications are still in use today. For example, they are [**utilities**](https://en.wikipedia.org/wiki/Utility_software) for memory checks and disk partitioning, antiviruses, recovery tools. However, developing such applications takes more time and effort. They should include the code for supporting hardware.
 
-OS usually provides the code for supporting hardware. Why not use it? Most modern developers choose this way. It reduces the amount of work and speeds up the release of the applications.
+OS usually provides the code for supporting hardware. Why would you not use it? Most modern developers choose this way. It reduces the amount of work and speeds up the release of the applications.
 
 ### OS Features
 
