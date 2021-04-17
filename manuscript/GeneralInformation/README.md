@@ -1,3 +1,3 @@
 # General Information
 
-You will know the basics of how a computer works from this chapter. We will start with the operating systems and their history. Then we will consider the features and families of modern operating systems. In the end, we will get what a computer program is, how it is launched and executed.
+This chapter explains the basics of how a computer works. It starts with describing operating systems and their history. Then the chapter considers families of modern operating systems and their features. The last section explains a computer program and its execution.
