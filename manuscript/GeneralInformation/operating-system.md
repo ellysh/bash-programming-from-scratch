@@ -2,7 +2,7 @@
 
 ### History of OS Origin
 
-Most of the computer users understand why [**operating system**](https://en.wikipedia.org/wiki/Operating_system) (OS) is needed. Before starting a new application, they usually check its system requirements. These requirements specify the hardware and operating system that a user needs to launch the application.
+Most of the computer users understand why [**operating system**](https://en.wikipedia.org/wiki/Operating_system) (OS) is needed. Before launching a new [**application**](https://en.wikipedia.org/wiki/Application_software), they usually check its system requirements. These requirements specify the [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware) and operating system that a user needs to launch the application.
 
 The system requirements bring us the idea that the OS is a software platform. The application requires this platform for correct working. But where did this requirement come from? Why can't you just buy a computer and launch the application without any OS?
 
@@ -79,38 +79,44 @@ However, a modern OS is a vast complex system. It provides much more features th
 
 ### OS Features
 
-Why did we start studying programming by considering the OS? Figure 1-4 explains interaction between the OS, [**applications**](https://en.wikipedia.org/wiki/Application_software) and [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware). Applications are programs that solve user tasks. There are examples: text editor, calculator, browser. Hardware is all electronic and mechanical components of a computer. For example, these are keyboard, monitor, central processor, video card.
+Why did we start studying programming by considering the OS? OS features are the basis for the application. Let's consider how it works.
 
-{caption: "Figure 1-4. Interaction scheme of an OS with applications and hardware", height: "50%"}
+Figure 1-4 demonstrates the interaction between the OS, an application and hardware. Applications are programs that solve practical user tasks. Examples are text editor, calculator, browser. Hardware is all electronic and mechanical components of a computer. For example, these are keyboard, monitor, central processor, video card.
+
+{caption: "Figure 1-4. The interaction between the OS, an application and hardware", height: "50%"}
 ![Interaction Scheme](images/GeneralInformation/operating-system.png)
 
-According to Figure 1-4, applications do not access hardware directly. They do it through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)). The system libraries are part of the OS. Each application should follow specific rules for interacting with them.
+According to Figure 1-4, the application does not interact with hardware directly. The program does it through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)). The system libraries are part of the OS. There are rules to access the system libraries. Each application should follow them.
 
-The application can access only the features of devices that are supported by the OS. [**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API of the OS defines available devices features. Also, the API dictates a set of rules for working with devices. The API is a set of agreements for interacting components of the information system. Often a standard describes an interface of the specific OS (for example, POSIX). Such standards guarantee the compatibility of the OS and applications. The system libraries provide API.
+[**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API is the interface that the OS provides to an application to interact with system libraries. In general, the API term means a set of agreements for interacting components of the information system. These agreements become a well-known standard often. For example, the POSIX standard describes the API for portable OSes. The standard guarantees the compatibility of the OS and applications.
 
-The API describes the following aspects of the interaction between the OS and applications:
+OS [**kernel**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) and [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) are part of OS. They dictate which hardware features the application can access. When the application interacts with system libraries, the libraries request capabilities of kernel and drivers. If you need the hardware feature and OS does not support it, you cannot use it.
+
+When the application accesses the system library, it calls a library's [**function**](https://en.wikipedia.org/wiki/Subroutine). A function is a program fragment or an independent block of code that performs a certain task. You can imagine the API as a list of all available functions that the application can call. Besides that, API describes the following aspects of the interaction between the OS and applications:
 
 1. What action does the OS perform when the application calls the specific system function?
 
-2. What data does the function receive as an input?
+2. What data does the function receive as input?
 
 3. What data does the function return as a result?
 
-Both the OS and application should follow the API agreements. It guarantees the compatibility of their current versions and future modifications. Such compatibility would be unreachable without a well documented and standardized interface.
+Both the OS and application should follow the API agreements. It guarantees the compatibility of their current versions and future modifications. Such compatibility is impossible without a well-documented and standardized interface.
 
-We have discovered that applications can operate without an OS. However, the OS provides ready-made solutions for interaction with computer hardware. Without such solutions, developers of applications should solve this task on their own. It requires significant efforts. For example, consider the variety of devices of a modern computer. The software should support all popular models of each device. For example, all video cards should be supported. Without such support, the application would not work stably for all users.
+We have discovered that some applications work without an OS. They are called [bare-metal software](https://www.quora.com/What-is-bare-metal-programming-in-Embedded-systems). This approach works well in some cases. However, the OS provides ready-made solutions for interaction with the computer's hardware. Without these solutions, developers should take responsibility for managing hardware. It requires significant efforts. Imagine the variety of devices of a modern computer. The application should support all popular models of each device (for example, video cards). Without such support, the application would not work for all users.
 
-Let's consider the features that the OS provides via its API. We can treat all electronic and mechanical components of the computer (hardware) as resources. The software uses these resources for performing calculations. In other words, hardware executes all user's applications. The API reflects the list of hardware features that the application can use. Also, the API dictates the order of interaction between several applications and the hardware.
+Let's consider the features that the OS provides via the API. We can treat the computer's hardware as resources. The application uses these resources for performing calculations. The API reflects the list of hardware features that the program can use. Also, the API dictates the order of interaction between several applications and the hardware.
 
 There is an example. Two programs cannot write data to the same area of the [hard disk](https://en.wikipedia.org/wiki/Hard_disk_drive#Magnetic_recording) simultaneously. There are two reasons for that:
 
 1. A single magnetic head records data on the hard disk. The head can do one task at a time.
 
-2. One program overwrites data of another program in the same memory area. It leads to losing data.
+2. One program can overwrite data of another program in the same memory area. It leads to losing data.
 
-Therefore, all programs' writing requests should be placed in a queue and executed one after another. The OS responses for this job. The [**kernel**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). In the same way, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. There are special programs called [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) (see Figure 1-4). They help the OS to manage devices.
+You should place all requests to write data on the disk in a queue because of these two problems. Then each request should be performed separately. The OS takes care of this task.
 
-What is the difference between the peripheral and internal devices? Peripherals are all devices that are responsible for inputting, outputting, and storing data permanently. These are a few examples:
+The kernel (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). Similarly, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. Besides kernel, there are special programs called device drivers (see Figure 1-4). They help the OS to control devices.
+
+We have mentioned peripheral and internal devices. What is the difference between them? Peripherals are all devices that are responsible for inputting, outputting, and storing data permanently. Here are the examples:
 
 * Keyboard
 * Mouse
@@ -119,23 +125,25 @@ What is the difference between the peripheral and internal devices? Peripherals 
 * Speakers
 * Hard drive
 
-Internal devices are responsible for processing data, i.e. for programs execution. These are internal devices:
+Internal devices are responsible for processing data, i.e. for executing programs. These are internal devices:
 
 * [**Central Processing Unit**](https://en.wikipedia.org/wiki/Central_processing_unit) (CPU)
 * [**Random-Access Memory**](https://en.wikipedia.org/wiki/Random-access_memory) (RAM)
 * [**Video Card**](https://en.wikipedia.org/wiki/Video_card) (graphics processing unit or GPU).
 
-The OS provides access to computer resources (hardware). At the same time, the OS has its own software resources for sharing with user's applications. Do you remember the copied code for supporting devices from the first generation of OSes? This code has become a service program. Later, it has transformed into the system libraries (see Figure 1-4).
+The OS provides access to the computer's hardware. At the same time, the OS has something besides the hardware management to share with user's applications. The system libraries have grown from the program modules to serve the devices. However, some libraries of modern OSes provide complex algorithms for processing data. Let's consider an example.
 
-Some system libraries serve the devices. Other system libraries process data using a complex algorithm. There is an example: the Windows component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) (GDI). It provides an interface for manipulating graphic objects. Using GDI, developers create a user interface for their applications. All software resources of OS are already installed on your computer. You just need knowledge of how to use them. Besides, the OS also provides access to third-party algorithms or libraries.
+There is the Windows OS component called [**Graphics Device Interface**](https://en.wikipedia.org/wiki/Graphics_Device_Interface) (GDI). It provides algorithms for manipulating graphic objects. GDI allows you to create a user interface for your application with minimal efforts. Then you can use the monitor to display this interface.
 
-The OS manages hardware and software resources. Also, it organizes the joint work of running programs. The OS performs several non-trivial tasks to launch an application. Then the OS tracks its work. If the application violates some agreements (like memory usage), the OS terminates it. We will consider the process of launching and executing the program in the next section.
+The system libraries with useful algorithms (like GDI) are software resources of the OS. These resources are already installed on your computer. You just need to know how to use them. Besides that, the OS also provides access to third-party libraries and their algorithms. You can install these libraries separately and use them in your applications.
 
-If the OS is multi-user, it controls access to the data. It is an important security feature. Thanks to such control, each user can access his own files only.
+The OS manages hardware and software resources. Also, it organizes the joint work of running programs. The OS performs several non-trivial tasks to launch an application. Then the OS tracks its work. If the application violates some agreements (like memory usage), the OS terminates it. We will consider launching and executing the program in detail in the next section.
 
-Let's summarize. The OS has the following features:
+If the OS is multi-user, it controls access to the data. It is an important security feature. Thanks to such control, each user can access his own files only. Therefore, they can work with the same computer safely.
 
-1. It provides and arranges access to hardware resources of the computer.
+Here is the summary. The modern OS has all following features:
+
+1. It provides and manages access to hardware resources of the computer.
 
 2. It provides its own software resources.
 
@@ -145,7 +153,7 @@ Let's summarize. The OS has the following features:
 
 5. It controls access to users' data.
 
-You can guess that without the OS, it is impossible to execute several applications simultaneously. Yes, it is true. The developers can not foresee the combination of launched applications. The OS launches these applications. So, only the OS has enough information to allocate computer resources in real-time effectively.
+You can guess that it is impossible to launch several applications in parallel without the OS. You are right. When you develop an application, you have no idea how a user will launch it. The user can launch your application together with another one. You cannot foresee this use case. However, the OS responds for launching all applications. It means that the OS has enough information to allocate computer resources properly.
 
 ### Modern OSes
 
