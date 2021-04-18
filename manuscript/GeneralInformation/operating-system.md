@@ -157,7 +157,7 @@ You can guess that it is impossible to launch several applications in parallel w
 
 ### Modern OSes
 
-We have reviewed the OS features in general. Now we will consider modern operating systems. Today you can pick any desktop OS and get very similar features. However, their developers follow different approaches. This leads to implementation difference that can be important for some users.
+We have reviewed the OS features in general. Now we will consider modern operating systems. Today you can pick any OS and get very similar features. However, their developers follow different approaches. This leads to implementation difference that can be important for some users.
 
 There is the [**software architecture**](https://en.wikipedia.org/wiki/Software_architecture) term. It means the implementation aspects of the specific software and the solutions that led to them.
 
@@ -197,67 +197,79 @@ There are computers with multiple processors or with [multi-core processors](htt
 
 #### User Interface
 
-Modern operating systems solve different tasks. These tasks depend on the type of computer where the OS is running. Here are the main types of computers:
+Modern OSes are able to solve a wide range of tasks. These tasks depend on the computer type where you run the OS. Here are the main types of computers:
 
 * [Personal computers](https://en.wikipedia.org/wiki/Personal_computer) (PC) and notebooks.
-* Cell phones and tablets.
+* Smartphones and tablets.
 * Servers.
 * [Embedded systems](https://en.wikipedia.org/wiki/Embedded_system).
 
-We will consider operating systems for PCs and notebooks only. Apart from multitasking, they provide [**graphic user interface**](https://en.wikipedia.org/wiki/Graphical_user_interface) (GUI). Here the interface means the way to interact with the system. Through the interface, the user launches applications, configures computer devices and OS components. Let's take a look at the history of the GUI.
+We will consider OSes for PCs and notebooks only. Apart from multitasking, they provide [**graphic user interface**](https://en.wikipedia.org/wiki/Graphical_user_interface) (GUI). This interface means the way to interact with the system. You launch applications, configure computer devices and OS components via the user interface. Let's take a look at its history and find how it has reached the current state.
 
-Users of commercial computers learned about the interactive mode in 1960. This mode was supported by a new [minicomputer](https://en.wikipedia.org/wiki/Minicomputer) [PDP-1](https://en.wikipedia.org/wiki/PDP-1) from [Digital Equipment Corporation](https://en.wikipedia.org/wiki/Digital_Equipment_Corporation). Why did computer manufacturers and users become interested in interactivity in general? In the 1950s, IBM computers dominated the mainframe market. They worked in batch processing mode and coped well with computational tasks. Their operating systems with multi-programming support automated program loading and provided high performance.
+Nobody works with commercial computers interactively before 1960. [Digital Equipment Corporation](https://en.wikipedia.org/wiki/Digital_Equipment_Corporation) implemented the interactive mode for their [minicomputer](https://en.wikipedia.org/wiki/Minicomputer) [PDP-1](https://en.wikipedia.org/wiki/PDP-1) in 1959. It was a fundamentally new approach. Before that, IBM computers dominated the market in the 1950s. They worked in batch processing mode only. IBM OSes with multiprogramming automated program loading and provided high performance for calculation tasks.
 
-The idea of interactive work with the computer appeared in the SAGE military project. The US Air Force ordered it. The project developed an automated air defense system to detect Soviet bombers. During development, the engineers faced the problem of processing data from radars. According to the requirements, the computer had to output data in real-time. The human operator reacted to data as quickly as possible and gave commands to the system. The existing methods of interaction with the computer did not fit this task. Because in an air defense system, the speed of response to a threat is essential.
+The idea of interactive work with the computer appeared first in the SAGE military project. The US Air Force was its customer. The goal of the project was to develop an automated air defense system to detect Soviet bombers.
 
-The SAGE project has led to the creation of the first interactive computer [AN/FSQ-7](https://en.wikipedia.org/wiki/AN/FSQ-7_Combat_Direction_Central) (see Figure 1-5). The computer used the monitor with a [cathode-ray tube](https://en.wikipedia.org/wiki/Cathode-ray_tube). An operator entered commands using the [**light pen**](https://en.wikipedia.org/wiki/Light_pen).
+When working on the SAGE project, engineers faced the problem. The user of the system should analyze data from radars in real-time. If he detects a threat, he should react as quickly as possible and command to intercept the bombers. However, the existed methods of interaction with the computer did not fit this task. They did not allow showing information to the user in real-time and receive his input at any moment.
+
+Engineers came to the idea of the interactive mode. They implemented it in the first interactive computer [AN/FSQ-7](https://en.wikipedia.org/wiki/AN/FSQ-7_Combat_Direction_Central) in 1955 (see Figure 1-5). The computer used the monitor with a [**cathode-ray tube**](https://en.wikipedia.org/wiki/Cathode-ray_tube) to display information from radars. The [**light pen**](https://en.wikipedia.org/wiki/Light_pen) allowed the user to command the system.
 
 {caption: "Figure 1-5. Computer AN/FSQ-7"}
 ![Computer AN/FSQ-7](images/GeneralInformation/AN-FSQ-7.jpg)
 
-The method of interactive work with the computer became known in scientific circles. It gained popularity quickly. Batch processing successfully coped with program execution. However, this approach was inconvenient for development and debugging applications. The developer should make his algorithm and wrote it on a storage device. Then he placed the application in a queue for execution on the mainframe. Waiting in the queue took hours. If an error was detected after the program execution, the developer should fix it and put the application in the queue again. As a result, it took days to fix all the errors even in a small program.
+The new way of interaction with computers became known in scientific circles. It gained popularity quickly. The existing batch processing mode coped with program execution well. However, this mode was inconvenient for development and debugging applications.
 
-The software development differs in the interactive mode. The developer makes an algorithm, loads it on a computer and launches the program. When it completes, the developer sees results on the screen. Such a process accelerates the development and debugging of applications significantly. Now the work, which takes several days with batch processing, was done in a few hours.
+Suppose that you are writing a program for the computer with batch processing. You should prepare your code and write it to the storage device. When the device is ready, you put it in a queue. The computer's operator takes devices from the queue and loads them to the computer one by one. Therefore, your task can wait in the queue for several hours. Now assume that an error happened in your program. In this case, you should fix it, prepare the new version of the program and write it to the device. You put it in the queue again and wait for hours. Because of this workflow, you need several days to make even a small program working.
 
-The interactive mode brought new tasks. This mode makes sense only if the system immediately reacts to user actions. Such a reaction required a new load-balancing mechanism. The multitasking mode of the latest operating systems was able to meet this requirement.
+The software development workflow differs when you use an interactive mode. You prepare your program and load it to the computer. Then it launches the program and shows you results. Immediately, you can analyze a possible error, fix it and relaunch the program. This workflow accelerates software development and debugging tasks significantly.  Now you spend few hours on the task that requires days with batch processing mode.
 
-Single-tasking OSes support the interactive mode too. An example of such OS is [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS). Combining interactivity and single-tasking was inexpedient in times of expensive mainframes. Several users used the resources of one mainframe at once. Their programs were executed in parallel and independently of each other. This mode was called [**time-sharing**](https://en.wikipedia.org/wiki/Time-sharing). It allows sharing expensive hardware among several users. The single-tasking approach was not suitable for such a use case because it is not compatible with time-sharing.
+The interactive mode brought new challenges for computer engineers. This mode requires the system that reacts to user actions immediately. And providing a short reaction time required a new load-balancing mechanism. The multitasking concept became a solution for this task.
 
-When the first relatively cheap personal computers appeared, they used single-tasking operating systems. Such systems require fewer hardware resources than their mainframe counterparts. Despite its simplicity, single-tasking operating systems support interactive mode. For PC users, this mode became especially attractive.
+There are alternative solutions for providing interactive mode. For example, there are interactive single-tasking OSes like [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS). MS-DOS was the system for cheap PCs of the 1980s.
 
-The interactive mode brought another task besides load balancing of a system. Users needed new ways of interacting with computers. The existing magnetic tapes and printers of the 1960s were not suitable for this purpose.
+However, it was inadvisable to apply single-tasking in the 1960s when computers were too expensive. These computers executed many programs in parallel. Such a mode was called [**time-sharing**](https://en.wikipedia.org/wiki/Time-sharing). It allows sharing expensive hardware resources among several users. The single-tasking approach does not fit such a use case because it is not compatible with time-sharing.
+
+When the first relatively cheap personal computers appeared in the 1980s, they used single-tasking OSes. Such systems require fewer hardware resources than their analogs with multitasking. Despite its simplicity, single-tasking OSes support interactive mode for the running program. This mode became especially attractive for PC users.
+
+When interactive mode became more and more popular, computer engineers meet a new challenge. The existing devices for interacting with computers turned out to be inconvenient. Magnetic tapes and printers were widespread through the 1950s and early 1960s. They did not fit interactive mode absolutely.
 
 [**Teletype**](https://en.wikipedia.org/wiki/Teleprinter) (TTY) became a prototype of a device for interactive work with a computer. Figure 1-6 shows the Model 33 teletype. It is an electromechanical typewriter. It is connected to the same typewriter through wires. Once two teletypes are connected, operators can send text messages to each other. The sender types text on his device. The keystrokes are transmitted to the receiver's device. It prints out each received letter on paper.
 
 {caption: "Figure 1-6. A Teletype Model 33", height: "50%"}
 ![Teletype Model 33](images/GeneralInformation/teletype.jpg)
 
-Teletype fitted well for interacting with mainframes. Such a device was called [**terminal**](https://en.wikipedia.org/wiki/Computer_terminal). The user types a command on the terminal's keyboard. The mainframe receives the command, executes it and sends the result back. The terminal prints out the received data on paper. Later on, a monitor replaced the printing device. As a result, [**command-line interface**](https://en.wikipedia.org/wiki/Command-line_interface) (CLI) appeared. It has the same work principle as a teletype. The user enters commands one by one. The computer executes the commands one by one and displays the results on the screen.
+[**Teletype**](https://en.wikipedia.org/wiki/Teleprinter) (TTY) became a prototype of a device for interactive work with a computer. The original idea behind this device was to connect two of them via wires. It allows users on both sides to send each other text messages. One user types the message on the keyboard. Then his device transmits the keystrokes to the receiver. When the teletype on the other side receives data, it prints the text on paper.
 
-Figure 1-7 shows a modern command-line interface. There is the window of [**terminal emulator**](https://en.wikipedia.org/wiki/Terminal_emulator). It is called [Terminator](https://en.wikipedia.org/wiki/Terminator_(terminal_emulator)). The Bash command-line interpreter is running in this window. It displays the results of the ping and ls programs.
+Computer engineers connected the teletype to the computer. This solution allowed the user to send text commands to the machine and receive results. Such a workflow became known as a [**command-line interface**](https://en.wikipedia.org/wiki/Command-line_interface) (CLI). Figure 1-6 shows the Model 33 teletype. It was one of the most popular devices in the 1960s.
+
+Teletype uses the printer as an output device. It works very slow and requires around 10 seconds to print a single line. The next step of developing the user interface was replacing the printer with the monitor. This increased the data output speed several times. The new device with a keyboard and monitor was called the [**terminal**](https://en.wikipedia.org/wiki/Computer_terminal). It replaced teletypes in the 1970s.
+
+Figure 1-7 shows a modern command-line interface. You can see the [**terminal emulator**](https://en.wikipedia.org/wiki/Terminal_emulator) application there. This application emulates the terminal device for the sake of compatibility. It allows you to run programs that work with the real terminal only. The emulator application in Figure 1-7 is called [Terminator](https://en.wikipedia.org/wiki/Terminator_(terminal_emulator)). The Bash command-line interpreter is running in the Terminator window. The window displays the results of the ping and ls programs.
 
 {caption: "Figure 1-7. Command-line interface", height: "50%"}
 ![Command-line interface](images/GeneralInformation/cli.png)
 
-The command-line interface is still in demand today. It has several advantages over the graphical interface. The main advantage of the CLI is low requirements for computing resources. It runs reliably on low-performance embedded computers as well as on powerful servers. If you access a computer remotely via CLI, the communication channel's quality and bandwidth may be low. Even with a slow connection, the server will receive commands.
+The command-line interface is still in demand today. It has several advantages over the graphical interface. For example, CLI does not require as many resources as GUI. CLI runs reliably on low-performance embedded computers as well as on powerful servers. If you use CLI to access the computer remotely, you can use a low bandwidth communication channel. The server will receive your commands in this case.
 
-The command-line interface has disadvantages. Its main problem is the complexity of learning. There are hundreds of commands available to the user. They have different input parameters that define their working mode. It takes a lot of time to remember at least a minimum set of commands for daily work.
+The command-line interface has some disadvantages. Learning to use CLI effectively is a serious challenge. You have to remember around a hundred commands. Each command has several modes that change its behavior. Therefore, you should keep in mind these modes too. It takes some time to remember at least a minimum set of commands for daily work.
 
-The problem of visual representation of available commands was solved by [**text-based user interface**](https://en.wikipedia.org/wiki/Text-based_user_interface) (TUI). It uses [**box-drawing characters**](https://en.wikipedia.org/wiki/Box-drawing_character) along with alphanumeric characters. The box-drawing characters display the graphic primitives on the screen. Primitives are lines, rectangles, triangles, etc. Figure 1-8 shows a typical text interface. There is an output of system resource usage by the htop program.
+There is an option to make the command-line interface more user-friendly. You can give a hint to the user about available commands. It was done in the [**text-based interface**](https://en.wikipedia.org/wiki/Text-based_user_interface) (TUI). The interface uses [**box-drawing characters**](https://en.wikipedia.org/wiki/Box-drawing_character) along with alphanumeric symbols. The box-drawing characters display the graphic primitives on the screen. Primitives are lines, rectangles, triangles, etc. They guide the user about the available actions he can do with the application.
+
+Figure 1-8 shows a typical text-based interface. There is an output of system resource usage by the htop program.
 
 {caption: "Figure 1-8. Text-based user interface", height: "50%"}
 ![Text-based user interface](images/GeneralInformation/tui.png)
 
-Further growth of computer performance allowed replacing box-drawing characters with real graphic elements. There are examples of such elements: windows, icons, buttons, etc. As a result, a full-fledged graphical interface appeared. Modern operating systems provide this kind of interface.
+The further performance gain of computers allowed OS developers to replace box-drawing characters with real graphic elements. There are examples of such elements: windows, icons, buttons, etc. It was a moment when the full-fledged graphical interface came. Modern OSes provide this kind of interface.
 
-Figure 1-9 demonstrates the Windows GUI. There is a screenshot of the desktop. The desktop contains the windows of three applications: Explorer, Notepad and Calculator. They work simultaneously.
+Figure 1-9 demonstrates the Windows GUI. You can see the desktop. There are windows of three applications there. The applications are Explorer, Notepad and Calculator. They work in parallel.
 
 {caption: "Figure 1-9. Windows GUI"}
 ![Windows GUI](images/GeneralInformation/gui.png)
 
-The first GUI was intended for a minicomputer [Xerox Alto](https://en.wikipedia.org/wiki/Xerox_Alto) (see Figure 1-10). The computer was developed in 1973 in the research center [Xerox PARC](https://en.wikipedia.org/wiki/PARC_(company)). However, the interface was not widespread until the 1980s. It required a lot of memory and high computer performance. At that time, such PCs were too expensive for ordinary users.
+The first GUI appeared in the [Xerox Alto](https://en.wikipedia.org/wiki/Xerox_Alto) minicomputer (see Figure 1-10). It was developed in the research center [Xerox PARC](https://en.wikipedia.org/wiki/PARC_(company)) in 1973. However, the graphical interface did not spread widely until the 1980s. It happens because GUI requires a lot of memory and high computer performance. PCs with such features were too expensive for ordinary users at that time.
 
-Apple produced the first PC with GUI in 1983. It was called Lisa.
+Apple produced the first relatively cheap PC with GUI in 1983. It was called Lisa.
 
 {caption: "Figure 1-10. Minicomputer Xerox Alto", height: "50%"}
 ![Minicomputer Xerox Alto](images/GeneralInformation/xerox-alto.jpg)
