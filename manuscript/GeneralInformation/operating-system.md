@@ -276,49 +276,51 @@ Apple produced the first relatively cheap PC with GUI in 1983. It was called Lis
 
 #### Families of OSes
 
-Today the market of personal computers is dominated by three [families of operating systems](https://en.wikipedia.org/wiki/Category:Operating_system_families):
+There are three [families of OSes](https://en.wikipedia.org/wiki/Category:Operating_system_families) that dominate the market today. Here are these families:
 
 * [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows)
 * [Linux](https://en.wikipedia.org/wiki/Linux)
 * [macOS](https://en.wikipedia.org/wiki/MacOS)
 
-The term "family" means several OS versions that follow the same architectural solutions. Besides, most functions in these OS versions are implemented in the same way.
+The term "family" means several OS versions that follow the same architectural solutions. Therefore, most functions in these versions are implemented in the same way.
 
-OS developers adhere to the same architecture. They do not offer something fundamentally new in the next versions of their product. Why?
+The developers of the OS family follow the same architecture. They do not offer something fundamentally new in the upcoming versions of their product. Why?
 
-Changes in modern operating systems are taking place, but gradually and slowly. The reason for this is [**backward compatibility**](https://en.wikipedia.org/wiki/Backward_compatibility). This compatibility means that newer OS versions repeat the features of older versions. These features are needed to run existing programs. At first glance, this seems to be an optional requirement. But it is a severe limitation for software development. Let us find out why it is.
+Actually, changes in modern OSes happen gradually and slowly. The reason for this is a [**backward compatibility**](https://en.wikipedia.org/wiki/Backward_compatibility) problem. This compatibility means that newer OS versions provide the features of older versions. Most existing programs require these features for their work. You can suppose that backward compatibility is an optional requirement. However, it is a severe limitation for software development. Let's find out why it is.
 
-Imagine that you wrote a program for Windows and sell it. Sometimes users find errors in the program. You fix them. From time to time, you add new features.
+Imagine that you wrote a program for Windows and sell it. Sometimes users meet errors in the program. You receive bug reports and fix them. Also, you add new features from time to time.
 
-Now imagine that a new version of Windows has been released. Your program does not work on this version. Therefore, your users have two solutions:
+Your business goes well until the new Windows version comes. Let's assume that Microsoft has changed its architecture completely. Therefore, your program does not work on the new OS version. This leads users of your program to the following choice:
 
-* Wait for the update of your program, which is compatible with the new Windows.
+* Update Windows and wait for the new version of your program that works there.
 
-* Refuse to update Windows.
+* Do not update Windows and continue to use your program.
 
-If users need your program for daily work, they refuse the Windows update.
+If users need your program for daily work, they refuse the Windows update. Using the program is more important than getting new OS features.
 
-Suppose that the new Windows is fundamentally different from the previous one. It means that you should rewrite your program completely. Count all the time you have already spent fixing bugs and adding new features. You should repeat all this work. You will most likely give up this idea and suggest users stay on the old Windows version.
+We know that Microsoft has changed the Windows architecture completely. It means that you should rewrite your program from scratch. Now count all the time that you have spent fixing bugs and adding new features. You should repeat all this work as soon as possible. Most likely, you will give up this idea and suggest that users of your program stay on the old Windows version.
 
-There are many programs like yours. Their developers will come to the same solution as you. As a result, nobody will update to the new Windows version. This situation is the essence of the backward compatibility problem. Because of this problem, there are families of operating systems.
+Windows is a very popular and widespread OS. It means that there are many programs like yours. Their developers will come to the same decision as you. As a result, nobody updates to the new Windows version. This situation demonstrates the backward compatibility problem. This problem forces OS developers to be careful with changing their products. The best solution for them is to make a family of similar OSes.
 
-The impact of applications on OS development is great. For example, Windows and personal computers from IBM owe their success to a table processor [Lotus 1-2-3](https://en.wikipedia.org/wiki/Lotus_1-2-3). Lotus 1-2-3 has worked on IBM PC with Windows only. For the sake of Lotus 1-2-3, users bought both PC and OS. The popular application, which brings the platform to the broad market, is called [**killer application**](https://en.wikipedia.org/wiki/Killer_application).
+There is a significant influence of user applications on OS development. For example, Windows and IBM computers owe their success to a table processor [Lotus 1-2-3](https://en.wikipedia.org/wiki/Lotus_1-2-3). You need both IBM PC and Windows to lunch Lotus 1-2-3. For the sake of Lotus 1-2-3, users bought both the computer and OS. The specific combination of the hardware and software is called the [**computing platform**](https://en.wikipedia.org/wiki/Computing_platform). The popular application, which brings the platform to the broad market, is called [**killer application**](https://en.wikipedia.org/wiki/Killer_application).
 
-The tabular processor [VisiCalc](https://en.wikipedia.org/wiki/VisiCalc) had a similar influence. It promoted the distribution of computers [Apple II](https://en.wikipedia.org/wiki/Apple_II_series). Similarly, the C, Fortran and Pascal languages' free compilers fuelled interest in Unix in university circles. There was the killer application behind each of the three dominating OSes today. Further distribution of these OSes happened thanks to the [network effect](https://en.wikipedia.org/wiki/Network_effect). Developers of new applications chose the software platform, which most users already had.
+The tabular processor [VisiCalc](https://en.wikipedia.org/wiki/VisiCalc) was another killer application. It promoted the distribution of the [Apple II](https://en.wikipedia.org/wiki/Apple_II_series) computers. In the same way, free compilers for C, Fortran and Pascal languages help Unix OS to become popular in university circles.
 
-Let us return to the list of OS families. Windows and Linux are remarkable because they do not depend on hardware. It means that you can install them on any PC or laptop. macOS will run on Apple devices only. You would need the unofficial [modified version](https://en.wikipedia.org/wiki/Hackintosh) of macOS for installing it on different hardware.
+There was the killer application behind each of the modern OS families. This application gives the OS the initial success. Further distribution of the OS happens thanks to the [network effect](https://en.wikipedia.org/wiki/Network_effect). This effect means that developers tend to choose the most widespread computing platforms for their new applications.
 
-Hardware compatibility is an example of an architectural solution. There are many such solutions. Together they define the features of each family.
+What are the differences between the OS families? Windows and Linux are remarkable because they do not depend on the hardware. It means that you can install them on any modern PC or laptop. macOS runs on Apple computers only. If you want to use macOS on different hardware, you would need the unofficial [modified version](https://en.wikipedia.org/wiki/Hackintosh) of OS.
 
-OS defines the infrastructure for the programmer. It dictates the development tools. Examples of tools are IDE, compiler, build system. Also, the OS imposes architectural solutions for the applications. There is a culture of developing programs for a specific OS. It is an important point: you should develop applications differently for different OSes. Please take it into account when you design your programs.
+Hardware compatibility is an example of the design decision of the OS development. There are many such decisions. Together they define the features and design of each OS family.
 
-Let's consider the different cultures of software development on the example of Windows and Linux.
+There is one more important point for software development besides the OS design. OS dictates the infrastructure for the programmer. The infrastructure means development tools. Examples of these tools are IDE, compiler, build system. Tools together with OS API impose some design decisions for the applications. It leads to a specific culture for program development. Please keep in mind that you should develop applications differently for each OS. Take it into account when you design your programs.
+
+Let's consider the origins of software development cultures for Windows and Linux.
 
 #### Windows
 
-Windows is [proprietary software](https://en.wikipedia.org/wiki/Proprietary_software). The source code of such software is closed. You will not be able to read and modify it. In other words, there is no legal way to know about proprietary software more than its documentation tells you.
+Windows is [proprietary software](https://en.wikipedia.org/wiki/Proprietary_software). The source code of such software is unavailable for users. You cannot read or modify it as you want. In other words, there is no legal way to know about proprietary software more than its documentation tells you.
 
-If you want to install Windows on your computer, you should buy it from Microsoft. However, this OS is often pre-installed on new computers and notebooks. Therefore, its price is included in the final cost of the devices.
+If you want to install Windows on your computer, you should buy it from Microsoft. However, manufacturers of computers pre-install Windows on their devices often. In this case, the final cost of the computer includes the price of the OS.
 
 The target platform for Windows is relatively cheap PCs and notebooks. Many people can afford to buy such a device. Therefore, the market of potential users is huge. Microsoft tends to maintain a competitive edge in this market. The company is afraid that Windows analogs with the same features appear. So, Microsoft takes care of protecting its intellectual property. They do it in both technical and legal ways. For example, the user agreement prohibits you from exploring the internals of the OS.
 
