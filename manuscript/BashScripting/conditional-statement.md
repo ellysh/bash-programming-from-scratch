@@ -327,6 +327,8 @@ Table 3-8 shows all string comparisons that the [[ operator allows.
 |  | | |
 | -n | The string is not empty. | [[ -n "$var" ]] && echo "The string is not empty" |
 |  | | |
+| -v | The variable is set to any value. | [[ -v var ]] && echo "The string is set" |
+|  | | |
 | = or == | Search the pattern on the right side in the string on the left side. Put the pattern without quotes here. | [[ "$filename" = READ* ]] && echo "The filename starts with \"READ\"" |
 |  | | |
 | != | Check that the pattern on the right side does not occur in the string on the left side. Put the pattern without quotes here. | [[ "$filename" != READ* ]] && echo "The filename does not start with \"READ\"" |
