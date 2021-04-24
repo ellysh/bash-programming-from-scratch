@@ -8,7 +8,7 @@ A program is a set of elementary steps. They are called instructions. The comput
 
 A hard disk stores all instructions of the program. If the program is relatively small and simple it fits a single file. Complex applications occupy several files.
 
-Suppose that you have a single file program. The OS loads the file into the computer memory called RAM. Then the OS allocates a part of processor time for the new task. This way, the processor performs the program's instructions at specified intervals.
+Suppose that you have a single file program. When you launch it, the OS loads the file into the computer memory called RAM. Then the OS allocates a part of processor time for the new task. This way, the processor performs the program's instructions at specified intervals.
 
 The first step of launching a program is to load it into RAM. We should consider the computer memory internals to understand this step better.
 
@@ -31,11 +31,15 @@ CPU cannot refer to a single bit. There are technical reasons for that. The prim
 
 Introducing bytes affected the architecture of processors. Engineers have expected that the CPU performs most operations over numbers. Therefore, they added a feature to load and process all bits of the number at once. This solution increased computers' performance by order of magnitude. At the same time, loading of the single bit in the CPU happens rarely. Supporting this feature in hardware brings significant overhead. Therefore, engineers have excluded it from modern processors.
 
-There is one more question. Why does a byte consist of eight bits? In the first computers, a byte's size was equal to [six bits](https://en.wikipedia.org/wiki/Six-bit_character_code). Such a memory block was enough to encode all the English alphabet characters in upper and lower case, numbers, punctuation marks and mathematical operations. Over time, this size has become insufficient. The byte was expanded to seven bits. At that moment, the [ASCII table](https://en.wikipedia.org/wiki/ASCII) appeared. The table became the standard for encoding characters. The ASCII table defines characters for codes from 0 to 127. 127 is the maximum seven-bit number. Later, IBM has released the mainframe [IBM System/360](https://en.wikipedia.org/wiki/IBM_System/360). The size of a byte was eight bits in this computer. IBM chose this size for supporting old character encodings from the past projects. Such packaging of bits has become the industry standard. It happened because of the popularity and widespread of IBM System/360.
+There is one more question. Why does a byte consist of eight bits? It was not always this way. The byte was equal to [six bits](https://en.wikipedia.org/wiki/Six-bit_character_code) in the first computers. Such a memory block was enough to encode all the English alphabet characters in upper and lower case, numbers, punctuation marks and mathematical operations.
 
-Table 1-1 shows frequently used [units of information](https://en.wikipedia.org/wiki/Units_of_information).
+Six-bits encodings were insufficient for representing control and box-drawing characters. Therefore, these encodings were extended to seven bits in the early 1960s. The [ASCII encoding](https://en.wikipedia.org/wiki/ASCII) appeared at that moment. It became the standard for encoding characters. ASCII defines characters for codes from 0 to 127. The maximum seven-bit number 127 limits this range.
 
-{caption: "Таблица 1-1. Units of information", width: "70%"}
+Then IBM released the computer [IBM System/360](https://en.wikipedia.org/wiki/IBM_System/360) in 1964. The size of a byte was eight bits in this computer. IBM chose this size for supporting old character encodings from the past projects. The IBM System/360 computer was popular and widespread. It led that eight-bit packaging became the industry standard.
+
+Table 1-1 shows frequently used [units of information](https://en.wikipedia.org/wiki/Units_of_information) besides bits and bytes.
+
+{caption: "Table 1-1. Units of information", width: "70%"}
 | Title | [Abbreviation](https://docs.microsoft.com/en-us/style-guide/a-z-word-list-term-collections/term-collections/bits-bytes-terms) | Number of bytes | Number of bits |
 | --- | --- | --- | --- |
 | kilobyte | KB | 1000 | 8000 |
@@ -43,7 +47,7 @@ Table 1-1 shows frequently used [units of information](https://en.wikipedia.org/
 | gigabyte | GB | 1000000000 | 8000000000 |
 | terabyte | TB | 10000000000 | 8000000000000 |
 
-Table 1-2 shows standard storage devices and their capacity.
+Table 1-2 shows standard storage devices and their capacity. You can compare them using Table 1-1.
 
 {caption: "Table 1-2. Storage devices", width: "50%"}
 | Storage device | Capacity |
@@ -55,32 +59,34 @@ Table 1-2 shows standard storage devices and their capacity.
 | [Hard disk drive](https://en.wikipedia.org/wiki/Hard_disk_drive) | up to 16 TB |
 | [Solid State Drive](https://en.wikipedia.org/wiki/Solid-state_drive) | up to 100 TB |
 
-We got acquainted with units of information. Now let's get back to the execution of the program. Why does the OS load it into RAM? The processor could read the program instructions directly from the hard disk drive.
+We got acquainted with units of information. Now let's get back to the execution of the program. Why does the OS load it into RAM? In theory, the processor can read the program instructions directly from the hard disk drive, right?
 
-All memory is divided into [four levels](https://en.wikipedia.org/wiki/Memory_hierarchy) in a modern computer. Each level matches the red rectangle in Figure 1-13. There is a physical division of memory. Memory levels match different devices. The only exception is the processor. In the CPU chip, there are both registers and memory cache. But these are separate modules of the chip.
+A modern computer has four levels of the [memory hierarchy](https://en.wikipedia.org/wiki/Memory_hierarchy). Each level matches the red rectangle in Figure 1-13. Each rectangle match a separate device. The only exception is the CPU chip. It contains both registers and a memory cache. These are separate modules of the chip.
 
-The arrows in Figure 1-13 represent data flows. Data transfer occurs only between adjacent memory levels. The processor works with data from its registers only. If the CPU needs something from the disk drive, it is loaded in the following way:
+You see the arrows in Figure 1-13. They represent data flows. Data transfer occurs between adjacent memory levels.
+
+Suppose that you want to process some data on the CPU. Then you should load these data to its registers. This is the only place where the processor can take data for calculations. If the CPU needs something from the disk drive, the following data transfers happen:
 
 1. Disk drive -> RAM
 2. RAM -> Processor cache
 3. Processor cache -> Processor registers
 
-Data is written to the disk drive in reverse order of steps.
+When the CPU writes data back to the disk, it happens in the reverse order of steps.
 
 {caption: "Figure 1-13. Memory hierarchy", height: "50%"}
 ![Memory hierarchy](images/GeneralInformation/memory-levels.png)
 
-The memory levels differ from each other by the following parameters:
+Data storage devices have the following parameters:
 
-1. **Access speed** means how much data is read or written to the media per unit of time. Units of measure are bytes per second (KBps).
+1. **Access speed** defines the amount of data that you can read or write to the device per unit of time. Units of measure are bytes per second (KBps).
 
-2. **Capacity** is the maximum amount of data that a medium can store. The units are bytes.
+2. **Capacity** is the maximum amount of data that a device can store. The units are bytes.
 
-3. **Cost** is a price of a medium concerning its capacity. The units are dollars or cents per byte or bit.
+3. **Cost** is a price of a device concerning its capacity. The units are dollars or cents per byte or bit.
 
-4. **Access time** is the time between when data was needed and when it became available to the processor. Units are [**clock signals**](https://en.wikipedia.org/wiki/Clock_signal) of the CPU.
+4. **Access time** is the time between the moment when the process needs some data from the device and when it receives them. Units are [**clock signals**](https://en.wikipedia.org/wiki/Clock_signal) of the CPU.
 
-Table 1-3 shows the ratio of parameters of different memory types.
+These parameters vary for devices on each level of the memory hierarchy. Table 1-3 shows the ratio of parameters for modern storage devices.
 
 {caption: "Table 1-3. Memory levels", width: "100%", column-widths: "10%,30%,*"}
 | Level | Memory | Capacity | Access speed | Access time | Cost |
@@ -93,15 +99,25 @@ Table 1-3 shows the ratio of parameters of different memory types.
 | | | | | | |
 | 4 | Disk drive ([**hard drive**](https://en.wikipedia.org/wiki/Hard_disk_drive) or [**solid drive**](https://en.wikipedia.org/wiki/Solid-state_drive)) | several TB | 2000 Mbps | up to 10000000 cycles | $10^-12^/byte |
 
-Table 1-3 raises questions. The speed of access to disk drives is huge. Why is it impossible to read data from the disk into registers directly? Actually, the access speed is not so important. More critical is processor idle time. How long does the processor idle waiting for access to the requested data? The unit of this idle time is the number of clock signals. The signal synchronizes all operations of the processor. It takes one or several clock cycles for executing a single program instruction.
+Table 1-3 raises questions. You can read the data from the disk drive at high speed. Why is there no way to read these data to the CPU registers directly? The high access speed is not so crucial for performance in practice. The critical parameter here is the access time. It measures the idle time of the CPU until it receives the required data. You can measure this idle time in clock signals or cycles. Such a signal synchronizes all operations of the processor. The CPU requires roughly from 1 to 10 clock cycles to execute one instruction of the program.
 
-Suppose that the processor reads the program instructions directly from the hard disk. In this case, the execution of the simplest algorithm would take weeks. Most of this time, the processor would idle while waiting for reading operations. Hierarchical organization of memory speeds up access to the data that are needed by the processor.
+Low access time can cause serious performance issues. For example, suppose that the CPU reads the program instructions directly from the hard disk. The problem happens because CPU registers have a small capacity. There is no chance to load the whole program from the hard disk to the registers. Therefore, when the CPU did one part of the program, it should load the next one. This loading operation takes up to 10000000 clock cycles. It means that loading data from the disk takes a much longer time than processing them. The CPU spends most of the time idling. The memory hierarchy solves exactly this problem.
 
-We will consider a simple program. It reads a file from the disk drive and displays the file content on the screen. According to Figure 1-13, the first step is reading data from the disk into the RAM. The next step is loading data from RAM to the CPU cache. The caching mechanism guesses which data the CPU would need next. The processor reads needed data from the cache to registers. After that, the CPU calls an API function of the system library. The function receives data for printing on the screen. The CPU provides these data to the function. The system library refers to the video card driver. It displays the data on the screen.
+Let's consider data flow between memory levels by example. Suppose that you launch a simple program. It reads a file from the hard disk and displays its content on the screen. Reading data from the disk happens in several steps. The hardware does them.
 
-The problem may occur when the processor calls a function and pass data to it. If data are in the cache but not in registers, the CPU spends waiting from 2 to 100 cycles (see Table 1-3). If data is in the RAM, the waiting time increases by order of magnitude (up to 1000 cycles). Suppose that the read file is too big. It did not fit into the RAM entirely. The CPU can refer to the part of the file that is not in the RAM. In this case, the CPU idle time increases by four orders of magnitude (up to 10000000 clock cycles). For comparison, the CPU could execute about 1000000 program instructions during this time.
+The first step is reading data from the hard disk into the RAM according to Figure 1-13. The next step is loading data from RAM to the CPU cache. There is a sophisticated **caching mechanism**. It guesses the data from RAM that the CPU requires next. This mechanism reduces the access time to the data and decreases the idle time of the CPU.
 
-The caching mechanism loads data into the CPU cache. An example of reading a file showed how each error of this mechanism is expensive. Such an error is called **cache miss**. Remember the memory hierarchy and consider it when developing algorithms. Some algorithms and data structures cause more cache misses than others.
+When data comes to the CPU chip, it manages them on its own. The processor reads the required data from the cache to registers and manipulates them. The program instructions reach the CPU the same way as the data.
+
+The program displays data on the screen in our example. It should call the corresponding API function for that. Then the system library changes the screen picture. The CPU does the actual work here. It loads the instructions of the system library and the video card driver. Then the CPU applies these instructions to the data in its registers. This way, the video card driver displays the data on the screen.
+
+The required data may absent in the specific memory level. Here are few examples. Suppose that the CPU needs data to process them in the video driver code. If these data are in the CPU cache but not in the registers, the processor waits for 2-100 clock cycles to get them. If data are in the RAM, the CPU's waiting time increases by order of magnitude up to 1000 cycles.
+
+Our program can display both small and big files. Some big file does not fit the RAM. Then the RAM contains only part of it. The CPU can require the missing file part. In this case, the CPU idle time increases by four orders of magnitude up to 10000000 clock cycles. For comparison, the processor could execute about 1000000 program instructions instead of this idle time. This is really a lot.
+
+Both CPU and disk drives use hardware caching mechanisms. The idea of [caching for disk drives](https://en.wikipedia.org/wiki/Disk_buffer) is to store some data in the small and fast access memory. It speeds up reading and writing blocks of data. There are caching mechanisms on the software level too. They are parts of the OS in most cases.
+
+All caching mechanisms increase a computer's performance significantly. When such a mechanism makes a mistake, it leads to the CPU idle. This mistake is called **cache miss**. Any cache miss is expensive from the performance point of view. Therefore, remember the memory hierarchy and caching mechanisms. Consider them when developing algorithms. Some algorithms and data structures cause more cache misses than others.
 
 The memory devices with shorter access times are placed closer to the processor. Figure 1-14 demonstrates this principle. For example, the internal memory of the CPU (registers and cache) is inside its chip. The RAM is located on [**motherboard**](https://en.wikipedia.org/wiki/Motherboard) next to the CPU. There is the high-frequency [**data bus**](https://en.wikipedia.org/wiki/Bus_(computing)) between CPU and RAM. The disk drive is connected to the motherboard via a relatively slow data bus. [**SATA**](https://en.wikipedia.org/wiki/Serial_ATA) is an example of such a bus.
 
