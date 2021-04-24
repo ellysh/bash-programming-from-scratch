@@ -1,16 +1,18 @@
 ## Computer Program
 
-We got acquainted with operating systems. They are responsible for starting and running computer programs. The programs solve the user's application tasks. For example, a text editor allows working with text.
+We got acquainted with operating systems. They are responsible for starting and running computer programs. The program or application solves the user's specific task. For example, a text editor allows you to write and edit documents.
 
-A program is a set of elementary steps or instructions. The computer performs these steps sequentially. This way, it copes with complex tasks. Let us consider in detail how the program is launched and executed.
+A program is a set of elementary steps. They are called instructions. The computer performs these steps sequentially. It follows the strict order of actions and copes with complex tasks. Let's consider how the computer launches and executes the program in detail.
 
 ### Computer Memory
 
-The computer program instructions are stored on a hard disk as a file. For launching the application, the OS loads the content of this file into RAM. Then the OS allocates processor time for program execution. At specified intervals, the processor executes its instructions.
+A hard disk stores all instructions of the program. If the program is relatively small and simple it fits a single file. Complex applications occupy several files.
 
-Let's see how the OS loads the program into RAM. We start with how computer memory works.
+Suppose that you have a single file program. The OS loads the file into the computer memory called RAM. Then the OS allocates a part of processor time for the new task. This way, the processor performs the program's instructions at specified intervals.
 
-The single unit of the computer memory is [**byte**](https://en.wikipedia.org/wiki/Byte). The byte is the minimum amount of information that the processor can reference and load into its memory. The CPU can handle smaller amounts of data. They are called bits.  The [**bit**](https://en.wikipedia.org/wiki/Bit) is the minimum amount of information that cannot be broken down. The bit is a logical state with two possible values. There are several ways to interpret the value of the bit:
+The first step of launching a program is to load it into RAM. We should consider the computer memory internals to understand this step better.
+
+The single unit of the computer memory is [**byte**](https://en.wikipedia.org/wiki/Byte). The byte is the minimum amount of information that the processor can reference and load into its memory. However, the CPU can handle smaller amounts of data if you apply special techniques. You operate bits in this case. A [**bit**](https://en.wikipedia.org/wiki/Bit) is the smallest amount of information you cannot divide. You can imagine the bit as a single logical state. It has one of two possible values. There are several ways to interpret them:
 
 * 0 or 1
 * True or False
@@ -18,14 +20,16 @@ The single unit of the computer memory is [**byte**](https://en.wikipedia.org/wi
 * + or —
 * On or Off.
 
-Imagine a bit like a lamp switch. It has two possible states:
+Another way to imagine one bit is to compare it with a lamp switch. It has two possible states:
 
 * The switch closes the circuit. Then the lamp is on.
 * The switch opens the circuit. Then the lamp is off.
 
-Eight bits make up a memory block of one byte.
+A byte is a memory block of eight bits. Here you can ask why do we need this packaging? CPU can operate a single bit, right? Then it should be able to refer to a specific bit in memory.
 
-Packaging bits in bytes raises questions. Operations with individual bits are possible. Why cannot the processor refer to a specific bit in memory? This limitation has historical reasons. The first computers did arithmetic calculations mainly. The example is calculating the [ballistic tables](https://www.wikiwand.com/en/Ballistic_table). For solving such tasks, the computers operated with integers and fractional numbers. One bit is not enough to store a number in memory. Therefore, memory blocks that are larger than the bits needed. Such blocks are bytes. The combining bits into bytes reflected on the architecture of processors. Processor designers expected that most calculations are performed over numbers. Therefore, loading and processing all bits of numbers at a time increases computer performance by order of magnitude. So, it led that processors work with bytes only.
+CPU cannot refer to a single bit. There are technical reasons for that. The primary task of the first computers was arithmetic calculations. For example, these computers calculated the [ballistic tables](https://www.wikiwand.com/en/Ballistic_table). You should operate integers and fractional numbers to solve such a task. The computer does the same. However, a single bit is not enough to store a number in memory. Therefore, the computer needs memory blocks to store numbers. The bytes became such blocks.
+
+Introducing bytes affected the architecture of processors. Engineers have expected that the CPU performs most operations over numbers. Therefore, they added a feature to load and process all bits of the number at once. This solution increased computers' performance by order of magnitude. At the same time, loading of the single bit in the CPU happens rarely. Supporting this feature in hardware brings significant overhead. Therefore, engineers have excluded it from modern processors.
 
 There is one more question. Why does a byte consist of eight bits? In the first computers, a byte's size was equal to [six bits](https://en.wikipedia.org/wiki/Six-bit_character_code). Such a memory block was enough to encode all the English alphabet characters in upper and lower case, numbers, punctuation marks and mathematical operations. Over time, this size has become insufficient. The byte was expanded to seven bits. At that moment, the [ASCII table](https://en.wikipedia.org/wiki/ASCII) appeared. The table became the standard for encoding characters. The ASCII table defines characters for codes from 0 to 127. 127 is the maximum seven-bit number. Later, IBM has released the mainframe [IBM System/360](https://en.wikipedia.org/wiki/IBM_System/360). The size of a byte was eight bits in this computer. IBM chose this size for supporting old character encodings from the past projects. Such packaging of bits has become the industry standard. It happened because of the popularity and widespread of IBM System/360.
 
