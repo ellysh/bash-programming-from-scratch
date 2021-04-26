@@ -121,28 +121,32 @@ All caching mechanisms increase a computer's performance significantly. When suc
 
 The storage devices with lower access times are placed closer to the CPU. Figure 1-14 demonstrates this principle. For example, registers and cache is the internal CPU memory. They are part of the processor's chip.
 
-The RAM is a component of the [**motherboard**](https://en.wikipedia.org/wiki/Motherboard). It is very close to the CPU. The motherboard is the [printed circuit board](https://en.wikipedia.org/wiki/Printed_circuit_board) that connects all computer components. There is the high-frequency [**data bus**](https://en.wikipedia.org/wiki/Bus_(computing)) between RAM and CPU. This data bus provides high access speed and low access time.
+Both CPU and RAM are two chips that are plugged into the [**motherboard**](https://en.wikipedia.org/wiki/Motherboard) near each other. The high-frequency [**data bus**](https://en.wikipedia.org/wiki/Bus_(computing)) connects them. This data bus provides low access time.
 
-The disk drive is not a component of the motherboard. They are separate devices. A relatively slow data bus connects them. There are several standards for such interface: ATA, SATA, SCSI, PCI Express.
+The motherboard is the [printed circuit board](https://en.wikipedia.org/wiki/Printed_circuit_board) that connects computer components. You can plug in some chips right into the motherboard. However, there are devices that you should connect via cables there. The disk drive is an example of such a device. It connects to the motherboard via a relatively slow interface. There are several standards for such an interface: ATA, SATA, SCSI, PCI Express.
 
-There is a system controller that uploads data from RAM to the CPU cache. The controller is called [**northbridge**](https://en.wikipedia.org/wiki/Northbridge_(computing)). In earlier versions of personal computers, it was a separate chip on the motherboard. Processor manufacturing technology has evolved. As a result, the northbridge is built into the processor chip nowadays.
+The old motherboard models have an embed chip that transfers data between CPU and RAM. This chip is called [**northbridge**](https://en.wikipedia.org/wiki/Northbridge_(computing)). Thanks to improving technologies for chip manufacturing, the CPUs take northbridge's functions since 2011.
 
-The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) controller reads data from the hard drive into RAM.
+The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) is another motherboard's chip. It presents there nowadays. The southbridge transfers data between RAM and devices that are connected via slow interfaces like PCI, USB, SATA, etc.
 
 {caption: "Figure 1-14. PC motherboard", height: "50%"}
 ![PC motherboard](images/GeneralInformation/motherboard-memory.png)
 
 ### Machine code
 
-Suppose that the OS has loaded the content of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, icons, pictures, predefined constants, etc.
+Suppose that the OS has loaded the content of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, box-drawing characters, predefined constants, etc.
 
-Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor executes them one by one. The CPU has different logical blocks. Each block executes instructions of the specific type. The set of blocks determines the operations that the CPU supports. If the processor does not have a special block to execute an operation, it combines several blocks to do this job. The execution will take more time and resources in this case. A single instruction is an elementary operation on the data that the CPU registers store.
+Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor executes them one by one. A single instruction is an elementary operation on the data from the CPU registers.
 
-After loading the program into RAM, the CPU executes it. The execution of the program is called [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)). (process). The process also includes the resources that the running program uses. The resources are memory area and OS objects.
+The CPU has logical blocks for executing each type of instruction. The available blocks determine the operations that the CPU can perform. If the processor does not have an appropriate logical block to accomplish a specific instruction, it combines several blocks to do this job. The execution takes more clock cycles in this case.
 
-There are special programs for reading and editing executable files. They are called [**hex editors**](https://en.wikipedia.org/wiki/Hex_editor). Such editors represent the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The hex editor translates them into hexadecimal for readability. The processor receives instructions and data in binary code.
+When the OS has loaded the program instructions and its data into RAM, it allocates the CPU time slots for that. The program becomes a [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)) or process since this moment. The process means the running program and the resources it uses. Examples of the resources are memory area and OS objects.
 
-The same number looks differently in different numeral systems. The system determines the symbols and their order to write a number. For example, binary allows 0 and 1 symbols only.
+How do the program instructions look like? We can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
+
+There are advanced programs to read machine code. They are called [**disassemblers**](https://en.wikipedia.org/wiki/Disassembler). These programs guess how the program instructions look like in terms of the CPU commands. You can get a better representation of the program using the disassembler than the hex editor.
+
+If you take a specific number, it looks different in various numeral systems. The numeral system determines the symbols and their order to write a number. For example, binary allows 0 and 1 symbols only.
 
 Table 1-4 shows matching of numbers in binary (BIN), decimal (DEC), and hexadecimal (HEX).
 
