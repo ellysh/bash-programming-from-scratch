@@ -217,7 +217,9 @@ Engineers came to the idea of the interactive mode. They implemented it in the f
 {caption: "Figure 1-5. Computer AN/FSQ-7"}
 ![Computer AN/FSQ-7](images/GeneralInformation/AN-FSQ-7.jpg)
 
-The new way of interaction with computers became known in scientific circles. It gained popularity quickly. The existing batch processing mode coped with program execution well. However, this mode was inconvenient for development and debugging applications.
+The new way of interaction with computers became known in scientific circles. It gained popularity quickly. The existing batch processing mode coped with program execution well. However, this mode was inconvenient for development and [**debugging**](https://en.wikipedia.org/wiki/Debugging) applications.
+
+I> Debugging a program is searching and eliminating its errors.
 
 Suppose that you are writing a program for the computer with batch processing. You should prepare your code and write it to the storage device. When the device is ready, you put it in a queue. The computer's operator takes devices from the queue and loads them to the computer one by one. Therefore, your task can wait in the queue for several hours. Now assume that an error happened in your program. In this case, you should fix it, prepare the new version of the program and write it to the device. You put it in the queue again and wait for hours. Because of this workflow, you need several days to make even a small program working.
 

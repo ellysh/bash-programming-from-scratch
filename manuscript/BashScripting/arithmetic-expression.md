@@ -269,7 +269,7 @@ The issue arises when you want to read data from some device. Such a task often 
 
 Here is an example. Suppose that you write a driver for a peripheral device. The device periodically sends data to the CPU. For example, it is the results of some measurements. Interpret them correctly is your task. The computer cannot do it for you in most cases. It happens because the computer and the device represent the numbers differently. You know this difference. Thus, you should apply your knowledge about numbers representation and convert them properly.
 
-There is another task that every programmer faces. It is [**debugging**](https://en.wikipedia.org/wiki/Debugging). Debugging a program is searching and eliminating its errors. For example, there is an integer overflow in the arithmetic expression. Knowing numbers representation helps you find and solve the problem.
+There is another task that every programmer faces. It is debugging the program. For example, there is an integer overflow in the arithmetic expression. Knowing numbers representation helps you find and solve the problem.
 
 ### Operator ((
 
