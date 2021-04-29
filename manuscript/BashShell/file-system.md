@@ -1,19 +1,35 @@
 ## Navigating the File System
 
-We start our introduction to the Unix environment and Bash with [**file system**](https://en.wikipedia.org/wiki/File_system) (FS). A file system is a way of storing and reading information from disks. First, we will look at the differences between the directory structure in Unix and Windows. Then we will learn the Bash commands for navigating the file system.
+Let's start introducing the Unix environment and Bash with a [**file system**](https://en.wikipedia.org/wiki/File_system). A file system is a software that dictates how to store and read data from disks. It covers the following topics:
+
+* API to access data on the disk that programs can use.
+
+* Universal way for accessing different storage devices.
+
+* Physical operations on the disk storage.
+
+First, we will look at the differences between the directory structure in Unix and Windows. Then we will learn the Bash commands for navigating the file system.
 
 ### Directory Structure
 
-There is an address bar at the top of the Windows Explorer window. It displays the absolute path to the current directory. In Windows terminology, directories are called [**folders**](https://en.wikipedia.org/wiki/Directory_(computing)#Folder_metaphor). Both names refer to the same file system object.
+There is an address bar at the top of the Windows Explorer window. It displays the **absolute path** to the current directory. An absolute path shows the place of the file system object regardless of the current directory.
 
-Figure 2-6 shows an Explorer window. It opens the path `This PC > Local Disk (C:) > msys64`. This path matches the `msys64` directory on the `C` drive. The letter `C` denotes the local system disk. Local means physically connected to the computer. The system disk is the one where Windows is installed. If you translate the string in the Explorer address bar to an absolute path, you get `C:\msys64`.
+Another way to specify the file system object place is using the **relative path**. It shows you how to reach the object from the current directory.
+
+A [directory](https://en.wikipedia.org/wiki/Directory_(computing)) is a file system cataloging structure. It can contain references to files and other directories. Windows terminology calls it [**folder**](https://en.wikipedia.org/wiki/Directory_(computing)#Folder_metaphor). Both names mean the same kind of file system object.
+
+Figure 2-6 shows an Explorer window. The address bar equals `This PC > Local Disk (C:) > msys64` there. It matches the `C:\msys64` absolute path. Thus, we see the content of the `msys64` directory on the `C` drive in the Explorer window.
+
+The letter `C` in the path denotes the local system disk drive. The local drive means the device that is connected to your computer physically. You can also have a network drive. You access such a device via the network. The system disk means one that has the Windows installation on it.
 
 {caption: "Figure 2-6. Windows Explorer"}
 ![Windows Explorer](images/BashShell/explorer.png)
 
-The terminal window shows the current absolute path. It behaves like the Explorer address bar. But the paths in the terminal and Explorer differ. The reason is the different directory structure of Unix environment and Windows.
+If you run the MSYS2 terminal emulator, it shows you the current absolute path at the end of the first line. This line behaves like the address bar of Windows Explorer. When you change the current directory, the current path changes too. However, you have to consider that the terminal and Explorer show you different paths for the same current directory. It happens because directory structures of the Unix environment and Windows do not match.
 
-In Windows, each disk has a letter in the Latin alphabet. The drive opens in Explorer as an ordinary folder. Then you can access its contents. For example, consider the `C` system drive. After installation, Windows creates a [standard set of directories](https://en.wikipedia.org/wiki/Directory_structure#Windows_10) there:
+Windows marks each disk drive with a Latin letter. You can open the drive using Explorer as a regular folder. Then you access its contents.
+
+For example, let's open the `C` system drive. It has a [standard set of directories](https://en.wikipedia.org/wiki/Directory_structure#Windows_10). Windows has created them during the installation process. If you open the `C` drive in Explorer, you see the following directories there:
 
 * `Windows`
 * `Program Files`
@@ -21,17 +37,19 @@ In Windows, each disk has a letter in the Latin alphabet. The drive opens in Exp
 * `Users`
 * `PerfLogs`
 
-These directories store OS components and their temporary files.
+These directories store OS components, user applications and temporary files.
 
-Besides the system disk, you can connect extra disks to the computer. Windows designates them with the following letters of the Latin alphabet: `D`, `E`, `F` etc. The user sets the directory structure of the additional disks. Windows does not impose any restrictions on it.
+You can connect extra disk drives to your computer. Windows will assign them the following Latin letters: `D`, `E`, `F`, etc. You are allowed to create any directory structure on these disks. Windows does not restrict it in any way.
 
-The Windows directory structure is defined by the [File Allocation Table](https://en.wikipedia.org/wiki/File_Allocation_Table) (FAT) file system. Microsoft developed it for the [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS) operating system. The principles of FAT became the basis of the [ECMA-107](http://www.ecma-international.org/publications/standards/Ecma-107.htm) standard. [NTFS](https://en.wikipedia.org/wiki/NTFS) replaced the obsolete FAT in modern versions of Windows. But due to backward compatibility requirements, the directory structure of NTFS remained unchanged.
+The [File Allocation Table](https://en.wikipedia.org/wiki/File_Allocation_Table) (FAT) file system dictates how Windows manages disks and provides you access to them. Microsoft developed this file system for the [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS) OS. The principles of FAT became the basis of the [ECMA-107](http://www.ecma-international.org/publications/standards/Ecma-107.htm) standard. The next-generation file system from Microsoft is called [NTFS](https://en.wikipedia.org/wiki/NTFS). It replaced the obsolete FAT in modern versions of Windows. However, the basic principles of disks and directory structure are the same in NAT and FAT. The reason for that is the backward compatibility requirement.
 
-The Unix directory structure is defined by [the POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap10.html#tag_10). According to the standard, there is a top-level directory in the system. It is called the [**root directory**](https://en.wikipedia.org/wiki/Root_directory) and is denoted by a slash /. The directories and files of all disks connected to your computer are inside the root directory.
+The Unix directory structure follows the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap10.html#tag_10). This structure is more limited and strict than the Windows one. It has several predefined directories that you cannot move or rename. You are allowed to put your data in the specific paths only.
 
-To access the contents of a disk, you should mount it. **Mounting** means embedding the contents of a disk in the root directory. Once mounted, the contents of the disk are accessible via some path. That path is called a [**mount point**](https://en.wikipedia.org/wiki/Mount_(computing)). If you go to the mount point, you access the disk's file system.
+The POSIX standard says that the file system should have a top-level directory. It is called the [**root directory**](https://en.wikipedia.org/wiki/Root_directory). The slash sign / denotes it. All directories and files of all connected disk drives are inside the root directory.
 
-Let's compare the directory structure of Windows and Unix using an example. Suppose that two local disks, `C` and `D` are connected to the Windows computer. Then, the first level of the directory structure looks like the one in Listing 2-1.
+If you want to access the contents of a disk drive, you should mount it. **Mounting** means embedding the contents of a disk into the root directory. When mounting is done, you can access the disk contents through some path. This path is called a [**mount point**](https://en.wikipedia.org/wiki/Mount_(computing)). If you go to the mount point, you enter the file system of the disk.
+
+Let's compare the Windows and Unix directory structures by example. Suppose that your Windows computer has two local disks `C` and `D`. Listing 2-1 shows their directory structure.
 
 {caption: "Listing 2-1. The directory structure in Windows", line-numbers: false}
 ```
@@ -47,7 +65,7 @@ D:\
     Install\
 ```
 
-The same directory structure looks different in Unix. Listing 2-2 shows it.
+Suppose that you have installed the Unix environment on your Windows. Then you run the terminal emulator and get the directory structure from Listing 2-2.
 
 {caption: "Listing 2-2. The directory structure in Unix", line-numbers: false}
 ```
@@ -64,71 +82,64 @@ The same directory structure looks different in Unix. Listing 2-2 shows it.
         Install/
 ```
 
-When you launch the MSYS2 terminal, you enter the Unix environment. Windows paths don't work there. You should use Unix paths instead. For example, the directory `C:\Windows` is now accessible by the path `/c/Windows`.
+Since you launch the MSYS2 terminal, you enter the Unix environment. Windows paths don't work there. You should use Unix paths instead. For example, you can access the `C:\Windows` directory via the `/c/Windows` path only.
 
-In a Unix environment, the [character case](https://en.wikipedia.org/wiki/Case_sensitivity) is important. It means that the strings `Documents` and `documents` are not equal. Windows has no case sensitivity. So if you write the path `c:\windows` in the Explorer address bar, you go to the system directory `C:\Windows`. This approach does not work in a Unix environment. You should enter all characters in the correct case.
+There is another crucial difference between Unix and Windows file systems besides the directory structure. The [character case](https://en.wikipedia.org/wiki/Case_sensitivity) makes strings differ in the Unix environment. It means that two words with the same letters are not the same if their character case differs. For example, the `Documents` and `documents` words are not equal. Windows has no case sensitivity. If you type the `c:\windows` path in the Explorer address bar, it opens the `C:\Windows` directory. This approach does not work in the Unix environment. You should type all characters in the proper case.
 
-In addition to the character case, there is another difference. In Unix, directory and file names are separated by a slash /. Windows use a backslash \ for that.
+Here is the last point to mention regarding Unix and Windows file systems. Use the slash sign / to separate directories and files in Unix paths. When you work with Windows paths, you use backslash \ for that.
 
 ### File System Navigation Commands
 
-How to execute a command in a terminal emulator? There are three steps:
+We are ready to learn our first Bash commands. Here are the steps to execute a shell command:
 
-1. Switch to the terminal window.
+1. Make the terminal window active.
 2. Type the command.
 3. Press Enter.
 
 The shell will process your input.
 
-The shell notifies you that it is ready by printing a [**command prompt**](https://en.wikipedia.org/wiki/Command-line_interface#Command_prompt). The prompt is a special character or string of characters. If there is no prompt, the shell is busy and cannot execute your command.
+When the shell is busy, it cannot process your input. You can distinguish the shell's state by the [**command prompt**](https://en.wikipedia.org/wiki/Command-line_interface#Command_prompt). It is a sequence of one or more characters. The default prompt is the dollar sign $. You can see it in Figure 2-4. If the shell prints the prompt, it is ready for executing your command.
 
-The prompt is denoted by the dollar sign $ in Figure 2-4.
-
-When using Windows Explorer, you can do the following actions to navigate the file system:
+Windows Explorer allows you the following actions to navigate the file system:
 
 * Display the current directory.
-* Go to a specified directory.
+* Go to a specified disk drive or directory.
 * Find a directory or file on the disk.
 
-The command-line interface allows you to do the same actions. There are special commands for each kind of action. Table 2-1 shows these commands.
+You can do the same actions with the shell. It provides you a corresponding command for each action. Table 2-1 shows these commands.
 
 {caption: "Table 2-1. Commands and utilities for navigating the file system", width: "100%"}
 | Command | Description | Examples |
 | --- | --- | --- |
 | `ls` | Display the contents of the directory. | `ls` |
-| | If no directory is specified, the contents of the current one are displayed. | `ls /c/Windows` |
+| | If you call the command without parameters, it shows you the contents of the current directory. | `ls /c/Windows` |
 |  | | |
 | `pwd` | Display the path to the current directory. | `pwd` |
-| | When using the `-W` key, the command displays the path in the Windows directory structure. |
+| | When you add the `-W` parameter, the command displays the path in the Windows directory structure. |
 |  | | |
 | `cd` | Go to the directory at the specified | `cd tmp` |
 | | relative or absolute path. | `cd /c/Windows` |
 | | | `cd ..` |
 |  | | |
-| `mount` | Mount the disk to the root file system. When you call the command without parameters, it displays a list of all mounted disks.  | `mount` |
+| `mount` | Mount the disk to the root file system. If you call the command without parameters, it shows a list of all mounted disks. | `mount` |
 |  | | |
 | `find` | Find a file or directory. The first parameter | `find . -name vim` |
-| | of the command is the directory where the search starts. If it is not specified, the current directory is chosen. | `find /c/Windows -name *vim*` |
+| | specifies the directory to start searching. | `find /c/Windows -name *vim*` |
 |  | | |
 | `grep` | Find a file by its contents. | `grep "PATH" *` |
 | | | `grep -Rn "PATH" .` |
 | | | `grep "PATH" * .*` |
 
-Bash handles by itself the following commands from Table 2-1:
+Bash can perform `pwd` and `cd` commands of Table 2-1 only. They are called [**built-ins**](https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html). Special utilities perform all other commands of the table. Bash calls an appropriate utility if it cannot execute your command on its own.
 
-* `pwd`
-* `cd`
-
-These commands are called [**builtins**](https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html). If Bash cannot execute the command by itself, it looks for a suitable utility or program to do it.
-
-The MSYS2 environment includes a set of GNU utilities. These are auxiliary highly specialized programs. They give access to OS features. They also allow you to work with the file system. GNU utilities execute the following commands from Table 2-1:
+The MSYS2 environment provides a set of GNU utilities. These are auxiliary highly specialized programs. They give you access to the OS features in Linux and macOS. However, their capabilities are limited in Windows. Bash calls GNU utilities to execute the following commands of Table 2-1:
 
 * `ls`
 * `mount`
 * `find`
 * `grep`
 
-Often no distinction is made between commands and utilities. Any text after the command-line prompt is called a command.
+When you read an article about Bash on the Internet, its author can confuse the "command" and "utility" terms. He names both things "commands". This is not a big issue. However, I recommend you to distinguish them. Calling a utility takes more time than calling Bash built-in. It causes performance overhead in some cases.
 
 #### pwd
 
