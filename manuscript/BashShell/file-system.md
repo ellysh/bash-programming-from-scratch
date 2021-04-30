@@ -18,7 +18,7 @@ Another way to specify the file system object place is using the **relative path
 
 A [directory](https://en.wikipedia.org/wiki/Directory_(computing)) is a file system cataloging structure. It can contain references to files and other directories. Windows terminology calls it [**folder**](https://en.wikipedia.org/wiki/Directory_(computing)#Folder_metaphor). Both names mean the same kind of file system object.
 
-Figure 2-6 shows an Explorer window. The address bar equals `This PC > Local Disk (C:) > msys64` there. It matches the `C:\msys64` absolute path. Thus, we see the content of the `msys64` directory on the `C` drive in the Explorer window.
+Figure 2-6 shows an Explorer window. The address bar equals `This PC > Local Disk (C:) > msys64` there. It matches the `C:\msys64` absolute path. Thus, we see the contents of the `msys64` directory on the `C` drive in the Explorer window.
 
 The letter `C` in the path denotes the local system disk drive. The local drive means the device that is connected to your computer physically. You can also have a network drive. You access such a device via the network. The system disk means one that has the Windows installation on it.
 
@@ -27,7 +27,7 @@ The letter `C` in the path denotes the local system disk drive. The local drive 
 
 If you run the MSYS2 terminal emulator, it shows you the current absolute path at the end of the first line. This line behaves like the address bar of Windows Explorer. When you change the current directory, the current path changes too. However, you have to consider that the terminal and Explorer show you different paths for the same current directory. It happens because directory structures of the Unix environment and Windows do not match.
 
-Windows marks each disk drive with a Latin letter. You can open the drive using Explorer as a regular folder. Then you access its contents.
+Windows marks each disk drive with a Latin letter. You can open the drive using Explorer as a regular folder. Then you access its content.
 
 For example, let's open the `C` system drive. It has a [standard set of directories](https://en.wikipedia.org/wiki/Directory_structure#Windows_10). Windows has created them during the installation process. If you open the `C` drive in Explorer, you see the following directories there:
 
@@ -143,40 +143,54 @@ When you read an article about Bash on the Internet, its author can confuse the 
 
 #### pwd
 
-Let's consider the commands in Table 2-1. We have just started the terminal. The first thing we do is to find out the current directory. The MSYS2 terminal prints it before the command prompt. This output depends on the terminal configuration. If you are running Linux or macOS, the terminal does not print the current directory with the default setup.
+Let's consider the commands in Table 2-1. We have just started the terminal. The first thing we do is to find out the current directory. You can get it from the command prompt, but it depends on your Bash configuration. You do not have this feature enabled by default in Linux and macOS.
 
-After starting the MSYS2 terminal, the home directory of the current user opens. It has the abbreviation that is the tilde symbol ~. You see this symbol before the command-line prompt. You can work with the abbreviation ~ in the same way as with an absolute path.
+When you start the terminal, it opens the home directory of the current user. Bash abbreviates this path by the tilde symbol ~. You see this symbol before the command prompt. Use tilde instead of the home directory absolute path. It makes your commands shorter.
 
-Run the `pwd` built-in command to get the current directory. Figure 2-7 shows how it looks like. The command prints the absolute path to the user's home directory: `/home/ilya.shpigor`.
+Call the `pwd` command to get the current directory. Figure 2-7 shows this call and its output. The command prints the absolute path to the user's home directory. It equals `/home/ilya.shpigor` in my case.
 
-If you add an **option** `-W` to the `pwd` call, it prints the path in the Windows directory structure. It is useful when you create a file in the MSYS2 environment and open it in a Windows application. Figure 2-7 shows the output of the `pwd` command with the `-W` option.
+If you add the `-W` **option** to the call, the command prints the path in the Windows directory structure. It is useful when you create a file in the MSYS2 environment and open it in a Windows application afterward. Figure 2-7 shows you the result of applying the `-W` option.
 
 {caption: "Figure 2-7. The output of the `pwd` command"}
 ![Output pwd](images/BashShell/pwd-command.png)
 
-What is a command option? If an application has only a text interface, the ways of interacting with it are limited. The application needs some input data to work. An example of data is the path to a file or directory. The command interpreter offers a simple way to pass this information. You can specify it after the command for launching the application. [**Parameter**](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) or program argument is the word or character passed to it for input. An **Option** or key is an argument that switches the mode of a program. The format of options is standardized. They usually start with a dash `-` or a double dash `--`.
+What is a command option? When the program has a CLI only, you have very limited ways to interact with it. The program needs some data on input to do its job. The shell provides you a simple way to pass these data. Just type them after the command name. These data are called **arguments** of the program. Bash terminology distinguishes two kinds of arguments: parameter and option. A [**parameter**](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) is the regular word or character you pass to the program. An **option** or **key** is an argument that switches the mode of a program. The standard dictates the option format. It is a word or character that starts with a dash `-` or a double dash `--`.
 
-The built-in interpreter commands are called just like programs. They have parameters and options too.
+You pass data to the CLI programs and Bash built-ins in the same way. Use parameters and options for doing that.
 
-Typing long commands is inconvenient. That is why Bash has an autocomplete feature. Press the Tab key for using it. Type the first letters of the command and press Tab. If Bash finds the command by its first letters, it will complete it.  If several commands start the same way, autocomplete does not happen. In this case, press Tab again. Bash will list all available commands.
+Typing long commands is inconvenient. Bash provides the autocomplete feature to save your time. Here are the steps for using it:
 
-Figure 2-8 shows a list of available commands. Bash printed it after typing `pw` and pressing Tab twice.
+1. Type the first few letters of the command.
 
-{caption: "Figure 2-8. Autocomplete for the `pw` command"}
+2. Press the Tab key.
+
+3. If Bash finds the command you mean, it completes it.
+
+4. If several commands start with the typed letters, autocomplete does not happen. Press Tab again to see the list of these commands.
+
+Figure 2-8 demonstrates how the autocomplete feature works. Suppose that you type the "pw" word. Then you press the Tab key twice. Bash shows you the commands that start with "pwd" as Figure 2-8 shows.
+
+{caption: "Figure 2-8. Autocomplete for the "pw" command"}
 ![Autocomplete pw](images/BashShell/pw-autocompletion.png)
 
 #### ls
 
-We know the current directory. Now let's print its contents. The utility called `ls` does it. Suppose you have just installed the MSYS2 environment. Launch the "ls" command without parameters in the user's home directory. It prints nothing. The second line in Figure 2-9 demonstrates this result. Such output usually means that the directory is empty.
+We got the current directory using the `pwd` command. The next step is checking the directory content. The `ls` utility does this task.
+
+Suppose that you have just installed the MSYS2 environment. Then you launched the terminal first time. You are in the user's home directory. Call the "ls" command there. Figure 2-9 shows its result. The command output has nothing. It means that the directory is empty or has hidden files and directories only.
 
 {caption: "Figure 2-9. The output of the `ls` utility"}
 ![Output ls](images/BashShell/ls-command.png)
 
-Windows has a concept of hidden files and directories. They also exist in the Unix environment. Such files are created by applications and operating systems for their own needs. They are used for storing configuration or temporary information. Windows Explorer does not display hidden files in normal mode. Change [Explorer settings](https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2) to see hidden files.
+Windows has a concept of hidden files and directories. The Unix environment also has it. Applications and OS create hidden files for their own needs. These files store configuration and temporary data.
 
-Names of hidden files and directories begin with a dot in the Unix environment. The `ls` utility does not show them by default. To change this behavior, run the `ls` utility with the `-a` option. Then you will see eight files in the home directory. They all start with a dot, as Figure 2-9 shows.
+Windows Explorer does not display hidden files and directories by default. Change the [Explorer settings](https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2) to see them.
 
-You can get the contents of a directory without going into it. Pass an absolute or relative path to the directory when launching the `ls` utility. For example, there is the command to show the contents of the root directory:
+You can make the file hidden in Windows by changing its attribute. If you want to do the same in Unix, you should add a dot at the beginning of the filename.
+
+When you launch the `ls` utility without parameters, it does not show you hidden objects. You can add the `-a` option to see them. Figure 2-9 shows a result of such a call.
+
+The `ls` utility can show the contents of the specified directory. Pass a directory's absolute or relative path to the utility. For example, the following command shows the contents of the root directory:
 {line-numbers: false, format: Bash}
 ```
 ls /
@@ -187,26 +201,26 @@ Figure 2-10 shows the output of this command.
 {caption: "Figure 2-10. The output of the `ls` utility"}
 ![Output ls](images/BashShell/ls-root-command.png)
 
-There are no directories `/c` and `/d` in Figure 2-10. According to Listing 2-2, these are the mount points of disks C and D. They are in the root directory. Why does not `ls` output them? The problem is that the Windows file system has no concept of mount points. For that reason, it does not have directories `/c` and `/d`. They are present in the Unix environment only. Through these directories, you access the contents of the disks. The `ls` utility reads the contents of directories in the Windows file system. Thus, it does not show the mount points. Linux and macOS do not have this problem. The `ls` utility displays all mount points correctly there.
+There are no directories `/c` and `/d` in Figure 2-10. These are the mount points of C and D disk drives according to Listing 2-2. The mounting points are in the root directory. Why does not the `ls` utility print them? It happens because the Windows file system does not have a concept of mount points. Therefore, it does not have directories `/c` and `/d`. They are present in the Unix environment only. These are not real directories but paths where you can access the disk file systems. The `ls` utility reads the directory contents in the Windows file system. Thus, it does not show the mount points. The `ls` utility behaves differently in Linux and macOS. It shows mount points properly there.
 
 #### mount
 
-If several disks are attached to your computer, it is useful to display their mount points. The [`mount`](https://en.wikipedia.org/wiki/Mount_(Unix)) utility does it. Run the utility without parameters. It will print all mount points, as Figure 2-11 shows.
+If your computer has several disk drives, you can read their mount points. Call the [`mount`](https://en.wikipedia.org/wiki/Mount_(Unix)) utility without parameters for doing that. Figure 2-11 shows its output.
 
 {caption: "Figure 2-11. The output of the `mount` utility"}
 ![Output mount](images/BashShell/mount-command.png)
 
-Consider this output as a table with four columns. These are their values:
+Consider this output as a table with four columns. The columns display the following values:
 
-1. The disk, its partition or directory. It means the thing that is mounted to the root file system.
+1. The disk drive, its partition or directory. It is the object that the OS has mounted to the root directory.
 
-2. Mount point. It is the path where the mounted disk is accessible.
+2. Mount point. It is the path where you can access the mounted disk drive.
 
-3. The file system type of the disk.
+3. The file system type of the disk drive.
 
-4. Mounting parameters. For example, access permissions to the drive.
+4. Mounting parameters. An example is access permissions to the disk contents.
 
-Table 2-2 shows the output of the `mount` utility call in Figure 2-11. The output is divided into columns.
+If we split the `mount` utility output into these columns, we get Table 2-2.
 
 {caption: "Table 2-2. The output of the `mount` utility", width: "100%"}
 | Mounted partition | Mount point | FS type | Mounting parameters |
@@ -216,28 +230,28 @@ Table 2-2 shows the output of the `mount` utility call in Figure 2-11. The outpu
 | `C:` | `/c` | `ntfs` | `binary,noacl,posix=0,user,noumount,auto` |
 | `Z:` | `/z` | `hgfs` | `binary,noacl,posix=0,user,noumount,auto` |
 
-Table 2-2 can confuse Windows users. The `C:/msys64` directory is mounted as the root path in the Unix environment. Then the C and Z disks are mounted into the root at the paths `/c` and `/z`. From the Unix environment's point of view, drive C is available at the Windows path `C:/msys64/c`. But in the Windows file system, there is a reversed relationship. There `C:/msys64` is a subdirectory of disk C.
+Table 2-2 confuses most Windows users. MSYS2 mounts `C:/msys64` as the root directory. Then it mounts the C and Z disks into the root. Their mount points are `/c` and `/z`. It means that you can access the C drive via the `C:/msys64/c` Windows path in the Unix environment. However, `C:/msys64` is the subdirectory of disk C in the Windows file system. We got a contradiction.
 
-In the Unix environment, this contradiction is not a problem. The `/c` path is the mount point. It exists only in the Unix environment. It does not exist in the Windows file system. You can imagine that the `/c` directory in MSYS2 is a [shortcut](https://en.wikipedia.org/wiki/Shortcut_(computing)) to drive C.
+Actually, there is no contradiction. The `/c` path is the mount point that exists only in the Unix environment. It does not exist in the Windows file system. Therefore, Windows knows nothing about the `C:/msys64/c` path. It is just invalid if you try to open it via Explorer. You can imagine the mount point `/c` as the [shortcut](https://en.wikipedia.org/wiki/Shortcut_(computing)) to drive C that exists in the MSYS2 environment only.
 
-The output of the `mount` utility took up a lot of screen space. Press Ctrl+L to clear the terminal window.
+The output of the `mount` utility took up a lot of screen space. You can clear the terminal window by the Ctrl+L keystroke.
 
-It happens that a running command takes a long time to execute or hangs. Press Ctrl+C to interrupt its execution.
+Another useful keystroke is Ctrl+C. It interrupts the currently running command. Use it if the command hangs or you want to stop it.
 
 #### cd
 
-We know the current directory. Now we can change it. For example, we are looking for the Bash documentation. Let's check the system directory `/usr`. Installed applications keep their files there. There is a built-in command `cd` for changing the directory. Launch it in this way:
+We have got everything about the current directory. Now we can change it. Suppose that you are looking for the Bash documentation. You can find it in the `/usr` system directory. Installed applications stores their non-executable files there.  Call the `cd` command to go to the `/usr` path. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 cd /usr
 ```
 
-Don't forget about autocompletion. It works for both the command name and its parameters. Just type `cd /u` and press the Tab key. Bash will automatically add the directory name `usr`. Figure 2-12 shows the result of the command.
+Do not forget about autocompletion. It works for both command and its parameters. Just type "cd /u" and press the Tab key. Bash adds the directory name `usr` automatically. Figure 2-12 shows the result of the command.
 
 {caption: "Figure 2-12. The result of the `cd` command"}
 ![cd result](images/BashShell/cd-command.png)
 
-The `cd` command does not output anything if it succeeds. The only effect is changing the current directory. Run the command and check the output before the command prompt. The current directory is `/usr` now.
+The `cd` command does not output anything if it succeeds. It changes the current directory and that is it. You can read the new path in the line above the command prompt. This line shows the `/usr` path after our `cd` call.
 
 The `cd` command accepts both absolute and relative paths. Relative paths are shorter and faster to type. That is why they are used often for file system navigation.
 
@@ -257,7 +271,7 @@ cd share/doc/bash
 
 Now the current directory is `/usr/share/doc/bash`. Let's run the command ls. There are several files. One of them has the `README` name. This file is the Bash documentation that we are looking for.
 
-Print the content of file `README` with the cat utility. This is the command to do that:
+Print the contents of file `README` with the cat utility. This is the command to do that:
 {line-numbers: false, format: Bash}
 ```
 cat README
@@ -506,7 +520,7 @@ We have just written our first program in the language of the `find` utility int
 
 The program algorithm consists of two steps only. But it is a scalable solution for finding and copying files. The program will process dozens of files as fast as a couple of them.
 
-You can combine the `-exec` actions in the same way as the search conditions. To give you an example, let's print out each found HTML file's contents and count the number of lines in it. The `cat` utility can print the content of the file. The `wc` utility counts the number of lines. At the input, `wc` takes the name of the file to be processed. In this case, the `find` call looks like this:
+You can combine the `-exec` actions in the same way as the search conditions. To give you an example, let's print out each found HTML file's contents and count the number of lines in it. The `cat` utility can print the contents of the file. The `wc` utility counts the number of lines. At the input, `wc` takes the name of the file to be processed. In this case, the `find` call looks like this:
 {line-numbers: false, format: Bash}
 ```
 find / -path "*/doc/bash/*" -name "*.html" -exec cat {} \; -exec wc -l {} \;

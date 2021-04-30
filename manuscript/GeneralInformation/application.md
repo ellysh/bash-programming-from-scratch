@@ -103,7 +103,7 @@ Table 1-3 raises questions. You can read the data from the disk drive at high sp
 
 High access time can cause serious performance issues. For example, suppose that the CPU reads the program instructions directly from the hard disk. The problem happens because CPU registers have a small capacity. There is no chance to load the whole program from the hard disk to the registers. Therefore, when the CPU did one part of the program, it should load the next one. This loading operation takes up to 10000000 clock cycles. It means that loading data from the disk takes a much longer time than processing them. The CPU spends most of the time idling. The memory hierarchy solves exactly this problem.
 
-Let's consider data flow between memory levels by example. Suppose that you launch a simple program. It reads a file from the hard disk and displays its content on the screen. Reading data from the disk happens in several steps. The hardware does them.
+Let's consider data flow between memory levels by example. Suppose that you launch a simple program. It reads a file from the hard disk and displays its contents on the screen. Reading data from the disk happens in several steps. The hardware does them.
 
 The first step is reading data from the hard disk into the RAM according to Figure 1-13. The next step is loading data from RAM to the CPU cache. There is a sophisticated **caching mechanism**. It guesses the data from RAM that the CPU requires next. This mechanism reduces the access time to the data and decreases the idle time of the CPU.
 
@@ -134,7 +134,7 @@ The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) is 
 
 ### Machine code
 
-Suppose that the OS has loaded the content of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, box-drawing characters, predefined constants, etc.
+Suppose that the OS has loaded the contents of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, box-drawing characters, predefined constants, etc.
 
 Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor executes them one by one. A single instruction is an elementary operation on the data from the CPU registers.
 
@@ -142,7 +142,7 @@ The CPU has logical blocks for executing each type of instruction. The available
 
 When the OS has loaded the program instructions and its data into RAM, it allocates the CPU time slots for that. The program becomes a [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)) or process since this moment. The process means the running program and the resources it uses. Examples of the resources are memory area and OS objects.
 
-How do the program instructions look like? We can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual content of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
+How do the program instructions look like? We can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual contents of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
 
 There are advanced programs to read machine code. They are called [**disassemblers**](https://en.wikipedia.org/wiki/Disassembler). These programs guess how the program instructions look like in terms of the CPU commands. You can get a better representation of the program using the disassembler than the hex editor.
 

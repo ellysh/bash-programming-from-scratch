@@ -133,7 +133,7 @@ Table 3-22 explains the meaning of each field of this file.
 
 This [article](https://www.thegeekdiary.com/understanding-proc-meminfo-file-analyzing-memory-utilization-in-linux/) provides more details about fields of the `meminfo` file.
 
-Typing the `cat` command for printing the `meminfo` file content takes time. We can declare the function with a short name for that. Here is an example of this function:
+Typing the `cat` command for printing the `meminfo` file contents takes time. We can declare the function with a short name for that. Here is an example of this function:
 {line-numbers: false, format: Bash}
 ```
 mem() { cat /proc/meminfo; }

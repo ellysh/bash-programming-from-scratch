@@ -118,7 +118,7 @@ There is an example. We want to make a copy of the `report.txt` file. First, we 
 cp report.txt report-2019.txt
 ```
 
-This command creates a new file named `report-2019.txt`. It has the same content as `report.txt`.
+This command creates a new file named `report-2019.txt`. It has the same contents as `report.txt`.
 
 Assume that the old file `report.txt` is not needed. After copying it, you can remove it with the `rm` utility. But you can combine copying and removing in a single command. Call the `mv` utility for doing that:
 {line-numbers: false, format: Bash}

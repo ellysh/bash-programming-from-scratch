@@ -320,7 +320,7 @@ The new `IFS` declaration allows to process the following input string properly:
 
 The comma separates the path and filename. Therefore, the `read` command writes the `~/My Documents` string into the `path` variable. The `report.txt` string comes into the `file` variable.
 
-The `read` command receives data from the standard input stream. It means that you can redirect the file's content to the command.
+The `read` command receives data from the standard input stream. It means that you can redirect the file contents to the command.
 
 Here is an example to read the first line of the `contacts.txt` file from Listing 3-21. The following command does it:
 {line-numbers: false, format: Bash}
