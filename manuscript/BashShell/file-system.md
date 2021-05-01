@@ -240,7 +240,7 @@ Another useful keystroke is Ctrl+C. It interrupts the currently running command.
 
 #### cd
 
-We have got everything about the current directory. Now we can change it. Suppose that you are looking for the Bash documentation. You can find it in the `/usr` system directory. Installed applications stores their non-executable files there.  Call the `cd` command to go to the `/usr` path. Do it this way:
+We have got everything about the current directory. Now we can change it. Suppose that you are looking for the Bash documentation. You can find it in the `/usr` system directory. Installed applications stores their non-executable files there. Call the `cd` command to go to the `/usr` path. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 cd /usr
@@ -253,105 +253,105 @@ Do not forget about autocompletion. It works for both command and its parameters
 
 The `cd` command does not output anything if it succeeds. It changes the current directory and that is it. You can read the new path in the line above the command prompt. This line shows the `/usr` path after our `cd` call.
 
-The `cd` command accepts both absolute and relative paths. Relative paths are shorter and faster to type. That is why they are used often for file system navigation.
+The `cd` command accepts both absolute and relative paths. Relative paths are shorter. Therefore, you type them faster. Prefer them when navigating the file system using a command shell.
 
-We have moved to the `/usr` directory. Now you can list its subdirectories and go to one of them. Suppose instead that you need to go one level higher to the root directory. There are two ways to do this: go to the absolute path `/` or the special relative path `..`. The path `..` always points to the parent directory for the current one. This is the `cd` command to go this path:
+There is a simple rule to distinguish the type of path. An absolute path starts with a slash /. An example is `/c/Windows/system32`. A relative path starts with a directory name. An example is `Windows/system32`.
+
+Now you are in the `/usr` directory. You can get a list of its subdirectories and go to one of them. Suppose that you want to go one level higher and reach the root directory. There are two ways for doing that: go to the absolute path `/` or the special relative path `..`. The `..` path always points to the parent directory of the current one. Use it in the `cd` call this way:
 {line-numbers: false, format: Bash}
 ```
 cd ..
 ```
 
-I> In addition to `..`, there is another special path `.`. It stands for the current directory. If you execute the command "cd .", nothing happens. You stay in the same place. The path `.` is needed to run programs from the current directory.
+I> In addition to `..`, there is another special path `.`. It points to the current directory. If you execute the command "cd .", nothing happens. You stay in the same place. You need the `.` path to run programs from the current directory.
 
-We are in the `/usr` directory. Let's run the ls utility here. In its output, there is the subdirectory `share`. There you can find the subdirectory `doc` with the documentation for the installed applications. The full path of the Bash documentation is `share/doc/bash`. This is the command to go there:
+Come back to the `/usr` directory. Then run the `ls` utility there. It will show you the `share` subdirectory. Come to this directory and call `ls` again. You will find the `doc` directory there. It contains Bash documentation. Call the `cd` command this way to reach the documentation:
 {line-numbers: false, format: Bash}
 ```
-cd share/doc/bash
+cd doc/bash
 ```
 
-Now the current directory is `/usr/share/doc/bash`. Let's run the command ls. There are several files. One of them has the `README` name. This file is the Bash documentation that we are looking for.
+You are in the `/usr/share/doc/bash` directory now. Call the `ls` utility there. It will show you several files. One of them is `README`. It contains a brief description of the Bash interpreter.
 
-Print the contents of file `README` with the cat utility. This is the command to do that:
+You found the documentation file. The next step is to print its contents. The `cat` utility does that. Here is an example of how to run it:
 {line-numbers: false, format: Bash}
 ```
 cat README
 ```
 
-Figure 2-13 shows the command result.
+Figure 2-13 shows the terminal window after the `cat` call.
 
-{caption: "Figure 2-13. The result of the `cat` command", height: "30%"}
+{caption: "Figure 2-13. The result of the `cat` utility", height: "30%"}
 ![cat result](images/BashShell/cat-command.png)
 
-I> Some Bash manuals do not recommend using the cat utility to output a file's contents. The utility's purpose is to merge several files and print the result to a standard output stream. Instead of calling cat for a single file, the manuals recommend combining the `echo` command with stream redirection. Here is an example of this approach:
+I> Some Bash manuals do not recommend printing file contents using the `cat` utility. They said that the utility's purpose is to merge several files and print the result. The manuals suggest combining the `echo` command with a stream redirection. Here is an example of this approach:
 {line-numbers: false, format: Bash}
 ```
 echo "$(< README.txt)"
 ```
 
-Figure 2-13 does not show the entire `README` file. There are the last lines only. The file is large. Therefore, the output of the cat utility does not fit the terminal window. To see the beginning of the file, use the scroll bar on the window's right side. Use the Shift+PageUp and Shift+PageDown hotkeys to scroll [pages](https://en.wikipedia.org/wiki/Page_Up_and_Page_Down_keys). Shift+↑ and Shift+↓ allow you to scroll lines.
+The `README` file contents do not fit the terminal window. Therefore, you see the tail of the file in Figure 2-13. Use the scroll bar on the window's right side to check the head of the file. Also, use the Shift+PageUp and Shift+PageDown hotkeys to scroll [pages](https://en.wikipedia.org/wiki/Page_Up_and_Page_Down_keys) up and down. The Shift+↑ and Shift+↓ keystrokes scroll the lines.
 
 #### Command History
 
-When you execute a command in the terminal, it is saved in the [command history](https://en.wikipedia.org/wiki/Command_history). These are the keys to navigate the history:
+Whenever you call a command, Bash saves it in the [command history](https://en.wikipedia.org/wiki/Command_history). You can navigate the history by up and down arrow keys. Bash automatically types the corresponding command. You just need to press Enter for launching it. For example, you have called the "cat README"  command. Press the up arrow and Enter to repeat it.
 
-1. Press the up arrow ↑ and Enter to repeat the previous command.
-2. Press the up arrow several times to the beginning of the history.
-3. Press the down arrow ↓ to move to the next command in the history.
+The Ctrl+R shortcut brings up a search over all command history. Press Ctrl+R and start typing. Bash will show you the last called command that begins with these characters. Press Enter to execute it.
 
-For example, you have entered the command "cat README". To repeat it, press the up arrow and Enter.
-
-The keyboard shortcut Ctrl+R brings up a history search. Press Ctrl+R and start typing. Bash will prompt you for the last command you typed, which starts the same way. Press Enter to execute it.
-
-Type the following command to print the entire command history:
+The `history` command shows you the whole history. Run it without parameters this way:
 {line-numbers: false, format: Bash}
 ```
 history
 ```
 
-The command history accumulates only commands that have been executed. It does not store commands that you typed and then erased.
+The history stores the command that you have executed. It does not keep the command that you typed and then erased.
 
-What should you do if you want to save a command to the history without executing it? For example, you are going to execute it later. There is the trick with a comment for that. If a command starts with a #, Bash treats it as a comment. When you press Enter, it will go into the history, but it won't be executed. Using this trick, you can launch the cat utility in this way:
+There is a trick to save the command to the history without executing it. Add the hash symbol # before the command and press Enter. Bash stores the typed line, but it does not execute it. This happens because the hash symbol means comment. When the interpreter meets a comment, it ignores this line. However, Bash adds the commented lines in the history because they are legal constructions of the language.
+
+Here is an example of the trick with comment for our `cat` utility call:
 {line-numbers: false, format: Bash}
 ```
 #cat README
 ```
 
-Now let's execute the command. For doing it, find the command in the history. Then erase the hash symbol at the beginning and press Enter.
+You have saved the commented command in the history. Now you can find it there by pressing the up arrow key. Remove the hash symbol at the beginning of the line and press Enter. Bash will execute your command.
 
-The Alt+Shift+3 keyboard shortcut does the comment trick in most terminals. It works like this:
+You can do the comment trick by the Alt+Shift+3 shortcut. It works in most modern terminal emulators. Here are the steps for using the shortcut:
 
-1. Type a command, but don't press Enter.
+1. Type a command, but do not press Enter.
 2. Press Alt+Shift+3.
-3. The command has been saved in the history without being executed.
+3. Bash saves the command in the history without executing it.
 
-How to copy text from the terminal? Suppose that another document needs a part of the `README` file. Use [**clipboard**](https://en.wikipedia.org/wiki/Clipboard_(computing)) to copy it. The clipboard is temporary storage for strings. The text selected in the terminal is stored there. You can paste it into any other window.
+Sometimes you need to copy text from the terminal window. It can be a command or its output. Here is an example. Suppose that some document needs a part of the Bash `README` file. Use the [**clipboard**](https://en.wikipedia.org/wiki/Clipboard_(computing)) to copy it. The clipboard is temporary storage for text data. When you select something in the terminal window with a mouse, the clipboard saves it automatically. Then you can paste this data to any other window.
 
-These are the steps to copy text from the terminal:
+These are the steps to copy text from the terminal window:
 
-1. Select the text with the mouse. For doing it, hold down the left mouse button and drag the cursor over the text.
+1. Select the text with the mouse. Hold down the left mouse button and drag the cursor over the required text.
 
-2. Press the middle mouse button to paste the text from the clipboard into the terminal window. The text will be inserted at the current cursor position.
+2. Press the middle mouse button to paste the text from the clipboard into the same or another terminal window. You insert the text at the current cursor position.
 
-3. Right-click and select the Paste item to paste the text to the application other than the terminal.
+3. Right-click and select the "Paste" item to paste the text to the application other than the terminal.
 
 #### find
 
-It is not convenient to search for a file or directory with `cd` and `ls`. There is a special `find` utility for this purpose.
+It is inconvenient to search for a file or directory with `cd` and `ls` commands. The special `find` utility does it better.
 
-If you run the `find` utility without parameters, it traverses all subdirectories of the current one and prints their contents. The output also includes hidden objects. Figure 2-14 shows the result of running `find` for the user's `~` home directory.
+If you run the `find` utility without parameters, it traverses the contents of the current directory and prints it. The output includes hidden objects. Figure 2-14 shows the result of running `find` in the home directory.
 
 {caption: "Figure 2-14. The output of the `find` utility", height: "30%"}
 ![find output](images/BashShell/find-command.png)
 
-The first parameter of the find utility is the directory to search in. The utility accepts relative and absolute paths. For example, here is a command to search in the root directory:
+The first parameter of `find` is the directory to search in. The utility accepts relative and absolute paths. For example, the following command shows the contents of the root directory:
 {line-numbers: false, format: Bash}
 ```
 find /
 ```
 
-The search conditions start from the second utility parameter. If the found object does not meet the conditions, `find` does not print it. The conditions are combined with each other and form a single expression. A special interpreter is built into the utility to process this expression. For example, a search condition can be a filename. In this case, only files with this name will appear in the `find` output.
+You can specify search conditions starting from the second parameter. If the found object does not meet these conditions, `find` does not print it. The conditions form a single expression. The utility has an embedded interpreter that processes this expression.
 
-Table 2-3 shows commonly used conditions for the `find` utility.
+An example of the `find` condition is the specific filename. When you call the utility with such a condition, it prints the found files with this name only.
+
+Table 2-3 shows the format of commonly used conditions for the `find` utility.
 
 {caption: "Table 2-3. Commonly used conditions for the `find` utility", width: "100%"}
 | Condition | Meaning | Example |
@@ -370,21 +370,23 @@ Table 2-3 shows commonly used conditions for the `find` utility.
 |  | | |
 | `-ipath <pattern>` | Search for a file or directory with the path that matches a glob pattern. The pattern is case-insensitive. | `find . -ipath */DOC/BASH/*` |
 |  | | |
-| `-a` or `-and` | Combine several conditions using logical AND. Only files and directories that satisfy all combined conditions appear in the output. | `find -name README -a -path */doc/bash/* ` |
+| `-a` or `-and` | Combine several conditions using the logical AND. If the found object fits all conditions, the utility prints it. | `find -name README -a -path */doc/bash/* ` |
 |  | | |
-| `-o` or `-or` | Combine several conditions with a logical OR. If a file or directory matches at least one condition, it appears in the output. | `find -name README -o -path */doc/bash/* ` |
+| `-o` or `-or` | Combine several conditions using the logical OR. If the found object fits at least one condition, the utility prints it. | `find -name README -o -path */doc/bash/* ` |
 |  | | |
-| `!` or `-not` | It is a logical negation (NOT) | `find -not -name README` |
-| | of the condition. Only files and directories that do not satisfy the condition appear in the output. | `find ! -name README` |
+| `!` or `-not` | The logical negation (NOT) of the | `find -not -name README` |
+| | condition. If the found object does not fit the condition, the utility prints it. | `find ! -name README` |
 
-A glob pattern is a search query that contains [**wildcard characters**](https://en.wikipedia.org/wiki/Wildcard_character). There are three wildcard characters in Bash: *, ? и [. The asterisk stands for any number of any characters. A question mark means a single character of any kind. For example, the string `README` matches the following patterns:
+A glob pattern is a search query that contains [**wildcard characters**](https://en.wikipedia.org/wiki/Wildcard_character). Bash allows three wildcard characters: *, ? and [. The asterisk stands for any number of any characters. A question mark means a single character of any kind.
+
+Here is an example of glob patterns. The string `README` matches all following patterns:
 
 * `*ME`
 * `READM?`
 * `*M?`
 * `R*M?`
 
-Square brackets indicate a set of characters at a specific position. For example, the pattern `[cb]at.txt` matches the files `cat.txt` and `bat.txt`. Here is a call to the `find` utility that searches with this pattern:
+Square brackets indicate a set of characters at a specific position. For example, the pattern "[cb]at.txt" matches the `cat.txt` and `bat.txt` files. You can apply this pattern to the `find` call this way:
 {line-numbers: false, format: Bash}
 ```
 find . -name "[cb]at.txt"
@@ -409,126 +411,134 @@ What of the following lines corresponds to the pattern "*/doc?openssl*" ?
 * /doc/openssl
 ```
 
-Let's apply glob patterns into practice. We will find the Bash `README` file with the `find` utility. Suppose that we don't know the disk where the file is stored. Then we pass the root directory as the first parameter to `find`. This way, the utility looks for the file on all mounted disks. In the Unix environment, documents are stored in directories named `doc`. With this in mind, we make the following search command:
+Let's apply glob patterns into practice. Suppose that you do not know the location of the Bash `README` file. You should use the `find` utility in this case. Start searching with the utility from the root directory. Now you need a search condition. It is a common practice to store documentation in directories called `doc` in Unix. Therefore, you can search files in these directories only. This way, you get the following `find` call:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/*
 ```
 
-The command lists all documentation files on all mounted disks. There are too many files. We can shorten the list with extra search conditions. Add the word `bash` to the path of the file that we are looking for. Then we get the following command:
+The command shows you all documentation files on all mounted disks. This is a huge list. You can shorten it with an extra search condition. It should be a separate directory for the Bash documentation. The directory is called `bash`. Add this path as the second search condition. Then you get the following command:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -path */bash/*
 ```
 
-Figure 2-15 shows the result. The following command provides the same result:
+Figure 2-15 shows the result of this command.
+
+The following `find` call provides the same result:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -a -path */bash/*
 ```
 
-The commands differ by the `-a` option between conditions. The option means logical AND. It is used by default if no logical operation is specified between conditions.
+Our `find` calls differ by the `-a` option between conditions. The option means logical AND. If you do not specify any logical operator between conditions, `find` inserts AND by default. This is a reason why both calls provide the same result.
 
 {caption: "Figure 2-15. The output of the `find` utility", height: "30%"}
 ![find output](images/BashShell/find-path-path.png)
 
-At the end of the list, the find utility reports an error. The problem is some subdirectories of the root are mount points of the Windows disks. For example, the C drive is mounted in `/c`. The utility cannot access their contents when searching from the root directory. To avoid the error, start the search from the mount point of the C drive. You can do it this way:
+You can see that the `find` utility reports an error in Figure 2-15. The mount points of Windows disk drives cause it. The utility cannot access them when you start searching from the root directory. You can avoid the problem if you start searching from the `/c` mount point. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 find /c -path */doc/* -a -path */bash/*
 ```
 
-An alternative solution is to exclude mount points from the search. To do this, pass the `-mount` option:
+There is an alternative solution. You should exclude mount points from the search. The `-mount` option does this. Apply the option this way:
 {line-numbers: false, format: Bash}
 ```
 find / -mount -path */doc/* -a -path */bash/*
 ```
 
-As a result, the `find` utility displays a short list of documents. Among them, it is easy to find the `README` file you need.
+When you add the second search condition, the `find` utility shows a short list of documents. You can find the right `README` file easily there.
 
-There are other ways to search for a documentation file. Suppose that we know its name. We put the name together with an assumed path. Then we get the following command:
+There are other ways to search for the documentation file. Suppose that you know its name. Then you can specify it together with an assumed path. You will get the `find` call like this:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README
 ```
 
-Figure 2-16 shows the result of the search.
+Figure 2-16 shows the result of this command.
 
 {caption: "Figure 2-16. The output of the `find` utility", height: "30%"}
 ![find output](images/BashShell/find-path-name.png)
 
-Again we get a short list of files. It is easy to locate the right file there.
+Again you got a short list of files. It is easy to locate the right file there.
 
-The conditions of the `find` utility can be grouped together. For doing it, use [escaped](https://en.wikipedia.org/wiki/Escape_character) parentheses. For example, let's find `README` files with path `*/doc/*` or `LICENSE` files with an arbitrary path. The following command does it:
+You can group the conditions of the `find` utility. Do it using the [escaped](https://en.wikipedia.org/wiki/Escape_character) parentheses. Here is an example of using them. Let's write the `find` call that searches `README` files with path `*/doc/*` or `LICENSE` files with an arbitrary path. This call looks like this:
 {line-numbers: false, format: Bash}
 ```
 find / \( -path */doc/* -name README \) -o -name LICENSE
 ```
 
-Why escape brackets in a `find` utility expression? The parentheses are part of the Bash syntax. They are used in language constructs. When Bash meets parentheses in a command, it performs **substitution**. Substitution is the replacement of a part of command with something else. Escaping characters forces the interpreter to ignore the parentheses.  In this case, Bash passes them as is to the `find` utility.
+Why should you apply backslashes to escape brackets here? The parentheses are part of the Bash syntax. Therefore, Bash treats them like language constructs. When Bash meets parentheses in a command, it performs an **expansion**. The expansion is the replacement of a part of the command with something else. When you escape parentheses, you force Bash to ignore them. Thus, Bash does not perform the expansion and passes all search conditions to the `find` utility as it is.
 
-The find utility can search for files and directories. Also, it can process them. You can specify an action after a search condition. The utility applies the action to each object it finds.
+The `find` utility can process the found objects. You can specify an action to apply as an extra option. The utility will apply this action to each found object.
 
-Table 2-4 shows the options for specifying actions.
+Table 2-4 shows the `find` options that specify actions.
 
 {caption: "Table 2-4. Options for specifying actions on found objects", width: "100%"}
 | Option | Meaning | Example |
 | --- | --- | --- |
 | `-exec command {} \;`| Execute the specified command on each found object. | `find -name README -type f -exec cp {} ~ \;` |
 |  | | |
-| `-exec command {} +`| Execute the specified command once over all found objects. So, the command receives all objects on the input. | ` find -type d -exec cp -t ~ {} +` |
+| `-exec command {} +`| Execute the specified command once over all found objects. The command receives all these objects on the input. | ` find -type d -exec cp -t ~ {} +` |
 |  | | |
-| `-delete`| Delete each of the found files. The directories are deleted if they are empty. | `find -name README -type f -delete` |
+| `-delete`| Delete each of the found files. The utility deletes empty directories only. | `find -name README -type f -delete` |
 
-There are two variants of the `-exec` action. They differ in the characters at the end: an escaped semicolon `\;` or plus +. The second case with plus works if the called command can handle several input parameters. Most GNU utilities can do this. If the command accepts only one parameter, it processes the first found object only.
+Table 2-4 shows that there are two variants of the `-exec` action. They differ by the characters at the end. It can be an escaped semicolon `\;` or a plus sign +. Use the plus sign variant only if the called command handles several input parameters. You will make a mistake if the command accepts one parameter only. It will process the first found object and skip the rest.
 
-Let's apply the `-exec` action to solve a practical task. We should copy the Bash documentation files with an HTML extension into the home directory. First, we should find these files with the find utility. The search command looks like this:
+Let's apply the `-exec` action in practice. Suppose that you want to copy files with the Bash documentation into the home directory. You are interested in the HTML files only.
+
+The first step is preparing the correct `find` call for searching the files. You should apply two conditions here. The first one checks the directory of the Bash documentation. The second condition checks the file extensions. If you combine these conditions, you get the following `find` call:
 {line-numbers: false, format: Bash}
 ```
 find / -path "*/doc/bash/*" -name "*.html"
 ```
 
-When you pass glob patterns to the `find` utility, enclose them in double-quotes. The quotation marks do the same as the backslash before parentheses. They prevent Bash from interpreting the patterns. Then the `find` utility gets them as is and interprets them itself.
+When you pass the glob pattern to the `find` utility, always enclose it in double-quotes. The quotes do the same as the backslash before parentheses. They prevent Bash from expanding the patterns. Instead, Bash passes them to the `find` utility.
 
-Figure 2-17 shows the result of searching the HTML files.
+Figure 2-17 shows the result of our `find` call. You can see that it found HTML files correctly.
 
 {caption: "Figure 2-17. The output of the `find` utility", height: "30%"}
 ![find output](images/BashShell/find-html.png)
 
-Let's add the `-exec` action to the search command. It calls the `cp` utility. This utility copies files and directories to the specified path. The first parameter of `cp` is the object to copy. The second parameter is the path to copy to.  The final command looks this way:
+The second step for solving your task is adding the `-exec` action. The action should call the `cp` utility. This utility copies files and directories to the specified path. It takes two parameters. The first one is the source object to copy. The second parameter is the target path. When you apply the `-exec` action, you get the following `find` call:
 {line-numbers: false, format: Bash}
 ```
 find / -path "*/doc/bash/*" -name "*.html" -exec cp {} ~ \;
 ```
 
-This command prints a mount point error only.
+Run this command. It prints an error about the mount point. Despite the error, the command did its job. It copied the HTML files into the home directory.
 
-Let's see what the command did. It calls the `cp` utility for each HTML file it finds. The first parameter of `cp` is the path to the file. It was put in place of the curly braces {}. The `find` utility found two files. That is why `cp` is called twice like this:
+How does the command work in detail? It calls the `cp` utility for each HTML file it found. When calling the utility, `find` inserts each found object instead of curly braces {}. Therefore, two `cp` calls happen here. They look like this:
 {line-numbers: true, format: Bash}
 ```
 cp ./usr/share/doc/bash/bash.html ~
 cp ./usr/share/doc/bash/bashref.html ~
 ```
 
-Each call copies one HTML file to the user's home directory.
+Each `cp` call copies one HTML file to the home directory.
 
-We have just written our first program in the language of the `find` utility interpreter. The program works according to the following algorithm:
+Good job! You just wrote your first program in the language of the `find` utility. The program works according to the following algorithm:
 
-1. Find files with an HTML extension on all disks. Their paths correspond to the pattern `*/doc/bash/*`.
+1. Find HTML files starting from the root directory. Their paths match the `*/doc/bash/*` pattern.
 
-2. Copy each found file into the user's directory.
+2. Copy each found file into the home directory.
 
-The program algorithm consists of two steps only. But it is a scalable solution for finding and copying files. The program will process dozens of files as fast as a couple of them.
+The program is quite simple and consists of two steps only. However, it is a scalable solution for finding and copying files. The program processes two or dozens of HTML files with the same speed.
 
-You can combine the `-exec` actions in the same way as the search conditions. To give you an example, let's print out each found HTML file's contents and count the number of lines in it. The `cat` utility can print the contents of the file. The `wc` utility counts the number of lines. At the input, `wc` takes the name of the file to be processed. In this case, the `find` call looks like this:
+You can combine the `-exec` actions in the same way as the search conditions. For example, let's print the contents of each found HTML file and count the number of its lines. You should call the `cat` utility to print the file contents. The `wc` utility counts the lines. It takes the filename as an input parameter. If you combine `cat` and `wc` calls, you get the following `find` command:
 {line-numbers: false, format: Bash}
 ```
 find / -path "*/doc/bash/*" -name "*.html" -exec cat {} \; -exec wc -l {} \;
 ```
 
-We have not specified a logical operation between the `-exec` actions. The default is to use logical AND. It means that the second action is only executed if the first one succeeds. If we apply the logical OR instead, the second action is always executed. It would not depend on the result of the first one.
+There is no logical operation between the `-exec` actions. The `find` utility inserts logical AND by default. This has a consequence in our case. If the `cat` utility fails, `find` does not call the `wc` utility. It means that `find` executes the second action only if the first one succeeds. You can apply the logical OR explicitly. Then `find` always calls `wc`. Here is the command with logical OR:
+{line-numbers: false, format: Bash}
+```
+find / -path "*/doc/bash/*" -name "*.html" -exec cat {} \; -o -exec wc -l {} \;
+```
 
-You can group the `-exec` actions with escaped parentheses `\(` and `\)`. It works in the same way as grouping search conditions.
+You can group the `-exec` actions with escaped parentheses `\(` and `\)`. It works the same way as grouping search conditions.
 
 {caption: "Exercise 2-3. Searching for files with the `find` utility", line-numbers: false}
 ```
