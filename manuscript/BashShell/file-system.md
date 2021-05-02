@@ -548,17 +548,17 @@ Extend the command to print the total number of lines in these files.
 
 #### Logic Expressions
 
-The search conditions of the `find` utility are [**Boolean expressions**](https://en.wikipedia.org/wiki/Boolean_expression). A Boolean expression is a programming language statement. Its calculation gives one of two possible results: "true" or "false".
+The search conditions of the `find` utility are [**Boolean expressions**](https://en.wikipedia.org/wiki/Boolean_expression). A Boolean expression is a programming language statement. It produces a Boolean value when evaluated. This value equals either "true" or "false".
 
-The `find` conditions are statements of the utility's built-in interpreter. If the condition is met for a found object, its result equals "true". Otherwise, the condition result is "false". If there are several conditions, they are combined into a compound Boolean expression.
+The `find` condition is a statement of the utility's language. It produces the "true" value if the found object meets its requirement. Otherwise, the condition produces "false". If there are several conditions in the `find` call, they make a single compound Boolean expression.
 
-We met Boolean algebra already when we have considered the binary numeral system. This section of mathematics studies [**logical operators**](https://en.wikipedia.org/wiki/Logical_connective). They are different from the usual arithmetic operations: addition, subtraction, multiplication, and division.
+When we have considered the binary numeral system, we already met Boolean algebra. This section of mathematics studies [**logical operators**](https://en.wikipedia.org/wiki/Logical_connective). They differ from the arithmetic operations: addition, subtraction, multiplication, and division.
 
-The result of calculating a Boolean expression can be two values only. Therefore, arithmetic operations on such an expression are trivial and yield nothing. If we apply logical operators instead, we get conditions with strict rules for calculations. This way, we write a search condition for a file with a given name and path for the `find` utility. The combination of such conditions with actions provides a program with complex behavior.
+You can apply a logical operator to Boolean values or expressions. Using an arithmetic operation does not make sense in this case. Addition or subtraction is trivial for Boolean values. It yields nothing. When you apply a logical operator, you get a condition with strict evaluation rules. This way, you wrote search conditions for the `find` utility. When you combine several conditions, you get a program with complex behavior.
 
-An **operand** is an object of a logical operator. An operand can be an expression or a single value.
+An **operand** is an object of a logical operator. Boolean values and expressions can be operands.
 
-For simplicity, let's consider Boolean expressions using an example not related to the `find` utility. Imagine that we are programming a robot for a warehouse. Its job is to move boxes from point A to point B. To do this, we would write the following straightforward algorithm for the robot:
+Let's consider Boolean expressions using an example. The example is not related to the `find` utility or Bash for simplicity. Imagine that you are programming a robot for a warehouse. Its job is to move boxes from point A to point B. You can write the following straightforward algorithm for the robot:
 
 1. Move to point A.
 
@@ -568,9 +568,9 @@ For simplicity, let's consider Boolean expressions using an example not related 
 
 4. Put the box at point B.
 
-There are no conditions in this algorithm. It means that the robot performs each step independently of external events.
+This algorithm does not have any conditions. It means that the robot performs each step independently of external events.
 
-Now imagine that there is an obstacle in the way of the robot to point B. For example, there is another robot. In this case, the execution of the algorithm leads to a collision. We can add a condition in our algorithm to prevent the collision. It would look this way:
+Now imagine that an obstacle happens in the robot's way. For example, another robot stuck there. Executing your algorithm leads to the collision of the robots in this case. You should add a condition in the algorithm to prevent the collision. For example, it can look like this:
 
 1. Move to point A.
 
