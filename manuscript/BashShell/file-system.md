@@ -574,7 +574,7 @@ Now imagine that an obstacle happens in the robot's way. For example, another ro
 
 1. Move to point A.
 
-2. Take the box at point A.
+2. Pick up the box at point A.
 
 3. If there is no obstacle, move to point B. Otherwise, stop.
 
@@ -582,55 +582,55 @@ Now imagine that an obstacle happens in the robot's way. For example, another ro
 
 The third step of the algorithm is called [**conditional statement**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). All modern programming languages have such a statement.
 
-The algorithm of the conditional statement looks like this:
+The conditional statement works according to the following algorithm:
 
-1. Calculate the value of the operand.
+1. Evaluate the Boolean expression in the condition.
 
-2. If the result equals "true", perform the first action.
+2. If the expression produces "true", perform the first action.
 
-3. If the result is "false", perform the second action.
+3. If the expression produces "false", perform the second action.
 
-In our example, the robot calculates the value of the Boolean expression "there is no obstacle". If there is an obstacle, the expression returns false and the robot stops. Otherwise, the robot moves to point B.
+The robot evaluates the value of the Boolean expression "there is no obstacle" in our example. If there is an obstacle, the expression produces "false" and the robot stops. Otherwise, the robot moves to point B.
 
-Logical operators allow you to combine several expressions into one. For example, the robot tries to pick up a box at point A, but there is no box. Then there is no reason for him to move to point B. We can add this condition to the existing expression using [**logical AND**](https://en.wikipedia.org/wiki/Logical_conjunction) (conjunction). Now the robot algorithm looks like this:
+When writing the conditional statement, you can combine several Boolean expressions using logical operators. Here is an example. Suppose that the robot tries to pick up a box at point A, but there is no box. Then there is no reason for him to move to point B. You can check this situation in the conditional statement. Add the new Boolean expression there using [**logical AND**](https://en.wikipedia.org/wiki/Logical_conjunction) (conjunction). Then the robot's algorithm becomes like this:
 
 1. Move to point A.
 
-2. Take the box at point A.
+2. Pick up the box at point A.
 
 3. If there is a box AND no obstacle, move to point B. Otherwise, stop.
 
 4. Put the box at point B.
 
-Calculating logical operators also yields "true" or "false". The result of a logical AND equals "true" when both operands are "true". For our examples, it means that the robot has a box and there is no obstacle. In any other case, the result of logical AND equals "false". Then the robot stops.
+Logical operators produce Boolean values when evaluated. The result of a logical AND equals "true" when both operands are "true". In our example, it happens when the robot has a box and there is no obstacle on its way. Otherwise, the result of logical AND equals "false". It forces the robot to stop.
 
-Working with the `find` utility, we got acquainted with two more logical operators: [**OR**](https://en.wikipedia.org/wiki/Logical_disjunction) (disjunction) and [**NOT**](https://en.wikipedia.org/wiki/Negation) (negation).
+You have used two more logical operators when learning the `find` utility. These operators are [**OR**](https://en.wikipedia.org/wiki/Logical_disjunction) (disjunction) and [**NOT**](https://en.wikipedia.org/wiki/Negation) (negation).
 
-Actually, we already applied logical NOT in the robot algorithm. It stays implicitly in the expression "there is no obstacle". It equals to the following negation: "there is NOT an obstacle". Let's specify the logical NOT in the algorithm explicitly:
+Actually, you have already applied logical NOT in the robot's algorithm. It stays implicitly in the expression "there is no obstacle". It equals the following negation: "there is NOT an obstacle". You can specify the logical NOT in the algorithm explicitly this way:
 
 1. Move to point A.
 
-2. Get the box at point A.
+2. Pick up the box at point A.
 
 3. If there is a box AND there is NOT an obstacle, move to point B. Otherwise, stop.
 
 4. Put the box at point B.
 
-You can always replace logical AND by OR in the Boolean expression. Let's do it for our example. We want to change the operator but keep the robot's behavior the same. Then we would add negation to the first condition and remove it from the second one. Also, let's change the order of actions in the conditional statement. Now, if the expression is true, the robot stops. If it is false, the robot moves to point B. The final algorithm looks this way:
+You can always replace logical AND by OR with some extra changes. Let's do it for our example but keep the robot's behavior the same. You should add the negation to the first Boolean expression and remove it from the second one. Also, you have to change the order of actions in the conditional statement. If the condition produces "true", the robot stops. If it produces "false", the robot moves to point B. The new algorithm looks this way:
 
 1. Move to point A.
 
-2. Get the box at point A.
+2. Pick up the box at point A.
 
 3. If there is NOT a box OR there is an obstacle, stop. Otherwise, move to point B.
 
 4. Put the box at point B.
 
-Read the new conditional statement carefully. The robot follows the same decisions. It still stops if it has no box or if there is an obstacle in the way.
+Read the new conditional statement carefully. The robot follows the same decisions as before. It stops if it has no box or if there is an obstacle on its way. However, you have exchanged the logical AND to OR. This trick helps you to keep your conditional statements clear. Choose between logical AND and OR depending on your Boolean expressions. Pick one that fits your case better.
 
-In our example, we wrote the Boolean expression as a sentence in English. This sentence sounds unnatural. You have to read it several times to understand it. The reason is that the [**natural language**](https://en.wikipedia.org/wiki/Natural_language) (the language of human communication) is not suitable for writing Boolean expressions. This language is not accurate enough. That is why Boolean algebra uses mathematical notation instead.
+You wrote the Boolean expressions as sentences in English in our example. Such a sentence sounds unnatural. You have to read it several times to understand it. This happens because the natural humans' language is not suitable for writing Boolean expressions. This language is not accurate enough. Boolean algebra uses mathematical notation for that reason.
 
-We have considered logical AND, OR and NOT. Three other operations are used in programming often:
+We have considered logical AND, OR and NOT. You will deal with three more operators in programming often:
 
 * Equivalence
 * Non-equivalence
@@ -639,35 +639,35 @@ We have considered logical AND, OR and NOT. Three other operations are used in p
 Table 2-5 explains them.
 
 {caption: "Table 2-5. Logical operators", width: "100%"}
-| Operator | Calculation Result |
+| Operator | Evaluation Rule |
 | --- | --- |
-| AND | It returns "true" when both operands are "true". |
+| AND | It produces "true" when both operands are "true". |
 |  | |
-| OR | It returns "true" when any of the operands is "true". It returns "false" when all operands are "false". |
+| OR | It produces "true" when any of the operands is "true". It produces "false" when all operands are "false". |
 |  | |
-| NOT | It returns "true" when the operand is "false" and vice versa. |
+| NOT | It produces "true" when the operand is "false" and vice versa. |
 |  | |
-| Exclusive OR (XOR) | It returns "true" when the operands have different values (true-false or false-true). It returns "false" when the operands are the same (true-true, false-false). |
+| Exclusive OR (XOR) | It produces "true" when the operands have different values (true-false or false-true). It produces "false" when the operands are the same (true-true, false-false). |
 |  | |
-| Equivalence | It returns "true" when the operands have the same values. |
+| Equivalence | It produces "true" when the operands have the same values. |
 |  | |
-| Non-equivalence | It returns "true" when the values of the operands differ. |
+| Non-equivalence | It produces "true" when the values of the operands differ. |
 
-Try to memorize this table. It is simple when you use logical operators often.
+Try to memorize this table. It is simple to reach when you use logical operators often.
 
 #### grep
 
-The `grep` utility is another search tool. It searches for files based on their contents.
+The GNU utilities have one more searching tool besides `find`. It is called `grep`. This utility checks file contents when searching.
 
-When to use the `find` utility and when to use `grep`? Use `find` for searching a file or directory by name, path or [**metadata**](https://en.wikipedia.org/wiki/Metadata). Metadata is additional information about an object. These are examples of the file metadata: size, time of creation and last modification, access rights. Use the `grep` utility to find a file when you know nothing about it except its contents.
+How to choose the proper utility for searching? Use `find` for searching a file or directory by its name, path or [**metadata**](https://en.wikipedia.org/wiki/Metadata). Metadata is extra information about an object. Examples of the file metadata are size, time of creation and last modification, permissions. Use the `grep` utility to find a file when you know nothing about it except its contents.
 
-Let's look at an example. It shows you how to choose the right utility for searching. We are looking for a documentation file. We know that it contains the phrase "free software". If we apply the `find` utility, the search algorithm looks like this:
+Here is an example. It shows you how to choose the right utility for searching. Suppose that you are looking for a documentation file. You know that it contains the phrase "free software". If you apply the `find` utility, the searching algorithm looks like this:
 
-1. Find all the files with the name `README` using the `find` utility.
+1. Call `find` to list all the files with the `README` name.
 
 2. Open each file in a text editor and check if it has the phrase "free software".
 
-When you use a text editor for checking the file content, it takes a long time. You should open the file, pick a search option, type the text for searching. The `grep` utility automates all these steps. The following command finds the line "free software" in the `README` file:
+Using a text editor for checking dozens of files takes too much effort and time. You should perform several operations with each file manually: open it, activate the editor's searching mode, type the "free software" phrase. The `grep` utility automates this task. For example, the following command finds all lines with the "free software" phrase in the specified `README` file:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" /usr/share/doc/bash/README
