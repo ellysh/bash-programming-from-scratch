@@ -673,94 +673,98 @@ Using a text editor for checking dozens of files takes too much effort and time.
 grep "free software" /usr/share/doc/bash/README
 ```
 
-The first parameter of the utility is a string for searching. Do not forget to put it in the double-quotes. This way, we force Bash to pass the string to the utility unchanged. Without the quotes, space splits the phrase into two separate parameters. This Bash mechanism of splitting strings into words is called [**word splitting**](http://mywiki.wooledge.org/WordSplitting).
+The first parameter of the utility is a string for searching. Always enclose it in the double-quotes. This way, you prevent Bash expansions and guarantee that the utility receives the string unchanged. Without the quotes, Bash splits the phrase into two separate parameters. This mechanism of splitting strings into words is called [**word splitting**](http://mywiki.wooledge.org/WordSplitting).
 
-The second parameter of `grep` is a relative or absolute path to the file. If you specify a list of files separated by spaces, the utility handles them all. In the example, we passed only one path to the `README` file.
+The second parameter of `grep` is a relative or absolute path to the file. If you specify a list of files separated by spaces, the utility processes them all. In the example, we passed the `README` file path only.
 
-Figure 2-18 shows the result of the `grep` utility.
+Figure 2-18 shows the result of the `grep` call.
 
 {caption: "Figure 2-18. The output of the `grep` utility", width: "100%"}
 ![grep output](images/BashShell/grep-command.png)
 
-The utility outputs all lines of the file where it found the specified phrase. You can improve the output by adding the line numbers there. The `-n` option of `grep` does it. Add the option before the first parameter when calling the utility. Figure 2-18 shows the result of such a call.
+You see all lines of the file where the utility found the specified phrase. The `-n` option adds the line numbers to the `grep` output. It can help you to check big text files. Add the option before the first parameter when calling the utility. Figure 2-18 shows the output in this case.
 
-We have learned how to use `grep` to find a phrase in the specified files. Now let's apply the utility to solve our task. We are looking for the documentation files with the phrase "free software". There are two ways to reach it with the `grep` utility:
+We have learned how to use `grep` to find a string in the specified files. Now let's apply the utility to solve our task. You are looking for the documentation files with the phrase "free software". There are two ways to find them with the `grep` utility:
 
-* Use Bash search patterns.
+* Use Bash glob patterns.
+
 * Use the file search mechanism of the `grep` utility.
 
-Let's consider the first method. Suppose the user has two text files in his home directory: `bash.txt` and `xz.txt`. These are copies of `README` documents of the Bash and `xz` programs. Find out which one contains the phrase "free software". To do it, execute the following two commands:
+The first method works well when you have all files for checking in the same directory. Suppose that you found two `README` files: one for Bash and one for the `xz` utility. You have copied them to the home directory with the names `bash.txt` and `xz.txt`. The following two commands find the file that contains the phrase "free software":
 {line-numbers: true, format: Bash}
 ```
 cd ~
 grep "free software" *
 ```
 
-First, we navigate to the user's home directory. Then we call the `grep` utility.
+The first command changes the current directory to the user's home. The second command calls the `grep` utility.
 
-When calling `grep`, we have specified the asterisk for the target file path. This wildcard means any string. Bash substitutes all wildcards in the command before launching it. In our case, we get the list of the home directory files instead of the pattern. The resulting `grep` call looks like this:
+When calling `grep`, we have specified the asterisk for the target file path. This wildcard means any string. Bash expands all wildcards in the command before launching it. In our example, Bash replaces the asterisk with all files of the home directory. The resulting `grep` call looks like this:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" bash.txt xz.txt
 ```
 
-Launch both versions of the `grep` call: with a `*` pattern and with a list of files. The utility gives the same result for both cases.
+Launch both versions of the `grep` call: with the `*` pattern and with a list of two files. The utility prints the same result for both cases.
 
-We can exclude the `cd` command from our solution. To do it, we add a path to the directory in the search pattern. Then the `grep` call becomes like this:
+You can search for the phrase in a single command. Just exclude the `cd` call. Then add the home directory to the search pattern. You will get the following `grep` call:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" ~/*
 ```
 
-You can check how the Bash substitutes the search pattern. Use the `echo` command for that. Let's check the patterns from our examples with the `grep` utility:
+This command does not handle subdirectories. It means that the `grep` call does not check the files in the `~/tmp` directory, for example.
+
+There is an option to check how the Bash expands a glob pattern. Use the `echo` command for that. Here are `echo` calls for checking our patterns:
 {line-numbers: true, format: Bash}
 ```
 echo *
 echo ~/*
 ```
 
-Run these commands. They output the files in the home directory.
+Run these commands. The first one lists files in the current directory. The second command does the same for the home directory.
 
-You should not enclose search patterns in double-quotes. There is an example of the wrong command:
+Do not enclose search patterns in double-quotes. Here is an example of the wrong command:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" "*"
 ```
 
-Because of the quotes, Bash does not unfold the pattern. It passes the pattern as it is to the `grep` utility. It cannot unfold the pattern on its own as the `find` utility does. Therefore, such a call causes an error like in Figure 2-19.
+Quotes prevent the Bash expansion. Therefore, Bash does not insert the filenames to the command but passes the asterisk to the `grep` utility. The utility cannot handle the glob pattern properly as `find` does. Thus, you will get an error like Figure 2-19 shows.
 
 {caption: "Figure 2-19. The result of processing a search pattern by `grep`", width: "100%"}
 ![grep error](images/BashShell/grep-error.png)
 
-Bash does not include hidden files and directories when it substitutes the pattern `*`. Therefore, the `grep` utility does not get them as input in our example. The search pattern for hidden files is `.*`. You can search for all kinds of files at once. Specify two patterns separated by a space in this case. There is an example command:
+When expanding the `*` pattern, Bash ignores hidden files and directories. Therefore, the `grep` utility ignores them too in our example. Add the dot before the asterisk to get the glob pattern for hidden objects. It looks like `.*`. If you want to check all files at once, specify two patterns separated by the space. Here is an example `grep` call:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" * .*
 ```
 
-There is an alternative for the Bash search patterns. You can use the built-in feature of the `grep` utility. It searches the files in the specified directory. The `-r` option enables this mode of the utility. If you use the option, specify the search directory instead of the file name in the last `grep` parameter.
+The second approach to search files with `grep` is using its built-in mechanism. It traverses the directories recursively and checks all files there. The `-r` option enables this mechanism. When using this option, specify the search directory in the second utility's parameter.
 
-The following command finds the "free software" phrase in the files of the current directory:
+Here is an example of using the `-r` option:
 {line-numbers: false, format: Bash}
 ```
 grep -r "free software" .
 ```
 
-This `grep` call handles the hidden files in the current directory too. At the same time, it does not handle the files in the subdirectories. To do that, replace the `-r` option with `-R`. There is an example:
+This command finds the "free software" phrase in the files of the current directory. It processes the hidden objects too. If you work on Linux or macOS, prefer the `-R` option instead of `-r`. It forces `grep` to follow [**symbol links**](https://en.wikipedia.org/wiki/Symbolic_link) when searching. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 grep -R "free software" .
 ```
 
-You can specify the target directory by a relative or absolute path. Here are the examples for both cases:
+I> A symbolic link is a file of a special type. Instead of data, it contains a pointer to another file or directory.
+
+You can specify the starting directory for searching by a relative or absolute path. Here are the examples for both cases:
 {line-numbers: true, format: Bash}
 ```
-cd /home
 grep -R "free software" ilya.shpigor/tmp
 grep -R "free software" /home/ilya.shpigor/tmp
 ```
 
-Suppose we are interested in a list of files that contain a phrase. In the normal mode, the grep utility outputs all occurrences of the search phrase. It is an extra output, which is not always needed. Let's remove it with the `-l` option. Here is an example:
+Suppose that you are interested in a list of files that contain a phrase. You do not need all occurrences of the phrase in each file. The `-l` option switches the `grep` utility in the mode you need. Here is an example of using it:
 {line-numbers: false, format: Bash}
 ```
 grep -Rl "free software" .
@@ -771,35 +775,35 @@ Figure 2-20 shows the result of this command.
 {caption: "Figure 2-20. The `grep` outputs filenames only"}
 ![grep output](images/BashShell/grep-files.png)
 
-We got a list of files where the phrase "free software" occurs at least once. Suppose we want the opposite result: a list of files without the phrase. To do that, use the `L` option. There is an example:
+You see a list of files where the phrase "free software" occurs at least once. Suppose that you need the opposite result: a list of files without the phrase. Use the `-L` option for finding them. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 grep -RL "free software" .
 ```
 
-The program source code files contain text. The `grep` utility works with text files only. Therefore, grep does a good job of searching through the source code. Use it as an add-on to your editor.
+The `grep` utility processes the text files only. Therefore, it deals well with the source code files. You can use the utility as an add-on to your code editor or IDE.
 
-You may have liked the grep utility. Now you want to process [PDF](https://en.wikipedia.org/wiki/PDF) and MS Office documents with it. Unfortunately, this approach does not work. The format of these files is not text. The data are encoded there. To process such files, you need another utility. Table 2-6 shows `grep` alternatives for non-text files.
+You may have liked the `grep` utility. You want to process [PDF](https://en.wikipedia.org/wiki/PDF) and MS Office documents with it. Unfortunately, this approach does not work. The contents of these files are not text. It is encoded. You need another utility to process such files. Table 2-6 shows `grep` alternatives for non-text files.
 
 {caption: "Table 2-6. Utilities for text searching in PDF and MS Office files", width: "70%", column-widths: "20% *"}
 | Utility | Features |
 | --- | --- |
 | [pdftotext](http://www.xpdfreader.com) | It converts a PDF file into text format. |
 |  | |
-| [pdfgrep](https://pdfgrep.org) | It searches a PDF file by its content. |
+| [pdfgrep](https://pdfgrep.org) | It searches PDF files by their contents. |
 |  | |
-| [antiword](http://www.winfield.demon.nl) | It converts a MS Office document into text format. |
+| [antiword](http://www.winfield.demon.nl) | It converts an MS Office document into text format. |
 |  | |
-| [catdoc](https://www.wagner.pp.ru/~vitus/software/catdoc) | It converts a MS Office document into text format. |
+| [catdoc](https://www.wagner.pp.ru/~vitus/software/catdoc) | It converts an MS Office document into text format. |
 |  | |
 | [xdoc2txt](https://documentation.help/xdoc2txt/xdoc2txt_en.html) | It converts PDF and MS Office files into text format. |
 
-The package manager `pacman` can install some of these utilities in your MSYS2 environment. We will see how to do it in the last chapter of the book.
+Some of these utilities are available in the MSYS2 environment. Use the `pacman` package manager for installing them. The last chapter of the book describes how to use it.
 
 {caption: "Exercise 2-4. Searching for files with the `grep` utility", line-numbers: false}
 ```
 Write a grep call to find system utilities with a free license.
-Here are preferred licenses for open-source software:
+Here are widespread licenses for open-source software:
 
 1. GNU General Public License
 2. MIT license

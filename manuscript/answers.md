@@ -423,7 +423,7 @@ W> We wrote the directory comparison script for training purposes. Please do not
 
 ##### Exercise 3-6. The `case` statement
 
-The script for switching between configuration files will create [**symbolic links**](https://en.wikipedia.org/wiki/Symbolic_link) or symlinks. A symbolic link is a file of a special type. Instead of data, it contains a pointer to another file or directory.
+The script for switching between configuration files will create symbolic links.
 
 I> You cannot create a symbolic link in a Unix environment running on Windows. Instead, the `ln` utility copies the file or directory corresponding to the link. The utility works fine on Linux and macOS.
 
