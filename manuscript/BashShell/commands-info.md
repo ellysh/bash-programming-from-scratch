@@ -1,33 +1,33 @@
 ## Command Information
 
-We got acquainted with the file system navigation commands. For each of them, we have considered commonly used options and parameters only. What if you need a feature that was left out of the scope of this book?
+We got acquainted with commands for navigating the file system. Each command has several options and parameters. We have covered the most common ones only. What if you need a rare feature that is missing in this book? You would need official documentation in this case.
 
-All modern OSes and applications have documentation. But you need the documentation rarely, thanks to the graphical interface. The purposes of icons and buttons are usually obvious. Therefore, most PC users do not use the documentation that is built into applications.
+All modern OSes and applications have documentation. However, you rarely need it when using the graphical interface. It happens because graphic elements are self-explanatory in most cases. Therefore, most PC users do not care about documentation.
 
-When working with the command-line interface, the available features and modes of the application are not obvious. Before running it, you should know its options. The negligence can lead to loss or corruption of your data.
+When working with the CLI, the only way to know about available features of the software is by reading documentation. Besides that, you do not have anything that gives you a quick hint. When using CLI utility, it is crucial to know its basics. The negligence can lead to loss or corruption of your data.
 
-The first versions of Unix have paper documentation. It was inconvenient. The documentation volume grew rapidly. Soon it exceeded the size of a single book. The Unix developers introduced the system called `man`. It made accessing the documentation more convenient. The system allows a user to get information about any installed program.
+The first versions of Unix had paper documentation. Using it was inconvenient and time-consuming. Soon it became even worse because the documentation volume grew rapidly. It exceeded the size of a single book. The Unix developers introduced the system called [man page](https://en.wikipedia.org/wiki/Man_page) to solve the issue with documentation. Using this software, you can quickly find the required topic. It contains information about OS features and all installed applications.
 
-The `man` system is a centralized place to get documentation. Besides it, every program in Unix provides information about itself. For example, the Bash interpreter has its own documentation system. It is called `help`.
+The man page system is a centralized place to access documentation. Besides it, every program in Unix provides brief information about itself. For example, the Bash interpreter has its own documentation system. It is called `help`.
 
-You want to list all built-in Bash commands. For getting it, launch the `help` command without parameters. Figure 2-21 shows its output.
+Suppose that you want to get a list of all Bash built-ins. Launch the `help` command without parameters. Figure 2-21 shows its output.
 
 {caption: "Figure 2-21. The output of the `help` command", height: "50%"}
 ![help output](images/BashShell/bash-help.png)
 
-Here is a list of all commands that Bash executes on its own. If a command absents in this list, a GNU utility or third-party program executes it.
+You see a list of all commands that Bash executes on its own. If some command is missing in this list, Bash calls a GNU utility or another program to execute it.
 
-For example, the command `cd` presents in the `help` list. It means that Bash executes it without calling any other program. Now suppose you type the "find" command. There is no `find` command in the `help` list. Therefore, Bash looks for a utility with the `find` name on the hard drive. If this utility presents, Bash launches it.
+Here is an example. The `cd` command presents in the `help` list. It means that Bash executes it without calling another program. Now suppose you type the `find` command. It is missing in the `help` list. Therefore, Bash looks for an executable file with the `find` name on the disk drive. If it succeeds, Bash launches this file.
 
-Where does Bash look for utilities for executing commands? It has a list of paths for searching. Bash stores the list in the **environment variable** that is called `PATH`. The [**variable**](https://en.wikipedia.org/wiki/Variable_(computer_science)) is a named area of memory. If you want to access the memory area, you should specify its address. Variables provide a mechanism for simplifying this access. You can use the variable name instead of the address. It is much simpler to memorize names than addresses.
+Where does Bash look for files that execute your commands? Bash has a list of paths where it searches utilities and programs. The **environment variable** called `PATH` stores this list. The [**variable**](https://en.wikipedia.org/wiki/Variable_(computer_science)) is a named area of memory. If you write a program in machine code and want to access the memory area, you should specify its address. A variable is a mechanism of a programming language. It allows you to use the variable name instead of the memory address. Therefore, you do not need to remember addresses, which are long numbers.
 
-Some data affect the behavior of Bash. The interpreter stores these data in the environment variables. We will consider all types of Bash variables in the next chapter.
+Bash stores about a hundred environment variables. They hold data that affect the interpreter's behavior. Most of these data are system settings. We will consider Bash variables in the next chapter.
 
-I> Call the `env` utility without parameters to print all defined environment variables.
+I> Call the `env` utility without parameters. It shows you all the environment variables that Bash uses at the moment.
 
-You can imagine the variable as a value that has a name. For example, you can say: "the time is 12 hours". In this case, the variable name is "time". Its value is "12 hours". The computer's memory stores this value. If you request a value of the variable with the name "time", the computer returns you "12 hours".
+You can imagine the variable as a value that has a name. For example, you can say: "The time now is 12 hours". "Time now" is the variable name. Its value equals "12 hours". The computer stores it in memory at some address. You do not know the address. However, you can ask a computer the value of the "time now" variable. It returns you "12 hours". This is how the variables work.
 
-The `echo` command prints strings. It can also output the value of a variable. If you want to print the value of the `PATH` variable, call the following command:
+The `echo` command prints strings. It can also show you the value of a variable. Here is an example of how to print the `PATH` variable:
 {line-numbers: false, format: Bash}
 ```
 echo "$PATH"
