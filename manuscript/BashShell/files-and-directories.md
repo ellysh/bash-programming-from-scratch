@@ -1,112 +1,112 @@
 ## Actions on Files and Directories
 
-We have learned how to find a file or directory on the disk. Now let's talk about what to do with them. If you have an experience with Windows GUI, you know the following actions with files and directories:
+You have learned how to find a file or directory on the disk. Now let's discuss what you can do with it. If you have an experience with Windows GUI, you know the following actions with a file system object:
 
 * Create
 * Delete
 * Copy
 * Move or rename
 
-There is a special GNU utility to perform each of these actions. Table 2-7 describes them.
+Each of these actions has a corresponding GNU utility. Call them to manage the file system objects. Table 2-7 describes these utilities.
 
-{caption: "Table 2-7. Utilities for operating on files and directories", width: "100%"}
+{caption: "Table 2-7. Utilities for operating files and directories", width: "100%"}
 | Utility | Feature | Examples |
 | --- | --- | --- |
-| `mkdir` | Create the directory with the specified name and path. | `mkdir /tmp/docs` |
+| `mkdir` | It creates the directory with the specified name and path. | `mkdir /tmp/docs` |
 | | | `mkdir -p tmp/docs/report` |
 |  | | |
-| `rm` | Delete the file or directory by | `rm readme.txt` |
-| | its absolute or relative path. | `rm -rf ~/tmp` |
+| `rm` | It deletes the specified file or directory | `rm readme.txt` |
+| |  | `rm -rf ~/tmp` |
 |  | | |
-| `cp` | Copy a file or directory. The first parameter | `cp readme.txt tmp/readme.txt` |
+| `cp` | It copies a file or directory. The first parameter | `cp readme.txt tmp/readme.txt` |
 | | is the current path. The second parameter is the target path. | `cp -r /tmp ~/tmp` |
 |  | | |
-| `mv` | Move or rename the file or directory | `mv readme.txt documentation.txt.` |
-| | that is specified by the first parameter. | `mv ~/tmp ~/backup` |
+| `mv` | It moves or renames the file or directory | `mv readme.txt documentation.txt.` |
+| | specified by the first parameter. | `mv ~/tmp ~/backup` |
 
-Each of these utilities has the `--help` option. It displays a brief help. Use it if you need a utility mode that this book misses. If the brief help is not enough, refer to the `info` or `man` system.
+Each of these utilities has the `--help` option. It displays a brief help. Please read it before using the utility the first time. You will find there some modes that this book misses. Refer to the `info` or `man` system if you need more details.
 
-Let's consider how to use the utilities in Table 2-7. 
+It is time to consider the utilities of Table 2-7.
 
 ### mkdir
 
-The `mkdir` utility creates a new directory at the specified absolute or relative path. It receives the target path in the first parameter. For example, the following command creates a directory called `docs` in the user's home directory:
+The `mkdir` utility creates a new directory. Specify its target path in the first parameter of the command. Here is an example `mkdir` call for creating the `docs` directory:
 {line-numbers: false, format: Bash}
 ```
 mkdir ~/docs
 ```
 
-We specified the absolute path to the `docs` directory. Instead, we can pass the relative path. There are two steps to take it:
+We specified the absolute path to the `docs` directory. You can pass the relative path instead. There are two steps to take it:
 
-1. Navigate to the user's home directory.
-2. Call the `mkdir` utility.
+1. Navigate the home directory.
+2. Call the `mkdir` utility there.
 
-These are the corresponding commands:
+Here are the corresponding commands:
 {line-numbers: true, format: Bash}
 ```
 cd ~
 mkdir docs
 ```
 
-The utility has an option `-p` for creating the nested directories. There is an example. We should move the documents with 2019 reports in the path `∼/docs/reports/2019`. Assume that the `docs` and `reports` directories do not exist yet. We should create them before creating the `2019` directory. Another option is to call `mkdir` with the `-p` option:
+The utility has an option `-p`. It creates the nested directories. Here is an example of when to use it. Suppose you want to move the documents into the `∼/docs/reports/2019` path. However, the `docs` and `reports` directories do not exist yet. If you use `mkdir` in the default mode, you should call it three times to create each of the nested directories. Another option is to call `mkdir` once with the `-p` option like this:
 {line-numbers: false, format: Bash}
 ```
 mkdir -p ~/docs/reports/2019
 ```
 
-If the `docs` and `reports` directories already exist, the command still executes successfully. In this case, it creates the missing part of the path, i.e., the `2019` directory.
+This command succeeds even if the `docs` and `reports` directories already exist. It creates only the missing `2019` directory in this case.
 
 ### rm
 
-The `rm` utility deletes files and directories. You can specify them by an absolute or relative path.
-
-For example, there are two commands:
+The `rm` utility deletes files and directories. Specify the object to delete by its absolute or relative path. Here are examples of `rm` calls:
 {line-numbers: true, format: Bash}
 ```
 rm report.txt
 rm ~/docs/reports/2019/report.txt
 ```
 
-The first command deletes the `report.txt` file in the current directory. The second one deletes it in the `~/docs/reports/2019` path.
+The first call deletes the `report.txt` file in the current directory. The second one deletes it in the `~/docs/reports/2019` path.
 
-The `rm` utility can remove multiple files at once. To do that, specify a list of filenames separated by spaces. Here is an example:
+The `rm` utility can remove several files at once. Specify a list of filenames separated by spaces in this case. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 rm report.txt ~/docs/reports/2019/report.txt
 ```
 
-If you want to delete dozens of files, listing them all in a utility call is inconvenient. In this case, use a Bash search pattern. For example, let's delete all text files whose names begin with the word "report". These are documents with reports. The `rm` call for them looks like this:
+If you want to delete dozens of files, listing them all is inconvenient. Use a Bash glob pattern in this case. For example, you need to delete all text files whose names begin with the word "report". The following `rm` call does it:
 {line-numbers: false, format: Bash}
 ```
 rm ~/docs/reports/2019/report*.txt
 ```
 
-When you remove a write-protected file, the `rm` utility prints a warning. Figure 2-26 shows an example of it.
+When removing a write-protected file, the `rm` utility shows you a warning. You can see how it looks like in Figure 2-26.
 
 {caption: "Figure 2-26. The warning when deleting a write-protected file", width: "100%"}
 ![rm warning](images/BashShell/rm-warning.png)
 
-If you see such a message, press the Y (short for yes) and Enter keys. Call the utility with the `-f` or `--force` option to suppress warnings. The `rm` removes files without confirmation in this case. Here is an example call:
+When you see such a warning, there are two options. You can press the Y (short for yes) and Enter. Then the `rm` utility removes the file. Another option is to press N (no) and Enter. It cancels the operation.
+
+If you want to suppress any `rm` warnings, use the `-f` or `--force` option. The utility removes files without confirmation in this case. Here is an example call:
 {line-numbers: false, format: Bash}
 ```
 rm -f ~/docs/reports/2019/report*.txt
 ```
 
-I> The GNU utility options have a short form and a full form. The short form consists of one letter and begins with a dash `-`. The full form is a word preceded by a double dash `--`. This option format is recommended by the [POSIX standard](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and the [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) to it.
+I> The GNU utility options have two forms. The short form consists of one letter and begins with a dash `-`. The full form is a word preceded by a double dash `--`. This option format is recommended by the [POSIX standard](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html).
 
-The rm utility cannot remove a directory unless you do not pass an extra option to it. If you remove the empty directory, specify the `-d` or `--dir` option. Here is an example:
+The `rm` utility cannot remove a directory unless you pass one of two possible options there. The first option is `-d` or `--dir`. Use it for removing an empty directory. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 rm -d ~/docs
 ```
 
-If the directory contains files or subdirectories, call the utility with the `-r` or `--recursive` option. Such a call looks this way:
+If the directory contains files or subdirectories, use the `-r` or `--recursive` option to remove it. Such a call looks like this:
 {line-numbers: false, format: Bash}
 ```
 rm -r ~/docs
 ```
 
-This command also deletes the empty `docs` directory. To make it easier to remember, always specify the `-r` option when removing a directory.
+The `-r` option removes empty directories too. Therefore, you can always use the `-r` option when calling `rm` for a directory.
 
 ### cp and mv
 
