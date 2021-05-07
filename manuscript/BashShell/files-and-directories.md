@@ -110,94 +110,98 @@ The `-r` option removes empty directories too. Therefore, you can always use the
 
 ### cp and mv
 
-The copying and renaming utilities work in the same way. They take the target file or directory in the first parameter. The second parameter is the new path where the utility copies or moves the object
+The `cp` and `mv` utilities copy and move file system objects. Their interfaces are almost the same. Specify the target file or directory in the first parameter. Pass the new path for the object in the second parameter.
 
-There is an example. We want to make a copy of the `report.txt` file. First, we go to the directory that contains it. Then we call the `cp` utility in this way:
+Here is an example. You want to copy the `report.txt` file. First, you should come to its directory. Second, call the `cp` utility this way:
 {line-numbers: false, format: Bash}
 ```
 cp report.txt report-2019.txt
 ```
 
-This command creates a new file named `report-2019.txt`. It has the same contents as `report.txt`.
+This command creates the new file `report-2019.txt` in the current directory. Both `report-2019.txt` and `report.txt` files have the same contents.
 
-Assume that the old file `report.txt` is not needed. After copying it, you can remove it with the `rm` utility. But you can combine copying and removing in a single command. Call the `mv` utility for doing that:
+Suppose that you do not need the old file `report.txt`. You can remove it with the `rm` utility after copying. The second option is to combine copying and removing in a single command. The `mv` utility does that:
 {line-numbers: false, format: Bash}
 ```
 mv report.txt report-2019.txt
 ```
 
-This command creates a new file named `report-2019.txt`. At the same time, it removes the old file `report.txt`.
+This command does two things. First, it copies the `report.txt` file with the new name `report-2019.txt`. Second, it removes the old file `report.txt`.
 
-The `cp` and `mv` utilities process both relative and absolute paths. For example, there is the task to copy a file from the user's home directory to `~/docs/reports/2019`. The following command does it:
+Both `cp` and `mv` utilities accept relative and absolute paths. For example, let's copy a file from the home directory to the `~/docs/reports/2019` path. Here is the command for that:
 {line-numbers: false, format: Bash}
 ```
 cp ~/report.txt ~/docs/reports/2019
 ```
 
-The command copies the `report.txt` file to the path `~/docs/reports/2019/report.txt`.
+This command copies the `report.txt` file into the `~/docs/reports/2019` directory. The copy has the same name as the original file.
 
-You can obtain the same result in another way. Go to the user's home directory and call the `cp` utility with relative paths. Here are the commands:
+You can repeat the copying command with relative paths. Come to the home directory and call the `cp` utility there. The following commands do it:
 {line-numbers: true, format: Bash}
 ```
 cd ~
 cp report.txt docs/reports/2019
 ```
 
-You can specify the name of the copy explicitly. It is useful when the names of the original file and the copy should differ. The following `cp` call makes them different:
+When copying a file between directories, you can specify the copy name. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 cp ~/report.txt ~/docs/reports/2019/report-2019.txt
 ```
 
-Moving files from one directory to another works the same way as copying. For example, the following command moves the file `report.txt`:
+This command creates a file copy with the `report-2019.txt` name.
+
+Moving files works the same way as copying. For example, the following command moves the `report.txt` file:
 {line-numbers: false, format: Bash}
 ```
 mv ~/report.txt ~/docs/reports/2019
 ```
 
-The following command moves and renames the file at the same time:
+The following command moves and renames the file at once:
 {line-numbers: false, format: Bash}
 ```
 mv ~/report.txt ~/docs/reports/2019/report-2019.txt
 ```
 
-The `mv` utility can rename directories too. Here is an example:
+You can rename a directory using the `mv` utility too. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 mv ~/tmp ~/backup
 ```
 
-This command renames the `tmp` directory to `backup`.
+This command changes the name of the `tmp` directory to `backup`.
 
-The `cp` utility cannot copy directories in a default mode. For example, you want to copy the directory with the temporary files `/tmp` to the user's home directory. The following command does not work:
+The `cp` utility cannot copy a directory when you call it in the default mode. Here is an example. Suppose you want to copy the directory `/tmp` with the temporary files to the home directory. You call `cp` this way:
 {line-numbers: false, format: Bash}
 ```
 cp /tmp ~
 ```
 
-You must add the `-r` or `--recursive` option. Then the `cp` utility works properly. The resulting call looks like this:
+This command fails.
+
+You must add the `-r` or `--recursive` option when copying directories. Then the `cp` utility can handle them. This is the correct command for our example:
 {line-numbers: false, format: Bash}
 ```
 cp -r /tmp ~
 ```
 
-Suppose you copy or move a file. If the target path already has a file with the same name, the `cp` and `mv` utilities ask you to confirm the operation. If you approve the operation, it overwrites the existing file.
+Suppose you copy or move a file. If the target directory already has the file with the same name, the `cp` and `mv` utilities ask you to confirm the operation. If you press the Y and Enter keys, utilities overwrite the existing file.
 
-If you do not need the existing file, overwrite it without confirmation. To do that, add the `-f` or `--force` option. Here are examples:
+There is an option to suppress the confirmation when copying and moving files. Use the `-f` or `--force` option. It forces `cp` and `mv` utilities to overwrite the existing files. Here are examples:
 {line-numbers: true, format: Bash}
 ```
 cp -f ~/report.txt ~/tmp
 mv -f ~/report.txt ~/tmp
 ```
 
-Both commands overwrite the existing `report.txt` file in the `tmp` directory. There is no need to confirm the operations.
+Both commands overwrite the existing `report.txt` file in the `tmp` directory. You do not need to confirm these operations.
 
 {caption: "Exercise 2-6. Operations with files and directories", format: text, line-numbers: false}
 ```
-Organize your photos from the past three months using the GNU utilities.
+Handle your photos from the past three months using the GNU utilities.
 Make a backup before you start.
 Separate all photos by year and month.
-You should get a similar directory structure:
+You should get a directory structure like this:
 
 ~/
   photo/
@@ -210,7 +214,7 @@ You should get a similar directory structure:
 
 #### File System Permissions
 
-When the `rm` utility removes a file or directory, it checks the [**file system permissions**](https://en.wikipedia.org/wiki/File-system_permissions). For example, if a file is write-protected, the utility prints a warning. What are permissions and what are they for?
+Each utility of Table 2-7 checks the [**file system permissions**](https://en.wikipedia.org/wiki/File-system_permissions) before acting. These permissions define if you are allowed to operate the target object. Let's consider this file system mechanism in detail.
 
 Permissions restrict what the user can do with the file system. The operating system controls them. With this feature, users can access only their files and directories. At the same time, access to the OS components is restricted.
 
