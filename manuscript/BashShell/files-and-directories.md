@@ -216,17 +216,17 @@ You should get a directory structure like this:
 
 Each utility of Table 2-7 checks the [**file system permissions**](https://en.wikipedia.org/wiki/File-system_permissions) before acting. These permissions define if you are allowed to operate the target object. Let's consider this file system mechanism in detail.
 
-Permissions restrict what the user can do with the file system. The operating system controls them. With this feature, users can access only their files and directories. At the same time, access to the OS components is restricted.
+Permissions restrict the user actions on the file system. The OS tracks these actions and checks their allowance. Each user can access only his files and directories, thanks to this feature. It also restricts access to the OS components.
 
-The permissions allow several people to share one computer. This approach was widespread everywhere before inventing personal computers. Computing resources were expensive at that time. Thus, it was more effective to share one computer among users.
+The permissions allow several people to share one computer. This workflow was widespread in the 1960s before appearing PCs. Hardware resources were expensive at that time. Therefore, several users have to operate with one computer.
 
-Let's look again at Figure 2-26. When you call the `ls` utility with the `-l` option, it prints the table. Its single row corresponds to one file or directory. The columns have the following meaning:
+Have a look at Figure 2-26 again. There you see the output of the `ls` utility with the `-l` option. It is the table. Each row corresponds to a file or directory. The columns have the following meaning:
 
 1. Permissions or access rights.
 2. The number of hard links to the file or directory.
 3. Owner.
-4. Owner group.
-5. The size of the object in bytes.
+4. Owner's group.
+5. The object's size in bytes.
 6. Date and time of the last change.
 7. File or directory name.
 
