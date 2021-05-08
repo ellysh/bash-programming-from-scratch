@@ -333,46 +333,48 @@ We have considered commands and utilities for operating the file system. When yo
 
 ### Files Execution
 
-Windows has strict rules about what files a user can run. The file extension defines the file type. The Windows loader runs files of certain types only. They have the EXE and COM extensions. These are compiled executable files of programs. In addition to them, you can run scripts. These are possible extensions of the scripts: BAT, JS, PY, etc. Each script type relates to one of the installed interpreters. OS cannot run the script if there is no appropriate interpreter for it.
+Windows has strict rules for executable files. The file extension defines its type. The Windows loader runs only files with the EXE and COM extensions. These are compiled executable of programs. Besides them, you can run scripts. The script's extension defines the interpreter that launches it. Windows cannot run the script if there is no installed interpreter for it. The possible extensions of the scripts are BAT, JS, PY, RB, etc.
 
-Unix environment has other rules for execution files than Windows. Here you can run any file if it has permissions for reading and executing. Unlike Windows, its extension does not matter. For example, a file named `report.txt` can be executable.
+Unix rules for executing files differ from Windows ones. Here you can run any file if it has permissions for reading and executing. Its extension does not matter, unlike Windows. For example, the file called `report.txt` can be executable.
 
-There is no convention about extensions of the executable files in Unix. Therefore, the file type is not clear from its name. There is a utility called `type`. It takes the path to the file and prints its type. Here is an example of calling `type`:
+There is no convention for extensions of the executable files in Unix. Therefore, you cannot deduce the file type from its name. Use the `file` utility to get it. The command receives the file path on input and prints its type. Here is an example of calling `file`:
 {line-numbers: false, format: Bash}
 ```
 file /usr/bin/ls
 ```
 
-The command prints the following information when called in the MSYS2 environment:
+If you launch the command in the MSYS2 environment, it prints the following information:
 {line-numbers: false, format: Bash}
 ```
 /usr/bin/ls: PE32+ executable (console) x86-64 (stripped to external PDB), for MS Windows
 ```
 
-The output means that the file type is [PE32](https://en.wikipedia.org/wiki/Portable_Executable). Files of this type are executable and contain machine code. The Windows loader runs them. The output also shows the bitness of the file (x86-64). It means that this `ls` utility version works on the 64-bit Windows versions only.
+The output says that the `/usr/bin/ls` file has the [PE32](https://en.wikipedia.org/wiki/Portable_Executable) type. Files of this type are executable and contain machine code. The Windows loader can run them. The output also shows the bitness of the file "x86-64". It means that this version of `ls` utility works on 64-bit Windows only.
 
-If you run the same `file` command on Linux, it prints another information. For example, it might look like this:
+If you run the same `file` command on Linux, it gives another output. For example, it might look like this:
 {line-numbers: false, format: Bash}
 ```
 /bin/ls: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d0bc0fb9b3f60f72bbad3c5a1d24c9e2a1fde775, stripped
 ```
 
-Executable files with machine code have [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) type in Linux. Linux loader runs them. The file bitness is the same as in MSYS2 (x86-64).
+This is the executable file with machine code. It has the [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) type. Linux loader can run it. The file bitness "x86-64" is the same as in MSYS2.
 
-We have learned to distinguish executable and non-executable files in the Unix environment. Now let's find out where they are located.
+We have learned to distinguish executable and non-executable files in the Unix environment. Now let's find out where you can find them.
 
-GNU utilities are considered as part of OS. That is why they are available right after installing the system. The executable files of the utilities are located in the directories `/bin` and `/usr/bin`. The Bash variable `PATH` stores these paths. The question is, where are new applications installed in a Unix environment?
+GNU utilities are part of OS. Therefore, they are available right after installing the system. You do not need to install them separately. Their executable files are located in the `/bin` and `/usr/bin` directories. The Bash variable `PATH` stores these paths. Now the question is, where can you find newly installed applications?
 
-Windows has `Program Files` and `Program Files (x86)` directories on the system drive. New applications are installed there by default. Each application has a subdirectory (for example, `C:\Program Files (x86)\Notepad++`). The installer program copies executable files, libraries, configuration and resource files into the subdirectory. All these files are required to run the application. You can specify other directories than `Program Files` and `Program Files (x86)`. Then the installer program creates the application subdirectory and copies its files there.
+Windows installs new applications in the `Program Files` and `Program Files (x86)` directories on the system drive. Each application has its own subdirectory. For example, it can be `C:\Program Files (x86)\Notepad++`. The installer program copies executables, libraries, configuration and resource files into that subdirectory. The application requires all these files to work properly. You can specify another installation directory than `Program Files` and `Program Files (x86)`. Then the installer program creates the application subdirectory there.
 
-There are two approaches to install applications in the Unix environment. The first one resembles the Windows approach. There is the system directory `/opt`. The installer program creates a subdirectory and copies all application files there. For example, the TeamViewer application is installed in the `/opt/teamviewer` subdirectory. Developers of proprietary applications prefer this approach.
+There are two approaches to install applications in the Unix environment. The first one resembles the Windows way. There is the system directory `/opt`. The installer program creates an application subdirectory with all its files there.
 
-The second approach is for utilities and open source programs. An application requires files of various types to run. Each file type has a separate system directory in Unix. It means that the executable files of all applications occupy the same directory. The documentation for them is in another directory. The resource files are in the third directory and so on.
+Here is an example. Suppose that you are installing the TeamViewer application. Its installer creates the `/opt/teamviewer` subdirectory. You can find the `TeamViewer` executable there. Developers of proprietary applications prefer this way of installing programs.
 
-Table 2-11 explains the purposes of Unix system paths.
+Developers of open-source programs follow another approach. An application requires files of various types. Each file type has a separate system directory in Unix. It means that the executable files of all applications occupy the same directory. The documentation for them is in another directory and so on. The POSIX standard dictates the purposes of all system directories.
 
-{caption: "Table 2-11. Unix system paths", width: "70%"}
-| Path | Purpose |
+Table 2-11 explains the purposes of Unix system directories.
+
+{caption: "Table 2-11. Unix system directories", width: "70%"}
+| Directory | Purpose |
 | --- | --- |
 | `/bin` | It stores executable files of system utilities. |
 |  | |
@@ -388,82 +390,84 @@ Table 2-11 explains the purposes of Unix system paths.
 |  | |
 | `/usr/share` | It stores architecture-independent resource files of user applications (e.g. icons). |
 |  | |
-| `/var` | It stores files created by applications and utilities while they are running (e.g. log files). |
+| `/var` | It stores files created by applications and utilities while running (e.g. log files). |
 
-Copying all files of the same type into one directory seems to be a controversial solution. Its disadvantage is the complexity of maintenance. Suppose that the application updates to the next version. It should update all its files in all system directories. If one of the files is missing, the application cannot run anymore.
+Copying all files of the same type into one directory sounds like a controversial solution. Its disadvantage is the complexity of maintenance. Suppose that the application updates to the next version. It should update all its files in all system directories. If the application misses one of the files, it cannot run anymore.
 
-The solution with special system directories has an advantage. When you install an application in Windows, it brings all files it needs. There are libraries with subroutines among these files. Some applications require the same libraries to run. As a result, dozens of copies of these libraries accumulate in the file system. It happens because each application has its own copy of the libraries.
+However, the Unix system directories have an advantage. When you install an application in Windows, it brings all files it needs. There are libraries with subroutines among these files. Some applications require the same libraries to run. When each application has its own copy of the same library, it causes the file system overhead.
 
-The Unix way gets rid of most libraries copies. Suppose that all applications respect the agreement and install their files in the corresponding system paths. In this case, applications can easily locate files of each other. Therefore, all applications can use the same file if they require it. It is enough to keep a single instance of each library in the file system.
+The Unix way gets rid of library copies. Suppose that all applications respect the agreement and install their files in the proper system directories. Then applications can locate files of each other. Therefore, they can use the same library if they require it. A single instance of each library is enough for supporting all dependent applications.
 
-Suppose that we have installed an application (e.g., a browser). According to Table 2-11, the `/usr/bin` path contains its executable file (for example, `firefox`). Which Bash command runs this application? There are several ways to run it:
+Suppose that you have installed a new application (e.g., a browser). Its executable file (for example, `firefox`) comes to the `/usr/bin` path according to Table 2-11. How to run this application in Bash? There are several ways for that:
 
 1. By the name of the executable file.
-2. By absolute path.
-3. By relative path.
+2. By the absolute path.
+3. By the relative path.
 
-Let's look at each way in detail.
+Let's consider each way in detail.
 
-We are already familiar with the first approach. We call GNU utilities in this way. Here is a command for calling the `find` utility:
+You have used the first approach when calling GNU utilities. For example, the following command runs the `find` utility:
 {line-numbers: false, format: Bash}
 ```
 find --help
 ```
 
-You can use a similar command to run a newly installed application. For example, the Firefox browser runs like this:
+It launches the `/usr/bin/find` executable file.
+
+Use a similar command to run a newly installed application. Here is an example for the Firefox browser:
 {line-numbers: false, format: Bash}
 ```
 firefox
 ```
 
-Why does this command work? The executable file `firefox` is located in the system path `/usr/bin`. The Bash variable `PATH` stores this path. When Bash receives the "firefox" command, it searches the executable with that name. The shell takes paths for searching from the `PATH` variable. This way, Bash finds the `/usr/bin/firefox` file and launches it.
+Why does this command work? The executable file `firefox` is located in the `/usr/bin` system directory. The Bash variable `PATH` stores this path. When Bash receives the "firefox" command, it searches the executable with that name. The shell takes searching paths from the `PATH` variable. This way, Bash finds the `/usr/bin/firefox` file and launches it.
 
-The paths have a specific order in the `PATH` variable. Bash follows this order when searching an executable file for the received command. There is an example.  Suppose the `firefox` executable presents in both `/usr/local/bin` and `/usr/bin` paths. If the path `/usr/local/bin` comes first in the `PATH` list, Bash always runs the file from there. Otherwise, Bash always runs the executable from the `/usr/bin` path.
+The paths have a specific order in the `PATH` variable. Bash follows this order when searching for an executable. There is an example.  Suppose that both `/usr/local/bin` and `/usr/bin` directories contain the `firefox` executable. If the path `/usr/local/bin` comes first in the `PATH` list, Bash always runs the file from there. Otherwise, Bash calls the `/usr/bin/firefox` executable.
 
-The second way to run an application reminds the first one. Instead of the name of the executable file, we type its absolute path. For example, the following command runs the Firefox browser:
+The second way to run an application reminds the first one. Instead of the executable filename, you type its absolute path. For example, the following command runs the Firefox browser:
 {line-numbers: false, format: Bash}
 ```
 /usr/bin/firefox
 ```
 
-Users prefer this approach to run proprietary applications. Such applications are installed in the system path `/opt`. The `PATH` variable does not contain it by default. Therefore, Bash cannot find the executable there. To solve this issue, you should specify an absolute path to the executable in the call.
+You would need this approach when launching proprietary applications. They are installed in the `/opt` system directory. The `PATH` variable does not contain this path by default. Therefore, Bash cannot find executables there. You can help Bash by specifying an absolute path to the program.
 
-The third approach for launching the application is something in between the first and second ways. Instead of the absolute path to the executable, you can use its relative path. Here is an example for the Firefox browser:
+The third approach to run an application is something in between the first and second ways. You use a relative executable path instead of the absolute one. Here is an example for the Firefox browser:
 {line-numbers: true, format: Bash}
 ```
 cd /usr
 bin/firefox
 ```
 
-The first command navigates to the `/usr` directory. Then the second command starts the browser by the relative path.
+The first command navigates to the `/usr` directory. Then the second command launches the browser by its relative path.
 
-Now suppose that the executable file `firefox` is located in the `/opt/firefox/bin` path. Let's navigate there with the `cd` command and run the browser this way:
+Now let's change the first command. Suppose that you navigate the `/opt/firefox/bin` directory. The following try to launch the browser fails:
 {line-numbers: true, format: Bash}
 ```
 cd /opt/firefox/bin
 firefox
 ```
 
-In this case, Bash reports that it cannot find the `firefox` file. It happens because we are starting the application by the name of the executable. It is the first way to run applications. Bash looks for the `firefox` executable in the paths of the `PATH` variable. But the application is installed in the `/opt` path, which is not there.
+Bash reports that it cannot find the `firefox` file. It happens because you are launching the application by the executable filename here. It is the first way to run applications. Bash looks for the `firefox` executable in the paths of the `PATH` variable. However, the application is located in the `/opt` directory, which is not there.
 
-The right way is to specify the relative path to the executable. If the current directory contains the file, you should specify it. The dot symbol indicates the current directory. Thus, the following commands run the browser properly:
+You should specify the relative path to the executable instead of its filename. If the current directory contains the file, mention it in the relative path. The dot symbol indicates the current directory. Thus, the following commands run the browser properly:
 {line-numbers: true, format: Bash}
 ```
 cd /opt/firefox/bin
 ./firefox
 ```
 
-Now Bash searches the executable in the current directory.
+Now Bash follows your hint and searches the executable in the current directory.
 
-It can be useful to add a new path (for example, `/opt/firefox/bin`) to the `PATH` variable. Here are the steps for doing it:
+Suppose that you have installed a new application. You are going to use it in your daily work frequently. Add its installation path to the `PATH` variable in this case. The following steps explain how to do it for the `/opt/firefox/bin` directory:
 
-1. Navigate to the user's home directory:
+1. Navigate the home directory:
 {line-numbers: false, format: Bash}
 ```
 cd ~
 ```
 
-2. Print the Windows path of the home directory:
+2. Print its Windows path:
 {line-numbers: false, format: Bash}
 ```
 pwd -W
@@ -471,12 +475,12 @@ pwd -W
 
 3. Open the file `~/.bash_profile` in the text editor (for example, Notepad).
 
-4. At the end of the file, add the following line:
+4. Add the following line at the end of the file:
 {line-numbers: false, format: Bash}
 ```
 PATH="/opt/firefox/bin:${PATH}"
 ```
 
-We redefine the `PATH` variable. We will consider the variables in the next chapter.
+You have redefined the `PATH` variable this way. The next chapter considers Bash variables in detail. There you will know how to operate them.
 
-Restart the MSYS2 terminal for applying changes. Now you can run the browser by the name. In this case, Bash finds its executable in the `/opt/firefox/bin` path.
+Restart the MSYS2 terminal for applying changes. Now you can run the browser by the name. Bash finds the corresponding executable in the `/opt/firefox/bin` path correctly.
