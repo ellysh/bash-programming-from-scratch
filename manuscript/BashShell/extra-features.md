@@ -1,10 +1,10 @@
 ## Extra Bash Features
 
-We have learned the built-in Bash commands and GNU utilities for operating on the file system. Now you can run a program and copy a file in the command-line. The graphical interface provides the same features. If you are solving such simple tasks, the interface does not matter.
+We have learned the basic Bash built-ins and GNU utilities for operating the file system. Now you know how to run a program or copy a file using the shell. You can do the same things in GUI. When solving such simple tasks, both types of interfaces are effective.
 
-The Bash interpreter provides several features that the GUI does not have. Thanks to them, some tasks are faster to perform in the command-line interface. If you have such a task, knowing Bash saves you time thanks to automation.
+Bash provides several features that a GUI does not have. They give you a significant performance gain when solving some specific tasks. Use these features to automate your work and save time.
 
-We will take a look at the following Bash features:
+These are the Bash features that we are talking about:
 
 1. I/O redirection.
 2. Pipelines.
@@ -12,15 +12,17 @@ We will take a look at the following Bash features:
 
 ### Unix Philosophy
 
-[Douglas McIlroy](https://en.wikipedia.org/wiki/Douglas_McIlroy) is one of the Unix developers. He summarized the philosophy of this OS in three points:
+[Douglas McIlroy](https://en.wikipedia.org/wiki/Douglas_McIlroy) is one of the Unix developers. He wrote several famous command-line utilities: `spell`, `diff`, `sort`, `join`, `graph`, `speak`, and `tr`. McIlroy summarized the best practices of software development for Unix in the following points:
 
 1. Write programs that do one thing and do it well.
 2. Write programs to work together.
 3. Write programs to handle text streams, because that is a universal interface.
 
-The plain text format is the cornerstone of the Unix philosophy. It is the foundation for the first two points.
+These principles became a part of the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy).
 
-The text format allows programs to share data easily. Suppose that two developers independently of each other wrote two utilities. Both utilities accept text data on input. They print results in text format too. You have a task. If you combine two utilities, you solve it. Because of the text interface, it is quite simple to do. You have to pass the output of the first utility to the input of the second one.
+The cornerstone of the Unix philosophy is the plain text format. McIlroy emphasized its significant role and called it a universal interface. Using text format allows you both to develop highly specialized programs and combine them together.
+
+The primary feature of the text format is the simplicity of data exchange between programs. Here is an example. Suppose that two developers wrote two utilities independently of each other. The utilities use the text format for input and output data. This decision allows you to combine these utilities. This way, you apply their feature to solve your task. All you need is to pass the output of the first utility to the input of the second one.
 
 When it is easy for programs to interact, there is no need to overload them with extra features. For example, you write a program to copy files. It does the job well. But eventually, you realize that it lacks a search function. With this feature, it would be faster to find and copy the files at once. Then you decide that it is convenient to create directories and copy files by one program. This example shows that the requirements for a self-contained application grow rapidly.
 
