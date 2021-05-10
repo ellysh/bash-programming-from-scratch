@@ -24,28 +24,30 @@ The cornerstone of the Unix philosophy is the plain text format. McIlroy emphasi
 
 The primary feature of the text format is the simplicity of data exchange between programs. Here is an example. Suppose that two developers wrote two utilities independently of each other. The utilities use the text format for input and output data. This decision allows you to combine these utilities. This way, you apply their feature to solve your task. All you need is to pass the output of the first utility to the input of the second one.
 
-When it is easy for programs to interact, there is no need to overload them with extra features. For example, you write a program to copy files. It does the job well. But eventually, you realize that it lacks a search function. With this feature, it would be faster to find and copy the files at once. Then you decide that it is convenient to create directories and copy files by one program. This example shows that the requirements for a self-contained application grow rapidly.
+When programs interact easily, there is no need to overload them with extra features. For example, you write a program that copies files. It does the job well. At some moment, you realize that the program needs a search function. This feature will speed up your work because you can find and copy the files at once. You add the searching mechanism and it works well. Then you decide to add the feature of creating new directories. It makes the program more convenient for use and so on. This example shows that the requirements for a self-contained application grow rapidly.
 
-When applications work together, each solves a single task only. If you need an extra feature, you call the corresponding special utility. You don't have to add this feature to your application. The feature is already available and well tested. Just call an external utility that does what you need.
+Having a universal interface, you can get a special program for each task. You do not need to add a search function to your program. Just call the `find` utility and use its results. This utility works better than your code. The reason is many people use it for a long time. Therefore, they find most of its bugs and fixed them.
+
+Always prefer existed utilities when developing software for Unix and Linux.
 
 ### I/O Redirection
 
-GNU utilities follow the Unix philosophy. They use a text format for input and output. Therefore, they are just as easy to combine as Unix utilities.
+GNU utilities were developed by 1987. The idea behind them is to provide open-source software for Unix developers. Most of the original Unix programs were proprietary. It means that you should buy a Unix system and launch them there.
 
-When combining GNU utilities, there is a task to pass text data between them. The task has several solutions.
+GNU utilities copy all features of their originals. Therefore, they follow the Unix philosophy too. Using them, you get all benefits of the universal text format.
 
-Suppose the output of a utility fits one line. You need to pass it to another utility. Using the clipboard is the simplest solution here. Here are the steps to take it:
+You have several options to transfer text data between the utilities. The simplest way is using the clipboard. Suppose that the data fits one line. Follow these steps to move them from one utility to another one:
 
-1. Select the utility output with the mouse.
+1. Select the utility's output with the mouse. Now you got it in the clipboard.
 2. Type the command to call another utility.
-3. Paste the contents from the clipboard at the end.
+3. Paste the clipboard data with the middle mouse button.
 4. Launch the command.
 
-This simple method does not work for copying multiple lines. When you paste them, Bash handles line breaks as commands delimiter. It executes the command right after receiving the delimiter. Because of this, the shell loses some copied lines.
+This approach does not work for copying multiple lines. When you paste them, Bash handles each line break as a command delimiter. It treats the text before the delimiter as a separate command. Thus, the shell loses some copied lines.
 
-Another solution is to use the file system. Create a temporary file to save the utility output. Then pass the file name to another utility. It will read its contents and retrieve the data. This approach is more convenient than the clipboard for two reasons:
+Another solution for data transfer is using the file system. Create a temporary file to save the utility's output. Then pass the filename to another utility. It will read the data there. This approach is more convenient than the clipboard for two reasons:
 
-1. There is no limit on the number of lines to transfer.
+1. There is no limit on the number of text lines to transfer.
 2. There are no manual operations with the clipboard.
 
 Bash has a mechanism that redirects the command output to the file. The same mechanism redirects data from the file to the command input. It means that your application does need a feature for interacting with the file system. Instead, it should support the text data format on input and output. Bash does all the other work of redirecting that data.
