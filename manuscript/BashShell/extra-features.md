@@ -32,7 +32,7 @@ Always prefer existed utilities when developing software for Unix and Linux.
 
 ### I/O Redirection
 
-GNU utilities were developed by 1987. The idea behind them is to provide open-source software for Unix developers. Most of the original Unix programs were proprietary. It means that you should buy a Unix system and launch them there.
+GNU utilities were done by 1987. The idea behind them is to provide open-source software for Unix developers. Most of the original Unix programs were proprietary. It means that you should buy a Unix system and launch them there.
 
 GNU utilities copy all features of their originals. Therefore, they follow the Unix philosophy too. Using them, you get all benefits of the universal text format.
 
@@ -50,56 +50,56 @@ Another solution for data transfer is using the file system. Create a temporary 
 1. There is no limit on the number of text lines to transfer.
 2. There are no manual operations with the clipboard.
 
-Bash has a mechanism that redirects the command output to the file. The same mechanism redirects data from the file to the command input. It means that your application does need a feature for interacting with the file system. Instead, it should support the text data format on input and output. Bash does all the other work of redirecting that data.
+Bash provides you a mechanism that redirects the command's output to the file. It can also redirect the file contents to the command input. It means that your application does not need a feature for interacting with the file system. Instead, it should support the text data format. Then Bash takes care of redirecting data.
 
-Let's look at an example. Suppose that you are looking for the files on the disk. The search result has to be saved into a file. To solve this task, use the `find` utility and the redirect operator `1>`. Then the utility call looks like this:
+Here is an example of redirecting text data. Suppose that you are looking for the files on the disk. You want to save the searching result into a file. Use the `find` utility and the redirection operator `1>`. Then the utility call looks like this:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README 1> readme_list.txt
 ```
 
-The command creates the `readme_list.txt` file in the current directory. It contains the output of the `find` utility. The output looks the same in the file as it is printed on the screen. If the current directory has the `readme_list.txt` file already, the command overwrites it.
+The command creates the `readme_list.txt` file in the current directory. It writes the `find` utility's output there. The file contents look the same as it is printed on the screen without the redirection operator. If the current directory has the `readme_list.txt` file already, the command overwrites it.
 
-What does the `1>` operator mean? It is [redirection](https://en.wikipedia.org/wiki/Redirection_(computing)) of standard output stream. There are three [standard streams](https://en.wikipedia.org/wiki/Standard_streams) in the Unix environment. Table 2-12 explains them.
+What does the `1>` operator mean? It is a [redirection](https://en.wikipedia.org/wiki/Redirection_(computing)) of the standard output stream. There are three [standard streams](https://en.wikipedia.org/wiki/Standard_streams) in Unix. Table 2-12 explains them.
 
 {caption: "Table 2-12. POSIX standard streams", width: "100%"}
 | Number | Name | Purpose |
 | --- | --- | --- |
 | 0 | Standard input stream (stdin). | A program receives input data from this stream. By default, it comes from an input device like a keyboard. |
 |  | | |
-| 1 | Standard output stream (stdout). | A program outputs data there. The terminal window prints it by default. |
+| 1 | Standard output stream (stdout). | A program outputs data there. The terminal window prints this stream by default. |
 |  | | |
-| 2 | Standard error stream (stderr). | A program outputs the error messages there. The terminal window prints it by default. |
+| 2 | Standard error stream (stderr). | A program outputs the error messages there. The terminal window prints this stream by default. |
 
-A program operates in the software environment that the OS provides. A thread is a communication channel between the program and the environment.
+Any program operates in the software environment that the OS provides. You can imagine each standard stream as a communication channel between the program and the OS environment.
 
-Early Unix systems have used physical channels for input and output data. The input was tied to the keyboard. The same way the output was tied to the monitor. Streams were introduced as [abstraction](https://en.wikipedia.org/wiki/Abstraction_layer) over these channels. The abstraction makes it possible to work with different objects using the same algorithm. It allows replacing input from a real device with input from a file. Similarly, printing to the screen can be replaced by output to a file. At the same time, the same OS code handles these I/O operations.
+Early Unix systems have used only physical channels for data input and output. The input channel comes from the keyboard. The same way the output channel goes to the monitor. Then developers introduced the streams as an [abstraction](https://en.wikipedia.org/wiki/Abstraction_layer) for these channels. The abstraction makes it possible to work with different objects using the same algorithm. It allows replacing a real device input with the file data. Similarly, it replaces printing data to the screen with writing them to the file. The same OS code handles these I/O operations.
 
-The purpose of the input and output streams is clear. But the error stream causes questions. Why do we need it? Imagine that you run the `find` utility to search for files. You do not have access to some directories. When the `find` utility reads their contents, it is unavailable. The utility prints an error message in this case.
+The purpose of the input and output streams is clear. However, the error stream causes questions. Why does a program need it? Imagine that you run the `find` utility to search for files. You do not have access to some directories. When the `find` utility reads their contents, it is unavailable. The utility reports about these issues in the error messages.
 
-Now imagine that the utility found many files. It is easy to miss error messages in a huge file list. Separating the output and error streams helps in this case. If you redirect the output stream to the file, the utility prints error messages only on the screen.
+Suppose that the `find` utility found many files. You can miss error messages in a huge file list. Separating the output and error streams helps you in this case. For example, you can redirect the output stream to the file. Then the utility prints only error messages on the screen.
 
-Use the `2>` operator to redirect the standard error stream. Here is an example of the `find` utility call with this operator:
+The `2>` operator redirects the standard error stream. Use it in the same way as the `1>` operator. Here is an example with the `find` utility:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README 2> errors.txt
 ```
 
-The number before the angle bracket in the operator means the number of the redirected stream. For example, the `2>` operator redirects stream number two.
+Each redirection operator has a number before the angle bracket. The number specifies the stream's number from Table 2-12. For example, the `2>` operator redirects the second stream.
 
-Use the `0<` operator to redirect the standard input stream. Here is an example for searching the "Bash" pattern in the `README.txt` file:
+If you need to redirect the standard input stream, the operator looks like `0<`. You cannot handle this stream with the `0>` operator. Here is an example. The following call searches the "Bash" pattern in the `README.txt` file:
 {line-numbers: false, format: Bash}
 ```
 grep "Bash" 0< README.txt
 ```
 
-This example is not entirely correct. The command uses the `grep` utility interface that handles the standard input stream. But `grep` can read the contents of a specified file. It is always better to pass the filename to the utility. Here is an example:
+This command is for demonstration only. It uses the `grep` utility's interface that handles the standard input stream. However, the utility can read the contents of a specified file on its own. Use this mechanism and always pass the filename to the utility. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 grep "Bash" README.txt
 ```
 
-Let's take a more complicated example. Some Bash manuals recommend the `echo` command to print the contents of the file. For example, the command for printing the`README.txt` file looks like this:
+Let's take a more complicated example. Some Bash manuals recommend the `echo` command to print a file's contents. Using this approach, you can print the`README.txt` file this way:
 {line-numbers: false, format: Bash}
 ```
 echo $( 0< README.txt )
@@ -111,33 +111,31 @@ Here `echo` receives the output of the following command:
 0< README.txt
 ```
 
-**Command substitution** is substituting the command result where it was called. When the interpreter encounters the `$(` and `)` characters, it executes the command enclosed between them and substitutes its output.
+We have used the **command substitution** Bash mechanism to embed one command into another one. When the shell encounters the `$(` and `)` characters, it executes everything enclosed between them. Then Bash inserts the output of the executed command instead of the `$(...)` block.
 
-Because of the command substitution, Bash executes our `echo` call in two steps:
+Bash executes our `echo` call in two steps because of the command substitution. These are the steps:
 
-1. Pass the contents of the `README.txt` file to the standard input stream.
+1. Pass the `README.txt` file's contents to the standard input stream.
 
-2. Print data from the standard input stream with the `echo` command.
+2. Print data from the input stream on the screen.
 
-Please take into account the execution order of the substituted commands. The interpreter executes commands and inserts their results in the order they follow. Only when all substitutions are done, Bash executes the resulting command in its entirety.
+Please take into account the execution order when invoking the command substitution. Bash executes sub-commands and inserts their results in the order they follow. Only when all substitutions are done, Bash executes the resulting command.
 
-The next `find` call leads to the error due to a commands order mistake:
+The following `find` call demonstrates a typical mistake when using the command substitution:
 {line-numbers: false, format: Bash}
 ```
 $ find / -path */doc/* -name README -exec echo $(0< {}) \;
 ```
 
-It prints the following error message:
+This command should print the contents of all found files. However, it leads to the following Bash error:
 {line-numbers: false, format: Bash}
 ```
 bash: {}: No such file or directory
 ```
 
-This command should print the contents of all the files that the `find` utility found. But we get an error from Bash instead.
+The problem happens because Bash executes the "0< {}" command before calling the `find` utility. When executing this command, the shell redirects the file called `{}` to the input stream. However, there is no file with such a name. We expect the `find` utility substitutes the brackets `{}` by its results. It does not happen because these results are not ready yet.
 
-The problem happens because the "0< {}" command is executed before the `find` utility call. Because of it, Bash tries to redirect the contents of the file named `{}` to the standard input stream. But there is no file with such a name. We expect the `find` utility substitutes the brackets `{}` by its results. It does not happen because the utility is called after executing the "0< {}" command.
-
-If you replace the `echo` command by the `cat` utility, it solves the problem. The `find` call would look like this:
+Replace the `echo` command with the `cat` utility. It solves the problem. Then you get the following `find` call:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README -exec cat {} \;
@@ -145,86 +143,90 @@ find / -path */doc/* -name README -exec cat {} \;
 
 This command prints the contents of all found files.
 
-The redirection operators of standard input and output streams are used frequently. Therefore, developers have added short forms for them:
+Bash users apply the redirection operators frequently. Therefore, the shell developers have added short forms for some of them. Here are these forms:
 
 * The `<` operator redirects the input stream.
 * The `>` operator redirects the output stream.
 
-The `find` call with the short form of stream redirection looks like this:
+Here is an example of using the `>` operator:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README > readme_list.txt
 ```
 
-Here is an example of the `echo` call with the short redirection form:
+This command writes a list of all found README files to the `readme_list.txt` file.
+
+Here is an example of using the `<` operator:
 {line-numbers: false, format: Bash}
 ```
 echo $( < README.txt )
 ```
 
-Suppose that you redirect the standard output stream to a file. This file already exists and its contents should stay. In that case, append the command output to the end of the file. The `>>` operator does it.
+Suppose that you redirect the output stream to a file. Then you found that this file already exists. You decide to keep its content and add new data at the end. Use the `>>` operator in this case.
 
-For example, your computer has installed applications in the `/usr` and `/opt` system paths. Then the following two calls find their README files:
+Here is an example. You are searching the README files in the `/usr` and `/opt` system directories. You want to store the searching results in the `readme_list.txt` file. Then you should call the `find` utility twice. The first call uses the `>` operator. The second call should use the `>>` operator. These calls look like this:
 {line-numbers: true, format: Bash}
 ```
 find /usr -path */doc/* -name README > readme_list.txt
 find /opt -name README >> readme_list.txt
 ```
 
-The first `find` call creates the `readme_list.txt` file and writes the result there. If the file already exists, the command overwrites its contents. The second `find` call appends its result to the end of `readme_list.txt`. If the file does not exist, the `>>` operator creates it.
+The first `find` call creates the `readme_list.txt` file and writes its result there. If the file already exists, the utility overwrites its contents. The second `find` call appends its output to the end of `readme_list.txt`. If the file does not exist, the `>>` operator creates it.
 
-The full form of the `>>` operator looks like `1>>`. If you want to redirect the error stream without overwriting the file, use the `2>>` operator.
+The full form of the `>>` operator looks like `1>>`. You can use this form for both output and error streams. The operator for redirecting the error stream looks like `2>>`.
 
-Sometimes you need to redirect both the output and the error streams to the same file. The `&>` and `&>>` operators do it. The first operator overwrites an existing file. The second one appends data to its end. Here is an example:
+Suppose that you need to redirect both the output and the error streams to the same file. Use the `&>` and `&>>` operators in this case. The first operator overwrites an existing file. The second one appends data at the end of the file. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README &> result_and_errors.txt
 ```
 
-This command works in Bash properly. But it can fail in other shells. If you want to use the POSIX standard features only, use the `2>&1` operator. Here is an example:
+This command works in Bash properly. However, the `&>` operator may absent in other shells. If you should use the features of the POSIX standard only, apply the `2>&1` operator. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README > result_and_errors.txt 2>&1
 ```
 
-This redirection is called **stream duplicating**. Use it for redirecting both output and error streams to the same target.
+The `2>&1` operator is called **stream duplication**. It redirects both output and error streams to the same target.
 
-Be careful when using streams duplicating. It's easy to make a mistake and mix up the operator order in a command. If you work in Bash, always prefer the `&>` and `&>>` operators.
+Be careful when using stream duplication. It is easy to make a mistake and mix up the operators' order in a command. If you work in Bash, always prefer the `&>` and `&>>` operators.
 
-Here is an example of the error with duplicating streams:
+The following command demonstrates a mistake with using stream duplication:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README 2>&1 > result_and_errors.txt
 ```
 
-The command outputs the error stream data on the screen. However, we expect that these data appear in the `result_and_errors.txt` file. The problem happens because the `2>&1` operator has the wrong position in the command.
+This command outputs the error stream data on the screen. However, we expect that these data come to the `result_and_errors.txt` file. The problem happens because of the wrong order of `2>&1` and `>` operators.
 
-The POSIX standard has the concept of [**file descriptor**](https://en.wikipedia.org/wiki/File_descriptor). The descriptor is a pointer to a file or communication channel. The descriptor works as an abstraction that simplifies handling of the streams.
+Here are the details of the problem. The POSIX standard has the concept of the [**file descriptor**](https://en.wikipedia.org/wiki/File_descriptor). The descriptor is a pointer to a file or communication channel. It serves as an abstraction that makes it easier to handle streams.
 
-When you start a program, descriptors of output and error streams point to the terminal window. You can change it and associate them with the file. The streams descriptors point to that file in this case. The [BashGuide article](http://mywiki.wooledge.org/BashFAQ/055) describes this mechanism in detail.
+When you start a program, both descriptors of output and error streams point to the terminal window. You can associate them with files instead. If you do so, the streams' descriptors point to that file. The [BashGuide article](http://mywiki.wooledge.org/BashFAQ/055) describes this mechanism in detail.
 
-Let's go back to our `find` utility call. Bash applies redirection operators one by one from left to right. Table 2-13 shows this order for our example.
+Let's go back to our `find` call. Bash processes redirection operators one by one from left to right. Table 2-13 shows how it happens in our example.
 
 {caption: "Table 2-13. The order for applying redirection operators", width: "100%"}
 | Number | Operation | Result |
 | --- | --- | --- |
-| 1 | `2>&1` | Now the error stream points to the same target as the output stream. In our case, the target is the terminal window. |
+| 1 | `2>&1` | Now the error stream points to the same target as the output stream. The target is the terminal window. |
 |  | | |
-| 2 | `> result_and_errors.txt` | Now the output stream points to the file `result_and_errors.txt`. But the error stream is still associated with the terminal window. |
+| 2 | `> result_and_errors.txt` | Now the output stream points to the file `result_and_errors.txt`. The error stream is still associated with the terminal window. |
 
-Let's fix the mistake in the `find` call. Changing the order of the redirection operators does it. The redirection of the output stream should come first. Then the duplicating streams should take place. Here is the resulting command:
+We should change the order of the redirection operators to fix the mistake. The `>` operator comes first. Then stream duplication takes place. Here is the command:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README > result_and_errors.txt 2>&1
 ```
 
-The output stream points to a file in this command. The error stream points to the same file.
+Both output and error streams point to the `result_and_errors.txt` file here.
 
-You can specify redirection operators one after another if the output and error streams should point to different files. Here is an example:
+Suppose that you want to redirect output and error streams into two different files. Specify redirection operators for each stream one after another in this case. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README > result.txt 2> errors.txt
 ```
+
+The order of the operators is not important here.
 
 ### Pipelines
 
