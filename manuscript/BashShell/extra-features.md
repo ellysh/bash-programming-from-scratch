@@ -230,25 +230,36 @@ The order of the operators is not important here.
 
 ### Pipelines
 
-It is inconvenient to create temporary files for sharing data between programs. Managing these files takes extra effort. You should remember their paths and removing them after usage.
+The redirection operators are useful when you save data for manual analysis or processing. When you want to process data with another program, storing them in temporary files is inconvenient. Managing these files takes extra effort. You should keep in mind their paths and remove them after usage.
 
-Unix environment provides an alternative solution. It is called [**pipeline**](https://en.wikipedia.org/wiki/Pipeline_(Unix)). This mechanism is more convenient than temporary files. It shares data between programs by passing messages without using the file system.
+Unix provides an alternative solution for transferring text data. It is called [**pipeline**](https://en.wikipedia.org/wiki/Pipeline_(Unix)). This mechanism shares data between programs by passing messages. It does not use the file system.
 
-Let us consider an example. Suppose that you need information about the Bash [license](https://en.wikipedia.org/wiki/Software_license). You can find this information in the Bash documentation. The following `grep` utility call does it:
+An example will demonstrate how pipelines work. Suppose that you are looking for information about the Bash [license](https://en.wikipedia.org/wiki/Software_license). Bash documentation has it. Therefore, you call the `grep` utility to parse documentation files this way:
 {line-numbers: false, format: Bash}
 ```
 grep -R "GNU" /usr/share/doc/bash
 ```
 
-Another solution is to search license information on the `info` help page. The pipeline allows you to connect the output of one program with the input of another one. If we apply the pipeline, we can call the `grep` utility to process the `info` page. The following command does it:
+Another source of the Bash license information is the `info` help page. You can take this information and transfer it to the `grep` utility. The pipeline does this job. It takes the output of one program and sends it to the input of another one. The following command does it for `info` and `grep` programs:
 {line-numbers: false, format: Bash}
 ```
 info bash | grep -n "GNU"
 ```
 
-The `info` utility sends its result to the output stream. Then there is the vertical bar `|` symbol. It means the pipeline. The pipeline transfers the command's output on the left side to the command's input on the right side. This way, the `grep` utility receives the Bash `info` page. The utility searches the lines with the word "GNU" there. The nonempty command output means that Bash has the [GNU GPL](https://en.wikipedia.org/wiki/GNU_General_Public_License) license.
+The `info` utility sends its result to the output stream. This stream is associated with the monitor by default. Therefore, you see the information in the terminal window.
 
-There is the `-n` option in the `grep` call. The option adds the line numbers in the `grep` output. It helps to find a particular place in the file.
+The vertical bar `|` means pipeline. When you add it after the `info` call, the utility's output comes to the pipeline. You should add another command after the `|` symbol. This command receives the data from the pipeline. This is the `grep` call in our example.
+
+The general algorithm of our command looks like this:
+
+1. Call the `info` program to receive the Bash help.
+2. Send the `info` output to the pipeline.
+3. Call the `grep` utility.
+4. Pass the data from the pipeline to `grep`.
+
+The `grep` utility searches the "GNU" word in the input data. If the utility's output is not empty, the Bash license is [GNU GPL](https://en.wikipedia.org/wiki/GNU_General_Public_License).
+
+We use the `-n` option in the `grep` call. The option adds the line numbers to the utility's output. It helps you to find the exact place of the "GNU" word on the help page.
 
 #### du
 
