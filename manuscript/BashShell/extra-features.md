@@ -232,7 +232,7 @@ The order of the operators is not important here.
 
 The redirection operators are useful when you save data for manual analysis or processing. When you want to process data with another program, storing them in temporary files is inconvenient. Managing these files takes extra effort. You should keep in mind their paths and remove them after usage.
 
-Unix provides an alternative solution for transferring text data. It is called [**pipeline**](https://en.wikipedia.org/wiki/Pipeline_(Unix)). This mechanism shares data between programs by passing messages. It does not use the file system.
+Unix provides an alternative solution for transferring text data. It is called a [**pipeline**](https://en.wikipedia.org/wiki/Pipeline_(Unix)). This mechanism shares data between programs by passing messages. It does not use the file system.
 
 An example will demonstrate how pipelines work. Suppose that you are looking for information about the Bash [license](https://en.wikipedia.org/wiki/Software_license). Bash documentation has it. Therefore, you call the `grep` utility to parse documentation files this way:
 {line-numbers: false, format: Bash}
@@ -246,9 +246,9 @@ Another source of the Bash license information is the `info` help page. You can 
 info bash | grep -n "GNU"
 ```
 
-The `info` utility sends its result to the output stream. This stream is associated with the monitor by default. Therefore, you see the information in the terminal window.
+The `info` utility sends its result to the output stream. This stream is associated with the monitor by default. Therefore, you see the information in the terminal window. You do not get it in our case because of the pipeline.
 
-The vertical bar `|` means pipeline. When you add it after the `info` call, the utility's output comes to the pipeline. You should add another command after the `|` symbol. This command receives the data from the pipeline. This is the `grep` call in our example.
+The vertical bar `|` means the pipeline operator. When you add it after the `info` call, the utility's output comes to the pipeline. You should add another command after the `|` symbol. This command receives the data from the pipeline. This is the `grep` call in our example.
 
 The general algorithm of our command looks like this:
 
@@ -257,15 +257,15 @@ The general algorithm of our command looks like this:
 3. Call the `grep` utility.
 4. Pass the data from the pipeline to `grep`.
 
-The `grep` utility searches the "GNU" word in the input data. If the utility's output is not empty, the Bash license is [GNU GPL](https://en.wikipedia.org/wiki/GNU_General_Public_License).
+The `grep` utility searches the "GNU" word in the input data. If the utility finds the word, it prints the corresponding string of the input data. Check the `grep` output. If it is not empty, the Bash license is [GNU GPL](https://en.wikipedia.org/wiki/GNU_General_Public_License).
 
-We use the `-n` option in the `grep` call. The option adds the line numbers to the utility's output. It helps you to find the exact place of the "GNU" word on the help page.
+We use the `-n` option when calling `grep`. It adds the line numbers to the utility's output. The option helps you find the exact place of the "GNU" word on the help page.
 
 #### du
 
-Let's take a more complex example with pipelines. The `du` utility evaluates disk space usage. Run it without parameters in the current directory. The utility **recursively** passes through all subdirectories and prints the occupied space by each of them.
+Here is a more complex example with pipelines and the `du` utility. The utility evaluates disk space usage. Run it without parameters in the current directory. The utility passes through all subdirectories **recursively**. It prints the space occupied by each of them.
 
-Recursive traversal means repeating visiting of subdirectories. The traversal algorithm looks like this:
+Traversing a directory recursively means visiting all its subdirectories. If any of them has subdirectories, we should visit them too, etc. The traversal algorithm looks like this:
 
 1. Check the contents of the current directory.
 
@@ -275,7 +275,9 @@ Recursive traversal means repeating visiting of subdirectories. The traversal al
 
 4. If it is impossible to go to the parent directory, finish the algorithm.
 
-Following this algorithm, we bypass all subdirectories from the selected file system point. It is a universal traversal algorithm. You can add any action to it for processing each subdirectory. The action of the `du` utility is calculating disk space usage.
+You should select a starting point for this algorithm. It is a specific file system path. Then the algorithm bypasses all subdirectories starting from this path. The traversing finishes when the algorithm should come to the parent directory of the starting point.
+
+We have considered the universal traversal algorithm. You can add any action to it for processing each subdirectory. The action of the `du` utility is calculating disk space usage.
 
 The algorithm of the `du` utility looks like this:
 
@@ -283,9 +285,9 @@ The algorithm of the `du` utility looks like this:
 
 2. If there is an unvisited subdirectory, go to it and start from the 1st step of the algorithm.
 
-3. If all subdirectories are visited:
+3. If there are no subdirectories:
 
-    3.1 Calculate and display the disk space occupied by the current directory.
+    3.1 Calculate and print the disk space occupied by the current directory.
 
     3.2 Go to the parent directory.
 
@@ -293,15 +295,15 @@ The algorithm of the `du` utility looks like this:
 
 4. If it is impossible to go to the parent directory, finish the algorithm.
 
-The `du` utility takes a path to the file or directory on input. In the case of the file, the utility prints its size. For the directory, the utility traverses its subdirectories.
+When calling the `du` utility, you can specify a path to a file or directory. If you pass the file's path, the utility prints its size and finishes. In the case of the directory, it executes the traversing algorithm.
 
-Here is the `du` call for the system path `/usr/share`:
+Here is an example of the `du` call for the `/usr/share` path:
 {line-numbers: false, format: Bash}
 ```
 du /usr/share
 ```
 
-Here is a clipped example of the command output:
+It gives the following output:
 {line-numbers: true, format: Bash}
 ```
 261     /usr/share/aclocal
@@ -317,33 +319,33 @@ Here is a clipped example of the command output:
 ...
 ```
 
-We get a table that has two columns. The right column shows the subdirectory. The left column shows the number of occupied bites.
+You see a table of two columns. The right column shows the subdirectories. The left column shows the number of bits they occupy.
 
-If you want to add information about files in the `du` output, use the `-a` option. Here is an example:
+You can add the statistics for the files to the `du` output. Use the `-a` option for that. Here is an example `du` call:
 {line-numbers: false, format: Bash}
 ```
 du /usr/share -a
 ```
 
-The `-h` option makes the output of the `du` utility clearer. The option converts the number of bytes into kilobytes, megabytes, and gigabytes.
+The `-h` option improves the `du` output. The option converts bytes to kilobytes, megabytes, and gigabytes.
 
-Suppose that we should evaluate all HTML files in the `/usr/share` path. The following command prints that statistics:
+Suppose that you want to evaluate the size of all HTML files in the `/usr/share` path. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 du /usr/share -a -h | grep "\.html"
 ```
 
-Here the pipeline transfers the `du` output to the `grep` input. Then `grep` prints the lines that contain the "\.html" pattern.
+Here the pipeline redirects the `du` output to the `grep` input. The `grep` utility filters it and prints the lines that match the "\.html" pattern.
 
-The backslash \ escapes the dot in the "\.html" pattern. The dot means a single occurrence of any character. If you specify the ".html" pattern, the `grep` utility finds extra files (like `pod2html.1perl.gz`) and subdirectories (like `/usr/share/doc/pcre/html`). When you escape the dot, the `grep` utility treats it as a dot character.
+The backslash \ escapes the dot in the "\.html" pattern. The dot means a single occurrence of any character. If you specify the ".html" pattern, the `grep` output includes non-HTML files (like `pod2html.1perl.gz`) and subdirectories (like `/usr/share/doc/pcre/html`). When you escape the dot, the `grep` utility treats it as a dot character.
 
-The pipeline combines two commands in our example with `du` and `grep`. But the number of combined commands is not limited. For example, you can sort the found HTML files in descending order.  The `sort` utility does this job. Here is the example command:
+The pipeline combines calls of `du` and `grep` utilities in our example. However, you can combine more than two commands. Suppose that you need to sort the found HTML files. Call the `sort` utility for doing this job. Then you get the following pipeline :
 {line-numbers: false, format: Bash}
 ```
 du /usr/share -a -h | grep "\.html" | sort -h -r
 ```
 
-By default, the `sort` utility sorts the strings in ascending [**lexicographic order**](https://en.wikipedia.org/wiki/Lexicographic_order). For example, there is a file that contains the following strings:
+The `sort` utility sorts the strings in ascending [**lexicographic order**](https://en.wikipedia.org/wiki/Lexicographic_order) when called without options. The following example explains the lexicographic order. Suppose that you have a file. It has this contents:
 {line-numbers: true, format: text}
 ```
 abc
@@ -354,7 +356,7 @@ bcd
 dec
 ```
 
-If you call the `sort` utility without options, it places the file's lines in the following order:
+You call the `sort` utility for this file. It gives you the following output:
 {line-numbers: true, format: text}
 ```
 aaa
@@ -365,7 +367,7 @@ dca
 dec
 ```
 
-The `-r` option reverts the order. If you apply this option, the utility prints these lines:
+The `-r` option of the utility reverts the sorting order. You get this output when applying the option:
 {line-numbers: true, format: text}
 ```
 dec
@@ -376,9 +378,9 @@ aaaa
 aaa
 ```
 
-The `du` utility prints file sizes in the first column. The `sort` utility operates this column. The file sizes are numbers. Therefore, we cannot place them in order properly with lexicographic sorting. An example will help us to understand the issue.
+The `du` utility prints it results in the table. The first column contains sizes of files and directories. The `sort` utility process its input data line by line from left to right. Suppose that you transfer the `du` output to the `sort` input. Then the `sort` utility deals with numbers which are sizes of objects. The lexicographic sorting does not work well in this case. An example will explain the issue to you.
 
-Suppose there is a file with the following numbers:
+There is a file with three integers:
 {line-numbers: true, format: text}
 ```
 3
@@ -386,7 +388,7 @@ Suppose there is a file with the following numbers:
 2
 ```
 
-Lexicographical sort of the file produces the following result:
+If you call the `sort` utility for this file, it gives you this result:
 {line-numbers: true, format: text}
 ```
 100
@@ -394,33 +396,48 @@ Lexicographical sort of the file produces the following result:
 3
 ```
 
-The algorithm put the number 100 before 2 and 3. It assumes that 100 is less than other numbers. It happens because the ASCII code of character 1 is smaller than the codes of characters 2 and 3. Use the `-n` option for sorting integers by their values.
+The utility deduces that 100 is less than 2 and 3. It happens because `sort` compares strings but not digits. It converts each character of two lines to the corresponding ASCII code. Then the utility compares these codes one by one from left to right. When the first difference happens, the utility chooses the smaller string and puts it first. This string has the character with the smaller code.
 
-We have an example command with two pipelines. The `du` utility has the `-h` option there. The option converts bytes into larger memory units. The `sort` utility can process them only if you call it with the same `-h` option.
+The `-n` option forces `sort` to compare digits instead of strings. If you add this option, the utility converts all string into the numbers and compare them. Using this option, you get the correct sorting order like this:
+{line-numbers: true, format: text}
+```
+2
+3
+100
+```
 
-You can combine pipelines with stream redirection. Let's save the filtered and sorted output of the `du` utility to the file. The following command does it:
+Let's come back to our command:
+{line-numbers: false, format: Bash}
+```
+du /usr/share -a -h | grep "\.html" | sort -h -r
+```
+
+
+It works well because of the `-h` option of the `sort` utility. This option forces the utility to convert the object sizes to integers. For example, it converts "2K" to "2048" integer. If `sort` meets the "2048" string, the utility treats it as an integer. This way, `sort` can process the `du` output.
+
+You can combine pipelines with stream redirection. Suppose that you want to save the filtered and sorted `du` output to the file. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 du /usr/share -a -h | grep "\.html" | sort -h -r > result.txt
 ```
 
-The command writes its result into the `result.txt` file.
+The `result.txt` file gets the `sort` output here.
 
-Suppose you are combining pipelines and stream redirection. You want to write the output stream into the file and pass it to another utility simultaneously. How can you do that? Bash does not have a built-in mechanism for this task. But the special `tee` utility does it. Here is an example:
+There is an option to split data streams when you combine pipelines and the redirection operator. For example, you want to write the output stream into the file and pass it to another utility at once. Bash does not have a mechanism for this task. However, you can call the `tee` utility for doing that. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 du /usr/share -a -h | tee result.txt
 ```
 
-The command prints the `du` utility result on the screen. It writes the same result into the `result.txt` file. It means that the `tee` utility duplicates its input stream to the specified file and the output stream. The utility overwrites the contents of `result.txt`. Use the `-a` option if you need to append data to the file instead of overwriting it.
+The command prints the `du` output on the screen. It writes this output into the `result.txt` file at the same time. The `tee` utility duplicates its input stream to the specified file and the output stream. The utility overwrites the contents of `result.txt` if it exists. Use the `-a` option if you want to append data to the existing file.
 
-Sometimes you want to check the data flow between commands in a pipeline. The `tee` utility helps you in this case. Just call the utility between the commands in the pipeline. Here is an example:
+Sometimes you need to check the data flow between commands in a pipeline. The `tee` utility helps you in this case. Just call the utility between the commands in the pipeline. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 du /usr/share -a -h | tee du.txt | grep "\.html" | tee grep.txt | sort -h -r > result.txt
 ```
 
-It stores the output of each command in the pipeline to the corresponding file. These intermediate results are useful for debugging. The `result.txt` file still contains the final result of the whole command.
+Each `tee` call stores the output of the previous pipeline command to the corresponding file. This intermediate output helps you to debug possible mistakes. The `result.txt` file contains the final result of the whole pipeline.
 
 #### xargs
 
