@@ -552,32 +552,32 @@ cp /usr/share/doc/bash/bash.html /home/ilya.shpigor
 cp /usr/share/doc/bash/bashref.html /home/ilya.shpigor
 ```
 
-The `-t` option of the `xargs` utility displays the constructed commands before executing them. It can help you with debugging. Here is an example of using the option:
+The `-t` option of `xargs` displays the constructed commands before executing them. Use it for checking the utility's results and debugging. Here is an example of applying the option:
 {line-numbers: false, format: Bash}
 ```
 find /usr/share/doc/bash -type f -name "*.html" | xargs -t -I % cp % ~
 ```
 
-We have considered how to combine the `find` utility and pipelines. These examples are for educational purposes only. Do not apply them in your Bash scripts. Use the `-exec` action of the `find` utility instead of pipelines. This way, you avoid issues with processing filenames with spaces and line breaks.
+We have considered several cases of using `find` with a pipeline. These examples are for educational purposes only. Do not apply them in practice! Use the `-exec` action of the `find` utility instead of pipelines. This way, you avoid issues when processing filenames with spaces and line breaks.
 
-There are few cases when a combination of `find` and pipeline makes sense. One of these cases is the parallel processing of found files.
+There are very few cases when combining `find` and a pipeline makes sense. One of these cases is the parallel processing of found files.
 
-Here is an example. When you call the `cp` utility in the `-exec` action, it copies files one by one. It is inefficient if your hard disk has a high access speed. You can speed up the operation by running it in several parallel processes. The `-P` parameter of the `xargs` utility does that. Specify the number of parallel processes in this parameter. They will execute the constructed command.
+Here is an example. When you call the `cp` utility in the `-exec` action, it copies files one by one. It is inefficient if your CPU has several cores and the hard disk has a high access speed. You can speed up the operation by running it in several parallel processes. The `-P` parameter of the `xargs` utility does that. Specify the number of the processes in this parameter. They will execute the constructed command in parallel.
 
-Suppose your computer processor has four cores. Then you can copy files in four parallel processes. Here is the command to do that:
+Suppose your computer's processor has four cores. Then you can copy files in four parallel processes. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 find /usr/share/doc/bash -type f -name "*.html" | xargs -P 4 -I % cp % ~
 ```
 
-The command copies four files at once. As soon as one of the parallel processes finishes, it handles the next file. This approach can speed up the execution of the command considerably. The gain depends on the configuration of your CPU and hard drive.
+This command copies four files at once. As soon as one of the parallel processes finishes, it handles the next file. This approach speeds up the processing of time-consuming tasks considerably. The performance gain depends on the configuration of your hardware.
 
-There are several GNU utilities for processing text data on the input stream. They work well in pipelines. Table 2-14 shows the most commonly used of these utilities.
+Many GNU utilities can handle text data from the input stream. They work well in pipelines. Table 2-14 shows the most commonly used of these utilities.
 
 {caption: "Table 2-14. Utilities for processing the input stream", width: "100%"}
 | Utility | Description | Examples |
 | --- | --- | --- |
-| `xargs` | It constructs a command using command-line parameters and data from the input stream. | `find . -type f -print0 | xargs -0 cp -t ~` |
+| `xargs` | It constructs a command from parameters and the input stream data. | `find . -type f -print0 | xargs -0 cp -t ~` |
 |  | | |
 | `grep` | It searches for text that matches | `grep -A 3 -B 3 "GNU" file.txt` |
 | | the specified pattern. | `du /usr/share -a | grep "\.html"` |
@@ -585,10 +585,10 @@ There are several GNU utilities for processing text data on the input stream. Th
 | `tee` | It redirects the input stream to the output stream and file at the same time. | `grep "GNU" file.txt | tee result.txt` |
 |  | | |
 | `sort` | It sorts strings from the input stream | `sort file.txt` |
-| | in forward and reverse order (`-r`). | `du /usr/share | sort -n -r` |
+| | in forward or reverse order (`-r`). | `du /usr/share | sort -n -r` |
 |  | | |
-| `wc` | It count the number of lines (`-l`), words (`-w`), | `wc -l file.txt` |
-| | letters (`-m`) and bytes (`-c`) in a specified file or input stream. | `info find | wc -m` |
+| `wc` | It counts the number of lines (`-l`), words (`-w`), | `wc -l file.txt` |
+| | letters (`-m`) and bytes (`-c`) in the specified file or input stream. | `info find | wc -m` |
 |  | | |
 | `head` | It outputs the first bytes (`-c`) or lines (`-n`) | `head -n 10 file.txt` |
 | | of a file or text from the input stream. | `du /usr/share | sort -n -r | head -10` |
@@ -597,20 +597,20 @@ There are several GNU utilities for processing text data on the input stream. Th
 | | of a file or text from the input stream. | `du /usr/share | sort -n -r | tail -10` |
 |  | | |
 | `less` | It is the utility for navigating | `less /usr/share/doc/bash/README` |
-|  | through text from the standard input stream. Press the Q key to exit. | `du | less` |
+|  | text from the input stream. Press the Q key to exit. | `du | less` |
 
 ### Pipelines Pitfalls
 
-Pipelines are a popular feature of the Unix environment.  Users apply them frequently. Unfortunately, it is quite simple to make a mistake using pipelines. Let's consider the common mistakes by examples.
+The pipeline is a convenient Bash feature. You will apply it often when working with the shell. Unfortunately, you can easily get it wrong. Let's consider the pipeline's pitfalls by examples.
 
-You can expect that the following two commands give the same result:
+You can expect that the same result from the following two commands:
 {line-numbers: true, format: Bash}
 ```
 find /usr/share/doc/bash -name "*.html"
 ls /usr/share/doc/bash | grep "\.html"
 ```
 
-The commands' results differ in some cases. There is no problem in processing the search pattern differently by the `find` and `grep` utilities. The problem happens when you pass the filenames through the pipeline.
+These commands provide different results in some cases. There is no problem with different search patterns for `find` and `grep`. The issue happens when you pass the names of files and directories through the pipeline.
 
 The POSIX standard allows all printable characters in filenames. It means that spaces and line breaks are allowed too. The only forbidden character is [**null character**](https://en.wikipedia.org/wiki/Null_character) (NULL). This rule can lead to unexpected results.
 
