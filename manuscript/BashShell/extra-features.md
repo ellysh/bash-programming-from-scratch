@@ -441,9 +441,9 @@ Each `tee` call stores the output of the previous pipeline command to the corres
 
 #### xargs
 
-The `find` utility has the `-exec` parameter. It calls a command for each found object. This behavior resembles a pipeline: `find` passes its result to another program. These mechanisms look similar but their internals differs. Choose an appropriate mechanism depending on your task.
+The `find` utility has the `-exec` parameter. It calls the specified command for each found object. This behavior resembles a pipeline: `find` passes its result to another program. These two mechanisms look similar, but their internals differs. Choose an appropriate one depending on your task.
 
-Let's look at how the `find` utility performs the `-exec` action. Some program performs this action. The built-in `find` interpreter runs it. The interpreter passes to the program whatever the `find` utility has found. Note that the Bash interpreter is not involved in the `-exec` call. Therefore, you cannot use the following Bash features in the call:
+Let's look at how the `find` utility performs the `-exec` action. The utility has a built-in interpreter. When it receives the `-exec` action on input, it calls the specified program there. The interpreter passes to the program whatever the `find` utility has found. Note that Bash is not involved in the `-exec` call. Therefore, you cannot use the following Bash features there:
 
 * built-in Bash commands
 * functions
@@ -458,23 +458,23 @@ Try to run the following command:
 find ~ -type f -exec echo {} \;
 ```
 
-The `find` utility calls the `echo` Bash built-in here. It works correctly. Why? Actually, `find` calls another utility with the same name `echo` as the Bash command. Unix environment provides several utilities that duplicate Bash built-ins. You can find them in the `/bin` system path. For example, there is the `/bin/echo` file there.
+The `find` utility calls the `echo` Bash built-in here. It works correctly. Why? Actually, `find` calls the `echo` utility. It has the same name as the Bash command. Unix environment provides several utilities that duplicate the Bash built-ins. You can find them in the `/bin` system directory. For example, there is the `/bin/echo` executable there.
 
-Some tasks require the Bash features in the `-exec` action. There is a trick to access them in this case. Run the interpreter explicitly and pass a command to it. Here is an example:
+Sometimes you need a Bash feature in the `-exec` action. There is a trick to get it. Run the shell explicitly and pass a command to it. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find ~ -type f -exec bash -c 'echo {}' \;
 ```
 
-This command does the same as the previous one that calls the `echo` utility. It prints the results of the `find` search.
+The previous command calls the `echo` utility. This command calls the `echo` Bash built-in. They do the same and print the `find` results on the screen.
 
-You can apply the pipeline and redirect the `find` output to another command. In this case, you pass the text through the pipeline rather than filenames and directories. Here is an example of such passing:
+Another option to process the `find` results is applying pipeline. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find ~ -type f | grep "bash"
 ```
 
-The command prints the output like this:
+The command's output looks like this:
 {line-numbers: true, format: Bash}
 ```
 /home/ilya.shpigor/.bashrc
@@ -483,11 +483,13 @@ The command prints the output like this:
 /home/ilya.shpigor/.bash_profile
 ```
 
-The pipeline passes the `find` output to the `grep` utility input. Then `grep` prints only the filenames where the pattern "bash" occurs.
+The pipeline receives text data from the `find` utility. Then it transfers these data to the `grep` utility.  Finally, `grep` prints the filenames where the pattern "bash" occurs.
 
-The `-exec` action behaves in another way. When `find` passes its results to the `-exec` command, it constructs a utility call. The utility receives the names of found files and directories. You can get the same behavior when using the pipeline. Just apply the `xargs` utility for that.
+The `-exec` action behaves in another way. No text data is transferred in this case. The `find` interpreter constructs a program call using the `find` results. It passes the paths of found files and directories to the program. These paths are not plain text.
 
-Let's change our command with `find` and `grep`. Now we pass the text to the input stream of the `grep` utility. Then it filters found filenames. Instead of that, we want to filter the contents of the files. In this case, the `grep` utility should receive filenames via command-line parameters. The `xargs` utility does this job:
+You can get the `-exec` action behavior when using the pipeline. Call the `xargs` utility for that.
+
+Here is an example. Suppose that you want to find the pattern in the contents of the found files. The `grep` utility should receive file paths but not the plain text in this case. You can apply pipeline and `xarg` to solve this task. The solution looks like this:
 {line-numbers: false, format: Bash}
 ```
 find ~ -type f | xargs grep "bash"
@@ -495,7 +497,7 @@ find ~ -type f | xargs grep "bash"
 
 I> This command cannot handle files whose names contain spaces and line breaks. The next section considers how to solve this problem.
 
-Here is the output of the command:
+Here is the command's output:
 {line-numbers: true, format: Bash}
 ```
 /home/ilya.shpigor/.bashrc:# ~/.bashrc: executed by bash(1) for interactive shells.
@@ -507,39 +509,43 @@ Here is the output of the command:
 ...
 ```
 
-The `xargs` utility constructs a command from parameters that it receives on the input stream. The utility takes two things on the input: parameters and text from the stream. The parameters come in the first place in the constructing command. Then all data from the input stream follows.
+The `xargs` utility constructs a command. The utility takes two things on the input: parameters and text data from the input stream. The parameters come in the first place in the constructed command. Then all data from the input stream follows.
 
-Let's come back to our example. Suppose the first file that the `find` gets is `~/.bashrc`. Here is the `xargs` call that receives the file via the pipeline:
+Let's come back to our example. Suppose that the `find` utility found the `~/.bashrc` file. The pipeline passes the file path to the following `xargs` call:
 {line-numbers: false, format: Bash}
 ```
 xargs grep "bash"
 ```
 
-The utility receives two command-line parameters in this call: `grep` and "bash". Therefore, the constructed command starts with these two words:
+The `xargs` utility receives two parameters in this call: "grep" and "bash". Therefore, it constructs the command that starts with these two words. Here is the result:
 {line-numbers: false, format: Bash}
 ```
 grep "bash"
 ```
 
-Then `xargs` appends the text from the input stream to the command. There is the filename `~/.bashrc` in the stream. Therefore, the constructed command looks like this:
+Then `xargs` do the second step. It takes text data from the input stream and converts them to the parameters for the constructed command. The pipeline passes the `~/.bashrc` path to `xargs`. The utility uses it for making this command:
 {line-numbers: false, format: bash}
 ```
 grep "bash" ~/.bashrc
 ```
 
-The `xargs` utility does not call Bash for executing the constructed command. It means that the command has the same restrictions as the `-exec` action of the `find` utility. No Bash features are allowed there.
+The `xargs` utility does not invoke Bash for executing the constructed command. It means that the command has the same restrictions as the `-exec` action of the `find` utility. No Bash built-ins and features are allowed there.
 
-The `xargs` utility puts all data from the input stream at the end of the constructed command. In some cases, you want to change the position of these data. For example, you want to put them at the beginning of the command. The `-I` parameter of `xargs` does that.
+The `xargs` utility places the parameters made from the input stream at the end of the constructed command. In some cases, you want to change their position. For example, you want to place the parameters in the middle of the command. The `-I` option of `xargs` does that.
 
-Here is an example. Suppose that you want to copy the found files to the user's home directory. The `cp` utility does copying. But you should construct its call properly by the `xargs` utility. The following command does it:
+Here is an example. Suppose that you want to copy the found HTML files to the home directory. The `cp` utility does it. The only task is placing its parameters in the proper order when constructing the `cp` call. Use the `-I` option of `xargs` this way to get it:
 {line-numbers: false, format: Bash}
 ```
 find /usr/share/doc/bash -type f -name "*.html" | xargs -I % cp % ~
 ```
 
-The `-I` parameter changes the place where the `xargs` utility puts the filenames. In our case, the parameter points to the position of the percent sign % for that.
+When you apply the `-I` option, you specify the place to insert parameters by the percent sign %. You can replace the percent sign with any string. Here is an example:
+{line-numbers: false, format: Bash}
+```
+find /usr/share/doc/bash -type f -name "*.html" | xargs -I FILE cp FILE ~
+```
 
-The `xargs` utility calls `cp` for each line that it receives via the pipeline. Thus, it constructs the following two commands:
+The `xargs` utility receives several lines via the pipeline. It constructs the `cp` call per each received line. The utility creates the following two commands in our example:
 {line-numbers: true, format: Bash}
 ```
 cp /usr/share/doc/bash/bash.html /home/ilya.shpigor
