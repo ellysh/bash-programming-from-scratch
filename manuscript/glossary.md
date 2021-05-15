@@ -124,7 +124,7 @@ ls | grep "test"
 
 [**Escape sequence**](https://en.wikipedia.org/wiki/Escape_sequence) is a set of characters that have no meaning of their own. Instead, they control the output device. For example, the line break character `\n` commands the output device to start a new line.
 
-[**Exit status**](https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html#Exit-Status) is an integer value from 0 to 255 that the shell command returns when finishing. The zero status means successful execution of the command. All other codes indicate an error.
+[**Exit code**](https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html#Exit-Status) (or exit status) is an integer value from 0 to 255 that the shell command returns when finishing. The zero status means successful execution of the command. All other codes indicate an error.
 
 ## F
 
