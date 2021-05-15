@@ -599,9 +599,9 @@ Many GNU utilities can handle text data from the input stream. They work well in
 | `less` | It is the utility for navigating | `less /usr/share/doc/bash/README` |
 |  | text from the input stream. Press the Q key to exit. | `du | less` |
 
-### Pipelines Pitfalls
+### Pipeline Pitfalls
 
-The pipeline is a convenient Bash feature. You will apply it often when working with the shell. Unfortunately, you can easily get it wrong. Let's consider the pipeline's pitfalls by examples.
+The pipeline is a convenient Bash feature. You will apply it often when working with the shell. Unfortunately, you can easily make a mistake using the pipeline. Let's consider its pitfalls by examples.
 
 You can expect that the same result from the following two commands:
 {line-numbers: true, format: Bash}
@@ -610,25 +610,25 @@ find /usr/share/doc/bash -name "*.html"
 ls /usr/share/doc/bash | grep "\.html"
 ```
 
-These commands provide different results in some cases. There is no problem with different search patterns for `find` and `grep`. The issue happens when you pass the names of files and directories through the pipeline.
+These commands provide different results in some cases. The problem happens when you pass the filenames through the pipeline.
 
-The POSIX standard allows all printable characters in filenames. It means that spaces and line breaks are allowed too. The only forbidden character is [**null character**](https://en.wikipedia.org/wiki/Null_character) (NULL). This rule can lead to unexpected results.
+The root cause of the problem came from the POSIX standard. The standard allows all printable characters in the file and directory names. It means that spaces and line breaks are allowed. The only forbidden character is the [**null character**](https://en.wikipedia.org/wiki/Null_character) (NULL). This rule can lead to unexpected consequences.
 
-Here is an example. Create a file in the user's home directory. The filename should contain the line break. This control character matches the `\n` [**escape sequence**](https://en.wikipedia.org/wiki/Escape_sequence) in ASCII encoding. You can add escape sequences in filenames with the `touch` utility. Call it this way:
+Here is an example. Create a file in the home directory. The filename should contain the line break. This is a control character that matches the `\n` [**escape sequence**](https://en.wikipedia.org/wiki/Escape_sequence) in the ASCII encoding. Call the `touch` utility to create the empty file this way:
 {line-numbers: false, format: Bash}
 ```
 touch ~/$'test\nfile.txt'
 ```
 
-The `touch` utility updates the modification time of the file. It is a primary task of the utility. If the file does not exist, `touch` creates it. It is a [**side effect**](https://en.wikipedia.org/wiki/Side_effect_(computer_science)) feature of the utility.
+The `touch` utility updates the modification time of the file. It is a primary task of the utility. If the file does not exist, `touch` creates it. Such secondary features of a program are called [**side effect**](https://en.wikipedia.org/wiki/Side_effect_(computer_science)).
 
-Create extra two files for our example: `test1.txt` and `file1.txt`. The following command does that:
+You need to create two extra files for our test. Call them `test1.txt` and `file1.txt`. The following command does that:
 {line-numbers: false, format: Bash}
 ```
 touch ~/test1.txt ~/file1.txt
 ```
 
-Now call the `ls` utility in the user's home directory. Pass its output to `grep` via pipeline. Here are the examples:
+Now call the `ls` utility for the home directory. Pass its output to `grep` using the pipeline. Here are the example commands:
 {line-numbers: true, format: Bash}
 ```
 ls ~ | grep test
@@ -640,21 +640,23 @@ Figure 2-27 shows the output of these commands.
 {caption: "Figure 2-27. The result of combining the `ls` and `grep` utilities", width: "100%"}
 ![ls and grep](images/BashShell/ls-grep.png)
 
-Both commands truncate the `test\nfile.txt` filename. Remove the grep calls in the commands. You see that the `ls` utility prints the filename properly in this way: 'test'$'\n''file.txt'. When you pass it via the pipeline, the escaping sequence `\n` is replaced by the line break. It leads to splitting the filename into two parts. Then `grep` handles the parts separately as two different filenames.
+Both commands truncate the `test\nfile.txt` filename.
 
-There is another potential problem. Suppose you search and copy the file. Its name has space (for example, "test file.txt"). Then the following command fails:
+Try to call `ls` without the pipeline. You will see that the utility prints the 'test'$'\n''file.txt' filename properly. When you pass it via the pipeline, the escaping sequence `\n` is replaced by the line break. It leads to splitting the filename into two parts. Then `grep` handles these parts separately.
+
+There is another potential problem. Suppose you search and copy the file. Its name has a space (for example, "test file.txt"). Then the following command fails:
 {line-numbers: false, format: Bash}
 ```
 ls ~ | xargs cp -t ~/tmp
 ```
 
-In this case, `xargs` constructs the following call of the `cp` utility:
+Here `xargs` constructs the following call of the `cp` utility:
 {line-numbers: false, format: Bash}
 ```
 cp -t ~/tmp test file.txt
 ```
 
-The command copies the `test` and `file.txt` files to the `~/tmp` path. But none of these files exists. The reason for the error is the word splitting mechanism of Bash. It splits lines in words by spaces. You can disable the mechanism by double-quotes. Here is an example for our command:
+The command copies the `test` and `file.txt` files to the `~/tmp` path. However, none of these files exists. The reason for the error is the word splitting mechanism. Bash splits lines in words by the spaces. You can disable the mechanism by double-quotes. Here is an example for our command:
 {line-numbers: false, format: Bash}
 ```
 ls ~ | xargs -I % cp -t ~/tmp "%"
@@ -662,41 +664,41 @@ ls ~ | xargs -I % cp -t ~/tmp "%"
 
 It copies the "test file.txt" file properly.
 
-Double-quotes do not help if the filename has a line break. The only solution here is not to use `ls`. The `find` utility with the `-exec` action does this job right. Here is an example:
+Double quotes do not help if the filename has a line break. The only solution here is not to use `ls`. The `find` utility with the `-exec` action does this job right. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find . -name "*.txt" -exec cp -t tmp {} \;
 ```
 
-It would be great not to use pipelines with filenames at all. However, it is required for solving some tasks. In this case, you can combine the `find` and `xargs` utilities. This approach works fine if you call `find` with the `-print0` option. Here is an example:
+It would be great not to use pipelines with file and directory names at all. However, you need it for solving some tasks. Combine the `find` and `xargs` utilities in this case. This approach works well if you call `find` with the `-print0` option. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 find . -type f -print0 | xargs -0 -I % bsdtar -cf %.tar %
 ```
 
-The `-print0` option changes the `find` output format. It separates the paths to found objects by the null character. Without the option, the separator is a line break.
+The `-print0` option changes the `find` output format. The default format is a list of the found objects. The separator between the objects is a line break. The `-print0` option changes the separator to the null character.
 
-We changed the `find` output format. Then we should notify the `xargs` utility about it. By default, the utility separates the strings on the input stream by line breaks. The `-0` option changes this behavior. With the option, `xargs` applies the null character as the separator.  In this way, we have reconciled the output and input formats of the utilities.
+You have changed the `find` output format. Now you should change the `xargs` call accordingly. The `xarg` utility separates the input stream data by line breaks. The `-0` option changes the separator to the null character. This way, you reconcile the output and input formats of two utilities.
 
-You can change the output format of the `grep`utility in the same manner. It allows you to pass its output through the pipeline. The `-Z` option does that. The option separates filenames with the null character. Here is an example:
+The `-Z` option changes the `grep` output format in the same manner. It replaces the line breaks with the null characters. Using the option, you can pass the `grep` output via the pipeline without errors. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 grep -RlZ "GNU" . | xargs -0 -I % bsdtar -cf %.tar %
 ```
 
-The command searches files that contain the "GNU" pattern. Then it passes their names to the `xargs` utility. The utility constructs the `bsdtar` call for archiving the files.
+This command searches files that contain the "GNU" pattern. Then the pipeline passes the found filenames to the `xargs` utility. The utility constructs the `bsdtar` call for archiving these files.
 
-Here are the general advices for using pipelines:
+Here are the general hints for using pipelines:
 
-1. Be aware of spaces and line breaks when passing filenames through the pipeline.
+1. Be aware of spaces and line breaks when passing file and directory names via the pipeline.
 
 2. Never process the `ls` output. Use the `find` utility with the `-exec` action instead.
 
-3. Always use `-0` option when process filenames by `xargs`. Pass null separated names to the utility.
+3. Always use `-0` option when processing the object names by `xargs`. Pass only null character separated names to the utility.
 
 {caption: "Exercise 2-7. Pipelines and I/O streams redirection", format: text, line-numbers: false}
 ```
-Write a command to archive photos with the bsdtar utility.
+Write a command to archive photos using the bsdtar utility.
 If you are a Linux or macOS user, use the tar utility instead.
 The photos are stored in the directory structure from exercises 2-6:
 
