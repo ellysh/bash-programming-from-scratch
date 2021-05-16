@@ -39,38 +39,38 @@ It is possible to edit the source code without these features. However, they mak
 
 ### Launching the Editor
 
-You can launch the source code editor through the graphical interface of the OS. In the case of Windows, do it via the Start menu or the icon on the desktop.
+There are several ways to run the source code editor. The first option is using the GUI of your OS. Launch the editor via the Start menu or the desktop icon. It is the same way you run any other program.
 
-There is another possibility. You can launch the editor from the command-line interface. This approach is more convenient in some cases. For example, when the Bash command returns a filename, you can quickly open it via command-line.
+The second option is using the command-line interface. This approach is more convenient in some cases. Here is an example. You call the `find` utility for searching several files. You can pass the `find` output to the source code editor input and open all found files. It is possible because most modern editors support CLI.
 
-There are three ways to run the application in Bash:
+There are three ways to run an application in Bash:
 
-1. By absolute path.
-2. By relative path.
-3. By executable file name.
+1. By the name of the executable.
+2. By the absolute path.
+3. By the relative path.
 
-The last approach is the fastest and most commonly used. If you want to apply it, you should add the program's installation path to the `PATH` variable.
+The first approach is the most convenient. However, you need to add the installation path of the application to the `PATH` variable. Then Bash can find the program's executable when you call it.
 
-Let's consider how to run the Notepad++ editor by the executable name. The editor has the following installation path by default:
+Let's consider how to run the Notepad++ editor by the executable name. The program has the following installation path by default:
 {line-numbers: false}
 ```
 C:\Program Files (86)\Notepad++
 ```
 
-I> You can clarify the installation path of the program in the properties of the desktop icon or the Start menu item.
+I> Clarify the installation path of your editor in the properties of its desktop icon or the Start menu item.
 
-In the MSYS2 environment, the same installation path looks like this:
+When you work in the MSYS2 environment, the Notepad++ installation path looks like this:
 {line-numbers: false}
 ```
 /c/Program Files (x86)/Notepad++
 ```
 
-First, let's run Notepad++ by this absolute path. If you try to do that, Bash prints the error message as Figure 3-1 shows.
+Try to run the editor using this absolute path. Figure 3-1 shows that it does not work. Bash reports about the syntax error in this case.
 
 {caption: "Figure 3-1. Result of launching Notepad++"}
 ![Notepad++ error](images/BashScripting/notepad-error.png)
 
-This command has several problems. We will consider them one by one. First, try to launch the following `cd` command:
+This command has several problems. We will investigate them one by one. The `cd` Bash built-in can give you the first hint about what is going wrong. Call `cd` this way:
 {line-numbers: false, format: Bash}
 ```
 cd /c/Program Files
@@ -81,9 +81,9 @@ Figure 3-2 shows the result.
 {caption: "Figure 3-2. Result of the `cd` command"}
 ![cd result](images/BashScripting/cd-many-arguments.png)
 
-Bash complains that you pass more parameters to `cd` than it requires. This command accepts one path on input only. But you pass two paths here. The mistake happens because of word splitting. Bash handles the space as a separator between two words. Therefore, it splits the single path "/c/Program Files" into two paths "/c/Program" and "Files".
+Bash complains that you have passed too many parameters to `cd`. This command expects only one parameter, which is a path. It looks like you provided two paths instead of one here. This mistake happens because of the word splitting mechanism. Bash separated the path by the space into two parts: "/c/Program" and "Files".
 
-There are two ways to solve such errors:
+You have two option to suppress the word splitting mechanism:
 
 1. Enclose the path in double-quotes:
 {line-numbers: false, format: Bash}
@@ -91,93 +91,97 @@ There are two ways to solve such errors:
 cd "/c/Program Files"
 ```
 
-2. Escape all spaces with backslashes:
+2. Escape all spaces using the backslash:
 {line-numbers: false, format: Bash}
 ```
 cd /c/Program\ Files
 ```
 
-Bash executes each of these commands correctly.
+When you suppress word splitting, Bash executes the `cd` command properly.
 
-Now let's try to navigate the `/c/Program Files (x86)` path. Here is a command for that:
+Now try to navigate the `/c/Program Files (x86)` path. The following command does not work:
 {line-numbers: false, format: Bash}
 ```
 cd /c/Program Files (x86)
 ```
 
-We found out that Bash handles spaces on its own. Therefore, we should prevent it and escape them with backslashes. Then we get the following command:
+We found out that the issue happens because of word splitting. You can suppress it by escaping the spaces this way:
 {line-numbers: false, format: Bash}
 ```
 cd /c/Program\ Files\ (x86)
 ```
 
-This command still fails. Figure 3-3 shows its error message.
+Figure 3-3 shows that this command still fails.
 
 {caption: "Figure 3-3. Result of the `cd` command"}
 ![cd result](images/BashScripting/cd-unexpected-token.png)
 
-This message looks the same as the error in Figure 3-1 when we tried to launch Notepad++. The problem happens because the parentheses are part of the Bash syntax. Therefore, the interpreter treats them as a language construct. We met this problem before when grouping conditions of the `find` utility. Escaping or double-quotes solves this issue. Here is an example:
+This is the same error message as Bash has printed when launching Notepad++ in Figure 3-1. This problem happens because of the parentheses. They are part of the Bash syntax. It means that the shell treats them as a language construct. We met this problem when grouping conditions of the `find` utility. Escaping or double-quotes solves this issue too. Here are possible solutions for our case:
 {line-numbers: true, format: Bash}
 ```
 cd /c/Program\ Files\ \(x86\)
 cd "/c/Program Files (x86)"
 ```
 
-If we choose the approach with double-quotes, the command to launch Notepad++ looks like this:
+Using double-quotes is simpler than escaping. Apply them to launch the Notepad++ this way:
 {line-numbers: false, format: Bash}
 ```
 "/c/Program Files (x86)/Notepad++/notepad++.exe"
 ```
 
-The absolute path of the editor is too long. Typing it every time is inconvenient. It is better to launch Notepad++ via the executable name. Let's add its installation path to the `PATH` Bash variable for making that work.
+Now Bash launches the editor properly.
 
-Add the following line to the end of the `~/.bash_profile` file:
+Launching Notepad++ by the absolute path is inconvenient. You should type a long command in this case. Launching the editor by the name of the executable is much better. Let's change the `PATH` Bash variable for making that work.
+
+Add the following line at the end of the `~/.bash_profile` file:
 {line-numbers: false, format: Bash}
 ```
 PATH="/c/Program Files (x86)/Notepad++:${PATH}"
 ```
 
-Close and reopen the terminal window. Now you can start Notepad++ by the following command:
+Restart the MSYS2 terminal. Now the following command launches Notepad++:
 {line-numbers: false, format: Bash}
 ```
 notepad++.exe
 ```
 
-There is an alternative solution. Instead of changing the `PATH` variable, you can declare an alias. The alias mechanism replaces the entered command with another one. It allows you to abbreviate long lines in the terminal window.
+There is one more option to launch the editor from the shell. Instead of changing the `PATH` variable, you can declare an **alias**. The alias is a Bash mechanism. It replaces the command you typed with another one. This way, you can abbreviate long lines.
 
-Let's declare an alias with the `notepad++` name for the following command:
+We have the following command for launching Notepad++:
 {line-numbers: false, format: Bash}
 ```
 "/c/Program Files (x86)/Notepad++/notepad++.exe"
 ```
 
-The following call of `alias` Bash built-in does that:
+Let's declare the alias for this command. The `alias` Bash built-in does this job. Call it this way for our example:
 {line-numbers: false, format: Bash}
 ```
 alias notepad++="/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe"
 ```
 
-After declaring the alias, Bash translates the command "notepad++" into the absolute path of the editor's executable. This solution has one problem. You should declare the alias whenever launching the terminal window. There is a way to automate this declaration. Just add the `alias` command at the end of the `~/.bashrc` file. Bash executes all commands of this file at every terminal startup.
+This command declares the alias with the "notepad++" name. Now Bash replaces the "notepad++" command by the absolute path to the Notepad++ executable.
 
-Now you can open the source code files in Notepad++ via command-line. To do that, pass the filename as the first parameter to the `notepad++` executable. Here is an example:
+Using the alias has one problem. You should declare it whenever launching the terminal window. There is a way to automate this declaration. Just add our `alias` command at the end of the `~/.bashrc` file. Bash executes this file at every terminal startup. Then you get declared alias in each new terminal window.
+
+Now you can open the source code files in Notepad++ using the shell. Here is an example to open the `test.txt` file:
 {line-numbers: false, format: Bash}
 ```
 notepad++ test.txt
 ```
 
-If the `test.txt` file does not exist, Notepad++ shows the dialog to create it.
+If the `test.txt` file does not exist, Notepad++ shows you the dialog to create it.
 
-Suppose that you run a GUI application in the terminal window. After that, you cannot enter the commands in this window. The GUI program controls it and prints the diagnostic messages there. The terminal window starts working in normal mode after finishing the application.
+Suppose that you run a GUI application in the terminal window. Then you cannot use this window for typing the Bash commands. The GUI program controls it and prints the diagnostic messages there. The terminal window becomes available again when the application finishes.
 
-If you want to continue working with the terminal window, run the GUI application in the **background mode**. To do that, add the ampersand & at the end of the command. Here is an example:
+You can run the GUI application in the **background mode**. Then the terminal window stays available, and you can use it normally. Add the ampersand & at the end of a Bash command to launch it in the background mode. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 notepad++ test.txt &
 ```
 
-This command starts the Notepad++. The editor still prints error messages to the terminal window. But at the same time, you can type and execute commands there.
+After this command, you can type text in the terminal window. The only problem is the error messages from Notepad++. The editor still prints them here. They make it inconvenient to use this terminal window.
 
-There is an option to separate the terminal window and the running GUI application completely. Run the application in the background mode. Then call the `disown` Bash built-in with the `-a` option. Here is an example:
+You can detach the running GUI application from the terminal window completely. Do it with the `disown` Bash built-in. Call `disown` with the `-a` option this way:
 {line-numbers: true, format: Bash}
 ```
 notepad++ test.txt &
