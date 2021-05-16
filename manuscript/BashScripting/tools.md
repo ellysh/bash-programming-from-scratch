@@ -1,30 +1,41 @@
 ## Development Tools
 
-In the previous chapter, we typed Bash commands in the terminal window. Then the memory of the terminal process stores these commands. It means that physically the computer's RAM stores them. RAM is a place for the temporary storage of information. Whenever you shut down the computer, this memory is cleared.
+You have used the interactive mode of Bash in the previous chapter. The workflow of this mode looks like this:
 
-The terminal window is not sufficient for program development. You would need a convenient [source code editor](https://en.wikipedia.org/wiki/Source-code_editor). This application allows you to create, edit and save source code files on your hard drive. The hard disk stores information for the long-term.
+1. You type a command in the terminal window.
+2. The Bash process loads your command in RAM.
+3. The interpreter executes the command.
+4. Bash removes your command from RAM.
+
+If you want to write a program, RAM is not the appropriate place to store it. This is a temporary memory. Whenever you shut down the computer, RAM is cleared.
+
+When you write a program, you should store it on the disk drive. The disk drive is long-term information storage. Then you need a special program to create and edit source code files. This program is called a [source code editor](https://en.wikipedia.org/wiki/Source-code_editor).
+
+Let's consider source code editors that work well with Bash.
 
 ### Source Code Editor
 
-You can write Bash scripts in any text editor. Even the standard Windows application [Notepad](https://en.wikipedia.org/wiki/Microsoft_Notepad) fits. But this application is inconvenient for editing the source code. Notepad does not have features for that. Such features can increase your productivity. Try several special editors and choose the one you like.
+Potentially, you can write Bash scripts in any text editor. Even the standard Windows application called [Notepad](https://en.wikipedia.org/wiki/Microsoft_Notepad) can work this way. However, text editors are inconvenient for writing the source code. Notepad does not have any features for doing that. Meanwhile, these features increase your productivity significantly.
 
-Here there is a list of three popular source code editors. If none of the three fits you, please look for alternatives on the Internet. There are many editors of this kind.
+Today you can find plenty of free and proprietary source code editors. Some of them are more widespread than others. The popularity of the editor does not mean that it fits you perfectly. You should try several programs and choose one that you like.
 
-W> MS Office and its open-source counterpart [LibreOffice](https://en.wikipedia.org/wiki/LibreOffice) are not suitable for writing source code. They save files in binary or [XML-like](https://en.wikipedia.org/wiki/XML) formats. Interpreters and compilers cannot read them. They require text files. Text data is the format of source code editors.
+Here there is a list of three popular source code editors. You can start with them. If no one fits you, please look for alternatives on the Internet.
 
-[**Notepad++**](https://en.wikipedia.org/wiki/Notepad%2B%2B) is a fast and minimalistic open-source editor. It runs on Windows only. If you use macOS or Linux, it is better to consider other editors. You can download the latest version of Notepad++ on the [official website](https://notepad-plus-plus.org/downloads/).
+W> MS Office and its open-source counterpart [LibreOffice](https://en.wikipedia.org/wiki/LibreOffice) are not suitable for writing source code at all. They save files in the binary or [XML-like](https://en.wikipedia.org/wiki/XML) format. Interpreters and compilers cannot read them. These programs expect text files on input. Text data is the format of all source code editors.
 
-[**Sublime Text**](https://en.wikipedia.org/wiki/Sublime_Text) is a proprietary [**cross-platform**](https://en.wikipedia.org/wiki/Cross-platform_software) source code editor. Cross-platform means that the program runs on several OSes and hardware configurations. You can use Sublime Text for free without activation or buying a license. Download it on the [official website](https://www.sublimetext.com/).
+[**Notepad++**](https://en.wikipedia.org/wiki/Notepad%2B%2B) is a fast and minimalistic source code editor. It is available for free. You can use it on Windows only. If your OS is macOS or Linux, please consider other editors. The latest Notepad++ version is available on the [official website](https://notepad-plus-plus.org/downloads).
 
-[*Visual Studio Code*](https://en.wikipedia.org/wiki/Visual_Studio_Code) is a free cross-platform source code editor from Microsoft. It is open-source software. It means that the program is available for free and without a license. Download the editor on the [official website](https://code.visualstudio.com/).
+[**Sublime Text**](https://en.wikipedia.org/wiki/Sublime_Text) is a proprietary [**cross-platform**](https://en.wikipedia.org/wiki/Cross-platform_software) source code editor. Cross-platform means that the program runs on several OSes and hardware configurations. Sublime Text works well on Windows, Linux and macOS. You can use it for free without buying a license. Download the editor on the [official website](https://www.sublimetext.com).
+
+[*Visual Studio Code*](https://en.wikipedia.org/wiki/Visual_Studio_Code) is a free cross-platform source code editor from Microsoft. It works on Windows, Linux and macOS. You do not need to buy a license for using the editor. Download it on the [official website](https://code.visualstudio.com/).
 
 All three editors have the following features for working with source code:
 
 * [Syntax highlighting](https://en.wikipedia.org/wiki/Syntax_highlighting).
-* [Auto-complete](https://en.wikipedia.org/wiki/Autocomplete).
+* [Autocomplete](https://en.wikipedia.org/wiki/Autocomplete).
 * Support of commonly used [character encodings](https://en.wikipedia.org/wiki/Character_encoding).
 
-It is possible to edit the source code without these features. But they speed up your work, make it easier to edit the program and find bugs in it. They also help you to get used to the Bash syntax.
+It is possible to edit the source code without these features. However, they make it easier to read and edit the program. They also help you to get used to the Bash syntax.
 
 ### Launching the Editor
 
