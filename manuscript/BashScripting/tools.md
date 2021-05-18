@@ -171,6 +171,8 @@ notepad++ test.txt
 
 If the `test.txt` file does not exist, Notepad++ shows you the dialog to create it.
 
+### Background Mode
+
 Suppose that you run a GUI application in the terminal window. Then you cannot use this window for typing the Bash commands. The GUI program controls it and prints the diagnostic messages there. The terminal window becomes available again when the application finishes.
 
 You can run the GUI application in the **background mode**. Then the terminal window stays available, and you can use it normally. Add the ampersand & at the end of a Bash command to launch it in the background mode. Here is an example:
@@ -188,24 +190,46 @@ notepad++ test.txt &
 disown -a
 ```
 
-Notepad++ stops printing its messages to the terminal after these commands. Also, if you close the terminal window, the editor continues its work.
+Now Notepad++ does not print any messages in the terminal. The `disown` call has one more effect. It allows you to close the terminal window and keep the editor working. Without the `disown` call, Notepad++ finishes when you close the terminal.
 
-You can combine Notepad++ and `disown` calls into one command. Here is an example:
+You can combine Notepad++ and `disown` calls into one command. It looks like this:
 {line-numbers: false, format: Bash}
 ```
 notepad++ test.txt & disown -a
 ```
 
-The `-a` option of the `disown` command detaches all programs that work in the background. You can detach the specific application instead. There is the Bash environment variable called `$!`. It stores the [**process identifier**](https://en.wikipedia.org/wiki/Process_identifier) (PID) of the last launched application. PID is a unique number that OS assigns to each process. You can manipulate the process by this number. Also, you can pass the PID to the `disown` command for detaching the specific application. Here is an example of doing that:
+The `-a` option of the `disown` command detaches all programs that work in the background. If you skip this option, you should specify the [**process identifier**](https://en.wikipedia.org/wiki/Process_identifier) (PID) of the program to detach. PID is a unique number that OS assigns to each new process.
+
+Suppose that you want to call `disown` for the specific program. You should know its PID. Bash prints the PID of the background process when you launch it. Here is an example:
 {line-numbers: false, format: Bash}
 ```
-notepad++ test.txt & disown $!
+notepad++ test.txt &
+[1] 600
 ```
 
-If you want to list all applications that work in the background, use the `jobs` Bash built-in. It has the `-l` for that. Here is an example:
+The second line has two numbers. The second number 600 is PID. The first number "[1]" is the job ID. You can use it to switch the background process to the foreground mode. The `fg` command does it this way:
+{line-numbers: false, format: Bash}
+```
+fg %1
+```
+
+If you want to detach the Notepad++ process from our example, call `disown` this way:
+{line-numbers: false, format: Bash}
+```
+disown 600
+```
+
+If you want to list all programs that work in the background, use the `jobs` Bash built-in. When you call it with the `-l` option, it prints both job IDs and PIDs. Use it this way:
 {line-numbers: false, format: Bash}
 ```
 jobs -l
 ```
 
-The command shows the PIDs of all background processes you have launched in the current terminal window.
+This command lists all background processes that you have launched in the current terminal window.
+
+You can call Notepad++ and detach it from the terminal in a single command. In this case, you should use the special Bash variable called `$!`. It stores the PID of the last launched command. Pass this PID to the `disown` call, and you are done. Here is an example of how to apply this approach:
+{line-numbers: false, format: Bash}
+```
+notepad++ test.txt & disown $!
+```
+
