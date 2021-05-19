@@ -1,28 +1,28 @@
 ## Why Do We Need Scripts?
 
-We learned how to write complex Bash commands using pipelines and logical operators. The pipeline combines several commands into one. You get a linear sequence algorithm this way. Logical operators add conditions to the algorithm. You get a complete program in the result.
+We learned how to write complex Bash commands using pipelines and logical operators. The pipeline combines several commands into one. You get a linear sequence algorithm this way. If you add logical operators there, you get the conditional algorithm. These operators allow you to handle special cases and choose a proper reaction for them.
 
-Why isn't the shell enough for Bash programming? Bash scripts are programs that the hard drive stores. Let's figure out why users need them.
+The shell command that implements the conditional algorithm can be as complicated as a real program. What is the difference between them? Why do we need scripts that are Bash programs? Let's figure out answers to these questions.
 
 ### Backup Command
 
-To understand Bash scripts better, we would write the command. It makes a backup of photos on the [external hard drive](https://en.wikipedia.org/wiki/Hard_disk_drive#EXTERNAL). The command consists of two actions: archiving and copying.
+We need an example to consider Bash scripts features. Let's write the command that creates a backup of your photos on the [external hard drive](https://en.wikipedia.org/wiki/Hard_disk_drive#EXTERNAL). The command consists of two actions: archiving and copying.
 
-Suppose that the `~/photo` directory keeps all photos. The mount point of the external drive is `/d`. Then the backup command can be like this:
+Suppose that you store all your photos in the `~/photo` directory. The mount point of the external drive is `/d`. Then the following command creates an archive of the photos on the external drive:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf ~/photo.tar.bz2 ~/photo && cp -f ~/photo.tar.bz2 /d
 ```
 
-Because of the logical AND, copying happens when the archiving step succeeds. If the `bsdtar` utility returns an error, there is no `cp` call.
+Here the logical AND connects the archiving and copying commands. Therefore, the `cp` call happens only when the `bsdtar` utility succeeds. This utility creates an archive called `photo.tar.bz2`. It contains all files of the `~/photo` directory.
 
-I> In our example, the backup operation happens in two steps: archiving and copying. This separation of actions is necessary for educational purposes. You can do the same by the single `bsdtar` call:
+I> In our example, creating the backup happens in two steps: archiving and copying. It is done for demonstration purposes. You can do the same thing by the single `bsdtar` call:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf /d/photo.tar.bz2 ~/photo
 ```
 
-Suppose that our backup command runs automatically. For example, it launches every day by scheduling. In this case, you cannot read error messages of utilities if they fail. Then you need a log file to store the results of utilities. Here is the `bsdtar` call with the debug output:
+Suppose that you run the backup command automatically. For example, it launches every day by schedule. If some error happens, you do not have a chance to read its message. You need a log file to get this possibility. Here is an example of the `bsdtar` call that writes its status to the file:
 {line-numbers: true, format: Bash}
 ```
 bsdtar -cjf ~/photo.tar.bz2 ~/photo &&
@@ -32,9 +32,9 @@ echo "bsdtar - FAILS" > results.txt
 
 You can split a Bash command into multiple lines. There are two ways for doing that:
 
-1. Line break immediately after the logical operator (&& or ||).
+1. Add the line break right after the logical operator (&& or ||).
 
-2. Line break after backslash \.
+2. Add the line break after the backslash \.
 
 We applied the first option in the last `bsdtar` call. The second option looks like this:
 {line-numbers: true, format: Bash}
@@ -44,14 +44,14 @@ bsdtar -cjf ~/photo.tar.bz2 ~/photo \
 || echo "bsdtar - FAILS" > results.txt
 ```
 
-Here is the command to print the `cp` utility result in the log file:
+You would need the status of the `cp` call as well. Therefore, we should write it to the log file. Here is the command for that:
 ```
 cp -f ~/photo.tar.bz2 /d &&
 echo "cp - OK" >> results.txt ||
 echo "cp - FAILS" >> results.txt
 ```
 
-The single command should perform the backup operation. Therefore, we can combine the `bsdtar` and `cp` calls with the logical AND. Here is the result:
+Now we can combine the `bsdtar` and `cp` calls into a single command. The logical AND should connect these calls. The straightforward solution looks like this:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf ~/photo.tar.bz2 ~/photo &&
@@ -62,113 +62,117 @@ cp -f ~/photo.tar.bz2 /d &&
   echo "cp - FAILS" >> results.txt
 ```
 
-Let's consider how this command works. For convenience, we will rewrite it in the form of a Boolean expression. The Latin letter replaces each command and utility call. Then we get the following result:
+Let's check if this command works correctly. We can replace each command call with a Latin letter. Then we get a convenient form of the Boolean expression. The expression looks like this:
 {line-numbers: false, format: Bash}
 ```
 B && O1 || F1 && C && O2 || F2
 ```
 
-The letters "B" and "C" represent the `bsdtar` and `cp` calls. "O1" and "F1" are the commands for printing the `bsdtar` result. The "O1" command prints the "bsdtar - OK" line into the log file. The "F1" command prints the "bsdtar - FAIL" line. Similarly, "O2" and "F2" are the commands for logging the `cp` result.
+The "B" and "C" letters represent the `bsdtar` and `cp` calls. "O1" is the `echo` call that prints "bsdtar - OK" line in the log file. "F1" is the `echo` call for printing "bsdtar - FAIL" line. Similarly, "O2" and "F2" are the commands for logging the `cp` result.
 
-If the `bsdtar` call succeeds, the "B" operand equals "true". Then Bash performs the following steps sequence:
+If the `bsdtar` call succeeds, the "B" operand of our expression equals "true". Then Bash performs the sequence of the following steps:
 
 1. B
 2. O1
 3. C
 4. O2 or F2
 
-If the `bsdtar` fails, the "B" operand equals false. Then Bash does the following actions:
+If the `bsdtar` fails, the "B" operand equals false. Then Bash does the following steps:
 
 1. B
 2. F1
 3. C
 4. O2 or F2
 
-The copy operation does not make sense if the archiving step fails. The `bsdtar` utility makes things even more confusing. It creates an empty archive if you pass to it an unavailable file or directory. Then the `cp` utility copies the empty archive successfully. These operations lead to the following output to the log file:
+It means that the shell calls the `cp` utility even when the archiving fails. It does not make sense.
+
+Unfortunately, the `bsdtar` utility makes things even more confusing. It creates an empty archive if it cannot access the target directory or files. Then the `cp` utility copies the empty archive successfully. These operations lead to the following output in the log file:
 {line-numbers: true}
 ```
 bsdtar - FAILS
 cp - OK
 ```
 
-Such output confuses the user instead of clarifying the issue.
+Such output confuses you. It does not clarify what went wrong.
 
-Let's come back to our expression:
+Here is our expression again:
 {line-numbers: false, format: Bash}
 ```
 B && O1 || F1 && C && O2 || F2
 ```
 
-Why does Bash call the `cp` utility after an error in `bsdtar`? It happens because the `echo` command always succeeds. It returns zero code, which means "true". Thus, the "O1", "F1", "O2" and "F2" operands are always "true".
+Why does Bash call the `cp` utility when `bsdtar` fails? It happens because the `echo` command always succeeds. It returns zero code, which means "true". Thus, the "O1", "F1", "O2" and "F2" operands of our expression are always "true".
 
-Now we focus on the `bsdtar` call and corresponding `echo` commands. They match the following part of the Boolean expression:
+Let's fix the issue caused by the `echo` call exit code. We should focus on the `bsdtar` call and corresponding `echo` commands. They match the following Boolean expression:
 {line-numbers: false, format: Bash}
 ```
 B && O1 || F1
 ```
 
-We can put its left side into brackets without changing the result. Then it looks like this:
+We can enclose the "B" and "O1" operands in brackets this way:
 {line-numbers: false, format: Bash}
 ```
 (B && O1) || F1
 ```
 
-Here is a logical OR for the operands (B && O1) and "F1". The "F1" operand always equals "true". Therefore, the whole expression is always "true".
+It does not change the expression's result.
 
-We can solve the problem by inverting the result of "F1". The logical NOT operator does that. This way, we get the following expression:
+We got a logical OR between the "(B && O1)" and "F1" operands. The "F1" operand always equals "true". Therefore, the whole expression is always "true". The value of "(B && O1)" does not matter. We want to get another behavior. If the "(B && O1)" operand equals "false", the entire expression should be "false".
+
+One possible solution is inverting the "F1" operand. The logical NOT operator does that. We get the following expression this way:
 {line-numbers: false}
 ```
 B && O1 || ! F1 && C && O2 || F2
 ```
 
-Now, if the "B" operand fails, Bash evaluates "F1". It always equals false because of negation. Then Bash skips the "C" and "O2" command. It happens because there is a logical AND between them and "F1". The "F2" command is the next one that Bash performs. The shell needs its result because it has a logical OR in front of it.
+Let's check the behavior that we got. If the "B" command fails, Bash evaluates "F1". It always equals "false" because of negation. Then Bash skips the "C" and "O2" commands. It happens because there is a logical AND between them and "F1". Finally, Bash comes to the "F2" operand. The shell needs its value. Bash knows that the LHS operand of the logical OR equals "false". Therefore, it needs to evaluate the RHS operand to deduce the result of the whole expression.
 
-The following parentheses would make the expression clearer:
+We can make the expression clearer with the following parentheses:
 {line-numbers: false}
 ```
 (B && O1 || ! F1 && C && O2) || F2
 ```
 
-It is evident that Bash executes the "F2" action when the parenthesized expression equals "false". Otherwise, it cannot evaluate the value of the entire expression.
+Now it is evident that Bash executes the "F2" action when the parenthesized expression equals "false". Otherwise, it cannot deduce the final result.
 
-This command writes the following output into the log file:
+The last command writes this output into the log file:
 {line-numbers: true}
 ```
 bsdtar - FAILS
 cp - FAILS
 ```
 
-This output is better than the previous one. Now the `cp` utility does not copy an empty archive.
+This output looks better than the previous one. Now the `cp` utility does not copy an empty archive.
 
-However, our current result is not good enough. Imagine that the backup command contains 100 actions. If an error occurs at the 50th action, all the remaining operations print their failed results into the log file. Such output prevents you from finding the problem. The best solution here is to terminate the command after the first error. To do that, we can group calls of utilities and their output with parentheses. Here is the result:
+The current result still has room for improvement. Imagine that you extended the backup command. Then it contains 100 actions. If an error occurs at the 50th action, all the remaining operations print their failed results into the log file. Such output makes it complicated to find the problem. The better solution here is to terminate the command right after the first error occurred. Parentheses can help us to reach this behavior. Here is a possible grouping of the expression's operands:
 {line-numbers: false}
 ```
 (B && O1 || ! F1) && (C && O2 || F2)
 ```
 
-Let's check what happens if the "B" operand is false. Then Bash executes the "F1" action. The negation inverts "F1" result. Therefore, the entire left side of the expression equals "false". Here is the left side:
+Let's check what happens if the "B" operand is false. Then Bash executes the "F1" command. The negation inverts the "F1" result. Therefore, the entire LHS expression equals "false". Here is the LHS expression:
 {line-numbers: false}
 ```
 (B && O1 || ! F1)
 ```
 
-Then short-circuit evaluation happens. Because of it, Bash does not calculate the right operand of the logical AND. It means that the shell skips all actions on the right side of the expression. Here is the right side:
+Then the short-circuit evaluation happens. It prevents calculating the RHS operand of the logical AND. Then Bash skips all commands of the RHS expression. Here is the RHS expression:
 {line-numbers: false}
 ```
 (C && O2 || F2)
 ```
 
-It is the behavior we wanted.
+We got the proper behavior of the backup command.
 
-We can add one more improvement. The "F2" operand should be inverted. Then the whole expression equals "false" if "C" is "false". It means that the backup command fails if the `cp` utility fails. It sounds reasonable. Also, you would need such behavior for integrating the backup command with other commands.
+We can add one last improvement. The "F2" operand should be inverted. Then the whole expression equals "false" if the "C" command fails. Then the entire backup command fails if `bsdtar` or `cp` call fails. Inverting "F2" operand provides the proper non-zero exit status in the error case.
 
-Here is the final version of our expression:
+Here is the final version of our expression with all improvements:
 {line-numbers: false}
 ```
 (B && O1 || ! F1) && (C && O2 || ! F2)
 ```
 
-Let's come back to the real Bash code. The backup command looks like this now:
+Let's come back to the real Bash code. The corrected backup command looks like this:
 {line-numbers: true, format: Bash}
 ```
 (bsdtar -cjf ~/photo.tar.bz2 ~/photo &&
@@ -179,7 +183,7 @@ Let's come back to the real Bash code. The backup command looks like this now:
   ! echo "cp - FAILS" >> results.txt)
 ```
 
-We wrote the command quickly. But it is hard for reading and understanding. It is often happening in programming. Because of it, you should pay more efforts to make your code clean and obvious. Code cleanliness is more important than a high speed of writing it.
+We spent some time writing this command. However, another person would need much more time to read it and understand it correctly. It happens in programming often. This situation is a severe problem for big projects. Therefore, please train yourself to make your code clean and evident from the beginning. Code cleanliness is more important than a high speed of writing it.
 
 ### Poor Technical Solution
 
@@ -562,7 +566,7 @@ W> Always prefer to use `$@` instead of `$*`. The only exception is when a singl
 
 ### Scripts Features
 
-When solving the backup task, we considered the features of the Bash scripts. 
+When solving the backup task, we considered the features of the Bash scripts.
 
 Here are the requirements for the task:
 
