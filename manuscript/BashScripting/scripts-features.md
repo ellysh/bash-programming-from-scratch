@@ -339,27 +339,27 @@ Listing 3-1 demonstrates the current version of our script.
 {caption: "Listing 3-1. The script for making the photos backup", line-numbers: true, format: Bash}
 ![`photo-backup.sh`](code/BashScripting/photo-backup.sh)
 
-Now the script contains one command. The command is too long. Therefore, it isn't easy to read and modify it. We can split the command into two parts. Listing 3-2 shows the result.
+The script contains one command, which is too long. This makes it hard to read and modify. You can split the command into two parts. Listing 3-2 shows how it looks like.
 
 {caption: "Listing 3-2. The script with two commands", line-numbers: true, format: Bash}
 ![`photo-backup-commands.sh`](code/BashScripting/photo-backup-commands.sh)
 
-Unfortunately, the behavior of the script has changed. Now the logical AND does not take place between the commands. Therefore, Bash executes the `cp` utility regardless of the `bsdtar` result. This behavior is wrong.
+Unfortunately, the behavior of the script has changed. Now the logical AND does not take place between the `bsdtar` and `cp` commands. Therefore, Bash always tries to copy files even if archiving has failed. This is wrong.
 
-The script should finish if the `bsdtar` utility fails. We can apply the `exit` Bash built-in to terminate the script. The command receives the exit status as the parameter. The script returns this code on termination.
+The script should stop if the `bsdtar` call fails. We can reach this behavior with the `exit` Bash built-in. It terminates the script when called. The command receives the exit code as the parameter. The script returns this code on termination.
 
 Listing 3-3 shows the script with the `exit` call.
 
 {caption: "Listing 3-3. The script with the `exit` call", line-numbers: true, format: Bash}
 ![`photo-backup-exit-subshell.sh`](code/BashScripting/photo-backup-exit-subshell.sh)
 
-We changed the command that calls the `bsdtar` utility. First, it looks like this:
+We changed the command that calls the `bsdtar` utility. It looked like this before:
 {line-numbers: false}
 ```
 B && O1 || ! F1
 ```
 
-It becomes like this after adding the `exit` call:
+It became like this after adding the `exit` call:
 {line-numbers: false}
 ```
 B && O1 || (F1 ; E)
@@ -367,34 +367,34 @@ B && O1 || (F1 ; E)
 
 The "E" letter means the `exit` command here.
 
-If `bsdtar` returns an error, Bash evaluates the right operand of the logical OR. It is equal to "(F1; E)". We removed the negation of the `echo` command. Its result is not important anymore. Then Bash calls `exit`. We expect that the call terminates the script.
+If `bsdtar` returns an error, Bash evaluates the RHS operand of the logical OR. It is equal to "(F1; E)". We removed the negation of the `echo` command because its result is not necessary anymore. Bash calls `exit` after `echo`. We expect that this call terminates the script.
 
-The current version of the script does not solve the problem. The `exit` call does not terminate the script. It happens because parentheses create a [child process](https://en.wikipedia.org/wiki/Child_process). The child process is called **subshell**. It executes the commands specified in parentheses. When the commands are done, Bash continues executing the parent process. The parent process is one that spawned the subshell.
+Unfortunately, the `exit` call does not terminate the script. It happens because parentheses create a [child process](https://en.wikipedia.org/wiki/Child_process). The child Bash process is called **subshell**. It executes the commands specified in parentheses. When they are done, Bash continues executing the parent process. The parent process is the one that spawned the subshell.
 
-The `exit` command means finishing the subshell in our script. Then Bash calls the `cp` utility. To solve this problem, we should replace the parentheses with braces. Bash executes the commands in braces in the current process. The subshell is not spawned in this case.
+The `exit` call finishes the subshell in Listing 3-3. Bash calls the `cp` utility after that. To solve this problem, you should replace the parentheses with braces. Bash executes the commands in braces in the current process. The subshell is not spawned in this case.
 
-Listing 3-4 shows the fixed version of the script.
+Listing 3-4 shows the corrected version of the script.
 
 {caption: "Listing 3-4. The fixed script with the `exit` call", line-numbers: true, format: Bash}
 ![`photo-backup-exit.sh`](code/BashScripting/photo-backup-exit.sh)
 
-Notice the semicolon before the closing brace. The semicolon is mandatory here. Also, spaces after the opening brace and before closing one are mandatory too.
+Notice the semicolon before the closing brace. It is mandatory here. Also, spaces after the opening brace and before the closing one are required.
 
-There is another solution for our problem. It is more elegant than calling the `exit` command. Suppose you want to terminate the script after the first failed command. The `set` Bash built-in does that. It changes the parameters of the interpreter. Call the command with the `-e` option like this:
+Our problem has another solution. It is more elegant than calling the `exit` command. Suppose you want to terminate the script after the first failed command. The `set` Bash built-in can do that. It changes the parameters of the interpreter. Call the command with the `-e` option like this:
 {line-numbers: false, format: Bash}
 ```
 set -e
 ```
 
-You can specify the same option when starting the Bash. Here is an example:
+You can specify the same option when starting the Bash. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 bash -e
 ```
 
-The `-e` option has [several problems](http://mywiki.wooledge.org/BashFAQ/105). The option changes the behavior of the current Bash process only. The subshells it spawns work as usual.
+The `-e` option has [several pitfalls](http://mywiki.wooledge.org/BashFAQ/105). For example, it changes the behavior of the current Bash process only. The subshells it spawns work as usual.
 
-Bash executes each command of a pipeline or logical operator in a separate subshell. Therefore, the `-e` option does not affect these commands. It means that the option does not fit in our case.
+Bash executes each command of a pipeline or logical operator in a separate subshell. Therefore, the `-e` option does not affect these commands. It means that the `set` command does not work well in our case.
 
 ### Changing Parameters
 
