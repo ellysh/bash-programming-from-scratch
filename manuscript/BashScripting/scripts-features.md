@@ -187,17 +187,17 @@ We spent some time writing this command. However, another person would need much
 
 ### Poor Technical Solution
 
-We have written the long and complicated backup command. If you run it regularly, you should store it somewhere. Otherwise, you have to type the command in the terminal window each time. Typing is a bad idea because you can make a mistake easily.
+Our backup command became long and complex after applying all improvements. Therefore, you should store it somewhere. Otherwise, you have to type the command in the terminal window each time. Typing is a bad idea because you can make a mistake or forget something.
 
-The Bash history file saves all commands that you execute in the terminal. Each user has this file in his home directory. Its path is `~ / .bash_history`. When you press Ctrl+R keys in the terminal window, Bash calls the quick search over the history file. You can quickly find the required command this way.
+Bash has an option to store frequently used commands. The history file saves everything you executed in the terminal. It is unique for each user and has the `~ / .bash_history` path. When you press the Ctrl+R keystroke in the terminal window, Bash calls the quick search over the history. You can quickly find the required command there.
 
-Can we use the history file for storing the backup command permanently? There you can find and execute the command every time you need it. This solution seems to be reliable and convenient. But don't jump to conclusions. Let's take a look at its possible problems.
+Can you store the backup command permanently in the history file? This solution seems to be reliable and convenient. Please do not jump to conclusions. Let's take a look at its possible problems.
 
-First, the history file has a limited size. By default, the file saves only the 500 most recently executed commands. If this number is exceeded, each new command overwrites the oldest ones in the file. This way, you can accidentally lose the backup command.
+First, the history file has a limited size. It saves 500 most recently executed commands by default. When this number exceeds, each new command overwrites the oldest one in the file. Therefore, you can lose the backup command accidentally.
 
-It is possible to increase the maximum size of the history file. But what size would be enough? Whatever size we choose, there is a risk of exceeding it. There is an option to remove the size limitation at all. Then the history file saves all commands without overwriting the old ones.
+You can think about increasing the capacity of the history file. Then the question arises. Which size would be enough? Whatever size you choose, there is a risk of exceeding it. This problem leads to the idea of making the history file unlimited. Then it saves all commands without overwriting anything.
 
-It seems we find a way to store the backup command effectively. The Bash history file with unlimited size does it. Could this solution have any problems?
+It seems you find a way to store the backup command effectively. The history file with unlimited size does it. Could this decision lead to any problems?
 
 Suppose you use Bash for a couple of years. All commands you entered during this time come to the `.bash_history` file. If you execute the same command twice, it appears in the file twice too. Therefore, the file size will reach hundreds of megabytes in two years. You do not need most of these commands. Instead, only a small part of them are needed for regular usage. It leads to inefficient use of hard disk space.
 
