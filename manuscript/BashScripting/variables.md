@@ -1,32 +1,32 @@
 ## Variables and Parameters
 
-Variables in Bash have already been mentioned several times in this book. We have learned the list of system paths in the `PATH` variable. We have used positional parameters in the backup script. It is time to get a good grasp on the topic.
+We already met Bash variables several times in this book. You have learned the list of system paths in the `PATH` variable. Then you have used positional parameters in the backup script. It is time to get a good grasp on the topic.
 
-First, let's find out what the term "variable" means in programming. The variable is an area of memory where some value is stored. In most cases, this is short-term memory (RAM, CPU cache and registers).
+Let's start with the meaning of the "variable" term in programming. The variable is an area of memory where some value is stored. In most cases, this is short-term memory (RAM, CPU cache and registers).
 
-There was a generation of the first programming languages (for example [**assembler**](https://en.wikipedia.org/wiki/Assembly_language)). When using such a language, you should refer to a variable by its address. If you want to read or write its value, you have to specify its memory address.
+The first generation of programming languages (for example, [**assembler**](https://en.wikipedia.org/wiki/Assembly_language)) has minimal support of variables. When using such a language, you should refer to a variable by its address. If you want to read or write its value, you have to specify its memory address.
 
-Suppose you work on a computer with 32-bit processors. Then a memory address has a length of 4 bytes. It is the number from 0 to 4294967295. This number is twice larger for 64-bit processors. It is inconvenient to remember and operate with such big numbers. That is why modern programming languages allow you to replace a variable address with its name. This name is translated into memory address while compiling or interpreting the program. Thus, the compiler or interpreter takes care of "remembering" large numbers.
+When working with memory addresses, you might get into trouble. Suppose you work on a computer with 32-bit processors. Then any memory address has a length of 4 bytes. It is the number from 0 to 4294967295. This number is twice larger for 64-bit processors. It is inconvenient to remember and operate with such big numbers. That is why modern programming languages allow you to replace a variable address with its name. A compiler or interpreter translates this name into a memory address automatically. These programs "remember" large numbers instead of you this way.
 
-Why do we need variables? Our experience with `PATH` and positional parameters has shown that variables store some data. It is needed for one of the following purposes:
+When should you apply variables? Our experience with `PATH` and positional parameters has shown that variables store some data. It is needed for one of the following purposes:
 
-1. To transfer information from one part of a program or system to another.
+1. Transfer information from one part of a program or system to another.
 
-2. To store the intermediate result of a calculation for later use.
+2. Store the intermediate result of a calculation for later use.
 
-3. Save the current state of the program or system. This state may determine future behavior.
+3. Save the current state of the program or system. This state may determine its future behavior.
 
 4. Set a constant value to be used repeatedly later.
 
-A programming language has a special type of variable for each of these purposes. The Bash language has it too.
+A typical programming language has a special type of variable for each of these purposes. The Bash language follows this rule too.
 
 ### Classification of variables
 
-The Bash interpreter has two modes of operation: interactive (shell) and non-interactive (scripting). In each mode, variables solve similar tasks. But the contexts of these tasks are different. Therefore, there are more features to classify variables in Bash than in other interpreted languages.
+The Bash interpreter has two operation modes: interactive (shell) and non-interactive (scripting). Variables solve similar tasks in each mode. However, the contexts of these tasks are different. Therefore, there are more features to classify variables in Bash than in other languages.
 
-Let's simplify the terminology for convenience. It is not quite right, but it helps to avoid confusion. When we talk about scripts, we use the term "variable". When we talk about shell and command-line arguments, we use the term "parameter". These terms are often used synonymously.
+Let's simplify the terminology for convenience. It is not entirely correct, but it helps to avoid confusion. When we talk about scripts, we use the "variable" term. When we talk about shell and command-line arguments, we use the "parameter" term. These terms are often used synonymously.
 
-There are four attributes for classifying variables in Bash. Table 3-1 shows them.
+There are four attributes for classifying variables in Bash. Table 3-1 explains them.
 
 {caption: "Table 3-1. Variable Types in Bash", width: "100%"}
 | Classification Attribute | Variable Types | Definition | Examples |
@@ -55,61 +55,61 @@ There are four attributes for classifying variables in Bash. Table 3-1 shows the
 |  | | | |
 |                     | Variables | The user can delete them. They store values that can be changed. | `filename="README.txt"` |
 
-Let's consider each type of variable.
+We will consider each type of variable in this section.
 
 ### Declaration Mechanism
 
 #### User-Defined Variables
 
-The purpose of user variables is obvious from their name. The user declares them for his purposes. Such variables usually store intermediate results of the script, its state and frequently used constants.
+The purpose of user-defined variables is obvious from their name. You declare them for your own purposes. Such variables usually store intermediate results of the script, its state and frequently used constants.
 
 To declare the user-defined variable, specify its name, put an equal sign, and type its value.
 
-Here is an example. We declare a variable called `filename`. Its value equals the filename `README.txt`. The declaration of the variable looks like this:
+Here is an example. Suppose that you want to declare a variable called `filename`. It stores the `README.txt` filename. The variable declaration looks like this:
 {line-numbers: false, format: Bash}
 ```
 filename="README.txt".
 ```
 
-Spaces before and after the equal sign are not allowed. Other programming languages allow them, but Bash does not. It leads to an error when Bash handles the following declaration:
+Spaces before and after the equal sign are not allowed. It works in other programming languages but not in Bash. For example, the following declaration causes an error:
 {line-numbers: false, format: Bash}
 ```
 filename = "README.txt"
 ```
 
-Bash misinterprets this line. It assumes that you call the command with the `filename` name. Then you pass there two parameters: `=` and `"README.txt"`.
+Bash misinterprets this line. It assumes that you call the command with the `filename` name. Then you pass there two parameters: `=` and "README.txt".
 
-Only Latin characters, numbers and the underscore are allowed in variable names. The name must not start with a number. Letter case is important. It means that `filename` and `FILENAME` are two different variables.
+When declaring a variable, you can apply Latin characters, numbers and the underscore in its name. The name must not start with a number. Letter case is important. It means that `filename` and `FILENAME` are two different variables.
 
-Suppose we have declared a variable `filename`. Then Bash allocates the memory area for that. It writes the `README.txt` string there. You can read this value back by specifying the variable name. But when you do that, Bash should understand your intention. If you put a dollar sign before the variable name, it would be a hint for Bash. Then it treats the word `filename` as the variable name.
+Suppose you have declared a variable `filename`. Then Bash allocates the memory area for that. It writes the `README.txt` string there. You can read this value back using the variable name. When you do that, Bash should understand your intention. If you put a dollar sign before the variable name, it would be a hint for Bash. Then it treats the word `filename` as the variable name.
 
-When you reference the variable in a command or script, it should look like this:
+When you reference the variable in a command or script, it looks like this:
 {line-numbers: false, format: Bash}
 ```
 $filename
 ```
 
-Bash handles words with a dollar sign in a special way. When it encounters such a word, it runs the **parameter expansion** mechanism. The mechanism replaces all occurrences of a variable name by its value. Here is the command for example:
+Bash handles words with a dollar sign in a special way. When it encounters such a word, it runs the **parameter expansion** mechanism. The mechanism replaces all occurrences of a variable name by its value. Here is the example command:
 {line-numbers: false, format: Bash}
 ```
 cp $filename ~
 ```
 
-After parameter expansion, the command looks like this:
+The command looks like this after parameter expansion:
 {line-numbers: false, format: Bash}
 ```
 cp README.txt ~
 ```
 
-There are nine kinds of expansions that Bash does. There is a strict order in which the interpreter performs them. The order is important. If you miss it, errors can occur. Let's consider an example of such an error.
+Bash performs nine kinds of expansions before executing each command. They are done in a strict order. Please try to remember this order. If you miss it, you can get an error.
 
-Suppose we manipulate the "my file.txt" file in the script. For the sake of convenience, we put the filename into a variable. Its declaration looks like this:
+Here is an example of a mistake that happens because of expansions order. Suppose that you manipulate the "my file.txt" file in the script. For the sake of convenience, you put the filename into a variable. Its declaration looks like this:
 {line-numbers: false, format: Bash}
 ```
 filename="my file.txt"
 ```
 
-Then we use the variable in the `cp` call. Here is the command:
+Then you use the variable in the `cp` call. Here is the copying command:
 {line-numbers: false, format: Bash}
 ```
 cp $filename ~
@@ -121,22 +121,22 @@ Bash does word splitting after parameter expansion. They are two different expan
 cp my file.txt ~
 ```
 
-This command leads to an error. Bash passes two parameters to the `cp` utility: "my" and "file.txt". There are no such files.
+This command leads to the error. Bash passes two parameters to the `cp` utility: "my" and "file.txt". These files do not exist.
 
-Another error happens if the variable's value contains a special character. Here is an example:
+Another error happens if the variable's value contains a special character. For example, you declare and use the `filename` variable this way:
 {line-numbers: true, format: Bash}
 ```
 filename="*file.txt"
 rm $filename
 ```
 
-The `rm` utility deletes all files ending in `file.txt`. The globbing mechanism causes such behavior. It happens because Bash does globbing after parameter expansion too. Then it substitutes files of the current directory whose names match the "*file.txt" pattern. It leads to unexpected results. Here is an example of the possible command:
+The `rm` utility deletes all files ending in `file.txt`. The globbing mechanism causes such behavior. It happens because Bash does globbing after parameter expansion. Then it substitutes files of the current directory whose names match the "*file.txt" pattern. It leads to unexpected results. Here is an example of the `rm` call that you can get this way:
 {line-numbers: false, format: Bash}
 ```
 rm report_file.txt myfile.txt msg_file.txt
 ```
 
-When referencing variables, always apply double-quotes. They prevent unwanted Bash expansions. Here are the examples:
+When referencing a variable, always apply the double-quotes. They prevent unwanted Bash expansions. The quotes solve problems of both our examples:
 {line-numbers: true, format: Bash}
 ```
 filename1="my file.txt"
@@ -146,7 +146,7 @@ filename2="*file.txt"
 rm "$filename2"
 ```
 
-Thanks to the quotes, Bash inserts the variables' values as it is:
+Thanks to the quotes, Bash inserts the variables' values as they are:
 {line-numbers: true, format: Bash}
 ```
 cp "my file.txt" ~
