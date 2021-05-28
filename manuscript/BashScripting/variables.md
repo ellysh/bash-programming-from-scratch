@@ -95,7 +95,7 @@ Bash handles words with a dollar sign in a special way. When it encounters such 
 cp $filename ~
 ```
 
-The command looks like this after parameter expansion:
+The command looks like this after the parameter expansion:
 {line-numbers: false, format: Bash}
 ```
 cp README.txt ~
@@ -115,7 +115,7 @@ Then you use the variable in the `cp` call. Here is the copying command:
 cp $filename ~
 ```
 
-Bash does word splitting after parameter expansion. They are two different expansion mechanisms. When both of them are done, the `cp` call looks like this:
+Bash does word splitting after the parameter expansion. They are two different expansion mechanisms. When both of them are done, the `cp` call looks like this:
 {line-numbers: false, format: Bash}
 ```
 cp my file.txt ~
@@ -130,7 +130,7 @@ filename="*file.txt"
 rm $filename
 ```
 
-The `rm` utility deletes all files ending in `file.txt`. The globbing mechanism causes such behavior. It happens because Bash does globbing after parameter expansion. Then it substitutes files of the current directory whose names match the "*file.txt" pattern. It leads to unexpected results. Here is an example of the `rm` call that you can get this way:
+The `rm` utility deletes all files ending in `file.txt`. The globbing mechanism causes such behavior. It happens because Bash does globbing after the parameter expansion. Then it substitutes files of the current directory whose names match the "*file.txt" pattern. It leads to unexpected results. Here is an example of the `rm` call that you can get this way:
 {line-numbers: false, format: Bash}
 ```
 rm report_file.txt myfile.txt msg_file.txt
@@ -153,27 +153,27 @@ cp "my file.txt" ~
 rm "*file.txt"
 ```
 
-We already know several [Bash expansions](http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions). Table 3-2 gives their complete list and order of execution. 
+We already know several [Bash expansions](http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions). Table 3-2 gives the full picture. It shows the complete list of expansions and their order of execution.
 
 {caption: "Table 3-2. Bash expansions", width: "100%"}
 | Order of Execution | Expansion | Description | Example |
 | --- | --- | --- | --- |
 | 1 | [Brace Expansion](https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html) | It generates a set of strings by the specified pattern with braces. | `echo a{d,c,b}e` |
-|  | | | |
+|  | | | |
 | 2 | [Tilde Expansion](https://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html) | Bash replaces the tilde by the value of the `HOME` variable. | `cd ~` |
-|  | | | |
+|  | | | |
 | 3 | [Parameter Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html) | Bash replaces parameters and variables by their values. | `echo "$PATH"` |
-|  | | | |
+|  | | | |
 | 4 | [Arithmetic Expansion](https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html) | Bash replaces arithmetic expressions by their results. | `echo $((4+3))` |
-|  | | | |
-| 5 | [Command Substitution](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html) | Bash replaces the command with its output. | `echo $(< README.txt)` |
-|  | | | |
-| 6 | [Process Substitution](https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html) | Bash replaces the command with its output. Unlike Command Substitution, it is done [asynchronously](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)). The command's input and output are bound to a temporary file. | `diff <(sort file1.txt) <(sort file2.txt)` |
-|  | | | |
+|  | | | |
+| 5 | [Command Substitution](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html) | Bash replaces commands with their output. | `echo $(< README.txt)` |
+|  | | | |
+| 6 | [Process Substitution](https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html) | Bash replaces commands with their output. Unlike Command Substitution, it is done [asynchronously](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)). The command's input and output are bound to a temporary file. | `diff <(sort file1.txt) <(sort file2.txt)` |
+|  | | | |
 | 7 | [Word Splitting](https://www.gnu.org/software/bash/manual/html_node/Word-Splitting.html) | Bash splits command-line arguments into words and passes them as separate parameters. | `cp file1.txt file2.txt ~` |
-|  | | | |
+|  | | | |
 | 8 | [Filename Expansion](https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html) (globbing) | Bash replaces patterns with filenames. | `rm ~/delete/*` |
-|  | | | |
+|  | | | |
 | 9 | Quote Removal | Bash removes all unshielded \, ' and " characters that were not derived from one of the expansions. | `cp "my file.txt" ~` |
 
 {caption: "Exercise 3-1. Testing the Bash expansions", format: text, line-numbers: false}
@@ -183,13 +183,13 @@ Figure out how the final command turned out.
 Come up with your own examples.
 ```
 
-The dollar sign before a variable name is a shortened form of parameter expansion. Its full form looks this way:
+Let's come back to the parameter expansion. When you put the dollar sign before a variable name, you use the short form of the expansion. Its full form looks this way:
 {line-numbers: false, format: Bash}
 ```
 ${filename}
 ```
 
-Use the full form to avoid ambiguity. Here is an example when the text follows the variable name:
+Use this form to avoid ambiguity. Ambiguity can happen when the text follows the variable name. Here is an example of such a case:
 {line-numbers: true, format: Bash}
 ```
 prefix="my"
@@ -197,137 +197,137 @@ name="file.txt"
 cp "$prefix_$name" ~
 ```
 
-In this case, Bash looks for a variable named "prefix_". It happens because the interpreter appends the underscore to the variable name. The full form of the parameter expansion solves this problem:
+Here Bash tries to find and insert the variable called "prefix_". It happens because the interpreter appends the underscore to the variable name. You can solve this kind of problem if you apply the full form of the parameter expansion. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 cp "${prefix}_${name}" ~
 ```
 
-There is an alternative solution. Enclose each variable name in double-quotes. Here is an example:
+If you prefer to use the short form of the expansion, you have another option. Enclose each variable name in the double-quotes. Then Bash will not confuse them and nearby text. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 cp "$prefix"_"$name" ~
 ```
 
-The full form of parameter expansion helps when the variable has not been defined. In that case, you can insert the specified value instead. Do it like this:
+The full form of the parameter expansion has several features. They help you to handle cases when a variable is undefined. For example, you can insert the specified value in this case. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 cp file.txt "${directory:-~}"
 ```
 
-Here Bash checks if the `directory` variable is defined and has a non-empty value. If it is, Bash performs a regular parameter expansion. Otherwise, it inserts the value that follows the minus character. It is the user's home directory in our example.
+Here Bash checks if the `directory` variable is defined and has a non-empty value. If it is, Bash performs a regular parameter expansion. Otherwise, it inserts the value that follows the minus character. It is the home directory path in our example.
 
-The full form of parameter expansion has several variations. Table 3-3 shows all of them.
+Table 3-3 shows all variations of the parameter expansion.
 
-{caption: "Table 3-3. The full form of parameter expansion", width: "100%"}
+{caption: "Table 3-3. The full form of the parameter expansion", width: "100%"}
 | Variation | Description|
 | --- | --- |
 | `${parameter:-word}` | If the "parameter" variable is not declared or has an empty value, Bash inserts the specified "word" value instead. Otherwise, it inserts the variable's value. |
 |  | |
-| `${parameter:=word}` | If a variable is not declared or has an empty value, Bash assigns it the specified value. Then it inserts this value. Otherwise, Bash inserts the variable's value. You cannot override positional and special parameters in this way. |
+| `${parameter:=word}` | If a variable is not declared or has an empty value, Bash assigns it the specified "word" value. Then it inserts this value. Otherwise, Bash inserts the variable's value. You cannot override positional and special parameters this way. |
 |  | |
-| `${parameter:?word}` | If the variable is not declared or has an empty value, Bash prints the specified value on the error stream. Then, it terminates the script with a non-zero exit status. Otherwise, Bash inserts the variable's value. |
+| `${parameter:?word}` | If the variable is not declared or has an empty value, Bash prints the specified "word" value in the error stream. Then, it terminates the script with a non-zero exit status. Otherwise, Bash inserts the variable's value. |
 |  | |
-| `${parameter:+word}` | If the variable is not declared or has an empty value, Bash skips the expansion. Otherwise, it inserts the specified value. |
+| `${parameter:+word}` | If the variable is not declared or has an empty value, Bash skips the expansion. Otherwise, it inserts the specified "word" value. |
 
-{caption: "Exercise 3-2. The full form of parameter expansion", format: text, line-numbers: false}
+{caption: "Exercise 3-2. The full form of the parameter expansion", format: text, line-numbers: false}
 ```
-Write a script that searches for files with TXT extension in the current directory.
+Write a script that searches for files with the TXT extension in the current directory.
 The script ignores subdirectories.
-Copy or move all found files to the user's home directory.
+Copy or move all found files to the home directory.
 When calling the script, you can choose whether to copy or move the files.
-If no action is specified, the script chooses to copy the files.
+If you do not specify the action, the script copies the files.
 ```
 
-#### Internal variables
+#### Internal Variables
 
-The user can declare variables. Bash also can do that. In this case, they are called **internal** or **shell variables**. The interpreter assigns the default values to them. The user can change some shell variables.
+You can declare variables for your own purposes. Bash also can do that. These variables are called **internal** or **shell variables**. You can change values for some of them.
 
-Internal variables have two functions:
+Internal variables solve two tasks:
 
-1. Passing information from the shell to the application it runs.
+1. They pass information from the shell to the application it runs.
 
-2. Storing the current state of the interpreter itself.
+2. They store the current state of the interpreter.
 
-The variables are divided into two groups:
+There are two groups of internal variables:
 
 1. Bourne Shell variables.
 
 2. Bash variables.
 
-The first group of variables comes from Bourne Shell. Bash needs it for POSIX compatibility. Table 3-4 shows the frequently used of these variables.
+The first group came from Bourne Shell. Bash needs it for compatibility with the POSIX standard. Table 3-4 shows the frequently used variables of this group.
 
 {caption: "Table 3-4. Bourne Shell variables", width: "100%", column-widths: "20% *"}
 | Name | Value |
 | --- | --- |
-| `HOME` | The home directory of the current user. Bash uses this variable for doing tilde expansion and processing the `cd` call without parameters. |
+| `HOME` | The home directory of the current user. Bash uses this variable for tilde expansion and processing the `cd` call without parameters. |
 |  | |
-| [`IFS`](http://mywiki.wooledge.org/IFS) | It contains a list of delimiter characters. The word splitting mechanism uses these characters to split the strings into words. The default delimiters are space, [tab](https://en.wikipedia.org/wiki/Tab_key#Tab_characters) and a line break. |
+| [`IFS`](http://mywiki.wooledge.org/IFS) | It contains a list of delimiter characters. The word splitting mechanism uses them to split the strings into words. The default delimiters are space, [tab](https://en.wikipedia.org/wiki/Tab_key#Tab_characters) and a line break. |
 |  | |
-| `PATH` | It contains a list of paths. Bash uses the list to look for utilities and programs when the user runs them. Colons separate the paths in the list. |
+| `PATH` | It contains the list of paths where Bash looks for utilities and programs. Colons separate the paths in the list. |
 |  | |
 | `PS1` | It is a command prompt. The prompt can include [control characters](https://www.gnu.org/software/bash/manual/html_node/Controlling-the-Prompt.html#Controlling-the-Prompt). Bash replaces them with specific values (for example, the current user's name). |
-|  | |
-| `SHELLOPTS` | A list of [shell options](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html#The-Shopt-Builtin). They change the operating mode of interpreter. Colons separate the options in the list. |
+|  | |
+| `SHELLOPTS` | The list of [shell options](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html#The-Shopt-Builtin). They change the operating mode of the interpreter. Colons separate the options in the list. |
 
-In addition to the inherited Bourne Shell variables, Bash introduces new ones. Table 3-5 shows them. The list is incomplete. There are some extra variables, but they are rarely used.
+The second group of internal variables is Bash specific. Table 3-5 shows them. This list is incomplete. There are some more variables, but they are rarely used.
 
 {caption: "Table 3-5. Bash variables", width: "100%"}
 | Name | Value |
 | --- | --- |
 | `BASH` | The full path to the Bash executable file. This file corresponds to the current Bash process. |
-|  | |
-| `BASHOPTS` | A list of Bash-specific [shell options](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html#The-Shopt-Builtin). They change the operating mode of Bash. Colons separate the options in the list. |
-|  | |
-| `BASH_VERSION` | The version of the running Bash interpreter. |
-|  | |
-| `GROUPS` | A list of groups to which the current user belongs. |
-|  | |
-| `HISTCMD` | The number of the current command in the command history. It shows you how many items are in history. |
-|  | |
-| `HISTFILE` | The path to the file that stores the command history. The default value is `~/.bash_history`. |
-|  | |
-| `HISTFILESIZE` | The maximum allowed number of lines in the command history. The default value is 500. |
 |  | |
-| `HISTSIZE` | The maximum allowed amount of items in the command history. The default value is 500. |
-|  | |
-| `HOSTNAME` | The name of the current computer as a node on the computer network. |
-|  | |
-| `HOSTTYPE` | A string describing the hardware platform on which Bash is running. |
-|  | |
+| `BASHOPTS` | The list of Bash specific [shell options](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html#The-Shopt-Builtin). They change the operating mode of Bash. Colons separate the options in the list. |
+|  | |
+| `BASH_VERSION` | The version of the running Bash interpreter. |
+|  | |
+| `GROUPS` | The list of groups to which the current user belongs. |
+|  | |
+| `HISTCMD` | The index of the current command in history. It shows you how many items are there. |
+|  | |
+| `HISTFILE` | The path to the file that stores the command history. The default path is `~/.bash_history`. |
+|  | |
+| `HISTFILESIZE` | The maximum number of lines allowed in the command history. The default value is 500. |
+|  | |
+| `HISTSIZE` | The maximum number of entries allowed in the command history. The default value is 500. |
+|  | |
+| `HOSTNAME` | The computer name as a node of the network. Other hosts can reach your computer by this name. |
+|  | |
+| `HOSTTYPE` | The string describing the hardware platform where Bash is running. |
+|  | |
 | `LANG` | [Locale settings](https://en.wikipedia.org/wiki/Locale_(computer_software)) for the user interface. They define the user's language, region and some special characters. Some settings are overridden by variables `LC_ALL`, `LC_COLLATE`, `LC_CTYPE`, `LC_MESSAGES`, `LC_NUMERIC`, `LC_TYPE`. |
-|  | |
-| `MACHTYPE` | A string describing the system on which Bash is running. It includes information from the `HOSTTYPE` and `OSTYPE` variables. |
-|  | |
-| `OLDPWD` | The previous working directory, which was set by the `cd` command. |
-|  | |
-| `OSTYPE` | A string describing the OS on which Bash is running. |
-|  | |
+|  | |
+| `MACHTYPE` | The string describing the system where Bash is running. It includes information from the `HOSTTYPE` and `OSTYPE` variables. |
+|  | |
+| `OLDPWD` | The previous working directory that the `cd` command has set. |
+|  | |
+| `OSTYPE` | The string describing of the OS where Bash is running. |
+|  | |
 | `POSIXLY_CORRECT` | If this variable is defined, Bash runs in the [POSIX compatible mode](https://www.gnu.org/software/bash/manual/html_node/Bash-POSIX-Mode.html#Bash-POSIX-Mode). |
-|  | |
+|  | |
 | `PWD` | The current directory that the `cd` command has set. |
-|  | |
-| `RANDOM` | Each time the user reads this variable, Bash returns a random number between 0 and 32767. When the user writes the variable, Bash assigns a new initializing number ([seed](https://en.wikipedia.org/wiki/Random_seed)) to the [pseudorandom number generator](https://en.wikipedia.org/wiki/Pseudorandom_number_generator). |
-|  | |
+|  | |
+| `RANDOM` | Each time you read this variable, Bash returns a random number between 0 and 32767. When you write the variable there, Bash assigns a new initializing number ([seed](https://en.wikipedia.org/wiki/Random_seed)) to the [pseudorandom number generator](https://en.wikipedia.org/wiki/Pseudorandom_number_generator). |
+|  | |
 | `SECONDS` | The number of seconds elapsed since the current Bash process started. |
-|  | |
-| `SHELL` | The path to the shell executable file for the current user. Each user can use his own shell program. |
-|  | |
-| `SHLVL` | The nesting level of the current Bash instance. This variable is incremented by one each time you start Bash from itself. |
-|  | |
+|  | |
+| `SHELL` | The path to the shell executable for the current user. Each user can use his own shell program. |
+|  | |
+| `SHLVL` | The nesting level of the current Bash instance. This variable is incremented by one each time you start Bash from the shell or script. |
+|  | |
 | `UID` | The ID number of the current user. |
 
 The internal variables are divided into three groups depending on the allowed actions with them. These are the groups:
 
-1. Bash assigns a value to a variable at startup. It remains unchanged throughout the session. The user can read it, but changing is prohibited. Examples: `BASHOPTS`, `GROUPS`, `SHELLOPTS`, `UID`.
+1. Bash assigns a value to a variable at startup. It remains unchanged throughout the session. You can read it, but changing is prohibited. Examples: `BASHOPTS`, `GROUPS`, `SHELLOPTS`, `UID`.
 
-2. Bash assigns a default value to a variable at startup. User actions or other events change this value. Some variables can be explicitly re-assigned, but this can disrupt the interpreter. Examples: `HISTCMD`, `OLDPWD`, `PWD`, `SECONDS`, `SHLVL`.
+2. Bash assigns a default value to a variable at startup. Your actions or other events change this value. You can re-assign some values explicitly, but this can disrupt the interpreter. Examples: `HISTCMD`, `OLDPWD`, `PWD`, `SECONDS`, `SHLVL`.
 
-3. Bash assigns a default value to the variable at startup. The user can change it. Examples: `HISTFILESIZE`, `HISTSIZE`.
+3. Bash assigns a default value to the variable at startup. You can change it. Examples: `HISTFILESIZE`, `HISTSIZE`.
 
 #### Special Parameters
 
-Bash declare special parameters and assign values to them. It works in the same way as for shell variables.
+Bash declares special parameters and assigns values to them. It handles them the same way as shell variables.
 
 Special parameters pass information from a shell to a launching application and vice versa. We have already considered positional parameters. All of them are special parameters.
 
@@ -337,23 +337,23 @@ Table 3-6 shows frequently used special parameters.
 | Name | Value |
 | --- | --- |
 | `$*` | It contains all positional parameters passed to the script. Parameters start with the `$1` variable but not with `$0`. If you skip double-quotes (`$*`), Bash inserts each positional parameter as a separate word. With double-quotes ("$*"), Bash handles it as a single quoted string. The string contains all the parameters separated by the first character of the internal variable `IFS`. |
-|  | |
+|  | |
 | `$@` | The array that contains all positional parameters passed to the script. Parameters start with the `$1` variable. If you skip double-quotes (`$@`), Bash handles each array's element as an unquoted string. Word splitting happens in this case. With double-quotes ("$@"), Bash handles each element as a quoted string without word splitting. |
-|  | |
+|  | |
 | `$#` | The number of positional parameters passed to the script. |
-|  | |
+|  | |
 | `$1`, `$2`... | It contains the value of the corresponding positional parameter. `$1` matches the first parameter. `$2` matches the second one, etc. The numbers are given in the decimal system. |
-|  | |
+|  | |
 | `$?` | The exit status of the last executed command in the foreground mode. If a pipeline was executed, the parameter stores the exit status of the last command in the pipeline. |
-|  | |
+|  | |
 | `$-` | It contains options for the current interpreter instance. |
-|  | |
+|  | |
 | `$$` | The process ID of the current interpreter instance. If you use it in the subshell, Bash inserts the PID of the parent process. |
-|  | |
+|  | |
 | `$!` | The process ID of the last command that was launched in the background mode. |
-|  | |
+|  | |
 | `$0` | The name of the shell or script that is currently running. |
-|  | |
+|  | |
 
 You cannot change special Bash parameters directly. For example, the following redeclaration of `$1` does not work:
 {line-numbers: false, format: Bash}
@@ -448,7 +448,7 @@ There are two ways to declare the global scope variable:
 
 If you do not apply any of these options, your variable comes to the local scope. It is called the **local variable**. It is available in the current instance of the interpreter.  Child processes (except subshell) does not inherit it.
 
-Here is an example. Suppose that you declare a variable in the terminal window like this: 
+Here is an example. Suppose that you declare a variable in the terminal window like this:
 {line-numbers: false, format: Bash}
 ```
 filename="README.txt"
