@@ -438,51 +438,51 @@ All names of environment variables contain uppercase letters only. Therefore, it
 
 #### Local Variables
 
-We know about the user-defined variables. The user can declare them in several ways. Depending on his choice, the new variable comes to the **local scope** or global scope (environment).
+We have considered the user-defined variables. You can declare them in several ways. Depending on your choice, the new variable comes to the **local scope** or global scope (environment).
 
 There are two ways to declare the global scope variable:
 
 1. Add the `export` command to the variable declaration.
 
-2. Pass the variable when launching the program. You can do it with the `env` utility when using a shell other than Bash.
+2. Pass the variable to the program when launching it. You can do it with the `env` utility when using a shell other than Bash.
 
-If you do not apply any of these options, your variable comes to the local scope. It is called the **local variable**. It is available in the current instance of the interpreter.  Child processes (except subshell) does not inherit it.
+If you do not apply any of these ways, your variable comes to the local scope. A variable of this kind is called a **local variable**. It is available in the current instance of the interpreter. A child process (except a subshell) does not inherit it.
 
-Here is an example. Suppose that you declare a variable in the terminal window like this:
+Here is an example. Suppose that you declare the `filename` variable in the terminal window this way:
 {line-numbers: false, format: Bash}
 ```
 filename="README.txt"
 ```
 
-Now you can output its value in the same terminal window. Call the following `echo` command for that:
+Now you can print its value in the same terminal window. The following `echo` command does that:
 {line-numbers: false, format: Bash}
 ```
 echo "$filename"
 ```
 
-The same command works well in a subshell. Just add parentheses to spawn a subshell for the specific command. It looks like this:
+The same `echo` command works well in a subshell. You can try it. Spawn the subshell by adding the parentheses around the Bash command. It looks like this:
 {line-numbers: false, format: Bash}
 ```
 (echo "$filename")
 ```
 
-However, if you read the variable from a child process, you get an empty value. You can start a child process by calling the Bash explicitly in the terminal window. Here is an example:
+The child process does not get the local `filename` variable. Let's check it. Start a child process by calling the Bash interpreter explicitly. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 bash -c 'echo "$filename"'
 ```
 
-The `-c` parameter passes a command to be executed by the Bash child process. A similar Bash call occurs implicitly when running the script from a shell.
+The `-c` parameter passes a command that the Bash child process executes. A similar Bash call occurs implicitly when you run a script from the shell.
 
-We enclose the `echo` call in the single-quotes when passing it to the `bash` command. The quotes disable all Bash expansions for the string inside. This behavior differs from the double-quotes. They disable all expansions except command substitution and parameter expansion. If we use double-quotes in our `bash` call, the parameter expansion happens. Then Bash inserts the variable's value in the call. The call would look like this:
+We enclose the `echo` call in the single quotes when passing it to the `bash` command. The quotes disable all Bash expansions for the string inside. This behavior differs from the double quotes. They disable all expansions except the command substitution and parameter expansion. If we apply double quotes in our `bash` call, the parameter expansion happens. Then Bash inserts the variable's value in the call. This way, we will get the following command:
 {line-numbers: false, format: Bash}
 ```
 bash -c "echo README.txt"
 ```
 
-We are not interested in such a call. Instead, we want to check how the child process reads the local variable. The parent process should not put its value into the `bash` call.
+We are not interested in this command. Instead, we want to check how the child process reads the local variable. Therefore, the parent process should not insert its value into the `bash` call.
 
-If you change a local variable in the subshell, the parent process keeps its old value. For example, the following `echo` command prints the "README.txt" filename:
+If you change a local variable in the subshell, its value stays the same in the parent process. The following commands confirm this rule:
 {line-numbers: true, format: Bash}
 ```
 filename="README.txt"
@@ -490,15 +490,15 @@ filename="README.txt"
 echo "$filename"
 ```
 
-This output confirms that changing the local variable in the subshell does not affect the parent process.
+If you execute them, you get the "README.txt" output. It means that changing the local variable in the subshell does not affect the parent process.
 
-When you declare a local variable, it comes in the shell variables list. The list includes all local and environment variables that are available in the current interpreter process. The `set` command prints this list when called without parameters. Here is an example of how to find the `filename` variable there:
+When you declare a local variable, it comes to the shell's variables list. The list includes all local and environment variables that are available in the current interpreter process. The `set` command prints this list when called without parameters. Here is an example of how to find the `filename` variable there:
 {line-numbers: false, format: Bash}
 ```
 set | grep filename=
 ```
 
-There is the following line in the command's output:
+The `grep` utility prints the following string with the `filename` value:
 {line-numbers: false, format: Bash}
 ```
 filename=README.txt
