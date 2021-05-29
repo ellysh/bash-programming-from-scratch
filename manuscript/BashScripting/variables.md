@@ -510,21 +510,21 @@ It means that the `filename` variable is in the list of shell variables.
 
 #### Variable Types
 
-In compiled programming languages (such as C), it is common to use [**static type system**](https://en.wikipedia.org/wiki/Type_system#Static_type_checking). When using this system, you decide how to store the variable in memory. You should specify the variable type when declaring it. Then the compiler allocates the memory and chooses an appropriate format for this type of variable.
+It is common practice to use the [**static type system**](https://en.wikipedia.org/wiki/Type_system#Static_type_checking) in compiled programming languages (such as C). When using this system, you decide how to store the variable in memory. You should specify the variable type when declaring it. Then the compiler allocates memory and picks one of the predefined formats to store this type of variable.
 
-Here is an example of how the static type system works. Suppose we declare a variable called `number`. We should specify its type in the declaration. We choose the unsigned integer type, which has a size of two bytes. Then the compiler allocates exactly two bytes of memory for this variable.
+Here is an example of how the static type system works. Suppose you want to declare a variable called `number`. You should specify its type in the declaration. You choose the unsigned integer type, which has a size of two bytes. Then the compiler allocates exactly two bytes of memory for this variable.
 
-When the application starts, we assign the 203 value to the variable. It is equal to 0xCB in hexadecimal. Then the variable looks this way in the memory:
+When the application starts, you assign the 203 value to the variable. It is equal to 0xCB in hexadecimal. Then the variable looks this way in the memory:
 {line-numbers: false, format: Bash}
 ```
 00 CB
 ```
 
-I> A modern computer uses the binary form to store information in the memory. Here we use the hexadecimal format instead for clarity.
+I> Modern computers use the binary form to store information in the memory. Here we use the hexadecimal format instead for clarity.
 
-One byte is enough to store the 203 value. But we force the compiler to reserve two bytes for that. The unused byte stays zero. No one can use it in the scope of the `number` variable. If the variable has the global scope, the byte is reserved and unused while the application works.
+One byte is enough to store the 203 value. However, you forced the compiler to reserve two bytes for that. The unused byte stays zeroed. No one can use it in the scope of the `number` variable. If the variable has a global scope, the byte is reserved and unused while the application works.
 
-Suppose that we assign the 14037 value to the variable. It is equal to 0x36D5 in hexadecimal. Then it looks like this in the memory:
+Suppose that you have assigned the 14037 value to the variable. It is equal to 0x36D5 in hexadecimal. Then it looks like this in the memory:
 {line-numbers: false, format: Bash}
 ```
 36 D5
@@ -532,35 +532,35 @@ Suppose that we assign the 14037 value to the variable. It is equal to 0x36D5 in
 
 I> The CPU determines the byte order when storing data in the computer memory. This byte order is called [**endianness**](https://en.wikipedia.org/wiki/Endianness). It is **big-endian** in our example. The alternative order is **little-endian**.
 
-Now we want to store the value 107981 (0x1A5CD) in the variable. This number does not fit into two bytes. But the variable's size is defined in the declaration. The compiler cannot extend it automatically afterward. Therefore, the 107981 value will be truncated to two bytes. It looks like this in the memory:
+Now you want to store the 107981 (0x1A5CD) value in the variable. This number does not fit into two bytes. The variable's size is defined in the declaration. The compiler cannot extend it automatically afterward. Therefore, it writes only part of the 107981 value into the variable. It looks like this in the memory:
 {line-numbers: false, format: Bash}
 ```
 A5 CD
 ```
 
-The first digit of the value has been discarded. If you read the `number` variable, you get 42445 (0xA5CD). It means that the original 107981 is lost. You cannot recover it anymore. This problem is called [**integer overflow**](https://en.wikipedia.org/wiki/Integer_overflow).
+The compiler discarded the first digit of the number. If you read the variable, you get 42445 (0xA5CD). It means that you lose the original 107981 value. You cannot recover it anymore. This problem is called [**integer overflow**](https://en.wikipedia.org/wiki/Integer_overflow).
 
-Here is another example of the static type system. Suppose we want to store the username in a variable called `username`. We declare this variable of the string type. When doing that, we should specify the maximum length of the string. Let's choose the length of the ten characters.
+Here is another example of the static type system. Suppose you want to store the username in a variable called `username`. You declare this variable and assign it the string type. When doing that, you should specify the maximum length of the string. It can be ten characters, for example.
 
-Now we write the name "Alice" to the variable. If you use the C compiler, the string looks like this in memory:
+After declaring the variable, you write the "Alice" name there. If you use the C compiler, the string looks this way in memory:
 {line-numbers: false, format: Bash}
 ```
 41 6C 69 63 65 00 00 00 00 00
 ```
 
-I> The C compiler uses the ASCII encoding for characters by default. You can clarify the hexadecimal code of each letter in the [ASCII table](http://www.asciitable.com).
+I> The C compiler uses the ASCII encoding for characters by default. When using it, you can clarify the hexadecimal code of each letter in the [ASCII table](http://www.asciitable.com).
 
-Six bytes are enough to store the string "Alice". The first five bytes store characters. The last sixth byte stores the null character (00). It marks the end of the string. However, we have reserved ten bytes for the variable. Therefore, the compiler fills the unused memory with zeros or random values.
+Six bytes are enough to store the string "Alice". The first five bytes store characters. The last sixth byte stores the null character (00). It marks the end of the string. However, the compiler has reserved ten bytes for the variable. It fills the unused memory with zeros or random values.
 
-[**Dynamic type system**](https://en.wikipedia.org/wiki/Type_system#Dynamic_type_checking_and_runtime_type_information) is an alternative to the static system. Here there is another way to choose how to store a variable in memory. This choice happens whenever you assign the new value to the variable. Together with the value, the variable gets new [**metadata**](https://en.wikipedia.org/wiki/Metadata). The metadata defines the variable type. They can change during the application work. Thus, the variable's representation in memory changes too. Most interpreted programming languages use the dynamic type system (for example, Python).
+[**Dynamic type system**](https://en.wikipedia.org/wiki/Type_system#Dynamic_type_checking_and_runtime_type_information) is an alternative to the static system. It uses another approach to choose how to store a variable in memory. This choice happens whenever you assign the new value to the variable. Together with the value, the variable gets new [**metadata**](https://en.wikipedia.org/wiki/Metadata). The metadata defines the variable type. They can change during the application work. Thus, the variable's representation in memory changes too. Most interpreted programming languages use the dynamic type system (for example, Python).
 
-I> Metadata is additional information about some object or data. The [library catalog](https://en.wikipedia.org/wiki/Library_catalog) is an example of metadata. It has a card for each book. The card contains the author, title of the work, publisher, year of publication, and the number of pages. Thus, The card contains metadata about the book.
+I> Metadata is additional information about some object or data. The [library catalog](https://en.wikipedia.org/wiki/Library_catalog) is an example of metadata. It has a card for each book. The card contains the author, title of the work, publisher, year of publication, and the number of pages. Thus, the card contains metadata about the book.
 
-Strictly speaking, Bash does not have the type system. It is not a language with the static or dynamic type system. Bash stores all [**scalar variables**](https://en.wikipedia.org/wiki/Variable_(computer_science)) as strings in memory.
+Strictly speaking, Bash does not have the type system at all. It is not a language with a static or dynamic type system. Bash stores all [**scalar variables**](https://en.wikipedia.org/wiki/Variable_(computer_science)) in memory as strings.
 
-The scalar variable stores data of [**primitive type**](https://en.wikipedia.org/wiki/Primitive_data_type). These data are the minimal building blocks to construct more complex [**composite types**](https://en.wikipedia.org/wiki/Composite_data_type). The scalar variable is just a name for the memory address where its value is stored.
+The scalar variable stores data of a [**primitive type**](https://en.wikipedia.org/wiki/Primitive_data_type). These data are the minimal building blocks to construct more complex [**composite types**](https://en.wikipedia.org/wiki/Composite_data_type). The scalar variable is just a name for the memory address where its value is stored.
 
-Here is how Bash represents scalar variables in memory. There is the following declaration:
+Here is an example of how Bash represents scalar variables in memory. Suppose you made the following variable declaration:
 {line-numbers: false, format: Bash}
 ```
 declare -i number=42
@@ -572,25 +572,25 @@ Bash stores the `number` variable in memory as the following string:
 34 32 00
 ```
 
-The language with the type system needs one byte to store this number. But Bash needs three bytes. The first two bytes store each character of the number: 4 and 2. The third byte stores the null character.
+Any language with the type system needs one byte to store this integer. But Bash needs three bytes. The first two bytes store each character of the integer. The characters are 4 and 2. The third byte stores the null character.
 
 The Bourne Shell language has the scalar variables only. Bash introduces two new composite types: [**indexed array**](https://en.wikipedia.org/wiki/Array_data_structure) and [**associative array**](https://en.wikipedia.org/wiki/Associative_array).
 
-The indexed array is a numbered set of strings. There each string corresponds to the sequence number. Bash stores such an array as [**linked list**](https://en.wikipedia.org/wiki/Linked_list) in memory. A linked list is a data structure that consists of nodes. Each node contains data and the memory address of the next node. Node data are strings in this case.
+The indexed array is a numbered set of strings. There each string corresponds to the sequence number. Bash stores such an array as a [**linked list**](https://en.wikipedia.org/wiki/Linked_list) in memory. A linked list is a data structure that consists of nodes. Each node contains data and the memory address of the next node. Node data are strings in this case.
 
-The associative array is a more complicated thing. It is a set of elements. Each element consists of two strings. The first one is called the "key". The second is "value". When you want to access the array's element, you should specify its key. It works the same as for the indexed array, where you should specify the element's index. The keys are unique. It means that two elements with the same keys are not allowed. Bash stores associative array as [**hash-table**](https://en.wikipedia.org/wiki/Hash_table) in memory.
+The associative array is a more complicated thing. It is a set of elements. Each element consists of two strings. The first one is called "key". The second is called "value". When you want to access the array's element, you should specify its key. It works the same as for the indexed array, where you specify the element's index. The keys are unique. It means that the array cannot have two elements with the same keys. Bash stores associative array as a [**hash-table**](https://en.wikipedia.org/wiki/Hash_table) in memory.
 
-Why are Bash "arrays" called arrays? Actually, they are linked lists and hash tables. A real array is the data structure whose elements are stored in memory one after another. Each element has a sequential number called an **index** or identifier. Bash "arrays" do not store their elements sequentially in memory. Thus, they are not arrays by definition.
+Why are Bash "arrays" called arrays? Actually, they are linked lists and hash tables. A real array is the data structure whose elements are stored in memory one after another. Each element has a sequential number called an **index** or identifier. Bash "arrays" do not store their elements sequentially in memory. Thus, they are not arrays according to the definition.
 
-Here is an example of how a real array stores its elements in memory. Suppose we have an array with numbers from five to nine. Each element takes one byte. Then the size of the array is five bytes. The array looks like this in memory:
+Here is an example of how a real array stores its elements in memory. Suppose you have an array with numbers from five to nine. Each element takes one byte. Then the size of the array is five bytes. It looks this way in memory:
 {line-numbers: false, format: Bash}
 ```
 05 06 07 08 09
 ```
 
-The indexing of arrays' elements starts with zero. It means that the first element has the 0 index. The second one has the 1 index and so on. In our example, the first element with the 0 index equals the number 5. The second element equals 6. Elements follow each other in memory. Their indexes match the memory offset from the beginning of the array. Thus, the element with the 3 index has three bytes offset and equals the number 8.
+The indexing of arrays' elements starts with zero. It means that the index of the first element equals 0. The second index equals 1 and so on. In our example, the first element with the 0 index equals integer 5. The second element equals 6. Elements follow each other in memory. Their indexes match the memory offset from the beginning of the array. Thus, the element with the third index has three bytes offset. Its value equals integer 8.
 
-Let's come back to the question about naming the Bash "arrays". Only the authors of the language can answer it. However, we can guess. The name "array" gives the user a hint on how to work with them. When the user has experience in another language, he knows how to operate with a regular array. This way, he can start using Bash "arrays" immediately. The user does not need knowledge on how Bash stores these "arrays" internally.
+Let's come back to the question about naming the Bash "arrays". Only the authors of the language can answer it. However, we can guess. The name "array" gives you a hint of how to work with such a variable. When you have experience with another language, you know how to operate with a regular array. This way, you can start using Bash "arrays" immediately. You do not need to know how Bash stores these "arrays" internally.
 
 #### Attributes
 
