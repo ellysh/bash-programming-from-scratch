@@ -594,15 +594,15 @@ Let's come back to the question about naming the Bash "arrays". Only the authors
 
 #### Attributes
 
-The Bash language does not have the type system. It stores all scalar variables in memory as strings. But Bash has composite types that are arrays. The Bash array is the combination of strings.
+The Bash language does not have a type system. It stores all scalar variables in memory as strings. At the same time, Bash has arrays. They are composite types because an array is a combination of strings.
 
-When you declare the Bash variable, you should choose if it is scalar or composite. You can do that by specifying metadata for the variable. Such metadata is called **attributes** in Bash. The variable's attributes also define its constancy and scope.
+When you declare a variable in Bash, you should choose if it is scalar or composite. You make this choice by specifying metadata for the variable. Such metadata is called **attributes**. The attributes also define the constancy and scope of a variable.
 
-The `declare` built-in command specifies the variable's attributes. The command prints all local and environment variables when calling without parameters. The `set` command prints the same output.
+The `declare` Bash built-in specifies the variable attributes. When you call it without parameters, `declare` prints all local and environment variables. The `set` command prints the same output.
 
-The `declare` command has the `-p` option. It adds variable attributes to the output.
+The `declare` command has the `-p` option. The option adds variables attributes to the output data.
 
-If you want information on a particular variable, pass its name to the `declare` command. Here is an example for the `PATH` variable:
+If you need information on a particular variable, pass its name to the `declare` command. Here is an example for the `PATH` variable:
 {line-numbers: false, format: Bash}
 ```
 declare -p PATH
@@ -610,37 +610,35 @@ declare -p PATH
 
 The `declare` command also prints information about declared [**subroutines**](https://en.wikipedia.org/wiki/Subroutine). They are called **functions** in Bash. A function is a program fragment or an independent block of code that performs a certain task.
 
-Suppose you are interested in declarations of the function but not in variables. Then use the `-f` option of the `declare` command. It filters out variables from the output. The `declare` call looks the following in this case:
+Suppose you are interested in function declarations but not in variables. Then apply the `-f` option of the `declare` command. It filters out variables from the output. Here is the `declare` call in this case:
 {line-numbers: false, format: Bash}
 ```
 declare -f
 ```
 
-You can specify the function name right after the `-f` option. Then the `declare` command prints information about this function only. Here is an example for the function `quote`:
+You can specify the function name right after the `-f` option. Then the `declare` command prints information about it. Here is an example for the function `quote`:
 {line-numbers: false, format: Bash}
 ```
 declare -f quote
 ```
 
-This command displays the declaration of the function.
-
-The `quote` function receives a string on the input. It encloses the string in single-quotes. If the string already contains the single-quotes, the function escapes them. You can call the function in the same way as a built-in Bash command. Here is an example:
+This command displays the declaration of the `quote` function. The function takes a string on the input and encloses it in single quotes. If the string already contains the single quotes, the function escapes them. You can call `quote` in the same way as any Bash built-in. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 quote "this is a 'test' string"
 ```
 
-The `declare` command without the `-p` option does not print the function declaration. It means that the following call shows nothing:
+The `declare` call without the `-p` option does not print a function declaration. It means that the following command outputs nothing:
 {line-numbers: false, format: Bash}
 ```
 declare quote
 ```
 
-The `declare` command shows information about already declared variables and functions. Also, the command sets attributes for new variables.
+We have considered how to get information about already declared variables and functions using `declare`. Now let's find out how this command sets attributes for new variables.
 
 Table 3-7 shows the frequently used options of the `declare` command.
 
-{caption: "Table 3-7. The `declare` command options and the corresponding variables' attributes", width: "100%"}
+{caption: "Table 3-7. The `declare` command options and the corresponding variable attributes", width: "100%"}
 | Option | Definition |
 | --- | --- |
 | `-a` | The declared variable is an indexed array. |
@@ -655,7 +653,7 @@ Table 3-7 shows the frequently used options of the `declare` command.
 |  | |
 | `-x` | It declares an environment variable. |
 
-Here are examples of declaration variables with attributes. First, let's compare integer and string variables. Execute the following two commands in the terminal window:
+Here are several examples of how to declare variables with attributes. First, let's compare integer and string variables. Execute the following two commands in the terminal window:
 {line-numbers: true, format: Bash}
 ```
 declare -i sum=11+2
@@ -666,14 +664,14 @@ We declared two variables named `sum` and `text`. The `sum` variable has the int
 
 Bash stores both variables as strings in memory. The `-i` option does not specify the variable's type. Instead, it limits the allowed values of the variable.
 
-Try to assign a string to the `sum` variable. Here are a couple of possible ways for doing that:
+Try to assign a string to the `sum` variable. You can do it in one of the following ways:
 {line-numbers: true, format: Bash}
 ```
 declare -i sum="test"
 sum="test"
 ```
 
-Each of these commands set the `sum` value to zero.
+Each of these commands sets the `sum` value to zero. It happens because the variable has the integer attribute. Therefore, it cannot be equal to some string.
 
 Suppose you have declared an integer variable. Then you do not need a Bash expansion for arithmetic operations on it. The following commands do correct calculations:
 {line-numbers: true, format: Bash}
