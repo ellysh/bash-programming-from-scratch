@@ -918,38 +918,38 @@ unset files
 
 #### Associative Arrays
 
-We have considered the indexed arrays. Their elements are strings. Each element has an index that is a positive integer. The indexed array gives you a string by its index.
+We have considered indexed arrays. Their elements are strings. Each element has an index that is a positive integer. The indexed array gives you a string by its index.
 
-The developers introduced associative arrays in the 4th version of Bash. The elements' indexes are not numbers but strings in such arrays. This kind of string-index is called **key**. The associative array gives you a string-value by its string-index. When is this feature useful?
+The developers introduced associative arrays in the 4th version of Bash. These arrays use strings as element indexes instead of integers. This kind of string-index is called **key**. The associative array gives you a string-value by its string-index. When do you need this feature?
 
-Here is an example. Suppose we need a script that stores the list of contacts. The script adds a person's name, email or phone number to the list. We can omit the person's last name for simplicity. When you need these data back, the script prints it on the screen.
+Here is an example. Suppose you need a script that stores the list of contacts. The script adds a person's name, email or phone number to the list. Let's omit the person's last name for simplicity. When you need these data back, the script prints them on the screen.
 
-We can solve the task using the indexed array. But this solution is inefficient for searching for a contact. The script should traverse over all array elements. It compares each element with the person's name that you are looking for. The script prints the corresponding contacts if it finds the person.
+You can solve the task using the indexed array. This solution would be inefficient for searching for the required contact. The script should traverse over all array elements. It compares each element with the person's name that you are looking for. When the script finds the right person, it prints his contacts on the screen.
 
 An associative array makes searching for contacts faster. The script should not pass through all array elements in this case. Instead, it gives the key to the array and gets the corresponding value back.
 
-Here is a possible way to declare and initialize the associative array with contacts:
+Here is an example of declaring and initializing the associative array with contacts:
 {line-numbers: false, format: Bash}
 ```
 declare -A contacts=(["Alice"]="alice@gmail.com" ["Bob"]="(697) 955-5984" ["Eve"]="(245) 317-0117" ["Mallory"]="mallory@hotmail.com")
 ```
 
-There is only one way to declare an associative array. For doing that, you should use the `declare` command with the `-A` option. Bash cannot deduce the array type, even if you specify string-indexes. Therefore, the following command declares the indexed array:
+There is only one way to declare an associative array. For doing that, you should use the `declare` command with the `-A` option. Bash cannot deduce the array type without it, even if you specify string-indexes. Therefore, the following command declares the indexed array:
 {line-numbers: false, format: Bash}
 ```
 contacts=(["Alice"]="alice@gmail.com" ["Bob"]="(697) 955-5984" ["Eve"]="(245) 317-0117" ["Mallory"]="mallory@hotmail.com")
 ```
 
-The following `declare` call prints this `contacts` variable:
+Let's check of how this indexed array looks like. The following `declare` call prints it:
 {line-numbers: true, format: Bash}
 ```
 $ declare -p contacts
 declare -a contacts='([0]="mallory@hotmail.com")'
 ```
 
-It is an indexed array with one element. It happens because Bash converts all string-indexes to zero value. Then every next contact in the initialization list overwrites the previous one. This way, the zero-index element contains the contacts of the last person in the initialization list.
+You see the indexed array with one element. This result happened because Bash converts all string-indexes to zero value. Then every next contact in the initialization list overwrites the previous one. This way, the zero-index element contains contacts of the last person in the initialization list.
 
-You can specify elements of the array separately. Here is an example:
+You can specify elements of an associative array separately. Here is an example:
 {line-numbers: true, format: Bash}
 ```
 declare -A contacts
@@ -959,60 +959,60 @@ contacts["Eve"]="(245) 317-0117"
 contact["Mallory"]="mallory@hotmail.com"
 ```
 
-So, we have declared an associative array. Its elements are accessible by keys. The key is the name of a person in our case. Here is an example of reading the contacts by the person's name:
+Suppose that you have declared an associative array. Now you can access its elements by their keys. The key is the name of a person in our example. The following command reads the contacts by the person's name:
 {line-numbers: true, format: Bash}
 ```
 $ echo "${contacts["Bob"]}"
 (697) 955-5984
 ```
 
-Use the @ character as the key for printing all array's elements:
+If you put the @ symbol as the key, you get all elements of the array:
 {line-numbers: true, format: Bash}
 ```
 $ echo "${contacts[@]}"
 (697) 955-5984 mallory@hotmail.com alice@gmail.com (245) 317-0117
 ```
 
-If you add the exclamation mark before the array name, you get the list of all keys. In our case, you get the list of persons in the contacts. Here is an example:
+If you add the exclamation mark before the array name, you get the list of all keys. It is the list of persons in our example:
 {line-numbers: true, format: Bash}
 ```
 $ echo "${!contacts[@]}"
 Bob Mallory Alice Eve
 ```
 
-Add the # character before the array name to get the size of the contacts list:
+Add the # character before the array name to get its size:
 {line-numbers: true, format: Bash}
 ```
 $ echo "${#contacts[@]}"
 4
 ```
 
-Let's put the associative array with contacts into the script. There you can pass the name of the person via the command-line parameter. The script processes it and prints the email or phone number of that person.
+Let's apply the associative array to the contacts script. The script receives a person's name via the command-line parameter. Then it prints an email or phone number of that person.
 
 Listing 3-10 shows the script for managing the contacts.
 
 {caption: "Listing 3-10. The script for managing the contacts", line-numbers: true, format: Bash}
 ![`contacts.sh`](code/BashScripting/contacts.sh)
 
-To edit contacts, change the array's initialization in the script.
+If you need to edit some person's data, you should open the script in a code editor and change the array initialization.
 
-The `unset` command deletes an associative array or its element. It works like this
+The `unset` Bash built-in deletes an associative array or its element. It works this way:
 {line-numbers: true, format: Bash}
 ```
 unset contacts
 unset 'contacts[Bob]'
 ```
 
-Bash inserts several elements of an associative array in the same way as it does for an indexed array. Here is an example:
+Bash can insert several elements of an associative array in the same way as it does for an indexed array. Here is an example:
 {line-numbers: true, format: Bash}
 ```
 $ echo "${contacts[@]:Bob:2}"
 (697) 955-5984 mallory@hotmail.com
 ```
 
-Bash inserts two elements in this case:
+Here you get two elements printed:
 
 * The one that corresponds to the `Bob` key.
 * The next one in memory.
 
-There is one problem with such an approach. The order of the associative array's elements in memory does not match their initialization order. The [**hash function**](https://en.wikipedia.org/wiki/Hash_function) calculates each element's numerical index in memory. The function takes a key on input and returns a unique integer on output. Because of this feature, inserting several elements of the associative array is a bad practice.
+There is one problem with inserting several elements of an associative array. Their order in memory does not match their initialization order. The [**hash function**](https://en.wikipedia.org/wiki/Hash_function) calculates a numerical index in the memory of each element. The function takes a string-key on input and returns a unique integer on output. Because of this feature, inserting several elements of the associative array is a bad practice.
