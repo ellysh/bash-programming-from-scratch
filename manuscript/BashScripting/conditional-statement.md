@@ -60,13 +60,13 @@ then
 fi
 ```
 
-The CONDITION here is the `cmp` utility call. The utility compares the contents of two files. If they differ, `cmp` prints the position of the first character that is different. The exit status is non-zero in this case. If the files are the same, the utility returns the zero status.
+The `cmp` utility call works as the CONDITION here. The utility compares the contents of two files. If they differ, `cmp` prints the position of the first distinct character. The exit status is non-zero in this case. If the files are the same, the utility returns the zero status.
 
-When we call a utility in the `if` condition, its exit status matters only. Therefore, we redirect the `cmp` output to the [`/dev/null`](https://en.wikipedia.org/wiki/Null_device) file. It is a special system file. Writing there always succeeds. OS deletes all data that you write there.
+When you call a utility or command in the `if` condition, its exit status matters only. Therefore, we redirect the `cmp` output to the [`/dev/null`](https://en.wikipedia.org/wiki/Null_device) file. It is a special system file. OS deletes all data that you write there. This operation always succeeds. 
 
-If the contents of the `file1.txt` and `file2.txt` files match, the `cmp` utility returns the zero status. Then the `if` condition equals "true". In this case, the `echo` command prints the message.
+If the contents of the `file1.txt` and `file2.txt` files match, the `cmp` utility returns the zero status. Then the `if` condition equals "true". The `echo` command prints the message in this case.
 
-We have considered a simple case. When the condition is met, the script does an action. But there are cases where a condition selects one of two possible actions. The `if-else` statement works in this way. Here is the statement in the general form:
+We have considered a simple `if` statement with a single CONDITION and ACTION. When the condition is met, `if` performs the ACTION. There are cases when you want to choose one of two possible ACTIONS using the CONDITION. The `if-else` statement solves this task. Here is the statement in the general form:
 {line-numbers: true}
 ```
 if CONDITION
@@ -77,17 +77,17 @@ else
 fi
 ```
 
-The same `if-else` written in one line looks like this:
+If you write the `if-else` statement in one line, it looks this way:
 {line-numbers: false}
 ```
 if CONDITION; then ACTION_1; else ACTION_2; fi
 ```
 
-Bash executes ACTION_2 if CONDITION returns the non-zero exit status. The condition is "false" in this case. Otherwise, Bash executes the ACTION_1.
+Bash executes ACTION_2 if the CONDITION returns the non-zero exit status. The condition is "false" in this case. Otherwise, Bash executes the ACTION_1.
 
-You can extend the `if-else` statement by the `elif` blocks. Such a block adds an extra condition and the corresponding action. Bash executes the action if the condition equals "true".
+You can extend the `if-else` statement by the `elif` blocks. Such a block adds an extra CONDITION and the corresponding ACTION. Bash executes the ACTION if the CONDITION equals "true".
 
-Here is an example. Suppose you choose one of three actions depending on the value of a variable. The following `if` statement provides this behavior:
+Here is an example of the `if-else` statement. Suppose you want to choose one of three actions depending on the value of a variable. The following `if` statement does that:
 {line-numbers: true}
 ```
 If CONDITION_1
@@ -101,9 +101,9 @@ else
 fi
 ```
 
-There is no limitation for the number of `elif` blocks in the statement. You can add as many of them as you need.
+There is no limitation on the number of `elif` blocks in the statement. You can add as many blocks as you need.
 
-Let's extend our example of file comparison. We want to print the message in both cases: when the files match and when they do not. The `if-else` statement does the job. It looks like this:
+Let's improve our example of file comparison. You need to print the message in both cases: when the files match and when they do not. The following `if-else` statement does that:
 {line-numbers: true, format: Bash}
 ```
 if cmp file1.txt file2.txt &> /dev/null
@@ -114,9 +114,9 @@ else
 fi
 ```
 
-It is time to come back to our backup script. The script has a block of commands. The result of the `bsdtar` utility decides if Bash should execute this block. When we meet the code block and condition, it is a hint to apply the `if` statement here.
+It is time to come back to our backup script. There the `echo` call combined with `exit` makes a block of commands. Bash executes it depending on the result of the `bsdtar` utility. Whenever you meet a code block and condition, it is a hint to apply the `if` statement.
 
-We apply the `if-else` statement to the `bsdtar` call and handling its result. Then we get the following code:
+If you apply the `if-else` statement to check the `bsdtar` result, you get the following code:
 ```
 if bsdtar -cjf "$1".tar.bz2 "$@"
 then
@@ -127,7 +127,7 @@ else
 fi
 ```
 
-Do you agree that it is easier to read the code now? We can simplify it even more. The [**early return**](https://medium.com/swlh/return-early-pattern-3d18a41bba8) pattern does that. Replace the `if-else` statement with `if` like this:
+Do you agree that it is easier to read the code now? You can simplify it even more. The [**early return**](https://medium.com/swlh/return-early-pattern-3d18a41bba8) pattern will help you with that. Replace the `if-else` statement with `if` this way:
 {line-numbers: true, format: Bash}
 ```
 if ! bsdtar -cjf "$1".tar.bz2 "$@"
@@ -139,11 +139,11 @@ fi
 echo "bsdtar - OK" > results.txt
 ```
 
-The code behaves the same as with the `if-else` statement. The logical negation inverts the `bsdtar` utility result. Now, if it fails, the condition of the `if` statement becomes "true". Then the script prints the "bsdtar - FAILS" message to the log file and terminates. Otherwise, the script skips the command block of the `if` statement. The further `echo` call prints the "bsdtar - OK" message to the log file.
+This code behaves the same as one with the `if-else` statement. You can see that the `bsdtar` result was inverted. If the utility fails, the `if` condition equals "true". Then Bash prints the "bsdtar - FAILS" message to the log file and terminates the script. Otherwise, Bash skips the whole command block of the `if` statement. Then the further `echo` call prints the "bsdtar - OK" message to the log file.
 
 The early return pattern is a useful technique that makes your code cleaner and easier to read. The idea behind it is to terminate the program as early as possible when an error appears. This solution allows you to avoid the nested `if` statements.
 
-Here is an example. Imagine the algorithm that does five actions. Each action depends on the result of the previous one. If the previous action fails, the algorithm stops. We can implement this algorithm with the following nested `if` statements:
+An example will demonstrate the benefits of the early return pattern. Imagine the algorithm that does five actions. Each action depends on the result of the previous one. If any action fails, the algorithm stops. You can implement this algorithm with the nested `if` statements like this:
 {line-numbers: true}
 ```
 if ACTION_1
@@ -161,9 +161,9 @@ then
 fi
 ```
 
-These nested statements look confusing. If you add the `else` blocks for handling errors, this code becomes even harder to read.
+These nested statements look confusing. Suppose that you need to handle the errors. It means that you should add the `else` block for each `if` statement. It will make this code even harder to read.
 
-The nested `if` statements make the code hard to read. It is a serious problem. The early return pattern solves it. Let's apply the pattern to our algorithm. Then we get the following code:
+The nested `if` statements make code bulky and incomprehensible. It is a serious problem. The early return pattern solves it. If you apply the pattern to our example algorithm, you get the following code:
 {line-numbers: true}
 ```
 if ! ACTION_1
@@ -189,7 +189,7 @@ fi
 ACTION_5
 ```
 
-We got the same algorithm. Its behavior did not change. There are still five actions. If any of them fails, the algorithm stops. But the early return pattern made the code simpler and clearer.
+This is the same algorithm. Its behavior did not change. Bash performs the same five actions one by one. If any of them fails, the algorithm stops. However, the code looks different. The early return pattern made it simpler and clearer.
 
 We use [**comments**](https://en.wikipedia.org/wiki/Comment_(computer_programming)) in the last example. They look like this: "# error handling". A comment is a string or part of a string that the interpreter ignores. In Bash, a comment is anything that comes after the hash symbol.
 
