@@ -1,18 +1,18 @@
 ## Conditional Statements
 
-We have met the conditional statements when learning the `find` utility. Then we found out that Bash has its own logical operators AND (&&) and OR (||). The Bash language has other options to make branches.
+We met the conditional statements the first time when learning the `find` utility. Then we found out that Bash has its own logical operators AND (&&) and OR (||). This language has other options to make branches.
 
-We will consider the `if` and `case` operators in this section of the book.  The scripts use them often. Both operators provide similar behavior. However, each of them fits better for some specific tasks.
+We will consider the `if` and `case` operators in this section of the book. You will use them frequently when writing Bash scripts. These operators provide similar behavior. However, each of them fits better for some specific tasks.
 
 ### If Statement
 
-Imagine you are writing a one-line command. Such a command is called **one-liner**. You are trying to make it as compact as possible because a short command is faster to type. Also, there is less chance to make a mistake when typing.
+Imagine that you are writing a one-line command. Such a command is called **one-liner**. You are trying to make it as compact as possible because a short command is faster to type. Also, compactness gives you less chance to make a mistake when typing.
 
-Now imagine that you are writing a script. Your hard drive stores it. You call the script regularly and change it rarely. The code compactness is not important here. You follow another goal to make the script easy to read and modify.
+Now imagine that you are writing a script. The hard drive stores it. You call the script regularly and change it rarely. The code compactness is not important in this case. Instead, you try to make the code simple for reading and changing.
 
-The && and || operators fit well one-liners. But Bash has better options for scripts. Actually, it depends on the particular case. Sometimes you can use these operators in the script and keep its code clean. But they lead to hard-to-read code in most cases. Therefore, it is better to replace them with the `if` and `case` statements.
+The && and || operators fit well for one-liners. When you are writing scripts, Bash gives you better options. Actually, it depends on the particular case. Sometimes you can use logical operators in the script and keep its code clean. However, they lead to hard-to-read code in most cases. Therefore, it is better to replace them with the `if` and `case` statements.
 
-Here is an example. Have a look at Listing 3-9 again. There is a backup script there. It calls the `bsdtar` utility this way:
+Here is an example. Have a look at Listing 3-9 again. It shows the backup script. You can see this `bsdtar` call there:
 {line-numbers: true, format: Bash}
 ```
 bsdtar -cjf "$1".tar.bz2 "$@" &&
@@ -20,19 +20,21 @@ bsdtar -cjf "$1".tar.bz2 "$@" &&
   { echo "bsdtar - FAILS" > results.txt ; exit 1 ; }
 ```
 
-We have tried to make this script better to read. We split calls of the `bsdtar` and `mv` utilities. However, it is not enough. The `bsdtar` call is still too long and complicated for reading. Therefore, it is easy to make a mistake when modifying it. Such error-prone code is called **fragile**. A poor technical solution introduces it in most cases.
+When writing this script, we have tried to make it better for reading. This motivation forced us to split calls of the `bsdtar` and `mv` utilities. This solution is still not enough. The `bsdtar` call is too long and complicated for reading. Therefore, it is easy to make a mistake when modifying it. Such error-prone code is called **fragile**. You get it whenever making a poor technical solution.
 
-Let's improve the `bsdtar` call. First, we should write its algorithm step by step. It looks like this:
+Let's improve the `bsdtar` call. The first step for improving the code is writing its algorithm in a clean way. Here is the algorithm for our case:
 
-1. Read a list of files and directories from the `$@` variable. Archive and compress them.
+1. Read a list of files and directories from the `$@` variable.
 
-2. If the archiving and compression were successful, write the line "bsdtar - OK" into the log file.
+2. Archive and compress the files and directories.
 
-3. If an error occurred, write the line "bsdtar - FAILS" into the log file. Then terminate the script.
+3. If the archiving succeeds, write the "bsdtar - OK" line into the log file.
 
-The last step is the most confusing. When `bsdtar` completes successfully, the script does one action only. When an error happens, there are two actions. These actions are combined into the single [**command block**](https://en.wikipedia.org/wiki/Block_(programming)) by [curly brackets](https://www.gnu.org/software/bash/manual/html_node/Command-Grouping.html). This code block looks confusing.
+4. If an error occurred, write the line "bsdtar - FAILS" into the log file and terminate the script.
 
-The `if` statement is a solution for executing command blocks on specific conditions. We can write the statement in the general form like this:
+The last step is the most confusing one. When `bsdtar` succeeds, the script does one action only. When an error happens, there are two actions. These actions are combined into the single [**command block**](https://en.wikipedia.org/wiki/Block_(programming)) by [curly brackets](https://www.gnu.org/software/bash/manual/html_node/Command-Grouping.html). This code block looks too complicated.
+
+The `if` statement executes command blocks on specific conditions. The statement looks this way in the general form:
 {line-numbers: true}
 ```
 if CONDITION
@@ -41,13 +43,13 @@ then
 fi
 ```
 
-You can write this statement in one line too. For doing that, add a semicolon before the `then` and `fi` words like this:
+You can write the `if` statement in one line. For doing that, add semicolons before `then` and `fi` like this:
 {line-numbers: false}
 ```
 if CONDITION; then ACTION; fi
 ```
 
-Both the CONDITION and ACTION here are a single command or a block of commands. If the CONDITION completes successfully with the zeroed exit status, Bash executes the ACTION.
+The CONDITION and ACTION here mean a single command or a block of commands. If the exit status of the CONDITION equals zero, Bash executes the ACTION.
 
 Here is an example of the `if` statement:
 {line-numbers: true, format: Bash}
