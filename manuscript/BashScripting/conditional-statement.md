@@ -487,17 +487,17 @@ The script should print all files from one directory that absent in another one.
 
 ### Case Statement
 
-Programs often choose their actions depending on some values. If the variable has one value, the program does one thing. When the value differs, it does another thing. The condition statements provide such a behavior.
+A program that follows a conditional algorithm chooses its actions depending on the values of variables. If some variable has one value, the program does one thing. Otherwise, it does something else. The condition statements of programming language provide such a behavior.
 
-We have considered the `if` statement. There is an alternative `case` statement in Bash. It is more convenient than `if` in some cases.
+We have considered the `if` statement. There is another conditional statement in Bash called `case`. It is more convenient than `if` in some cases.
 
-Let's look at an example. Suppose you are writing a script for archiving documents. The script has three operating modes:
+An example will help us to compare `if` and `case` statements. Suppose that you are writing a script for archiving documents. The script has three operating modes:
 
 1. Archiving without compression.
 2. Archiving with compression.
 3. Unarchiving.
 
-You can choose the mode by the command-line option. Table 3-12 shows an example of possible options.
+You can choose the mode by passing a command-line option to the script. Table 3-12 shows the possible options.
 
 {caption: "Table 3-12. Options of the archiving script", width: "50%"}
 | Option | Operating mode  |
@@ -506,21 +506,21 @@ You can choose the mode by the command-line option. Table 3-12 shows an example 
 | `-c` | Archiving with compression |
 | `-x` | Unarchiving |
 
-I> Always follow the [POSIX agreement](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) when choosing scripts' options and parameters format.
+I> Always follow the [POSIX agreement](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) when choosing options and parameters format for your scripts. Then users can learn them faster.
 
-You can check the script option in the `if` statement. Listing 3-12 shows an example of doing that.
+You can check the script option using the `if` statement. Listing 3-12 shows how this solution looks like.
 
 {caption: "Listing 3-12. The script for archiving documents", line-numbers: true, format: Bash}
 ![`archiving.sh`](code/BashScripting/archiving.sh)
 
-The `$1` position parameter keeps the script option. We write it to the `operation` variable for convenience. Then depending on this variable, we choose parameters for the `bsdtar` call. The `if` statement with two `elif` blocks checks the `operation` value.
+The `$1` position parameter keeps the script option. It is always better to store it in a well-named variable. It is the `operation` variable in our example. Depending on its value, the `if` statement chooses parameters for the `bsdtar` call.
 
-Now we replace the `if` statement with the `case` one. Listing 3-13 shows the result.
+Now let's replace the `if` statement with the `case` one. Listing 3-13 shows the result.
 
 {caption: "Listing 3-13. The script for archiving documents", line-numbers: true, format: Bash}
 ![`archiving-case.sh`](code/BashScripting/archiving-case.sh)
 
-Let's call our script `archiving-case.sh`. Then we can launch it in one of the following ways:
+Suppose that you saved the script in the `archiving-case.sh` file. Now you can call it in one of the following ways:
 {line-numbers: true, format: Bash}
 ```
 ./archiving-case.sh -a
@@ -528,11 +528,11 @@ Let's call our script `archiving-case.sh`. Then we can launch it in one of the f
 ./archiving-case.sh -x
 ```
 
-If you pass any other parameters to the script, it prints the error message and terminates.
+If you pass any other parameter to the script, it prints the error message and terminates. The same happens if you skip the parameter.
 
-W> Always call the `exit` command when handling errors in a script. It should return the non-zero exit status in this case.
+W> Always call the `exit` command when handling errors in your script. The script should return the non-zero exit status in this case.
 
-The `case` statement compares a string with a list of patterns. Each pattern has a corresponding code block. When the string matches the pattern, Bash executes the corresponding code block.
+The `case` statement compares a string with a list of patterns. Each pattern has a corresponding code block. Bash executes this block when its pattern and the string match each other.
 
 Each `case` block consists of the following elements:
 
@@ -546,11 +546,11 @@ Each `case` block consists of the following elements:
 
 Bash checks patterns of the `case` blocks one by one. If the string matches the first pattern, Bash executes its code block. Then it skips other patterns. Instead, Bash executes the command that follows the `case` statement.
 
-The `*` pattern without quotes matches any string. It is usually placed at the end of the list. The corresponding code block handles cases when none of the patterns match the string. It usually means an error.
+The `*` pattern without quotes matches any string. It is usually placed at the end of the `case` statement. The corresponding code block handles cases when none of the patterns match the string. It usually indicates an error.
 
-At first sight, it may seem that the `if` and `case` statements are equivalent. They are not. They allow you to achieve the same behavior.
+At first sight, it may seem that the `if` and `case` statements are equivalent. They are different but allow you to achieve the same behavior in some cases.
 
-Let's compare the statements from Listings 3-12 and 3-13. First, we write them in a general form. Here is the result for the `if` statement:
+Let's compare the `if` and `case` statements of Listings 3-12 and 3-13. First, we will write them in a general form. Here is the result for the `if` statement:
 {line-numbers: true}
 ```
 if CONDITION_1
@@ -567,7 +567,7 @@ else
 fi
 ```
 
-The `case` statement looks like this:
+The `case` statement looks this way:
 {line-numbers: true}
 ```
 case STRING in
