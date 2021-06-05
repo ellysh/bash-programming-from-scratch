@@ -191,11 +191,7 @@ ACTION_5
 
 This is the same algorithm. Its behavior did not change. Bash performs the same five actions one by one. If any of them fails, the algorithm stops. However, the code looks different. The early return pattern made it simpler and clearer.
 
-We use [**comments**](https://en.wikipedia.org/wiki/Comment_(computer_programming)) in the last example. They look like this: "# error handling". A comment is a string or part of a string that the interpreter ignores. In Bash, a comment is anything that comes after the hash symbol.
-
-I> The usefulness of comments is the subject of endless debates in the programming community. They are needed to explain the code. However, some people consider that comments are a sign of incomprehensible, poorly written code. If you just started learning to program, comment your code without doubts. Explain the complex constructions in your scripts. You can forget what do they mean afterward. Thus, you save your time in the future when you come back to the old code.
-
-Assume that each action of the algorithm corresponds to one short command. The exit command handles all errors. There is no output to the log file. In this case, the || operator can replace the `if` statement. Then the code remains simple and clear. It will look like this:
+Suppose that each action of the algorithm corresponds to one short command. The `exit` command handles all errors. Also, you do not need an output to the log file. You can replace the `if` statement with the || operator in this case. Then your code remains simple and clear. It will look this way:
 {line-numbers: true}
 ```
 ACTION_1 || exit 1
@@ -205,22 +201,22 @@ ACTION_4 || exit 1
 ACTION_5
 ```
 
-There is only one case when the && and || operators are more expressive than the `if` statement. The case is short commands do actions and error handling.
+There is only one case when the && and || operators are more expressive than the `if` statement. It happens when you operate short commands for doing actions and error handling.
 
 Let's rewrite the backup script using the `if` statement. Listing 3-11 shows the result.
 
 {caption: "Listing 3-11. The backup script with the early return pattern", line-numbers: true, format: Bash}
 ![`make-backup-if.sh`](code/BashScripting/make-backup-if.sh)
 
-We replaced the && and || operators in the `bsdtar` call with the if statement. The behavior of the script has not changed.
+We have replaced the && and || operators in the `bsdtar` call with the `if` statement. It did not change the behavior of the script.
 
-Logical operators and the `if` statement are not equivalent in general. Here is an example. Suppose there is an expression of three commands A, B and C:
+Logical operators and the `if` statement are not equivalent in general. An example will show you the difference between them. Suppose there is an expression of three commands A, B and C:
 {line-numbers: false}
 ```
 A && B || C
 ```
 
-It might seem that the following `if-else` statement gives the same behavior:
+You can suppose that the following `if-else` statement gives the same behavior:
 {line-numbers: false}
 ```
 if A
@@ -231,7 +227,7 @@ else
 fi
 ```
 
-If A is "true", then Bash executes B. Otherwise, it executes C. But there is another behavior in the expression with logical operators. Here, if A is "true", then Bash executes B. Then C execution depends on the result of B. If B is "true", Bash skips C. If B is "false", it executes C. Thus, execution of C depends on both A and B. There is no such dependence in the `if-else` statement.
+It looks like Bash does the same in both cases. If A is "true", then Bash executes B. Otherwise, it executes C. This assumption is wrong. When you apply the logical operator, you get another behavior. If A is "true", then Bash executes B. Then the B result defines if C execution happens. If B is "true", Bash skips C. If B is "false", it executes C. Thus, execution of C depends on both A and B. There is no such dependence in the `if-else` statement.
 
 {caption: "Exercise 3-4. The `if` statement", format: text, line-numbers: false}
 ```
@@ -248,13 +244,13 @@ Replace the && and || operators with the if statements.
 
 ### Operator [[
 
-We got acquainted with the `if` statement. It calls a built-in Bash command or utility in the condition.
+We got acquainted with the `if` statement. It calls a Bash built-in or utility in the condition.
 
-For example, let's solve a task. We should check if the text file contains a phrase. When the phrase present, our script prints the message in the log file.
+Let's consider the options that you have for making an `if` condition. Suppose that you want to check if a text file contains some phrase. When the phrase presents, you should print a message in the log file.
 
-We can solve the task by combining the `if` statement and the `grep` utility. Put the `grep` call in the `if` condition. Then if the utility succeeds, it returns zero exit status. In this case, the `if` condition equals "true" and the script prints the message.
+You can combine the `if` statement and the `grep` utility to solve the task. Put the `grep` call in the `if` condition. If the utility succeeds, it returns zero exit status. In this case, the `if` condition equals "true" and Bash prints the message.
 
-The `grep` utility prints its results on the output stream. We do not need this output when calling the utility in the `if` condition. The `-q` option disables the `grep` output. Finally, we get the following `if` statement:
+The `grep` utility prints its result to the output stream. You do not need it when calling `grep` in the `if` condition. You can get rid of the utility's output using the `-q` option. Then you get the following `if` statement:
 {line-numbers: true, format: Bash}
 ```
 if grep -q -R "General Public License" /usr/share/doc/bash
@@ -263,11 +259,11 @@ then
 fi
 ```
 
-Now suppose that the `if` condition compares two strings or numbers. Bash has a special operator [[ for this purpose. The double square brackets are [**reserved word**](https://en.wikipedia.org/wiki/Reserved_word) of the interpreter. Bash handles the brackets on its own without calling a utility.
+The `grep` utility works well when you deal with files. But what should you do when you want to compare two strings or numbers? Bash has the [[ operator for that. The double square brackets are the [**reserved word**](https://en.wikipedia.org/wiki/Reserved_word) of the interpreter. Bash handles them on its own without calling a utility.
 
-W> The Bourne shell does not have the [[ operator. The POSIX standard does not have it too. Therefore, if you should follow the standard, use the obsolete [`test`](http://mywiki.wooledge.org/BashFAQ/031) operator or its synonym [. Never use `test` in Bash. It has limited capabilities comparing with the operator [[. Also, it has error-prone syntax.
+W> The Bourne shell does not have the [[ operator. The POSIX standard does not have it too. Therefore, if you should follow the standard, use the obsolete [`test`](http://mywiki.wooledge.org/BashFAQ/031) operator or its synonym [. Never use `test` in Bash. It has limited capabilities comparing with the operator [[. Also, its syntax is error-prone.
 
-Let's start with a simple example of using the [[. We need to compare two strings. In this case, the `if` condition looks like this:
+Let's start with a simple example of using the [[ operator. You need to compare two strings. The following `if` condition does that:
 {line-numbers: true, format: Bash}
 ```
 if [[ "abc" = "abc" ]]
@@ -276,7 +272,7 @@ then
 fi
 ```
 
-Run this code. You see the message that the strings are equal. A check of this kind is not really useful. Usually, you want to compare some variable with a string. The [[ operator compares them this way:
+Write a script with this code and run it. It will show you the message that the strings are equal. This kind of check is not useful. Usually, you want to compare some variable with a string. The [[ operator compares them this way:
 {line-numbers: true, format: Bash}
 ```
 if [[ "$var" = "abc" ]]
@@ -285,7 +281,7 @@ then
 fi
 ```
 
-Double-quotes are optional in this condition. Bash skips globbing and word splitting when it substitutes a variable in the [[ operator. The interpreter uses a variable as it is in this operator. The quotes prevent problems if the string on the right side has spaces. Here is an example of such a string:
+Double quotes are optional in this condition. Bash skips globbing and word splitting when it substitutes a variable in the [[ operator. The quotes prevent problems if the string on the right side has spaces. Here is an example of such a string:
 {line-numbers: true, format: Bash}
 ```
 if [[ "$var" = abc def ]]
@@ -294,7 +290,7 @@ then
 fi
 ```
 
-Bash cannot execute the condition of this `if` statement because of word splitting. Always use quotes when working with strings. This way, you avoid such problems. Here is the fixed `if` condition:
+This `if` condition causes the error because of word splitting. Always apply quotes when working with strings. This helps you to avoid such problems. Here is the corrected `if` condition for our example:
 {line-numbers: true, format: Bash}
 ```
 if [[ "$var" = "abc def" ]]
@@ -303,7 +299,7 @@ then
 fi
 ```
 
-The [[ operator can compare two variables with each other. It looks like this:
+The [[ operator can compare two variables with each other. The following `if` condition does that:
 {line-numbers: true, format: Bash}
 ```
 if [[ "$var" = "$filename" ]]
@@ -312,7 +308,7 @@ then
 fi
 ```
 
-Table 3-8 shows all string comparisons that the [[ operator allows.
+Table 3-8 shows all kinds of string comparisons that the [[ operator allows.
 
 {caption: "Table 3-8. String comparisons in the [[ operator", width: "100%"}
 | Operation | Description | Example |

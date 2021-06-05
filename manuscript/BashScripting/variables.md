@@ -681,7 +681,9 @@ sum+=1          # 14 + 1 = 15
 sum+=sum+1      # 15 + 15 + 1 = 31
 ```
 
-Here the calculation results come after the hash symbol. Bash ignores everything after this symbol. Such lines are called **comments**.
+Here the calculation results come after the hash symbol. Bash ignores everything after this symbol. Such lines are called [**comments**](https://en.wikipedia.org/wiki/Comment_(computer_programming)).
+
+I> The usefulness of comments is the subject of endless debates in the programming community. They are needed to explain the code. However, some people consider that comments are a sign of incomprehensible, poorly written code. If you just started learning to program, comment your code without doubts. Explain the complex constructions in your scripts. Otherwise, you can forget what do they mean afterward.
 
 Now execute the same commands with the string variable. You will get the following results:
 {line-numbers: true, format: Bash}
