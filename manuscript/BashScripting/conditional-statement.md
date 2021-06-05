@@ -308,9 +308,9 @@ then
 fi
 ```
 
-Table 3-8 shows all kinds of string comparisons that the [[ operator allows.
+Table 3-8 shows all kinds of string comparisons that the [[ operator performs.
 
-{caption: "Table 3-8. String comparisons in the [[ operator", width: "100%"}
+{caption: "Table 3-8. String comparisons using the [[ operator", width: "100%"}
 | Operation | Description | Example |
 | --- | --- | --- |
 | > | The string on the left side is larger than the string on the right side in the [**lexicographic order**](https://en.wikipedia.org/wiki/Lexicographic_order). | [[ "bb" > "aa" ]] && echo "The \"bb\" string is larger than \"aa\"" |
@@ -327,13 +327,13 @@ Table 3-8 shows all kinds of string comparisons that the [[ operator allows.
 |  | | |
 | -v | The variable is set to any value. | [[ -v var ]] && echo "The string is set" |
 |  | | |
-| = or == | Search the pattern on the right side in the string on the left side. Put the pattern without quotes here. | [[ "$filename" = READ* ]] && echo "The filename starts with \"READ\"" |
+| = or == | Search a pattern on the right side in a string on the left side. You should not enclose the pattern in quotes here. | [[ "$filename" = READ* ]] && echo "The filename starts with \"READ\"" |
 |  | | |
-| != | Check that the pattern on the right side does not occur in the string on the left side. Put the pattern without quotes here. | [[ "$filename" != READ* ]] && echo "The filename does not start with \"READ\"" |
+| != | Check that a pattern on the right side does not occur in a string on the left side. You should not enclose the pattern in quotes here. | [[ "$filename" != READ* ]] && echo "The filename does not start with \"READ\"" |
 |  | | |
-| =~ | Search the [**regular expression**](https://mywiki.wooledge.org/RegularExpression) on the right side in the string on the left side. | [[ "$filename" =~ ^READ.* ]] && echo "The filename starts with \"READ\"" |
+| =~ | Search a [**regular expression**](https://mywiki.wooledge.org/RegularExpression) on the right side in a string on the left side. | [[ "$filename" =~ ^READ.* ]] && echo "The filename starts with \"READ\"" |
 
-You can use the logical operations AND, OR and NOT in the [[ operator. They combine several expressions into a single condition. Table 3-9 gives examples of such conditions.
+You can use logical operations AND, OR and NOT in the [[ operator. They combine several Boolean expressions into a single condition. Table 3-9 explains how they work.
 
 {caption: "Table 3-9. Logical operations in the [[ operator", width: "100%"}
 | Operation | Description | Example |
@@ -344,13 +344,13 @@ You can use the logical operations AND, OR and NOT in the [[ operator. They comb
 |  | | |
 | ! | Logical NOT. | [[ ! "abc" < "$var" ]] && echo "The string is not larger than \"abc\"" |
 
-You can group expressions using parentheses in the [[ operator. Here is an example:
+You can group Boolean expressions using parentheses in the [[ operator. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 [[ (-n "$var" && "$var" < "abc") || -z "$var" ]] && echo "The string is not empty and less than \"abc\" or the string is empty"
 ```
 
-Comparing the strings is one feature of the [[ operator. Also, it can check files and directories for various conditions. Table 3-10 shows operations for doing that.
+Comparing strings is one feature of the [[ operator. Besides that, it can check files and directories for various conditions. Table 3-10 shows operations for doing that.
 
 {caption: "Table 3-10. Operations for checking files and directories in the [[ operator", width: "100%"}
 | Operation | Description | Example |
@@ -363,11 +363,11 @@ Comparing the strings is one feature of the [[ operator. Also, it can check file
 |  | | |
 | -s | The file is not empty. | [[ -s "$filename" ]] && echo "The $filename file is not empty" |
 |  | | |
-| -r | The specified file exists. The user who runs the script can read the file. | [[ -r "$filename" ]] && echo "The $filename file exists. You can read it" |
+| -r | The specified file exists, and you can read it. | [[ -r "$filename" ]] && echo "The $filename file exists. You can read it" |
 |  | | |
-| -w | The specified file exists. The user who runs the script can write into the file. | [[ -w "$filename" ]] && echo "The $filename file exists. You can write into it" |
+| -w | The specified file exists, and you can write it. | [[ -w "$filename" ]] && echo "The $filename file exists. You can write into it" |
 |  | | |
-| -x | The specified file exists. The user who runs the script can execute the file. | [[ -x "$filename" ]] && echo "The $filename file exists. You can execute it" |
+| -x | The specified file exists, and you can execute it. | [[ -x "$filename" ]] && echo "The $filename file exists. You can execute it" |
 |  | | |
 | -N | The file exists. It was modified since you read it last time. | [[ -N "$filename" ]] && echo "The $filename file exists. It was modified" |
 |  | | |
@@ -375,11 +375,11 @@ Comparing the strings is one feature of the [[ operator. Also, it can check file
 |  | | |
 | -ot | The file on the left side is older than the file on the right side. Either the file on the right side exists and the file on the left side does not. | [[ "$file1" -ot "$file2" ]] && echo "The $file1 file is older than $file2" |
 |  | | |
-| -ef | There are paths to the same file on the left and right sides. If your file system supports **hard links**, it can be the links to the same file on the left and right sides. | [[ "$file1" -ef "$file2" ]] && echo "The $file1 and $file2 files match" |
+| -ef | There are paths or **hard links** to the same file on the left and right sides. You cannot compare hard links if your file system does not support them. | [[ "$file1" -ef "$file2" ]] && echo "The $file1 and $file2 files match" |
 
 The [[ operator can compare integers. Table 3-11 shows operations for doing that.
 
-{caption: "Table 3-11. Integer comparisons in the [[ operator", width: "100%"}
+{caption: "Table 3-11. Integer comparisons using the [[ operator", width: "100%"}
 | Operation | Description | Example |
 | --- | --- | --- |
 | -eq | The number on the left side equals the number on the right side. | [[ "$var" -eq 5 ]] && echo "The variable equals 5" |
@@ -394,23 +394,23 @@ The [[ operator can compare integers. Table 3-11 shows operations for doing that
 |  | | |
 | -le | Less or equal. | [[ "$var" -le 5 ]] && echo "The variable is less than or equal to 5" |
 
-Table 3-11 raises questions. The operations there are harder to remember than the usual number comparisons: <, >, and =. Why aren't comparison signs used in the [[ operator? To answer this question, let's look at the operator's history.
+Table 3-11 raises questions. Two letters mark each comparison operation. It is harder to remember them than usual comparison signs: <, >, and =. Why doesn't the [[ operator use the comparison signs? We should have a look at the operator's history to answer this question.
 
-The [[ operator came into Bash to replace its obsolete `test` analog. The utility has implemented the `test` command in the first version of the Bourne shell in 1979. This command becomes the built-in starting with the System III shell version in 1981. But this change did not affect the `test` syntax. The reason for that is backward compatibility. Software developers have written a lot of shell code by 1981. This code has used the old syntax. Therefore, the new System III shell version had to support it.
+The [[ operator came to Bash to replace the obsolete `test` built-in. The first version of Bourne shell in 1979 did not have `test`. However, programmers needed the feature to compare strings, files and integers. Therefore, Unix developers have added the `test` utility for that purpose. This utility became built-in since the System III shell version in 1981. This change did not affect the `test` syntax. The reason for that is backward compatibility. Programmers have written a lot of code by 1981. This code has used the old `test` syntax. Therefore, the new System III shell version had to support it.
 
-Let's take a look at the syntax of the `test` operator. When it was a utility, the format of its input parameters had to follow Bourne shell rules. For example, here is a typical `test` call to compare the `var` variable with the number five:
+Let's take a look at the `test` syntax. When it was a utility, the format of its input parameters had to follow Bourne shell rules. For example, here is a typical `test` call to compare the `var` variable with the number five:
 {line-numbers: false, format: Bash}
 ```
 test "$var" -eq 5
 ```
 
-This command does not raise any questions. Here we pass three parameters to the `test` utility:
+This command does not raise any questions. We pass the following three parameters to the `test` utility:
 
 1. The value of the `var` variable.
 2. The `-eq` option.
 3. The number 5.
 
-We can use this call in the `if` condition this way:
+We can use the `test` call in the `if` condition this way:
 {line-numbers: true, format: Bash}
 ```
 if test "$var" -eq 5
@@ -419,9 +419,9 @@ then
 fi
 ```
 
-The Bourne shell introduces the [ synonym for the `test` operator. The only difference between them is the presence of the closing parenthesis ]. The `test` operator does not need it but the synonym does.
+The Bourne shell introduces the [ operator as a synonym for the `test` built-in. The only difference between them is the mandatory closing parenthesis ]. The `test` operator does not need it, but the operator does.
 
-Using the [ synonym, we rewrite the `if` condition this way:
+Using the [ operator, we can rewrite the previous `if` condition this way:
 {line-numbers: true, format: Bash}
 ```
 if [ "$var" -eq 5 ]
@@ -430,9 +430,9 @@ then
 fi
 ```
 
-The synonym [ improves readability of the code. That was an idea behind it. Thanks to the synonym, the `if` statement in Bourne shell looks the same as in other programming languages (e.g., C). The problem is that the [ and `test` operators are equivalent. It is easy to lose sight of this fact. Mostly it happens when you have experience in other languages. This mismatch between expected and real behavior leads to errors.
+The [ operator improves the code readability. Thanks to the operator, the `if` statement in the Bourne shell looks like in other programming languages. Problems happen because the [ and `test`  are equivalent. It is easy to lose sight of this fact. Mostly it happens when you have experience in using other languages. This mismatch between expected and real behavior leads to errors.
 
-For example, programmers often forget the space between the bracket [ and the following character. This way, they get a condition like this:
+One of the most common mistakes of using the [ operator is the missing space between the bracket and the following character. Then the `if` condition becomes like this:
 {line-numbers: true, format: Bash}
 ```
 if ["$var" -eq 5]
@@ -441,7 +441,7 @@ then
 fi
 ```
 
-Replace the bracket [ with the `test` call in the condition. Then the error becomes obvious:
+If you replace the [ bracket with the `test` call, the error becomes obvious:
 {line-numbers: true, format: Bash}
 ```
 if test"$var" -eq 5
@@ -450,23 +450,23 @@ then
 fi
 ```
 
-There must be a space between the command name and its parameters.
+The space between a command name and its parameters is mandatory in both Bash and Bourne shells.
 
-Let's come back to the question about comparison signs for numbers. Imagine the following `test` call:
+Let's come back to the question about comparison signs in the [[ operator. Imagine the following `test` call:
 {line-numbers: false, format: Bash}
 ```
 test "$var" > 5
 ```
 
-As you remember, the > symbol is a short form of the redirect operator `1>`. Thus, our `test` call does the following steps:
+The > symbol is a short form of the redirect operator `1>`. Therefore, the `test` call does the following steps:
 
-1. Calls the built-in `test` command and pass the `var` variable  to it.
+1. It calls the `test` built-in and passes the `var` variable there.
 
-2. Redirects the `test` output to a file named `5` in the current directory.
+2. It redirects the `test` output to the file named `5` in the current directory.
 
-We expect another behavior. Such an error is easy to make and hard to detect. To prevent it, shell developers introduced the two-letter comparison operations. The Bash operator [[ inherited these operations. It was done for backward compatibility.
+We expect another behavior, right? The > symbol should be a comparison sign. Such errors are easy to make and hard to detect. Shell developers want to prevent them. Therefore, they introduced two-letter comparison operations. The [[ Bash operator inherited these operations. It was done for backward compatibility with the Bourne shell.
 
-Imagine that the [[ operator replaces two-letter operations with comparison signs. Then you have the legacy code written on Bourne shell. You want to port it on Bash. There is the following `if` statement in the legacy code:
+Suppose that the [[ operator replaces two-letter operations with comparison signs. You have the legacy code written in Bourne shell. You want to port it to Bash. The legacy code has the following `if` statement:
 {line-numbers: true, format: Bash}
 ```
 if [ "$var1" -gt 5 -o 4 -lt "$var2" ]
@@ -475,9 +475,9 @@ then
 fi
 ```
 
-Here you should replace the `-gt` operation to > and `-lt` to <. It is easy to make a mistake while doing that. Putting an extra parenthesis at the beginning and end of an expression is much simpler. This idea answers our question.
+Here you should replace the `-gt` operation to > and `-lt` to <. It is easy to make a mistake while doing that. It is much simpler to add an extra parenthesis at the beginning and end of the Boolean expression. This idea answers our question.
 
-You can use comparison signs for string only when working with the [[ operator. Why there is no backward compatibility issue there? The first version of the `test` utility did not support the lexicographic comparison of strings. Therefore, the utility did not have comparison signs < and >. They appeared in the extension of POSIX standard later. The standard allows comparison signs for strings only. It was too late to add them for numbers because of the legacy code amount. According to the standard, you should escape comparison signs like this: `/<` and `/>`. The operator [[ took them and dropped the escaping.
+You can use comparison signs for strings when working with the [[ operator. Why is there no backward compatibility issue in this case? The first version of the `test` utility did not support the lexicographic comparison of strings. Therefore, the utility did not have comparison signs < and >. They appeared in the extension of POSIX standard later. The standard allows comparison signs for strings only. It was too late to add them for numbers because of the legacy code amount. According to the standard, you should escape comparison signs like this: `/<` and `/>`. Then these signs came to the [[ operator in Bash. You do not need to apply escape symbols for them there.
 
 {caption: "Exercise 3-5. The [[ operator", format: text, line-numbers: false}
 ```
