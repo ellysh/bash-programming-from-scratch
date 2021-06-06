@@ -336,9 +336,9 @@ Table 3-6 shows frequently used special parameters.
 {caption: "Table 3-6. Bash Special Parameters", width: "100%"}
 | Name | Value |
 | --- | --- |
-| `$*` | It contains all positional parameters passed to the script. Parameters start with the `$1` variable but not with `$0`. If you skip the double quotes (`$*`), Bash inserts each positional parameter as a separate word. With double quotes ("$*"), Bash handles it as a single-quoted string. The string contains all the parameters separated by the first character of the internal variable `IFS`. |
+| `$*` | The string with all positional parameters passed to the script. Parameters start with the `$1` variable but not with `$0`. If you skip the double quotes (`$*`), Bash inserts each positional parameter as a separate word. With double quotes ("$*"), Bash handles it as a single-quoted string. The string contains all the parameters separated by the first character of the internal variable `IFS`. |
 |  | |
-| `$@` | The array that contains all positional parameters passed to the script. Parameters start with the `$1` variable. If you skip double quotes (`$@`), Bash handles each array's element as an unquoted string. Word splitting happens in this case. With double quotes ("$@"), Bash handles each element as a quoted string without word splitting. |
+| `$@` | The list of strings that contains all positional parameters passed to the script. Parameters start with the `$1` variable. If you skip double quotes (`$@`), Bash handles each array's element as an unquoted string. Word splitting happens in this case. With double quotes ("$@"), Bash handles each element as a quoted string without word splitting. |
 |  | |
 | `$#` | The number of positional parameters passed to the script. |
 |  | |

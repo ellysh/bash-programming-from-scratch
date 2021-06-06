@@ -624,36 +624,34 @@ The `;&` delimiter can help you in some cases. However, use it carefully. You ca
 
 ### Alternative to the Case Statement
 
-The case statement and the associative array solve similar tasks. The array makes the relationship between data (key-value). The case statement does the same between data and commands (value-action).
+The `case` statement and the associative array solve a similar task. The array makes the relationship between data (key-value). The case statement does the same between data and commands (value-action).
 
-Usually, it is more convenient to work with data than with code. It is easier to modify data and check them for correctness. Therefore, it is worth replacing the `case` statement with an associative array in some cases. Converting data into code is easy in Bash comparing with other programming languages.
+Usually, it is more convenient to handle data than code. Data are easier for modifying and checking for correctness. Therefore, it is worth to replace the `case` statement with an associative array in some cases. Converting data into code is easy to do in Bash comparing with other programming languages.
 
-Here is an example. We want to write a wrapper script for the archiving utilities. It receives command-line options. They define if the script calls the `bsdtar` or `tar` utility.
+Here is an example of replacing `case` with an array. Suppose that you want to write a wrapper script for the archiving utilities. It receives several command-line parameters. The first one defines if the script calls the `bsdtar` or `tar` utility.
 
-Listing 3-16 shows the script. It handles the command-line options in the `case` statement.
+Listing 3-16 shows the script. It handles the command-line parameters in the `case` statement.
 
 {caption: "Listing 3-16. The wrapper script for the archiving utilities", line-numbers: true, format: Bash}
 ![`tar-wrapper.sh`](code/BashScripting/tar-wrapper.sh)
 
-Here we use the pattern list for the first two `case` blocks. The script executes the first block's commands when the `utility` variable matches the string `-b` or `--bsdtar`. Likewise, the script executes the second block when the variable matches `-t` or `--tar`.
+Here you see three code blocks in the `case` statement. The script executes the first block when the `utility` variable matches the string `-b` or `--bsdtar`. The script executes the second block when the variable matches `-t` or `--tar`. The third block handles an invalid input parameter.
 
-For example, you can launch the script this way:
+Here is an example of how you can launch the script:
 {line-numbers: false, format: Bash}
 ```
 ./tar-wrapper.sh --tar -cvf documents.tar.bz2 Documents
 ```
 
-The script calls the `tar` utility to archive the `Documents` directory. If you want to use the `bsdtar` utility instead, replace the `--tar` option with `-b` or `--bsdtar`. Do that like this:
+This call forces the script to choose the `tar` utility for archiving the `Documents` directory.  If you want to use the `bsdtar` utility instead, replace the `--tar` option with `-b` or `--bsdtar` this way:
 {line-numbers: false, format: Bash}
 ```
 ./tar-wrapper.sh -b -cvf documents.tar.bz2 Documents
 ```
 
-The script handles the first positional parameter on its own. It passes all the following parameters to the archiving utility. We use the `$@` parameter for doing that. It is not an array. But it supports the array-like syntax for accessing several elements. The archiving utility receives all elements of the `$@` parameter starting from the second one.
+The script handles the first positional parameter on its own. It passes all the following parameters to the archiving utility. We use the `$@` parameter for doing that. It is not an array, but it supports the array-like syntax for accessing several elements. The archiving utility receives all elements of the `$@` parameter starting from the second one.
 
-Let's rewrite our wrapper script using an associative array.
-
-First, let's consider the Bash mechanisms for converting data into commands. For doing that, you should store the command and its parameters into the variable. Bash must insert the variable's value somewhere in the script for executing the command. You should check that Bash executes the resulting command correctly.
+Now let's rewrite our wrapper script using the associative array. First, we should consider the Bash mechanisms for converting data into commands. If you want to apply such a mechanism, you should store the command its parameters into the variable. Then Bash expands the variable somewhere in the script and executes the command.
 
 Here is an example of how to convert data into a command. For the first time, we will do it in the shell but not in the script. The first step is declaring the variable like this:
 {line-numbers: false, format: Bash}
@@ -661,75 +659,73 @@ Here is an example of how to convert data into a command. For the first time, we
 ls_command="ls"
 ```
 
-Now the `ls_command` variable stores the command to call the `ls` utility. After such a declaration, we can use the variable name for calling the utility. It looks the following way:
+Now the `ls_command` variable stores the command to call the `ls` utility. You can use the variable this way:
 {line-numbers: false, format: Bash}
 ```
 $ls_command
 ```
 
-This command calls the `ls` utility without parameters. How does it happen? Bash inserts the value of the `ls_command` variable. Then the command becomes like this:
+This command calls the `ls` utility without parameters. How does it work? Bash inserts the value of the `ls_command` variable. Then the command becomes like this:
 {line-numbers: false, format: Bash}
 ```
 ls
 ```
 
-After parameter expansion, Bash executes the resulting command.
+Bash executes the resulting `ls` command after the parameter expansion.
 
-Why don't we use double-quotes when inserting the `ls_command` variable? One small change would help to answer this question. Let's add an option to the `ls` utility call. Here is an example of such `ls_command` variable:
+Why don't we use double quotes when expanding the `ls_command` variable? One small change would help us to answer this question. Let's add an option to the `ls` utility call. Here is the `ls_command` variable declaration for this case:
 {line-numbers: false, format: Bash}
 ```
 ls_command="ls -l"
 ```
 
-In this case, parameter expansion with double-quotes leads to the error:
+The parameter expansion with double quotes leads to the error now:
 {line-numbers: true, format: Bash}
 ```
 $ "$ls_command"
 ls -l: command not found
 ```
 
-Double-quotes cause the problem because they prevent word splitting. Therefore, the command looks like this after parameter expansion:
+Double quotes cause the problem because they prevent word splitting. Therefore, the command looks this way after the parameter expansion:
 {line-numbers: false, format: Bash}
 ```
 "ls -l"
 ```
 
-This command means that Bash must call a built-in or utility named "ls -l". As you remember, the POSIX standard allows spaces in filenames. Therefore, "ls -l" is the correct executable filename. Removing the quotes solves the problem. We meet one of the rare cases when you do not need double-quotes for parameter expansion.
+This command asks Bash to call the utility named "ls -l". As you remember, the POSIX standard allows spaces in filenames. Therefore, "ls -l" is the correct name for an executable. Removing the quotes solves this problem. We meet one of the rare cases when you do not need double quotes for the parameter expansion.
 
-It can happen that you still need double-quotes when reading the command from the variable. This task has the solution. Use the `eval` built-in in this case. It constructs a command from its input parameters. Then Bash does word splitting for this command regardless of double-quotes.
+It can happen that you still need double quotes when reading the command from the variable. This issue has a solution. Use the `eval` built-in in this case. It constructs the command from its input parameters. Then Bash does word splitting for the resulting command regardless of double quotes.
 
-Here is an example of the `eval` call for processing the `ls_command` variable:
+Here is the `eval` call for processing our `ls_command` variable:
 {line-numbers: false, format: Bash}
 ```
 eval "$ls_command"
 ```
 
-W> Many Bash manuals claim that it is bad practice to use `eval` and store commands in variables. It can lead to serious errors and vulnerabilities. In general, this idea is true. Be careful and never pass user-entered data to eval.
+W> Many Bash manuals claim that it is a bad practice to use `eval` and store commands in variables. It can lead to serious errors and vulnerabilities. This idea is correct in general. Be careful and never pass user-entered data to `eval`.
 
 Now we can rewrite our wrapper script using an associative array. Listing 3-17 shows the result.
 
 {caption: "Listing 3-17. The wrapper script for the archiving utilities", line-numbers: true, format: Bash}
 ![`tar-wrapper-array.sh`](code/BashScripting/tar-wrapper-array.sh)
 
-Here the `utils` array stores matching between the script's options and utility names. Using the array, we construct the utility calls easily.
-
-The utility call looks like this in the script:
+Here, the `utils` array stores matching between the script's options and utility names. Using the array, we construct a call of the right utility. The following command does that:
 {line-numbers: false, format: Bash}
 ```
 ${utils["$option"]} "${@:2}"
 ```
 
-Bash reads the utility name from the `utils` array. The `option` variable provides the element's key. If you pass the wrong option to the script, the corresponding key does not present in `utils`.  Then Bash inserts an empty string after parameter expansion. It leads to an error. The `if` statement checks the `option` variable and prevents this error.
+Bash reads the utility name from the `utils` array. The `option` variable provides the element's key. If you pass the wrong option to the script, the corresponding key does not present in `utils`.  Then Bash inserts an empty string after the parameter expansion. It leads to an error. The `if` statement checks the `option` variable and prevents this error.
 
 The `if` statement checks two Boolean expressions:
 
-1. The `option` variable, which matches the `$1` parameter, is not empty.
+1. The `option` variable is not empty.
 
 2. The `utils` array has a key that equals the `option` variable.
 
-The second expression uses the `-v` option of the [[ operator. It checks if the variable has been declared. If you have declared it and assigned an empty string, the check passes too.
+The second expression uses the `-v` option of the [[ operator. It checks if the variable has been declared. This option has one pitfall. If you have declared the variable and assigned an empty string, the expression result equals true. Please remember about this behavior.
 
-Our example has shown that replacing the `case` statement with an associative array makes your code cleaner in some cases. Always consider if this option fits your case when writing scripts.
+Our example with the wrapper script shows that replacing the `case` statement with the associative array makes your code cleaner. Always consider if this option fits your case when writing scripts.
 
 {caption: "Exercise 3-6. The `case` statement", format: text, line-numbers: false}
 ```
@@ -739,5 +735,5 @@ Write a script to switch between them.
 You can do that by copying one of the files to the path "~/.bashrc" or
 creating a symbolic link.
 Solve the task with the "case" statement first.
-Then replace the "case" statement with an associative array.
+Then replace the "case" statement with the associative array.
 ```
