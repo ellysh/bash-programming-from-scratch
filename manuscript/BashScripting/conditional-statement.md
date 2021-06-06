@@ -589,11 +589,11 @@ case STRING in
 esac
 ```
 
-The difference between the constructs is evident now. First, `if` checks the results of Boolean expressions. The `case` statement compares the string with the patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is "true" and "false". The `if` statement is more convenient for such checking.
+The difference between the constructs is evident now. First, the `if` condition checks the results of a Boolean expression. The `case` statement compares a string with several patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is "true" and "false". The `if` statement is more convenient for such checking.
 
-The second difference between `if` and `case` is the number of conditions. Each branch of the `if` statement checks a separate Boolean expression. In general, these expressions are independent of each other.  In our example, they check the same variable, but that is a particular case. The `case` statement checks one string that you pass to it.
+The second difference between `if` and `case` is the number of conditions. Each branch of the `if` statement evaluates an individual Boolean expression. They are independent of each other in general. The expressions check the same variable in our example, but this is a particular case. The `case` statement checks one string that you pass to it.
 
-The `if` and `case` statements are fundamentally different. They are not interchangeable. In each case, use the statement depending on the nature of the check. The following questions will help you to make the right choice:
+The `if` and `case` statements are fundamentally different. You cannot exchange one for another in your code. Use an appropriate statement depending on the nature of your checking. The following questions will help you to make the right choice:
 
 * How many conditions should you check? Use `if` for checking several conditions.
 
@@ -601,26 +601,26 @@ The `if` and `case` statements are fundamentally different. They are not interch
 
 * Do you need compound Boolean expressions? Use `if` when the answer is yes.
 
-There are two possible delimiters between case blocks:
+When you use the `case` statement, you can apply one of two possible delimiters between the code blocks:
 
 1. Two semicolons `;;`.
 2. Semicolons and ampersand `;&`.
 
-The ampersand delimiter is allowed in Bash, but it is not part of the POSIX standard. When Bash meets this delimiter, it executes the next block's code without checking its pattern. It can be useful when you want to start executing an algorithm from a specific step. Also, you can avoid code duplication in some cases with the ampersand delimiter.
+The ampersand delimiter is allowed in Bash, but it is not part of the POSIX standard. When Bash meets this delimiter, it executes the following code block without checking its pattern. It can be useful when you want to start executing an algorithm from a specific step. Also, the ampersand delimiter allows you to avoid code duplication in some cases.
 
-Here is an example of a code duplication problem. We write a script that archives PDF documents and copies the resulting file. The script receives an option to choose the action to do. For example, the `-a` option means archiving and `-c` means copying. Suppose that the script always has to do the copying after archiving. In this case, we get code duplication.
+Here is an example of a code duplication problem. Suppose that you have the script that archives PDF documents and copies the resulting file. An input parameter of the script chooses an action to do. For example, the `-a` option means archiving and `-c` means copying. The script should always copy the archiving result. You get a code duplication in this case.
 
-Listing 3-14 shows the `case` statement where the `cp` call is duplicated.
+Listing 3-14 shows the archiving script. The `case` statement there has two `cp` calls that are the same.
 
 {caption: "Listing 3-14. The script for archiving and copying PDF documents", line-numbers: true, format: Bash}
 ![`copy-archiving-duplication.sh`](code/BashScripting/copy-archiving-duplication.sh)
 
-We can avoid code duplication by adding the `;&` separator between the `-a` and `-c` blocks. Listing 3-15 shows the changed script.
+You can avoid code duplication by adding the `;&` separator between the `-a` and `-c` code blocks. Listing 3-15 shows the changed script.
 
 {caption: "Listing 3-15. The script for archiving and copying PDF documents", line-numbers: true, format: Bash}
 ![`copy-archiving.sh`](code/BashScripting/copy-archiving.sh)
 
-The `;&` delimiter is useful in some cases. However, use it carefully. You can easily confuse the delimiters when reading. This way, you misread `;;` instead of `;&` and misunderstand the code.
+The `;&` delimiter can help you in some cases. However, use it carefully. You can easily confuse the delimiters when reading the code. This way, you may misread `;;` instead of `;&` and misunderstand the `case` statement.
 
 ### Alternative to the Case Statement
 
