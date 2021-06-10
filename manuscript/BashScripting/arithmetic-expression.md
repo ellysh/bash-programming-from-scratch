@@ -1,20 +1,20 @@
 ## Arithmetic Expressions
 
-Bash can calculate integers. It does simple arithmetic operations: addition, subtraction, multiplication and division. Also, Bash does bitwise and logical operations. They are often used in programming. We consider them in detail now.
+Bash allows you to do calculations on integers. You can apply the following operations there: addition, subtraction, multiplication and division. Besides that, Bash provides bitwise and logical operators. You will use them often when programming.
 
-Bash does not support floating-point arithmetic. For doing that, use the [bc](https://en.wikipedia.org/wiki/Bc_(programming_language)) or [dc](https://en.wikipedia.org/wiki/Dc_(computer_program)) calculator.
+Bash does not support floating-point arithmetic. If you need this arithmetic in your scripts, please use the [bc](https://en.wikipedia.org/wiki/Bc_(programming_language)) or [dc](https://en.wikipedia.org/wiki/Dc_(computer_program)) calculator.
 
 ### Integer Representation
 
-Let's have a look at how a computer represents integers in its memory. Knowing it, you understand how mathematical operations work in Bash.
+The first question we should consider is integers' representation in the computer's memory. This knowledge helps you to get mathematical operations in Bash.
 
-Mathematical [integers](https://en.wikipedia.org/wiki/Integer) can be positive or negative. They match the data type with the same name [**integer**](https://en.wikipedia.org/wiki/Integer_(computer_science)).
+You already know [integers](https://en.wikipedia.org/wiki/Integer) from mathematic. They do not have a fractional component and can be positive or negative. Programming languages with the static type system provide an [**integer**](https://en.wikipedia.org/wiki/Integer_(computer_science)) type of variables. You should use this type whenever you need to operate integers.
 
-If an integer type variable accepts positive values only, it is called **unsigned**. If it allows both positive and negative values, the variable is called **signed**.
+You can be very precise in programming and specify if the integer variable is positive only. The integer of this kind is called **unsigned**. If it can become positive and negative, the variable is called **signed**.
 
-There are three most common ways of representing integers in computer memory:
+There are three common ways of representing integers in computer memory:
 
-* [**Sign-Magnitude representation**](https://en.wikipedia.org/wiki/Signed_number_representations#Sign-and-magnitude_method) (SMR)
+* [**Sign-magnitude representation**](https://en.wikipedia.org/wiki/Signed_number_representations#Sign-and-magnitude_method) (SMR)
 
 * [**Ones' complement**](https://en.wikipedia.org/wiki/Signed_number_representations#Ones'_complement)
 
@@ -22,15 +22,15 @@ There are three most common ways of representing integers in computer memory:
 
 #### Sign-Magnitude Representation
 
-All numbers in computer memory are represented in binary form. It means that the computer stores any number as a sequence of zeros and ones. Number representation defines what those zeros and ones mean.
+All numbers in the computer's memory are represented in binary form. It means that the computer stores them as a sequence of zeros and ones. A number representation defines how to interpret these zeros and ones.
 
 First, we consider the simplest numbers representation that is the sign-magnitude representation or SMR. There are two options to use it:
 
-1. To store only positive integers (unsigned).
+1. To store positive integers (unsigned).
 
 2. To store both positive and negative integers (signed).
 
-The computer allocates a fixed block of memory for any number. When you choose the first option of SMR, all bits of the allocated memory are used in the same way. They store the value of the number. Table 3-13 shows how it looks like.
+The computer allocates a fixed block of memory for any number. When you choose the first option of SMR, all allocated memory bits are used in the same way. They store the value of the number. Table 3-13 shows several examples of how it looks like.
 
 {caption: "Table 3-13. Sign-magnitude representation of the unsigned integers", width: "70%"}
 | Decimal | Hexadecimal | SMR |
@@ -43,9 +43,11 @@ The computer allocates a fixed block of memory for any number. When you choose t
 
 Suppose that the computer allocates one byte of memory for a number. Then you can store unsigned integers from 0 to 255 there using SMR.
 
-The second option of SMR allows you to store signed integers. In this case, the highest bit of the number stores its sign. Therefore, there are fewer bits left for the value of the number. Suppose that there is one byte to keep the number. The number's sign takes one bit. Then only seven bits can store the value of the number.
+The second option of SMR allows you to store signed integers. In this case, the highest bit keeps the integer's sign. Therefore, there are fewer bits left for the value of the number.
 
-Table 3-14 shows the sign-magnitude representation of the signed integers.
+Here is an example. Suppose that a computer allocates one byte to store the signed integer. One bit is reserved to indicate the positive or negative sign. Then you have seven bits only to store the number itself.
+
+Table 3-14 shows the sign-magnitude representation of several  signed integers.
 
 {caption: "Table 3-14. The sign-magnitude representation of the signed integers", width: "70%"}
 | Decimal | Hexadecimal | SMR |
@@ -61,7 +63,7 @@ Table 3-14 shows the sign-magnitude representation of the signed integers.
 | 110 | 6E | 0110 1110 |
 | 127 | 7F | 0111 1111 |
 
-The highest (leftmost) bit of all negative numbers equals one. It equals zero for positive numbers. Because of the sign, it is impossible to store numbers greater than 127 in one byte. For the same reason, the minimum allowed negative number is -127.
+The highest (leftmost) bit of all negative numbers equals one. It equals zero for positive numbers. Because of the sign, it is impossible to store numbers greater than 127 in one byte. The minimum allowed negative number is -127 for the same reason.
 
 There are two reasons why SMR is not widespread nowadays:
 
@@ -69,7 +71,7 @@ There are two reasons why SMR is not widespread nowadays:
 
 2. There are two representations of zero: positive (0000 0000) and negative (1000 0000). It complicates the comparison operation because these values are not equal in memory.
 
-Take your time and try to understand SMR. Without getting it, you won't understand the other two ways of representing integers.
+Take your time and try to get well how the SMR works. Without getting it, you won't understand the other two ways of representing integers.
 
 #### Ones' Complement
 
