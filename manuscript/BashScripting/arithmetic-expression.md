@@ -327,15 +327,15 @@ The following command demonstrates the issue:
 let var=12 + 7
 ```
 
-Here the `let` command receives three expressions after word splitting. These are the expressions:
+Here Bash applies word splitting. It produces three expressions that the `let` built-in receives on input. These are the expressions:
 
 * var=12
 * +
 * 7
 
-When calculating the second one, `let` reports about an error. The plus means an arithmetic addition. It requires two operands. But in our case, there are no operands at all.
+When calculating the second expression, `let` reports the error. The plus sign means the arithmetic addition. The addition requires two operands. There are no operands at all in our case.
 
-Suppose that you pass correct expressions to the `let` command. Then the command evaluates them one by one. Here are the examples:
+If you pass several correct expressions to the `let` built-in, it evaluates them one by one. Here are the examples:
 {line-numbers: true, format: Bash}
 ```
 let a=1+1 b=5+1
@@ -343,33 +343,33 @@ let "a = 1 + 1" "b = 5 + 1"
 let 'a = 1 + 1' 'b = 5 + 1'
 ```
 
-All three commands give the same result. The variable `a` gets the value of 2. The variable `b` gets the value of 6.
+The results of all three commands are the same. The `a` variable gets number 2. The `b` variable gets number 6.
 
-You can prevent word splitting of the `let` parameters. Use single or double-quotes for that.
+If you need to prevent word splitting of the `let` parameters, apply single or double quotes.
 
-The `let` command has a synonym that is the (( operator. Bash skips word splitting inside the operator. Therefore, you can skip quotes there. Always use the (( operator instead of the `let` command. This way, you will avoid mistakes.
+The `let` built-in has a synonym that is the (( operator. Bash skips word splitting when handling everything inside the parentheses. Therefore, you do not need quotes there. Always use the (( operator instead of the `let` built-in. This way, you will avoid mistakes.
 
-I> The relationship of the (( operator and the `let` command resembles that of `test` and the [[ operator. In both cases, use operators rather than commands.
+I> The relationship of the (( operator and the `let` command resembles that of `test` and the [[ operator. You should use operators rather than commands in both cases.
 
-The (( operator has two forms. The first one is called [**arithmetic evaluation**](https://wiki.bash-hackers.org/syntax/ccmd/arithmetic_eval). It is a synonym for the `let` command. The arithmetic evaluation looks like this:
+The (( operator has two forms. The first one is called the [**arithmetic evaluation**](https://wiki.bash-hackers.org/syntax/ccmd/arithmetic_eval). It is a synonym for the `let` built-in. The arithmetic evaluation looks like this:
 {line-numbers: false, format: Bash}
 ```
 ((var = 12 + 7))
 ```
 
-Here we use opening double-parentheses instead of the `let` command. There are closing double-parentheses at the end. This form of the (( operator returns exit status zero if it succeeds. It returns exit status one if it fails. After calculating the expression, Bash replaces it with its exit status.
+Here the double opening parentheses replace the `let` keyword. When using the arithmetic evaluation, you need double closing parentheses at the end. When the evaluation succeeds, it returns zero exit status. It returns exit status equals one when it fails. After calculating the arithmetic evaluation, Bash replaces it with its exit status.
 
-The second form of the (( operator is called [**arithmetic expansion**](https://wiki.bash-hackers.org/syntax/expansion/arith). It looks like this:
+The second form of the (( operator is called the [**arithmetic expansion**](https://wiki.bash-hackers.org/syntax/expansion/arith). It looks like this:
 {line-numbers: false, format: Bash}
 ```
 var=$((12 + 7))
 ```
 
-Here we put a dollar sign before the (( operator. In this case, Bash calculates the value of the expression. Then Bash inserts this value in place of the expression. This behavior differs from the first form of the (( operator. Bash inserts the exit status there.
+Here you put a dollar sign before the (( operator. In this case, Bash calculates the arithmetic expression and replaces it by its value.
 
-I> The second form of the (( operator is part of the POSIX standard. Use it for writing portable code. The first form of the operator is available in Bash, ksh and zsh interpreters only.
+I> The second form of the (( operator is a part of the POSIX standard. Use it for writing portable code. The first form of the operator is available in Bash, ksh and zsh interpreters only.
 
-You can skip the dollar sign before variables names in the (( operator. Bash still inserts their values correctly in this case. For example, here are two equivalent expressions for calculating the `result` variable:
+You can skip the dollar sign before variable names inside the (( operator. Bash evaluates them correctly in this case. For example, the following two expressions are equivalent:
 {line-numbers: true, format: Bash}
 ```
 a=5 b=10
@@ -377,15 +377,15 @@ result=$(($a + $b))
 result=$((a + b))
 ```
 
-Both expressions assign the value of 15 to the `result` variable.
+Both expressions assign number 15 to the `result` variable.
 
-Do not use the dollar sign in the (( operator. It makes your code clearer.
+Do not use the dollar sign inside the (( operator. It makes your code clearer.
 
-I> Bash has an obsolete form of arithmetic expansion that is the "$[ ]" operator. Never use it. There is a GNU utility called `expr` for calculating arithmetic expressions. Bash needs it for launching old Bourne Shell scripts. Never use `expr` when developing new scripts.
+I> Bash has an obsolete form of the arithmetic expansion that is the "$[ ]" operator. Never use it. Besides that, there is the GNU utility called `expr`. It calculates arithmetic expressions too. Bash uses it when launching old Bourne Shell scripts. You should never use `expr`.
 
-Table 3-17 shows the operations that Bash allows in arithmetic expressions.
+Table 3-17 shows the operations that you can perform in the arithmetic expression.
 
-{caption: "Table 3-17. The operations in arithmetic expressions", width: "100%"}
+{caption: "Table 3-17. The operations of the arithmetic expression", width: "100%"}
 | Operation | Description | Example |
 | --- | --- | --- |
 | | **Calculations** | |
@@ -432,15 +432,15 @@ Table 3-17 shows the operations that Bash allows in arithmetic expressions.
 |  | | |
 | `-=` | Subtract and assign the result | `echo "$((num -= 3)) = 5"` |
 |  | | |
-| `<<=` | Bitwise left shift and assign the result | `echo "$((num <<= 1)) = 10` |
+| `<<=` | Do bitwise left shift and assign the result | `echo "$((num <<= 1)) = 10` |
 |  | | |
-| `>>=` | Bitwise right shift and assign the result | `echo "$((num >>= 2)) = 2"` |
+| `>>=` | Do bitwise right shift and assign the result | `echo "$((num >>= 2)) = 2"` |
 |  | | |
-| `&=` | Bitwise AND and assign the result | `echo "$((num &= 3)) = 2"` |
+| `&=` | Do bitwise AND and assign the result | `echo "$((num &= 3)) = 2"` |
 |  | | |
-| `^=` | Bitwise XOR and assign the result | `echo "$((num^=7)) = 5"` |
+| `^=` | Do bitwise XOR and assign the result | `echo "$((num^=7)) = 5"` |
 |  | | |
-| `|=` | Bitwise OR and assign the result | `echo "$((num |= 7)) = 7"` |
+| `|=` | Do bitwise OR and assign the result | `echo "$((num |= 7)) = 7"` |
 |  | | |
 |  | | |
 | | **Comparisons** | |
@@ -486,11 +486,11 @@ Table 3-17 shows the operations that Bash allows in arithmetic expressions.
 |  | | |
 | `( ACTION_1 )` | Grouping of expressions (subexpression) | `a=$(( (4 + 5) * 2 ))`|
 
-Bash performs all operations in order of their priorities. The operations with a higher priority come first.
+Bash performs all operations of the arithmetic expression in order of their priorities. The operations with a higher priority come first.
 
 Table 3-18 shows the priority of operations.
 
-{caption: "Table 3-18. Priority of operations in arithmetic expressions", width: "100%"}
+{caption: "Table 3-18. Priority of operations of the arithmetic expression", width: "100%"}
 | Priority | Operation | Description |
 | --- | --- | --- |
 | 1 | `( ACTION_1 )` | Grouping of expressions |
@@ -531,9 +531,9 @@ Table 3-18 shows the priority of operations.
 |  | | |
 | 19 | `ACTION_1, ACTION_2` | The list of expressions |
 
-You can change the order of execution using parentheses "( )". Their contents are called **subexpression**. Bash calculates subexpressions first. If there is more than one subexpression, Bash calculates them in the left-to-right order.
+You can change the order of operations execution using parentheses "( )". Their contents are called **subexpression**. It has the highest priority for Bash. If there are several subexpressions, Bash calculates them in the left-to-right order.
 
-Suppose your code uses a numeric constant. You can specify its value in any numeral system. Use a prefix to select a numeral system. Table 3-19 shows the list of allowable prefixes.
+Suppose your code uses a numeric constant. You can specify its value in any numeral system. Use a prefix for choosing the system. Table 3-19 shows the list of allowable prefixes.
 
 {caption: "Table 3-19. The prefixes for numeral systems", width: "100%"}
 | Prefix | Numeral System | Example] |
@@ -544,15 +544,15 @@ Suppose your code uses a numeric constant. You can specify its value in any nume
 | `<base>#` | The numeral system with a base from 2 to 64 | `echo "$((16#FF)) = 255"` |
 | | | `echo "$((2#101)) = 5"` |
 
-When printing a number to the screen or file, Bash always converts it in decimal. The `printf` command changes the format of the number output. You can use it this way:
+When printing a number, Bash always converts it to decimal. The `printf` built-in changes the format of the number on output. You can use it this way:
 {line-numbers: false, format: Bash}
 ```
 printf "%x\n" 250
 ```
 
-This command prints the number 250 in hexadecimal.
+This command prints number 250 in hexadecimal.
 
-You can format the variable's value in the same way:
+The `printf` built-in handles variables in the same way:
 {line-numbers: false, format: Bash}
 ```
 printf "%x\n" $var
