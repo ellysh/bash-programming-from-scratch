@@ -75,34 +75,34 @@ Take your time and try to get well how the SMR works. Without getting it, you wo
 
 #### Ones' Complement
 
-SMR has two disadvantages. They have led to technical issues when using the representation in practice. Therefore, the engineers have looked for an alternative approach to store numbers in memory. This way, they came to ones' complement representation.
+SMR has two disadvantages. They led to technical issues when computer engineers had used this representation in practice. Therefore, the engineers started looking for an alternative approach to store numbers in memory. This way, they came to ones' complement representation.
 
-The first problem of SMR is related to operations on negative numbers. The ones' complement solves it. Let's consider the root cause of this problem.
+The first problem of SMR is related to operations on negative numbers. The ones' complement solves it. Let's consider this problem in detail.
 
-Here is an example. We want to add the numbers 10 and -5. First, we should write them in SMR. Assume that each number occupies one byte in computer memory. Then we get the following result:
+The example will explain to you what exactly happens when you operate negative numbers in SMR. Suppose that you want to add integers 10 and -5. First, you should write them in SMR. Assume that each integer occupies one byte in computer memory. Then you represent them this way:
 {line-numbers: false}
 ```
 10 = 0000 1010
 -5 = 1000 0101
 ```
 
-Now the question arises. How does the processor add these numbers? Any modern processor has a standard module called [**adder**](https://en.wikipedia.org/wiki/Adder_(electronics)). It adds two numbers in a bitwise manner. If we apply it in our task, we get the following result:
+Now the question arises. How does the processor add these two numbers? Any modern processor has a standard module called [**adder**](https://en.wikipedia.org/wiki/Adder_(electronics)). It adds two numbers in a bitwise manner. If you apply it for our task, you get the following result:
 {line-numbers: false}
 ```
 10 + (-5) = 0000 1010 + 1000 0101 = 1000 1111 = -15
 ```
 
-The result is wrong. It means that the adder cannot add numbers in SMR. The calculation mistake happens because the adder does not consider the highest bit of the number. This bit stores the sign.
+This result is wrong. It means that the adder cannot add numbers in SMR. The calculation mistake happens because the adder handles the highest bit of the number wrongly. This bit stores the integer's sign.
 
 There are two ways for solving the problem:
 
 1. Add a special module to the processor. It should process operations on negative integers.
 
-2. Change the integer representation in memory. The representation should fit the adder logic when it adds negative integers.
+2. Change the integer representation in memory. The representation should fit the adder logic when it operates negative integers.
 
 The development of computer technology followed the second way. It is cheaper than complicating the processor architecture.
 
-The ones' complement reminds SMR. The sign of the number occupies the highest bit. The remaining bits store the value. The difference is all bits of the value are inverted for negative numbers. It means zeros become ones and ones become zeros. Bits of positive numbers are not inverted.
+The ones' complement reminds SMR. The sign of the integer occupies the highest bit. The remaining bits store the number. The difference with SMR is all bits of a negative number are inverted. It means zeros become ones, and ones become zeros. Bits of positive numbers are not inverted.
 
 Table 3-15 shows the ones' complement representation of some numbers.
 
@@ -120,63 +120,61 @@ Table 3-15 shows the ones' complement representation of some numbers.
 | 110 | 6E | 0110 1110 |
 | 127 | 7F | 0111 1111 |
 
-The memory capacity when using SMR and the ones' complement is the same. One byte can store numbers from -127 to 127 in both cases.
+The memory capacity is the same when you use SMR and the ones' complement. One byte can store numbers from -127 to 127 in both cases.
 
-What is the effect of inverting the value bits for negative numbers? Let's have a look at how the addition of negative numbers works now. First, we will write 10 and -5 in the ones' complement. Then add them using the adder CPU module.
-
-Here is how the numbers look like in memory:
+How did inverting the bits of negative numbers solve the adder problem? Let's come back to our example with adding 10 and -5. First, you should represent them in the ones' complement this way:
 {line-numbers: false}
 ```
 10 = 0000 1010
 -5 = 1111 1010
 ```
 
-Their addition gives the following result:
+When you apply the standard adder, you get the following result:
 {line-numbers: false}
 ```
 10 + (-5) = 0000 1010 + 1111 1010 = 1 0000 0100
 ```
 
-The addition caused an overflow. The highest one does not fit into one byte. In this case, it is discarded. Then the result of the addition becomes like this:
+The addition led to the overflow because the highest bit does not fit into one byte. It is discarded in this case. Then the result becomes like this:
 {line-numbers: false}
 ```
 0000 0100
 ```
 
-The discarded one affects the final result. We need a second calculation step to take it into account. In this step, we add the discarded one as a number to the result. It looks like this:
+The discarded highest bit affects the final result. You need a second calculation step to take it into account. There you add the bit's value to the result this way:
 {line-numbers: false}
 ```
 0000 0100 + 0000 0001 = 0000 0101 = 5
 ```
 
-We got the correct result of adding the numbers 10 and -5.
+You got the correct result of adding numbers 10 and -5.
 
-If the addition results in a negative number, the second calculation step is unnecessary. As an example, add the numbers -7 and 2. First, write them in the ones' complement:
+If the addition results in a negative number, the second calculation step is unnecessary. Here is an example of adding numbers -7 and 2. First, write them in the ones' complement representation:
 {line-numbers: false}
 ```
 -7 = 1111 1000
 2 = 0000 0010
 ```
 
-Then do the first step of addition:
+Then add the numbers:
 {line-numbers: false}
 ```
 -7 + 2 = 1111 1000 + 0000 0010 = 1111 1010
 ```
 
-The high bit equals one. It means that we got a negative number. Therefore, we should skip the second step of addition.
+The highest bit equals one. It means that you got a negative number. Therefore, you should skip the second calculation step.
 
-Let's check if the result is correct. For convenience, convert the number from ones' complement to SMR. Invert all bits of the number value for doing that. The sign bit should stay unchanged. Here is the result:
+Let's check if the result is correct. You can convert it from ones' complement to SMR for convenience. Invert bits of the number for doing that. The highest bit should stay unchanged. Here is the result:
 {line-numbers: false}
 ```
 1111 1010 -> 1000 0101 = -5
 ```
 
-We got the right result again.
+This is the correct result of adding -7 and 2 and.
 
-The ones' complement solved one problem. Now the adder CPU module can add any signed integers. There is one disadvantage of this solution. Addition requires two steps in some cases. It slows down computations.
+The ones' complement solves one of two SMR's problems. Now the CPU adder can operate any signed integers. This solution has one disadvantage. Addition requires two steps when you get a positive number in the result. This drawback slows down computations.
 
-SMR has the second problem. It represents zero in two ways. Ones' complement did not solve it.
+SMR has another problem with zeros. It represents zero in two ways. The ones' complement does not solve it.
 
 #### Two's Complement
 
