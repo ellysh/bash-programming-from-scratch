@@ -120,7 +120,7 @@ Table 3-15 shows the ones' complement representation of some numbers.
 | 110 | 6E | 0110 1110 |
 | 127 | 7F | 0111 1111 |
 
-The memory capacity is the same when you use SMR and the ones' complement. One byte can store numbers from -127 to 127 in both cases.
+The memory capacity is the same when you switch from SMR to the ones' complement. One byte can store numbers from -127 to 127 in both cases.
 
 How did inverting the bits of negative numbers solve the adder problem? Let's come back to our example with adding 10 and -5. First, you should represent them in the ones' complement this way:
 {line-numbers: false}
@@ -135,13 +135,13 @@ When you apply the standard adder, you get the following result:
 10 + (-5) = 0000 1010 + 1111 1010 = 1 0000 0100
 ```
 
-The addition led to the overflow because the highest bit does not fit into one byte. It is discarded in this case. Then the result becomes like this:
+The addition led to the overflow because the highest one does not fit into one byte. It is discarded in this case. Then the result becomes like this:
 {line-numbers: false}
 ```
 0000 0100
 ```
 
-The discarded highest bit affects the final result. You need a second calculation step to take it into account. There you add the bit's value to the result this way:
+The discarded highest one affects the final result. You need a second calculation step to take it into account. There you add the discarded value to the result this way:
 {line-numbers: false}
 ```
 0000 0100 + 0000 0001 = 0000 0101 = 5
@@ -178,9 +178,11 @@ SMR has another problem with zeros. It represents zero in two ways. The ones' co
 
 #### Two's Complement
 
-The two's complement solves both problems of SMR. First, it allows the standard adder to add negative numbers. In the ones' complement, this operation requires two steps. In two's complement, one step is sufficient. Second, there is only one way to represent zero.
+The two's complement solves both problems of SMR. First, it allows the CPU adder to operate negative numbers in one step. You need two steps for that when using the ones' complement. Second, the two's complement has only one way to represent zero.
 
-Positive integers in the two's complement look the same as in SMR. The highest bit equals zero there. The remaining bits store the value of the number. Negative integers have the highest bit equal to one. The value bits are inverted the same way as in the ones' complement. The result is increased by one.
+Positive integers in the two's complement and SMR look the same. The highest bit equals zero there. The remaining bits store the number.
+
+Negative integers in the two's complement have the highest bit equal to one. The rest bits are inverted the same way as in the ones' complement. The only difference is you need to add one to the negative number after inverting its bits.
 
 Table 3-16 shows the two's complement representation of some numbers.
 
@@ -197,62 +199,62 @@ Table 3-16 shows the two's complement representation of some numbers.
 | 110 | 6E | 0110 1110 |
 | 127 | 7F | 0111 1111 |
 
-The memory capacity stays the same when using the two's complement. One byte can store the numbers from -127 to 127.
+The memory capacity stays the same when you switch from SMR to the two's complement. One byte can store the numbers from -127 to 127.
 
-Let's consider adding negative numbers in the two's complement. For example, we add 14 and -8. First, write them in the two's complement. Here is the result:
+Here is an example of adding numbers 14 and -8. First, you should write them in the two's complement this way:
 {line-numbers: false}
 ```
 14 = 0000 1110
 -8 = 1111 1000
 ```
 
-Now add these number like this:
+Now you can add the numbers:
 {line-numbers: false}
 ```
 14 + (-8) = 0000 1110 + 1111 1000 = 1 0000 0110
 ```
 
-The addition leads to the overflow. The highest one did not fit into one byte. We should discard it. Then the final result looks like this:
+The addition leads to the overflow. The highest one does not fit into a single byte. The rest bits make a positive number. It means that you should discard the highest one. This way, you get the following result:
 {line-numbers: false}
 ```
 0000 0110 = 6
 ```
 
-When addition gives a negative result, you should not discard the highest bit. For example, we want to add the numbers -25 and 10. When we write them in two's complement, they look like this:
+When addition gives a negative result, you should not discard the highest bit. Here is an example. You want to add numbers -25 and 10. They look this way in the two's complement:
 {line-numbers: false}
 ```
 -25 = 1110 0111
 10 = 0000 1010
 ```
 
-The addition of these numbers gives the following result:
+This is the result of the addition:
 {line-numbers: false}
 ```
 -25 + 10 = 1110 0111 0000 1010 = 1111 0001
 ```
 
-Let's convert the result from two's complement to ones' complement. Then do one more step and get it in SMR. Here are the conversions:
+Now you should convert the result to decimal. First, covert it from two's complement to the ones' complement. Second, convert the result to SMR. You get the following sequence of conversions:
 {line-numbers: false}
 ```
 1111 0001 - 1 = 1111 0000 -> 1000 1111 = -15
 ```
 
-When converting from ones' complement to SMR, we invert all bits except the highest one. This way, we got the correct result of adding -25 and 10.
+When converting from the ones' complement to SMR, you invert all bits except the highest one. This way, you get the correct result of adding -25 and 10.
 
-Two's complement allowed the standard adder of the CPU to add negative numbers. Moreover, the adder does this calculation in a single step. Therefore, there is no performance loss, unlike the ones' complement case.
+The two's complement allows the CPU adder to operate negative numbers. Moreover, such calculations require a single step only. Therefore, there is no performance loss, unlike the ones' complement case.
 
-Two's complement solved the problem of zero representation. There is only one way to represent it. It is the number with all bits zeroed. Therefore, there are no issues with comparing numbers.
+The two's complement solves the problem of zero representation. It has only one way to represent it. Zero is the number with all bits zeroed. Therefore, you do not have issues with comparing numbers anymore.
 
-All modern computers represent integers in two's complement.
+All modern computers use the two's complement representation to store numbers in memory.
 
 {caption: "Exercise 3-7. Arithmetic operations with numbers in the two's complement representation", format: text, line-numbers: false}
 ```
-Represent the following integers in two's complement and add them:
+Represent the following integers in the two's complement and add them:
 
 * 79 + (-46)
 * -97 + 96
 
-Represent the following two-byte integers in two's complement and add them:
+Represent the following two-byte integers in the two's complement and add them:
 
 * 12868 + (-1219)
 ```
