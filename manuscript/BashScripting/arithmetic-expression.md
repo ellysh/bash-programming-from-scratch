@@ -261,50 +261,52 @@ Represent the following two-byte integers in the two's complement and add them:
 
 #### Converting Numbers
 
-We learned how a computer represents numbers in memory. When would you need it in practice?
+You have learned how a computer represents numbers in memory. Would you need this knowledge in practice?
 
-Modern programming languages take care of converting numbers into the correct format. For example, you declare a signed integer variable in decimal notation. You do not need to worry about how the computer stores it in memory. If the variable's value becomes negative, the computer makes two's complement representation without your involvement.
+Modern programming languages take care of converting numbers to the correct format. For example, you declare a signed integer variable in decimal notation. You do not need to worry about how the computer stores it in memory. If the variable becomes negative, the computer applies the two's complement representation automatically.
 
-In some cases, you want to treat a variable as a set of bits. Then declare it as a positive integer. Do all operations on it in hexadecimal. Do not convert the variable's value to decimal. This way, you avoid the problems of converting numbers.
+There are cases when you want to treat a variable as a set of bits. You declare it as a positive integer in this case. You should operate it in hexadecimal. Please do not convert this variable to decimal. This way, you avoid the problems of converting numbers.
 
-The issue arises when you want to read data from some device. Such a task often occurs in [**system software development**](https://en.wikipedia.org/wiki/System_software). This domain includes the development of device drivers, OS kernels and modules, system libraries and network protocol stacks.
+The issue arises when you want to read data from some device. Such a task often occurs in the [**system software development**](https://en.wikipedia.org/wiki/System_software). Specialists of this domain deal with device drivers, OS kernels and their modules, system libraries and network protocol stack.
 
-Here is an example. Suppose that you write a driver for a peripheral device. The device periodically sends data to the CPU. For example, it is the results of some measurements. Interpret them correctly is your task. The computer cannot do it for you in most cases. It happens because the computer and the device represent the numbers differently. You know this difference. Thus, you should apply your knowledge about numbers representation and convert them properly.
+An example will demonstrate you a problem. Suppose that you are writing a driver for a peripheral device. It measures air temperature cyclically and sends the results to the CPU. Your task is to interpret these data correctly. Unfortunately, the computer cannot do it for you. It happens because the computer and device represent the numbers differently. Therefore, you should write a code that does the conversion. You need to know numbers representation for doing that.
 
-There is another task that every programmer faces. It is debugging the program. For example, there is an integer overflow in the arithmetic expression. Knowing numbers representation helps you find and solve the problem.
+There is another task that requires you to know the two's complement. I am talking about debugging your program. Suppose that the program gives you an unexpectedly large number in the result. If you know the two's complement, you can guess that an integer overflow happens. This helps you find the root cause of the problem.
 
 ### Operator ((
 
-Bash performs integer arithmetic in **math context**. Its syntax resembles the C language.
+Bash performs integer arithmetic in **math context**.
 
-Suppose that you want to store the result of adding two numbers in a variable. Declare it with the `-i` integer attribute. Then assign its value in the declaration. Here is an example:
+I> The syntax of math context resembles the C language. The idea behind it is to make Bash easier for learning for programmers who have experience with the C language. Most users of the first Unix versions knew C.
+
+Suppose that you want to store a result of adding two numbers in a variable. You need to declare it using the `-i` attribute and assign a value in the declaration. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 declare -i var=12+7
 ```
 
-Bash assigned the number 19 to the variable but not the "12+7" string. When you add the `-i` attribute to the declaration, Bash calculates the assigned value in the mathematical context. It happened in our example.
+When processing this declaration, the variable gets value 19 instead of the "12+7" string. It happens because the `-i` attribute forces Bash to apply the mathematical context when handling the variable.
 
-You can declare the mathematical context explicitly. The `let `built-in command does that.
+There is an option to apply the mathematical context besides the variable declaration. Call the `let `built-in for doing that.
 
-Suppose you declare the variable without the `-i` attribute. Then the `let` command allows you to assign an arithmetic expression result to the variable. Here is an example:
+Suppose that you declared the variable without the `-i` attribute. Then the `let` built-in allows you to calculate an arithmetic expression and assign its result to the variable. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 let text=5*7
 ```
 
-The `text` variable equals 35 in the result.
+The `text` variable gets integer 35 after executing this command.
 
-When declaring the variable with the `-i` attribute, you do not need the `let` command. It looks like this:
+When declaring a variable using the `-i` attribute, you do not need the `let` command. You can calculate the arithmetic expression without it this way:
 {line-numbers: false, format: Bash}
 ```
 declare -i var
 var=5*7
 ```
 
-Now the `var` variable equals 35 too.
+Now the `var` variable equals 35.
 
-Declaring a variable with the `-i` attribute creates the mathematical context implicitly. It can lead to errors. Therefore, try to avoid using the `-i` attribute. It does not affect the way how the Bash stores the variable in memory. Instead, converting a string to a number and back takes place every time you assign the variable.
+Declaring a variable using the `-i` attribute creates the mathematical context implicitly. The `let` built-in does it explicitly. Avoid implicit mathematical contexts whenever it is possible. They can lead to errors. The `-i` attribute does not affect the way of how Bash stores the variable in memory. Instead, it forces Bash to convert strings into numbers every time you operate the variable.
 
 The `let` command allows you to treat a string variable as an integer variable. This way, you can do the following assignments:
 {line-numbers: true, format: Bash}
@@ -315,9 +317,9 @@ let "var = 12 + 7"
 let 'var = 12 + 7'
 ```
 
-All four commands give the same result. They set the variable's value to 19.
+All four commands give you the same result. They assign number 19 to the `var` variable.
 
-The `let` command takes parameters on input. Each of them must be a valid arithmetic expression. If there are spaces in the expression, Bash splits it into parts because of word splitting. In this case, `let` computes each part of the expression separately. It can lead to an error.
+The `let` built-in takes parameters on input. Each of them should be a valid arithmetic expression. If there are spaces, Bash splits the expression into parts because of word splitting. In this case, `let` computes each part separately. It can lead to errors.
 
 The following command demonstrates the issue:
 {line-numbers: false, format: Bash}
