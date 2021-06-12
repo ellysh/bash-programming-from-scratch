@@ -560,24 +560,26 @@ printf "%x\n" $var
 
 ### Arithmetic Operations
 
-Let's start with the simplest mathematical operations that are arithmetic operations. Programming languages use usual symbols to denote them:
+Let's start with the arithmetic operations because they are the simplest. Programming languages use regular symbols to denote them:
 
 * `+` addition
 * `-` subtraction
 * `/` division
 * `*` multiplication
 
-Two more operations are often used in programming. These are exponentiation and [division with remainder](https://en.wikipedia.org/wiki/Euclidean_division).
+There are two more operations that are often used in programming. These are exponentiation and [division with remainder](https://en.wikipedia.org/wiki/Euclidean_division).
 
-Suppose that you want to raise the `a` number to the power of `b`. You can write it this way: a^b^. Here `a` is the base and `b` is the exponent. For example, raising two to the power of seven is written as 2^7^. You can write this operation with two asterisks in Bash:
+Suppose that you want to raise the `a` number to the power of `b`. You can write it on paper this way: a^b^. Here `a` is the base and `b` is the exponent. If you want to raise two to the power of seven, you write 2^7^. The same operation in Bash looks like this:
 {line-numbers: false}
 ```
 2**7
 ```
 
-Calculating the remainder of the division is a complex but essential operation in programming. Let's take a closer look at it. Suppose we have divided one integer number by another. A result is a fractional number. In this case, we say that the division produced a [**remainder**](https://en.wikipedia.org/wiki/Remainder).
+Calculating the remainder of a division is a complex but essential operation in programming. Therefore, we should consider it in detail.
 
-For example, let's divide 10 (the dividend) by 3 (the divisor). If we round the result, we get 3.33333 (the quotient). In this case, the remainder of the division is 1. To find it, we should multiply the divisor 3 by the integer part of the quotient 3 (the incomplete quotient). Then subtract the result from the dividend 10. It gives us the remainder, which is equal to 1.
+Suppose that you have divided one integer by another. You get a fractional number in the result. The division operation produced a [**remainder**](https://en.wikipedia.org/wiki/Remainder) in this case.
+
+Here is an example. Suppose that you want to divide the number 10 (the dividend) by 3 (the divisor). If you round the result, you will get 3.33333 (the quotient). The remainder of the division equals 1 in this case. To find it, you should multiply the divisor 3 by the integer part of the quotient 3 (the incomplete quotient). Then subtract the result from the dividend 10. It gives you the remainder, which equals 1.
 
 Let's write our calculations in formulas. We can introduce the following notation for that:
 
