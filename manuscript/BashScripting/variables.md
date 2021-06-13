@@ -420,7 +420,7 @@ MOZ_WEBRENDER=1 LANG="en_US.UTF-8" /opt/firefox/bin/firefox
 
 This command launches the Firefox browser and passes it the `MOZ_WEBRENDER` and `LANG` variables. They can differ from the global Unix settings.
 
-The last example works well in Bash. If you use another shell, you need another approach. Suppose that you use Bourne Shell. Then you can pass variables to the application using the `env` utility. Here is an example for doing that:
+The last example works well in Bash. If you use another shell, you need another approach. Suppose that you use Bourne Shell. Then you can pass variables to the application using the `env` utility. Here is an example of doing that:
 {line-numbers: false, format: Bash}
 ```
 env MOZ_WEBRENDER=1 LANG="en_US.UTF-8" /opt/firefox/bin/firefox
@@ -602,7 +602,7 @@ The `declare` Bash built-in specifies the variable attributes. When you call it 
 
 The `declare` command has the `-p` option. The option adds variables attributes to the output data.
 
-If you need information on a particular variable, pass its name to the `declare` command. Here is an example for the `PATH` variable:
+If you need information on a particular variable, pass its name to the `declare` command. Here is an example of the `PATH` variable:
 {line-numbers: false, format: Bash}
 ```
 declare -p PATH
@@ -616,7 +616,7 @@ Suppose you are interested in function declarations but not in variables. Then a
 declare -f
 ```
 
-You can specify the function name right after the `-f` option. Then the `declare` command prints information about it. Here is an example for the function `quote`:
+You can specify the function name right after the `-f` option. Then the `declare` command prints information about it. Here is an example of the function `quote`:
 {line-numbers: false, format: Bash}
 ```
 declare -f quote

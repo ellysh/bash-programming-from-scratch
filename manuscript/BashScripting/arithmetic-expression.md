@@ -588,19 +588,19 @@ Let's write our calculations in formulas. We can introduce the following notatio
 * `q` is an incomplete quotient
 * `r` is a remainder
 
-Using the notation, we can write the formula for calculating the dividend:
+Using the notation, you get this formula for calculating the dividend:
 {line-numbers: false}
 ```
 a = b * q + r
 ```
 
-Then we derive the formula for finding the remainder:
+Move the "b * q" multiplication to the left side of the equal sign. Then you get the following formula for finding the remainder:
 {line-numbers: false}
 ```
 r = a - b * q
 ```
 
-The choice of an incomplete quotient `q` raises questions. Sometimes several numbers fit this role. The restriction helps to choose the right one. The `q` quotient must be such that the absolute value of the `r` remainder is less than the `b` divisor. In other words, you should fulfill the following inequality:
+The right choice of an incomplete quotient `q` raises questions. Sometimes several numbers fit this role. There is a restriction that helps you to choose the right one. The `q` quotient should have the value that makes the `r` remainder's absolute value less than the `b` divisor. In other words, it should fulfill the following inequality:
 {line-numbers: false}
 ```
 |r| < |b|
@@ -608,7 +608,7 @@ The choice of an incomplete quotient `q` raises questions. Sometimes several num
 
 The percent sign denotes the operation of finding the remainder in Bash. Some languages use the same symbol for the [**modulo operation**](https://en.wikipedia.org/wiki/Modulo_operation). These two operations [are not the same](https://rob.conery.io/2018/08/21/mod-and-remainder-are-not-the-same). They give the same results only when the signs of the dividend and the divisor match.
 
-For example, let's calculate the remainder and modulo when dividing 19 by 12 and -19 by -12. We get these results:
+Here is an example of calculating the division remainder and modulo when dividing 19 by 12 and -19 by -12. You will get these results:
 {line-numbers: false}
 ```
 19 % 12 = 19 - 12 * 1 = 7
@@ -618,7 +618,7 @@ For example, let's calculate the remainder and modulo when dividing 19 by 12 and
 -19 modulo -12 = -19 - (-12) * 1 = -7
 ```
 
-Now consider cases when the signs of the dividend and the divisor differ. Here are the results:
+Let's change the signs of the dividend and divisor. Then you get the following pairs of numbers: 19, -12 and -19, 12. If you calculate the division remainder and modulo for them, you get these results:
 {line-numbers: false}
 ```
 19 % -12 = 19 - (-12) * (-1) = 7
@@ -628,9 +628,7 @@ Now consider cases when the signs of the dividend and the divisor differ. Here a
 -19 modulo 12 = -19 - 12 * (-2) = 5
 ```
 
-The reminder and the modulo are different for the same pairs of numbers.
-
-The same formula calculates the remainder and modulo. But the choice of the `q` incomplete quotient differs. For calculating the reminder, you get `q` this way:
+You see that the remainder and the modulo differ for the same pairs of numbers. It looks strange because you use the same formula for calculating them. The trick happens when you choose the `q` incomplete quotient. You calculate it this way when finding the division remainder:
 {line-numbers: false}
 ```
 q = a / b
@@ -638,27 +636,27 @@ q = a / b
 
 You should round the result to the lowest [absolute number](https://en.wikipedia.org/wiki/Absolute_value). It means discarding all decimal places.
 
-Calculation of the incomplete quotient for finding the modulo depends on the signs of `a` and `b`. If the signs are the same, the formula for the quotient stays the same:
+Calculating the incomplete quotient for finding the modulo depends on the signs of `a` and `b`. If the signs are the same, the formula for the quotient stays the same:
 {line-numbers: false}
 ```
 q = a / b
 ```
 
-If the signs differ, here is another formula:
+If the signs differ, you should use another formula:
 {line-numbers: false}
 ```
 q = (a / b) + 1
 ```
 
-In both cases, you should round the result to the lowest absolute number.
+You should round the result to the lowest absolute number in both cases.
 
-When one speaks of the remainder of division `r`, he usually assumes that both the divisor a and the divisor b are positive. That is why reference books often mention the following condition for `r`:
+When somebody talks about the division remainder `r`, he usually assumes that both the dividend `a` and divisor `b` are positive. That is why programming books often mention the following condition for `r`:
 {line-numbers: false}
 ```
 0 ≤ r < |b|
 ```
 
-However, you can get a negative remainder when dividing numbers with different signs. Remember a simple rule: the `r` remainder always has the same sign as the `a` dividend. If the signs of `r` and `a` differ, you have found the modulo but not the reminder.
+However, you can get a negative remainder when dividing numbers with different signs. Remember a simple rule: the `r` remainder always has the same sign as the `a` dividend. If the signs of `r` and `a` differ, you have found the modulo but not the division remainder.
 
 Always keep in mind the difference between the remainder and the modulo. Some programming languages calculate the remainder in the % operator, while others calculate it in the `modulo` operator. It leads to confusion.
 
@@ -675,7 +673,7 @@ Now find the modulo for the same pair of numbers. Use the [online calculator](ht
 * The "Result" field shows 4.
 * The "Symmetric representation" field shows -3.
 
-The second answer -3 is the modulo. The first one is the reminder.
+The second answer -3 is the modulo. The first one is the remainder.
 
 When do you need the remainder of a division in programming? The most common task is to check a number for parity. For example, it helps to control the integrity of transmitted data in computer networks. This approach is called [**the parity bit**](https://en.wikipedia.org/wiki/Parity_bit).
 
