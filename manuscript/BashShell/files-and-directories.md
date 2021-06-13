@@ -216,7 +216,9 @@ You should get a directory structure like this:
 
 Each utility of Table 2-7 checks the [**file system permissions**](https://en.wikipedia.org/wiki/File-system_permissions) before acting. These permissions define if you are allowed to operate the target object. Let's consider this file system mechanism in detail.
 
-Permissions restrict the user actions on the file system. The OS tracks these actions and checks their allowance. Each user can access only his files and directories, thanks to this feature. It also restricts access to the OS components.
+The permissions restrict the user actions on the file system. The OS tracks these actions and checks their allowance. Each user can access only his files and directories, thanks to this feature. It also restricts access to the OS components.
+
+I> Users can share files with each other, but they should allow it explicitly. This sharing does not work by default.
 
 The permissions allow several people to share one computer. This workflow was widespread in the 1960s before appearing PCs. Hardware resources were expensive at that time. Therefore, several users have to operate with one computer.
 

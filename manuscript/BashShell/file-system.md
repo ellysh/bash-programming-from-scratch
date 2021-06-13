@@ -39,7 +39,7 @@ For example, let's open the `C` system drive. It has a [standard set of director
 
 These directories store OS components, user applications and temporary files.
 
-You can connect extra disk drives to your computer. Windows will assign them the following Latin letters: `D`, `E`, `F`, etc. You are allowed to create any directory structure on these disks. Windows does not restrict it in any way.
+You can connect extra disk drives to your computer. Another option is to split a single disk into several logical partitions. Windows will assign the Latin letters (`D`, `E`, `F`, etc) to these extra disks and partitions. You are allowed to create any directory structure there. Windows does not restrict you in any way.
 
 The [File Allocation Table](https://en.wikipedia.org/wiki/File_Allocation_Table) (FAT) file system dictates how Windows manages disks and provides you access to them. Microsoft developed this file system for the [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS) OS. The principles of FAT became the basis of the [ECMA-107](http://www.ecma-international.org/publications/standards/Ecma-107.htm) standard. The next-generation file system from Microsoft is called [NTFS](https://en.wikipedia.org/wiki/NTFS). It replaced the obsolete FAT in modern versions of Windows. However, the basic principles of disks and directory structure are the same in NAT and FAT. The reason for that is the backward compatibility requirement.
 
