@@ -716,43 +716,45 @@ Calculate the division remainder and modulo for the following pairs of numbers:
 
 ### Bitwise operations
 
-[**Bitwise operations**](https://en.wikipedia.org/wiki/Bitwise_operation) are another type of mathematical operations. Software developers use them often. The operations get their name because they operate each bit of a number individually.
+[**Bitwise operations**](https://en.wikipedia.org/wiki/Bitwise_operation) handle each bit of a number individually. You will use them often when programming. Let's consider how they work in detail.
 
 #### Bitwise negation
 
-We start with the simplest bitwise operation that is the negation. It is also called bitwise NOT. The tilde symbol indicates this operation in Bash.
+First, we will consider the simplest bitwise operation that is the negation. It is also called bitwise NOT. The tilde symbol indicates this operation in Bash.
 
-Swap the value of each bit of a number to perform bitwise negation. It means that you replace each one to zero and vice versa.
+When doing bitwise negation, you swap the value of each bit of an integer. It means that you replace each one to zero and vice versa.
 
-Here is an example of doing bitwise NOT of number 5:
+Here is an example of doing bitwise NOT for number 5:
 {line-numbers: false}
 ```
 5 = 101
 ~5 = 010
 ```
 
-The bitwise NOT is a simple operation when we are talking about mathematics. However, using it in programming causes difficulties. First, you should know how many bytes the number occupies.
+The bitwise NOT is a simple operation when we are talking about mathematics. However, there are pitfalls when using it in programming. You should keep in mind two things:
 
-Suppose that the two-byte variable stores the number 5 in our example. Then it looks like this in memory:
+* How many bytes does the number occupy?
+* What is the number's representation in memory?
+
+Suppose that the two-byte variable stores the number 5. Then it looks like this in memory:
 {line-numbers: false}
 ```
 00000000 00000101
 ```
 
-Bitwise NOT for these bits gives us the following result:
+When you apply the bitwise NOT for this variable, you get the following result:
 {line-numbers: false}
 ```
 11111111 11111010
 ```
 
-What does this result mean? If the variable is an unsigned integer, the result equals the number 65530 in SMR. If the variable is a signed integer, it is the two's complement value. The result equals -6 in this case.
+What do these bits mean? If you store them to the variable of the unsigned integer type, you get the number 65530. If the variable is a signed integer, it equals -6. You can check it by converting the two's complement representation to decimal.
 
-Bash commands and operators represent integers in different ways. For example, `echo` always outputs numbers as signed integers. The `printf` command allows you to specify the output format: signed or unsigned integer.
+Various Bash built-ins and operators represent integers in different ways. For example, `echo` always outputs numbers as signed integers. The `printf` command allows you to choose between a signed and unsigned integers.
 
-There are no types in the Bash language. Bash stores
-all scalar variables as strings. Therefore, it interprets integers when it inserts them into arithmetic expressions. The interpretation (signed or unsigned) depends on the context.
+There are no types in the Bash language. Bash stores all scalar variables as strings. It converts strings to integers right before inserting them into arithmetic expressions. The number interpretation (signed or unsigned) depends on the context.
 
-Bash allocates 64 bits of memory space for each integer regardless of its sign. Table 3-20 shows maximum and minimum allowed integers in Bash.
+Bash allocates 64 bits of memory space for each integer, regardless of its sign. Table 3-20 shows maximum and minimum allowed integers in Bash.
 
 {caption: "Table 3-20. Maximum and minimum allowed integers in Bash", width: "100%"}
 | Integer | Hexadecimal | Decimal |
@@ -761,7 +763,7 @@ Bash allocates 64 bits of memory space for each integer regardless of its sign. 
 | Minimum negative signed | 8000000000000000 | -9223372036854775808 |
 | Maximum unsigned | FFFFFFFFFFFFFFFF | 18446744073709551615 |
 
-The following examples show how Bash interprets integers in `echo`, `printf`, and the (( operator:
+The following examples show you how Bash interprets integers in the (( operator, `echo` and `printf` built-ins:
 {line-numbers: true, format: Bash}
 ```
 $ echo $((16#FFFFFFFFFFFFFFFF))
@@ -780,9 +782,9 @@ $ if ((18446744073709551615 == -1)); then echo "ok"; fi
 ok
 ```
 
-The last example of comparing the numbers 18446744073709551615 and -1 shows that Bash stores signed and unsigned integers in memory the same way. But their interpretation depends on the context.
+The last example of comparing the numbers 18446744073709551615 and -1 confirms that Bash stores signed and unsigned integers the same way in memory. However, it interprets them depending on the context.
 
-Let's come back to the bitwise negation of the number 5. Bash gave us the result 0xFFFFFFFFFFFFFFFFFA in hexadecimal. You can print this 64-bit number as a positive or negative integer this way:
+Let's come back to the bitwise negation of the number 5. Bash gives you the result 0xFFFFFFFFFFFFFFFFFA in hexadecimal. You can print it as a positive or negative integer this way:
 {line-numbers: true, format: Bash}
 ```
 $ echo $((~5))
@@ -792,7 +794,7 @@ $ printf "%llu\n" $((~5))
 18446744073709551610
 ```
 
-The numbers 18446744073709551610 and -6 are equal in terms of Bash. It happens because all their bits in memory are the same.
+The numbers 18446744073709551610 and -6 are equal for Bash. It happens because all their bits in memory are the same.
 
 {caption: "Exercise 3-9. Bitwise NOT", format: text, line-numbers: false}
 ```
@@ -802,7 +804,7 @@ Apply bitwise NOT for the following unsigned two-byte integers:
 * 1018
 * 58362
 
-Repeat the calculations for the case when these integers are signed.
+Repeat the calculations for the case when these are the signed integers.
 ```
 
 #### Bitwise AND, OR and XOR
