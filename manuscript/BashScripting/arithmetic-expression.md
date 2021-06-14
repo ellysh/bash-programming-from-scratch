@@ -658,30 +658,34 @@ When somebody talks about the division remainder `r`, he usually assumes that bo
 
 However, you can get a negative remainder when dividing numbers with different signs. Remember a simple rule: the `r` remainder always has the same sign as the `a` dividend. If the signs of `r` and `a` differ, you have found the modulo but not the division remainder.
 
-Always keep in mind the difference between the remainder and the modulo. Some programming languages calculate the remainder in the % operator, while others calculate it in the `modulo` operator. It leads to confusion.
+Always keep in mind the difference between the division remainder and modulo. Some programming languages provide the % operator that calculates the remainder. Other languages have the same operator, but it calculates the modulo. It leads to confusion.
 
-If in doubt about your calculations, check them. The % Bash operator always computes the remainder of a division. Suppose you want to find the remainder of dividing 32 by -7. This command shows it to you:
+If you are unsure of your calculations, check them. The % operator of Bash always computes the division remainder. For example, you want to find the remainder of dividing 32 by -7. This command does it:
 {line-numbers: false, format: Bash}
 ```
 echo $((32 % -7))
 ```
 
-The remainder of the division is four.
+This command prints the division remainder that equals four.
 
-Now find the modulo for the same pair of numbers. Use the [online calculator](https://planetcalc.com/8326) for that. Enter the dividend32 in the "Expression" field. Then enter the divisor 7 in the "Modulus" field. Click the "CALCULATE" button. You will get two results:
+Now let's find the modulo for the same pair of numbers. You can use the [online calculator](https://planetcalc.com/8326) for that. First, enter the dividend 32 in the "Expression" field. Then enter the divisor 7 in the "Modulus" field. Finally, click the "CALCULATE" button. You will get two results:
 
 * The "Result" field shows 4.
 * The "Symmetric representation" field shows -3.
 
-The second answer -3 is the modulo. The first one is the remainder.
+The first number 4 is the division remainder. The second number -3 is the modulo that you are looking for.
 
-When do you need the remainder of a division in programming? The most common task is to check a number for parity. For example, it helps to control the integrity of transmitted data in computer networks. This approach is called [**the parity bit**](https://en.wikipedia.org/wiki/Parity_bit).
+When do you need the division remainder in programming? It is often used for checking an integer for parity. For example, there is a widespread approach that controls the integrity of transmitted data in computer networks. It is called the [**parity bit**](https://en.wikipedia.org/wiki/Parity_bit) check. You need to calculate the division remainder there.
 
-I> To check a number for parity, you should find the remainder of its division by 2. If the remainder is zero, then the number is even. Otherwise, it is odd.
+I> To check a number for parity, you should calculate the remainder of its division by 2. If the remainder is zero, then the number is even. Otherwise, it is odd.
 
 There is another task where you need to calculate the remainder. It is the converting of time units. Suppose you want to convert 128 seconds into minutes. Then you should count the number of minutes in 128 seconds. The next step is to add the remainder to the result.
 
-The first step is calculating the number of minutes. Divide 128 by 60 to do that. The result is an incomplete quotient of 2. It means that 128 seconds contains 2 minutes. Calculate the remainder of dividing 128 by 60 to find the remaining seconds. Here is the result:
+Another task that requires calculating the division remainder is converting the time units. For example, you want to convert 128 seconds into minutes.
+
+First, you count the number of minutes in 128 seconds. Divide 128 by 60 to do that. The result equals 2, which is the incomplete quotient. It means that 128 seconds contains 2 minutes.
+
+The second step is calculating the remainder of dividing 128 by 60. This way, you will find the remaining seconds to add. Here is the result:
 {line-numbers: false}
 ```
 r = 128 - 60 * 2 = 8
@@ -693,9 +697,9 @@ Calculating the remainder is useful when working with loops. Suppose that you wa
 
 The modulo operation is widely used in [**cryptography**](https://en.wikipedia.org/wiki/Modulo_operation#Properties_(identities)).
 
-{caption: "Exercise 3-8. Modulo and the remainder of a division", format: text, line-numbers: false}
+{caption: "Exercise 3-8. Modulo and the division remainder", format: text, line-numbers: false}
 ```
-Calculate the remainder of a division and modulo:
+Calculate the division remainder and modulo for the following pairs of numbers:
 
 * 1697 % 13
 * 1697 modulo 13
