@@ -809,30 +809,30 @@ Repeat the calculations for the case when these are the signed integers.
 
 #### Bitwise AND, OR and XOR
 
-The bitwise AND operation resembles the logical AND. The result of the logical AND is "true" when both operands are "true". Any other values of operands lead to the "false" result.
+The bitwise AND operation resembles the logical AND. The result of the logical AND is "true" when both operands are "true". Any other operands lead to the "false" result.
 
-Operands of the bitwise AND are two numbers. You can do this operation in three steps:
+The bitwise AND operate the numbers instead of Boolean expressions. These are steps to perform the bitwise AND manually:
 
-1. Represent numbers in the two's complement.
+1. Represent the numbers in the two's complement.
 
 2. If one number has fewer bits than another, add zeros to its left side.
 
-3. Apply the logical AND operation to each pair of numbers' bits. The pair means two bits from each number that have the same position.
+3. Take the bits of the numbers in the same position and apply the logical AND for them.
 
-Here is an example. We want to calculate the bitwise AND for numbers 5 and 3. First, we should represent them in the two's complement like this:
+Here is an example. You want to calculate the bitwise AND for numbers 5 and 3. First, you should represent them in the two's complement like this:
 {line-numbers: false}
 ```
 5 = 101
 3 = 11
 ```
 
-Number 3 has fewer bits than 5. Thus, we add an extra zero on its left side. This way, we get the following representation:
+The number 3 has fewer bits than 5. Therefore, you have to add an extra zero on its left side. This way, you get the following representation of the number 3:
 {line-numbers: false}
 ```
 3 = 011
 ```
 
-Now we apply the logical AND for bit pairs of the numbers. For convenience, let's write the numbers in columns like this:
+Now you should apply the logical AND for each pair of bits of the numbers. You can write the numbers in columns for convenience:
 {line-numbers: false}
 ```
 101
@@ -841,36 +841,36 @@ Now we apply the logical AND for bit pairs of the numbers. For convenience, let'
 001
 ```
 
-The result is 001. We can translate it in decimal:
+The result equals 001. You can translate it in decimal this way:
 {line-numbers: false}
 ```
 001 = 1
 ```
 
-It means that the bitwise AND operation with numbers 5 and 3 gives 1.
+It means that the bitwise AND for numbers 5 and 3 produces 1.
 
-The ampersand sign denotes the bitwise AND operation in Bash. Here is the command to repeat our calculations and print the result:
+The ampersand sign denotes the bitwise AND operation in Bash. For example, the following command performs our calculations and prints the result:
 {line-numbers: false, format: Bash}
 ```
 echo $((5 & 3))
 ```
 
-The bitwise OR operation works similarly as bitwise AND. But instead of the logical AND, you should perform the logical OR on bit pairs of the numbers.
+The bitwise OR operation works similarly as bitwise AND. The only difference is it applies logical OR instead of AND for each pair of bits.
 
-For example, we want to calculate the bitwise OR for the numbers 10 and 6. First, write them in the two's complement like this:
+Here is an example. Suppose that you need to calculate the bitwise OR for the numbers 10 and 6. First, you should write them in the two's complement representation this way:
 {line-numbers: false}
 ```
 10 = 1010
 6 = 110
 ```
 
-One bit is missing in the number 6. Let's extend it by one zero to get four bits:
+The number 6 is one bit shorter than 10. Then you should extend it by one zero like this:
 {line-numbers: false}
 ```
 6 = 0110
 ```
 
-Now perform the logical OR on bit pairs of the numbers:
+Now you perform the logical OR on each pair of bits of the numbers:
 {line-numbers: false}
 ```
 1010
@@ -879,13 +879,13 @@ Now perform the logical OR on bit pairs of the numbers:
 1110
 ```
 
-The last step is converting the result in decimal:
+The last step is converting the result to decimal:
 {line-numbers: false}
 ```
 1110 = 14
 ```
 
-We got the number 14.
+The number 14 is the result of the bitwise OR.
 
 The vertical bar denotes the bitwise OR in Bash. Here is the command to check our calculations:
 {line-numbers: false, format: Bash}
@@ -893,22 +893,22 @@ The vertical bar denotes the bitwise OR in Bash. Here is the command to check ou
 echo $((10 | 6))
 ```
 
-The bitwise exclusive OR (XOR) operation is similar to the bitwise OR. Here the logical OR is replaced by the **exclusive OR**. The exclusive OR returns "false" only if both operands are the same. In other cases, the result equals "true".
+The bitwise exclusive OR (XOR) operation is similar to the bitwise OR. You should replace the logical OR with the **exclusive OR** when handling the bits of the numbers there. The exclusive OR returns "false" only when both operands have the same values. Otherwise, it returns "true".
 
-Let's calculate the exclusive OR for the numbers 12 and 5. Here is their representation in the two's complement:
+Let's calculate the exclusive OR for the numbers 12 and 5. First, represent them in the two's complement:
 {line-numbers: false}
 ```
 12 = 1100
 5 = 101
 ```
 
-We should supplement the number 5 to four bits:
+Then supplement the number 5 to four bits:
 {line-numbers: false}
 ```
 5 = 0101
 ```
 
-Perform a bitwise exclusive OR for each pair of bits:
+Perform the exclusive OR for each pair of bits:
 {line-numbers: false}
 ```
 1100
@@ -917,13 +917,13 @@ Perform a bitwise exclusive OR for each pair of bits:
 1001
 ```
 
-Convert the result to the decimal:
+Finally, convert the result to decimal:
 {line-numbers: false}
 ```
 1001 = 9
 ```
 
-The caret symbol denotes the exclusive OR in Bash. The following command repeats our calculations:
+The caret symbol denotes the exclusive OR in Bash. For example, the following command checks our calculations:
 {line-numbers: false, format: Bash}
 ```
 echo $((12 ^ 5))
