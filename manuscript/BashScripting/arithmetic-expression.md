@@ -22,7 +22,7 @@ There are three common ways of representing integers in computer memory:
 
 #### Sign-Magnitude Representation
 
-All numbers in the computer's memory are represented in binary form. It means that the computer stores them as a sequence of zeros and ones. A number representation defines how to interpret these zeros and ones.
+All numbers in the computer's memory are represented in binary form. It means that the computer stores them as a sequence of zeros and ones. A number representation defines how to interpret this sequence.
 
 First, we consider the simplest numbers representation that is the sign-magnitude representation or SMR. There are two options to use it:
 
@@ -172,7 +172,7 @@ Let's check if the result is correct. You can convert it from ones' complement t
 
 This is the correct result of adding -7 and 2 and.
 
-The ones' complement solves one of two SMR's problems. Now the CPU adder can operate any signed integers. This solution has one disadvantage. Addition requires two steps when you get a positive number in the result. This drawback slows down computations.
+The ones' complement solves the first of two SMR's problems. Now the CPU adder can operate any signed integers. This solution has one disadvantage. Addition requires two steps when you get a positive number in the result. This drawback slows down computations.
 
 SMR has another problem with zeros. It represents zero in two ways. The ones' complement does not solve it.
 
@@ -722,7 +722,7 @@ Calculate the division remainder and modulo for the following pairs of numbers:
 
 First, we will consider the simplest bitwise operation that is the negation. It is also called bitwise NOT. The tilde symbol indicates this operation in Bash.
 
-When doing bitwise negation, you swap the value of each bit of an integer. It means that you replace each one to zero and vice versa.
+When doing bitwise negation, you swap the value of each bit of an integer. It means that you replace each 1 to 0 and vice versa.
 
 Here is an example of doing bitwise NOT for number 5:
 {line-numbers: false}
@@ -864,7 +864,7 @@ Here is an example. Suppose that you need to calculate the bitwise OR for the nu
 6 = 110
 ```
 
-The number 6 is one bit shorter than 10. Then you should extend it by one zero like this:
+The number 6 is one bit shorter than 10. Then you should extend it by zero like this:
 {line-numbers: false}
 ```
 6 = 0110
@@ -939,7 +939,7 @@ Perform bitwise AND, OR and XOR for the following unsigned two-byte integers:
 
 #### Bit Shifts
 
-A bit shift is a changing of the bit positions in a number.
+A bit shift changes the positions of the bits in a number.
 
 There are three types of bit shifts:
 
@@ -947,72 +947,77 @@ There are three types of bit shifts:
 2. Arithmetic
 3. Circular
 
-The simplest shift is the logical one. Let's take a look at it first.
+The simplest shift type is the logical one. Let's consider it first.
 
-Any bit shift operation takes two operands. The first one is the integer. The operation shifts its bits. The second operand is the number of bits to shift.
+Any bit shift operation takes two operands. The first one is some integer, which bits you want to shift. The second operand is the number of bits to move.
 
-You should represent the integer in the two's complement for doing the logical bit shift. Suppose that you do a shift in the right direction by two bits. Then you discard the two rightmost bits of the integer. Instead of them, add two zeros on the left side.
+Here is an algorithm for doing the logical bit shift:
 
-You can do the shift to the left in the same way. Discard two leftmost bits of the integer. Then add two zeroes on the right side.
+1. Represent the integer in the two's complement.
 
-Here is an example. Perform a logical shift of unsigned single-byte integer 58 to the right by three bits. First, represent the number in the two's complement:
+2. Discard the required amount of bits on the RHS for the right shift and the LHS for the left shift.
+
+3. Append zeroes on the opposite side of the number. This is LHS for the right shift and RHS for the left shift. The amount of zeroes matches the number of shifted bits.
+
+Here is an example. You need to do a logical right shift of the unsigned integer 58 by three bits. The integer occupies one byte of memory.
+
+First, you represent the number in the two's complement:
 {line-numbers: false}
 ```
 58 = 0011 1010
 ```
 
-Then discard the three bits on the right side like this:
+The second step is discarding three bits on the right side of the number this way:
 {line-numbers: false}
 ```
 0011 1010 >> 3 = 0011 1
 ```
 
-Then add zeros to the left side of the result:
-
+Finally, you add zeros to the left side of the result:
 {line-numbers: false}
 ```
 0011 1 = 0000 0111 = 7
 ```
 
-The result of the shift is the number 7.
+The number 7 is the result of the shift.
 
-Now shift the number 58 to the left by three bits. We get the following result:
+Now let's do the left bit shift of the number 58 by three bits. You will get the following result:
 {line-numbers: false}
 ```
 0011 1010 << 3 = 1 1010 = 1101 0000 = 208
 ```
 
-Here we follow the same algorithm as for the right shift. First, discard the outermost bits on the left side. Then add zeros to the right side.
+Here you follow the same algorithm as for the right shift. First, discard three leftmost bits. Then add zeros to the right side of the result.
 
-Now let's consider the second type of shift that is the arithmetic shift. If you do it to the left, you follow the logical shift algorithm. The steps are entirely the same.
+Now let's consider the second bit shift type that is the arithmetic shift. When you do it to the left side, you follow the logical shift algorithm. The steps are entirely the same.
 
-The arithmetic shift to the right differs from the logical shift to the right. When performing it, you should discard the bits on the right side. Then complete the result with the bits on the left side. Their value should match the highest bit of the integer. If it equals one, add ones to the right. Otherwise, add zeros. This way, we keep the sign of the integer unchanged after the shifting.
+The arithmetic shift to the right side differs from the logical shift. The first two steps are the same. You should convert the source integer in the two's complement and discard the bits on its right side. Then you append the same amount of bits on the left side. Their value matches the leftmost bit of the integer. If it equals one, you add ones. Otherwise, add zeros. This way, you keep the sign of the integer unchanged after the shifting.
 
-For example, let's do an arithmetic shift of the signed one-byte integer -105 to the right by two bits.
+Here is an example. Suppose that you need to do an arithmetic shift of the signed integer -105 to the right by two bits. The integer occupies one byte of memory.
 
-First, we represent the number in the two's complement like this:
+First, you represent the number in the two's complement like this:
 {line-numbers: false}
 ```
 -105 = 1001 0111
 ```
 
-Now do the arithmetic shift to the right by two bits. We get:
+Then you shift it to the right by two bits this way:
 {line-numbers: false}
 ```
 1001 0111 >> 2 -> 1001 01 -> 1110 0101
 ```
 
-The highest bit of the integer equals one in our case. Thus, we complement the result with two ones on the left side.
+The leftmost bit of the integer equals one in this case. Therefore, you complement the result with ones on the left side.
 
-This way, we got a negative number in the two's complement. Let's convert it to SMR and get the decimal like this:
+This way, you get a negative number in the two's complement representation. You can convert it to decimal this way:
 {line-numbers: false}
 ```
 1110 0101 = 1001 1011 = -27
 ```
 
-The result of the shift is the number -27.
+The number -27 is the result of the bit shift operation.
 
-Bash has operators << and >>. They do arithmetic shifts. The following commands repeat our calculations:
+Bash has operators << and >>. They do arithmetic bit shifts. The following commands check your calculations:
 {line-numbers: true, format: Bash}
 ```
 $ echo $((58 >> 3))
@@ -1025,23 +1030,23 @@ $ echo $((-105 >> 2))
 -27
 ```
 
-Bash gives another result for shifting 58 to the left by three bits. We got 208 in this case. It happens because Bash always operates with eight-byte integers.
+Bash provides another result for shifting 58 to the left by three bits. It equals 208. It happens because Bash always operates eight-byte integers.
 
-The last type of bit shift is circular. You can rarely meet it when programming. Therefore, most programming languages do not have built-in operators for circular shifts.
+The third bit shift type is circular. It is used in programming rarely. Therefore, most programming languages do not have built-in operators for circular shifts.
 
-In the cyclic shift, the discarded bits appear in the vacated place at the other side of the number.
+When doing the cyclic bit shift, you should append the discarded bits from one side of the number to another side.
 
-Here is an example of the circular shift of the number 58 to the right by three bits:
+Here is an example of the circular bit shift of the number 58 to the right by three bits:
 {line-numbers: false}
 ```
 0011 1010 >> 3 = 010 0011 1 = 0100 0111 = 71
 ```
 
-We have discarded bits 010 on the right side. Then they appeared on the left side of the result.
+You should discard bits 010 on the right side of the number. Then add them on the left side.
 
 {caption: "Exercise 3-11. Bit shifts", format: text, line-numbers: false}
 ```
-Perform arithmetic bit shifts of the following signed two-byte integers:
+Perform arithmetic bit shifts for the following signed two-byte integers:
 
 * 25649 >> 3
 * 25649 << 2
