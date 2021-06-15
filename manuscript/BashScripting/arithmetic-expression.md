@@ -1221,17 +1221,17 @@ This condition is true if the `var` variable equals zero.
 
 ### Increment and Decrement
 
-The increment and decrement operations first appeared in the [programming language B](https://en.wikipedia.org/wiki/B_(programming_language)). Ken Thompson and Dennis Ritchie developed it in 1969 while working at Bell Labs. Dennis Ritchie later transferred these operations to his new language called C. Bash copied them from C.
+The increment and decrement operations first appeared in the [programming language B](https://en.wikipedia.org/wiki/B_(programming_language)). Ken Thompson and Dennis Ritchie developed it in 1969 while working at Bell Labs. Dennis Ritchie moved these operations later to his new language called C. Bash copied them from C.
 
-First, let's consider the assignment operations. It helps to get the meaning of increment and decrement. A regular assignment in arithmetic evaluation looks like this:
+First, let's consider the assignment operations. It helps you to get how increment and decrement work. A regular assignment in arithmetic evaluation looks like this:
 {line-numbers: false, format: Bash}
 ```
 ((var = 5))
 ```
 
-This command assigns the integer 5 to the variable.
+This command assigns the number 5 to the `var` variable.
 
-Bash allows you to combine an assignment with arithmetic or bitwise operation. Here is an example of simultaneous addition and assignment:
+Bash allows you to combine an assignment with arithmetic or bitwise operation. The following command does addition and assignment at the same time:
 {line-numbers: false, format: Bash}
 ```
 ((var += 5))
@@ -1239,13 +1239,13 @@ Bash allows you to combine an assignment with arithmetic or bitwise operation. H
 
 The command performs two actions:
 
-1. It adds the integer 5 to the current value of the `var` variable.
+1. It adds the number 5 to the current value of the `var` variable.
 
-2. It writes the result to the variable `var`.
+2. It writes the result back to the `var` variable.
 
-All other assignment operations work the same way. First, they do a mathematical or bitwise operation. Second, they assign the result to the variable. The assignments' syntax makes the code shorter and clearer.
+All other assignment operations work the same way. First, they do a mathematical or bitwise operation. Second, they assign the result to the variable. Using assignments makes your code shorter and clearer.
 
-Now we are ready to consider the increment and decrement operations. They have two forms: postfix and prefix. They are written in different ways. The ++ and -- signs come after the variable name in the postfix form. They come before the variable name in the prefix form.
+Now we will consider the increment and decrement operations. They have two forms: postfix and prefix. You should write them in different ways. The ++ and -- signs come after the variable name in the postfix form. They come before the variable name in the prefix form.
 
 Here is an example of the prefix increment:
 {line-numbers: false, format: Bash}
@@ -1259,15 +1259,15 @@ This command provides the same result as the following assignment operation:
 ((var+=1))
 ```
 
-The increment operation increases the variable's value by one. The decrement operation decreases it by one.
+The increment operation increases the variable's value by one. Decrement decreases it by one.
 
-Why does it make sense to introduce separate operations for adding and subtracting one? The Bash language has similar assignments like += and -=.
+Why does it make sense to introduce special operations for adding and subtracting one? The Bash language has assignments += and -= that you can use instead.
 
-The most probable reason to add increment and decrement to the programming language is a [loop counter](https://en.wikipedia.org/wiki/For_loop#Loop_counters). This counter keeps the number of loop iterations. When you want to interrupt the loop, you check its counter in a condition. The result defines if you should interrupt the loop or not.
+The most probable reason for introducing the increment and decrement is managing a [loop counter](https://en.wikipedia.org/wiki/For_loop#Loop_counters). This counter keeps the number of loop iterations. When you want to interrupt the loop, you check its counter in a condition. The result defines if you should interrupt the loop or not.
 
-Increment and decrement make it easier to serve the loop counter. Besides that, modern processors perform these operations at the hardware level. Therefore, they work faster than addition and subtraction combined with the assignment.
+Increment and decrement make it easier to serve the loop counter. Besides that, modern processors perform these operations on the hardware level. Therefore, they work faster than addition and subtraction combined with the assignment.
 
-What is the difference between prefix and postfix forms of increment? If the expression consists only of an increment operation, it gives the same result for both forms.
+What is the difference between prefix and postfix forms of increment? If the expression consists only of an increment operation, you get the same result for both forms.
 
 For example, the following two commands increase the variable's value by one:
 {line-numbers: true, format: Bash}
@@ -1276,14 +1276,14 @@ For example, the following two commands increase the variable's value by one:
 ((var++))
 ```
 
-The difference between the increment forms appears when assigning the result to a variable. Here is an example:
+The difference between the increment forms appears when you assign the result to some variable. Here is an example:
 {line-numbers: true, format: Bash}
 ```
 var=1
 ((result = ++var))
 ```
 
-After these two commands, both variables `result` and `var` store the integer 2. It means that the prefix increment first adds one and then returns the result.
+After executing these two commands, both variables `result` and `var` store the number 2. It happens because the prefix increment first adds one and then returns the result.
 
 If you break the prefix increment into steps, you get the following commands:
 {line-numbers: true, format: Bash}
@@ -1293,14 +1293,14 @@ var=1
 ((result = var))
 ```
 
-The postfix increment behaves differently. Here we change the increment's form in our example:
+The postfix increment behaves differently. Let's change the increment's form in our example:
 {line-numbers: true, format: Bash}
 ```
 var=1
 ((result = var++))
 ```
 
-These commands write the integer 1 to the `result` variable and the integer 2 to the `var` variable. Thus, postfix increment returns the value first. Then it adds one.
+These commands write the number 1 to the `result` variable and the number 2 to the `var` variable. It happens because the postfix increment returns the current value of the variable first. Then it adds one to this value and writes the result back to the variable.
 
 If you break the postfix increment into steps, you get the following commands:
 {line-numbers: true, format: Bash}
@@ -1311,19 +1311,19 @@ var=1
 ((result = tmp))
 ```
 
-Note the order of steps in the postfix increment. First, it increments the `var` variable by one. Then it returns the past value of `var`. Therefore, the increment requires the temporary variable `tmp` to store the past value.
+Note the order of steps in the postfix increment. First, it increments the `var` variable by one. Then it returns the previous value of `var`. Therefore, the increment needs the temporary variable `tmp` to store this previous value.
 
-The postfix and prefix forms of decrement work similarly to increment.
+The postfix and prefix forms of decrement work similarly to increment. They decrease the variable by one.
 
-Always use the prefix increment and decrement instead of the postfix form. First, the CPU performs them faster. The reason is it does not need to save the past value of the variable in the registers. Second, it is easier to make an error using the postfix form. It happens because of the non-obvious assignment order.
+Always use the prefix increment and decrement instead of the postfix form. First, the CPU performs them faster. The reason is it does not need to save the previous value of the variable in the registers. Second, it is easier to make an error using the postfix form. It happens because of the non-obvious order of assignments.
 
 ### Ternary Operator
 
-The ternary operator is also known as the conditional operator and **ternary if**. It first appeared in the programming language [ALGOL](https://en.wikipedia.org/wiki/ALGOL). The operator turned out to be convenient and in demand by programmers. Therefore, the languages of the next generation ([BCPL](https://en.wikipedia.org/wiki/BCPL) and C) inherited ternary if. Then it comes to almost all modern languages: C++, C#, Java, Python, PHP, etc.
+The ternary operator is also known as the conditional operator and **ternary if**. The first time, it appeared in the programming language [ALGOL](https://en.wikipedia.org/wiki/ALGOL). The operator turned out to be convenient and many programmers liked it. The languages of the next generation ([BCPL](https://en.wikipedia.org/wiki/BCPL) and C) inherited the ternary if. This way, it comes to almost all modern languages: C++, C#, Java, Python, PHP, etc.
 
-A ternary operator is a compact form of the `if` statement.
+The ternary operator is a compact form of the `if` statement.
 
-Here is an example. Suppose that there is the following `if` statement in the script:
+Here is an example. Suppose that your script has the following `if` statement:
 {line-numbers: true, format: Bash}
 ```
 if ((var < 10))
@@ -1336,21 +1336,21 @@ fi
 
 Here the `result` variable gets the zero value if `var` is less than 10. Otherwise, `result` gets the value of `var`.
 
-The ternary operator can provide the same behavior as our `if` statement. The operator looks like this:
+You can get the same behavior using the ternary operator. It looks like this:
 {line-numbers: false, format: Bash}
 ```
 ((result = var < 10 ? 0 : var))
 ```
 
-Here we replaced six lines of the `if` statement with one line.
+The ternary operator replaced six lines of the `if` statement with one line. This way, you got simpler and clearer code.
 
-A ternary operator consists of a conditional expression and two actions. It looks like this in the general form:
+The ternary operator consists of a conditional expression and two actions. Its general form looks like this:
 {line-numbers: false}
 ```
 (( CONDITION ? ACTION_1 : ACTION_2 ))
 ```
 
-If the CONDITION is true, Bash executes the ACTION_1. Otherwise, it executes the ACTION_2. This behavior matches the `if` statement. Let's write it down in the general form too:
+If the CONDITION is true, Bash executes the ACTION_1. Otherwise, it executes the ACTION_2. This behavior matches the following `if` statement:
 {line-numbers: true}
 ```
 if CONDITION
@@ -1361,8 +1361,6 @@ else
 fi
 ```
 
-Compare the ternary operator and the `if` statement.
-
-Unfortunately, Bash only allows the ternary operator in arithmetic evaluation and expansion. It means that the operator accepts only arithmetic expressions as actions. You cannot call commands and utilities as it happens in the code blocks of the `if` statement. There is no such restriction in other programming languages.
+Unfortunately, Bash allows the ternary operator in arithmetic evaluation and expansion only. It means that the operator accepts arithmetic expressions as actions. You cannot call commands and utilities there, as you do it in the code blocks of the `if` statement. There is no such restriction in other programming languages.
 
 Use the ternary operator as often as possible. It is considered a good practice. The operator makes your code compact and easy to read. The less code has less room for potential errors.
