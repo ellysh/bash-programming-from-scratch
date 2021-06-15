@@ -1,16 +1,16 @@
 ## Loop Constructs
 
-Conditional statements manage the [**control flow**](https://en.wikipedia.org/wiki/Control_flow) of a program. The control flow is the order in which the operators and commands of a program are executed.
+You have learned the conditional statements. They manage the [**control flow**](https://en.wikipedia.org/wiki/Control_flow) of a program. The control flow is the execution order of the program's commands.
 
-The conditional operator chooses a branch of execution depending on the Boolean expression. This operator is not enough sometimes. You want additional features to manage the control flow. [**Loop constructs**](https://en.wikipedia.org/wiki/Control_flow#Loops) solve tasks that the conditional operator cannot handle.
+The conditional statement chooses a branch of execution depending on the result of a Boolean expression. However, this statement is not enough in some cases. You need extra features to manage the control flow. The [**loop construct**](https://en.wikipedia.org/wiki/Control_flow#Loops) helps you to handle these cases.
 
-The loop construct repeats the same block of commands multiple times. The single execution of this block is called the **loop iteration**. At each iteration, the loop checks its condition. The check result defines to perform the next iteration or not.
+The loop construct repeats the same block of commands multiple times. The single execution of this block is called the **loop iteration**. The loop checks its condition after each iteration. The check result defines if the next iteration should be executed.
 
 ### Repetition of Commands
 
-Why do you need to repeat the same block of commands in a program? Several examples will help us to answer this question.
+Why does somebody need to repeat the same block of commands in his program? Several examples will help us to answer this question.
 
-We are already familiar with the `find` utility. It looks for files and directories on the hard disk. If you add the `-exec` option to the `find` call, you can specify an action. The utility performs this action on each object found.
+You are already familiar with the `find` utility. It looks for files and directories on the disk drive. If you add the `-exec` option to the `find` call, you can specify some action. The utility performs this action for each found object.
 
 For example, the following command deletes all PDF documents in the `~/Documents` directory:
 {line-numbers: false, format: Bash}
@@ -18,19 +18,19 @@ For example, the following command deletes all PDF documents in the `~/Documents
 find ~/Documents -name "*.pdf" -exec rm {} \;
 ```
 
-In this case, `find` calls the `rm` utility several times. It passes the next found file on each call. It means that the `find` utility executes a loop. The loop ends when all the files found have been processed.
+Here `find` calls the `rm` utility several times. It passes the next found file on each call. It means that the `find` utility executes the loop implicitly. The loop ends when `find` finishes the processing of all found files.
 
-The `du` utility is another example of the repetition of commands. The utility estimates the amount of disk space used on the disks. It has an optional parameter. The parameter sets the path where the estimation starts.
+The `du` utility is another example of the repetition of commands. The utility estimates the amount of occupied disk space. It has one optional parameter. The parameter sets the path to start the estimation.
 
-You can call `du` like this, for example:
+Here is an example of the `du` call:
 {line-numbers: false, format: Bash}
 ```
 du ~/Documents
 ```
 
-Here the utility recursively traverses all `~/Documents` subdirectories. It adds the size of each file found to the final result. This way, incrementing the result value repeats over and over again.
+Here the utility traverses all `~/Documents` subdirectories recursively. It adds the size of each found file to the final result. This way, incrementing the result repeats several times.
 
-The `du` utility has an internal loop. It traverses over all files and subdirectories. There are the same actions on each loop iteration. The only difference is the checked file system object.
+The `du` utility performs the loop implicitly. It traverses over all files and subdirectories. It does the same actions on each loop iteration. The only difference is the checked file system object.
 
 Repetition of operations happens in mathematical calculations often. A canonical example is the calculation of [**factorial**](https://en.wikipedia.org/wiki/Factorial). The factorial of the number N is a multiplication of natural numbers from 1 to N inclusive.
 
