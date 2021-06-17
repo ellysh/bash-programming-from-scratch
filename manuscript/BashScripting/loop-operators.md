@@ -66,9 +66,9 @@ This list is far from being complete. It demonstrates just the most common progr
 
 ### While Statement
 
-There are two loop operators in Bash: `while` and `for`. First, we will consider the `while` statement. It works simpler than `for`.
+Bash provides two loop operators: `while` and `for`. We will start with the `while` statement because it is more straightforward than `for`.
 
-The `while` syntax resembles the `if` statement. It looks like this in general:
+The `while` syntax resembles the `if` statement. If you write `while` in the general form, it looks this way:
 {line-numbers: true, format: Bash}
 ```
 while CONDITION
@@ -83,25 +83,35 @@ You can write the `while` statement in one line:
 while CONDITION; do ACTION; done
 ```
 
-The CONDITION is a single command or block of commands. The same is true for the ACTION. It resembles the `if` statement again. The ACTION is called the **loop body**.
+Both CONDITION and ACTION can be a single command or block of commands. The ACTION is called the **loop body**.
 
-Bash checks the CONDITION of the `while` statement first. If the CONDITION command returns null exist status, it equals "true". In this case, Bash executes the ACTION. Then it checks the CONDITION again. If it is still true, the ACTION is performed again. The loop execution stops when the CONDITION becomes "false".
+When Bash executes the `while` loop, it checks the CONDITION first. If a command of the CONDITION returns the zero exit status, it means "true". Bash executes the ACTION in the loop body in this case. Then it rechecks the CONDITION. If it still equals "true", the ACTION is performed again. The loop execution stops when the CONDITION becomes "false".
 
-Use the while loop when you do not know the number of iterations beforehand. The example is busy waiting for some event.
+Use the `while` loop when you do not know the number of iterations beforehand. A good example of this case is busy waiting for some event.
 
-Let's write a script with the `while` statement. It should check if the server is available on the Internet. The simplest way for that is by sending a request to the server. When the server replies, the script displays a message and stops.
+Suppose that you write a script that checks if some web server is available. The simplest check looks this way:
 
-We can call the [`ping`](https://en.wikipedia.org/wiki/Ping_(networking_utility)) utility to send a request to the server. The utility uses the [ICMP](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol) **protocol**. The protocol is an agreement for the format of the messages between the computers on the network. The ICMP protocol describes the format of the messages to serve the network. You need them, for example, to check if some computer is available.
+1. Send a request to the server.
 
-The `ping` utility takes one mandatory input parameter. It is [URL](https://en.wikipedia.org/wiki/URL) or [IP address](https://en.wikipedia.org/wiki/IP_address) of the target **host**. A host is any computer or device connected to the network.
+2. Receive the response.
 
-Here is the command to call the `ping` utility:
+3. If there is no response, the server is unavailable.
+
+When the script receives the response from the server, it should print a message and stop.
+
+You can call the [`ping`](https://en.wikipedia.org/wiki/Ping_(networking_utility)) utility to send a request to the server. The utility uses the [ICMP](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol) **protocol**.
+
+The protocol is an agreement for the format of messages between the computers of the network. The ICMP protocol describes the messages to serve the network. For example, you need them to check if some computer is available.
+
+When calling the `ping` utility, you should specify an [IP address](https://en.wikipedia.org/wiki/IP_address) or [URL](https://en.wikipedia.org/wiki/URL) of the target **host**. A host is a computer or device connected to the network.
+
+Here is an example of the `ping` call:
 {line-numbers: false, format: Bash}
 ```
 ping google.com
 ```
 
-We have specified the Google server as the target host. The utility sends ICMP messages to it. The server replies to each of them. The output of the utility looks like this:
+We have specified the Google server as the target host. The utility sends ICMP messages there. The server replies to them. The utility output looks like this:
 {line-numbers: true, format: Bash}
 ```
 PING google.com (172.217.21.238) 56(84) bytes of data.
@@ -109,25 +119,25 @@ PING google.com (172.217.21.238) 56(84) bytes of data.
 64 bytes from fra16s13-in-f14.1e100.net (172.217.21.238): icmp_seq=2 ttl=51 time=18.5 ms
 ```
 
-You see information about each ICMP message sent by the utility. The "time" field means the delay between sending the request and receiving the server's response.
+You see information about each sent and received ICMP message. The "time" field means the delay between sending the request and receiving the server response.
 
-The utility runs in an infinite loop by default. You can stop it by pressing Ctrl+C.
+The utility runs in the infinite loop by default. You can stop it by pressing Ctrl+C.
 
-You do not need to send several requests to check the availability of a server. It is sufficient to send a single ICMP message instead. The `-c` option of the `ping` utility specifies the number of messages to send. Here is an example of how to use it:
+You do not need to send several requests to check if some server is available. It is sufficient to send a single ICMP message instead. The `-c` option of the `ping` utility specifies the number of messages to send. Here is an example of how to use it:
 {line-numbers: false, format: Bash}
 ```
 ping -c 1 google.com
 ```
 
-If the `google.com` server is available, the utility returns the zero exit status. Otherwise, it returns non-zero.
+If the `google.com` server is available, the utility returns the zero exit status. Otherwise, it returns a non-zero value.
 
-The `ping` utility waits for the server's response until you do not interrupt it. The `-W` option limits the waiting time to one second. Using the option, we get the following command:
+The `ping` utility expects the server response until you do not interrupt it. The `-W` option limits this waiting time. You can specify one second to wait this way:
 {line-numbers: false, format: Bash}
 ```
 ping -c 1 -W 1 google.com
 ```
 
-Now we have the condition for the `while` statement. Let's write the whole statement like this:
+Now you have the condition for the `while` statement. There is time to write this statement:
 {line-numbers: true, format: Bash}
 ```
 while ! ping -c 1 -W 1 google.com &> /dev/null
@@ -136,23 +146,22 @@ do
 done
 ```
 
-The output of the `ping` utility is not interested in our case. Therefore, we redirect it to the `/dev/null` file.
+The output of the `ping` utility does not matter in our case. Therefore, you can redirect it to the `/dev/null` file.
 
-We invert the `ping` result in the `while` condition. Therefore, Bash executes the loop's body as long as the utility returns a non-zero exit status. It means that the loop continues as long as the server is unavailable.
+The exit status of the `ping` utility is inverted in our `while` condition. Therefore, Bash executes the loop body as long as the utility returns a non-zero exit status. It means that the loop continues as long as the server stays unavailable.
 
-We call the `sleep` utility in the loop's body. It stops the script for the specified number of seconds. The stop lasts for one second in our case.
+The loop body contains the `sleep` utility call only. It stops the script execution for the specified number of seconds. The stop lasts for one second in our case.
 
-I> You can specify a suffix for the parameter when using the `sleep` utility. It defines units of time. The suffix
-"s" matches seconds. It is "m" for minutes, "h" for hours and "d" for days.
+I> You can specify a suffix for a parameter when calling the `sleep` utility. The suffix defines the units of time. The suffix "s" matches seconds. It is "m" for minutes, "h" for hours and "d" for days.
 
-Listing 3-18 shows a complete script for checking server availability.
+Listing 3-18 shows the complete script for checking server availability.
 
 {caption: "Listing 3-18. Script for checking server availability", line-numbers: true, format: Bash}
 ![`while-ping.sh`](code/BashScripting/while-ping.sh)
 
-The `while` statement has an alternative form called `until`. Here the ACTION is executed as long as the CONDITION is "false". It means that the loop continues as long as the CONDITION returns a non-zero exit status. Use the `until` statement when you want to invert the condition of the `while` loop.
+The `while` statement has an alternative form called `until`. It executes the ACTION until the CONDITION stays "false". It means that the loop continues as long as the CONDITION returns a non-zero exit status. Use the `until` statement when you need to invert the condition of the `while` loop.
 
-Here is the `until` statement in general:
+The general form of the `until` statement looks this way:
 {line-numbers: true}
 ```
 until CONDITION
@@ -161,20 +170,20 @@ do
 done
 ```
 
-You can write it in one line the same way as `while`:
+You can write it in one line, the same way as you do it for `while`:
 {line-numbers: false}
 ```
 until CONDITION; do ACTION; done
 ```
 
-Let's replace the `while` statement with `until` in Listing 3-18. You should remove the negation of the `ping` utility result for that. Listing 3-19 shows the resulting script.
+Let's replace the `while` statement with `until` in Listing 3-18. You should remove the negation of the `ping` result for that. Listing 3-19 shows the changed script.
 
 {caption: "Listing 3-19. Script for checking server availability", line-numbers: true, format: Bash}
 ![`until-ping.sh`](code/BashScripting/until-ping.sh)
 
 The scripts in Listing 3-18 and Listing 3-19 behave the same.
 
-Choose the `while` or `until` statement depending on the loop condition. Try to avoid negations in conditions. Negations make the code harder to read.
+Choose the `while` or `until` statement, depending on the loop condition. Your goal is to avoid negations there. Negations make the code harder to read.
 
 #### Infinite Loop
 
