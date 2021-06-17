@@ -30,9 +30,9 @@ du ~/Documents
 
 Here the utility traverses all `~/Documents` subdirectories recursively. It adds the size of each found file to the final result. This way, incrementing the result repeats several times.
 
-The `du` utility performs the loop implicitly. It traverses over all files and subdirectories. It does the same actions on each loop iteration. The only difference is the checked file system object.
+The `du` utility performs a loop implicitly. The loop traverses over all files and subdirectories. It does the same actions on each iteration. The only difference between iterations is a file system object to check.
 
-Repetition of operations happens in mathematical calculations often. A canonical example is the calculation of [**factorial**](https://en.wikipedia.org/wiki/Factorial). The factorial of the number N is a multiplication of natural numbers from 1 to N inclusive.
+You can meet the repetition of operations in regular mathematical calculations. A canonical example here is the calculation of [**factorial**](https://en.wikipedia.org/wiki/Factorial). The factorial of the number N is a multiplication of natural numbers from 1 to N inclusive.
 
 Here is an example of calculating the factorial of number 4:
 {line-numbers: false, format: Bash}
@@ -40,29 +40,29 @@ Here is an example of calculating the factorial of number 4:
 4! = 1 * 2 * 3 * 4 = 24
 ```
 
-You can calculate the factorial easily by using the loop operator. The loop should pass through the integers from 1 to N in sequence. Multiply each integer to the final result on the loop iteration. This way, you repeat the multiplication operation several times.
+You can calculate the factorial easily when using the loop. The loop should pass through the integers from 1 to N in sequence. You should multiply the final result by each passed integer. This way, you repeat the multiplication operation several times.
 
-Here is the last example of repetition actions in a computer system. Repetition helps to manage some events.
+Here is the last example of action repetition in a computer system. Repetition is an effective approach to manage some events.
 
-Suppose that you write a program. It downloads files to your computer from the Internet. First, the program establishes a connection to a server. If the server doesn't respond, the program has two options to do. The first one is to terminate with a non-zero exit status. The second option is to wait for the server's response. This option is preferable. There are many reasons why the server's response delays. There is an overload of the network or the server, for example. A couple of seconds waiting is enough to get a response. Then our program can continue to work.
+Suppose that you write a program. It downloads files to your computer from the Internet. First, the program establishes a connection to a server. If the server doesn't respond, the program has two options to do. The first one is to terminate with a non-zero exit status. The second option is to wait for the server response. This behavior of the program is preferable. There are many reasons why the packets from the server can delay. It can be an overload of the network, for example. Waiting for a couple of seconds is enough to get the packet. Then your program can continue to work.
 
-Now the question arises: how can you wait for the event to occur in the program? The easiest way is to use the loop operator. Its condition should check if the event occurs. In this case, the operator stops.
+Now the question arises: how can you wait for the event to occur in the program? The easiest way to get it is using a loop operator. The operator's condition should check if the event occurs. When it happens, the operator stops.
 
-Let's come back to our example. The loop should stop when the program receives a response from the server. While it does not happen, the loop continues. You do not need any actions on each loop's iteration. Thus, you can leave this code block empty. This technique is called [**busy waiting**](https://en.wikipedia.org/wiki/Busy_waiting).
+Let's come back to our example. The loop should stop when the program receives a response from the server. While it does not happen, the loop continues. You do not need any actions on each iteration. Instead, you leave the loop body empty. This technique is called [**busy waiting**](https://en.wikipedia.org/wiki/Busy_waiting).
 
-You can optimize the busy waiting. Replace the loop's empty code block with a command that stops the program for a short while. This way, OS gets a chance to execute another task while your program is waiting.
+Busy waiting does nothing but can consume a lot of CPU time. This is a reason why you should optimize it when possible. Add the command, which stops the program for a short time, to the loop body. It gives OS a chance to execute another task while your program is waiting.
 
-We have considered several examples where the program repeats the same actions. Let's write down the tasks that we have solved in each example. Here is the list:
+We have considered examples when the program repeats the same action several times. Let's write down the tasks that such repetition solves:
 
-1. Process of multiple entities monotonously. The `find` utility processes the search results this way.
+1. Process multiple entities monotonously. The `find` utility processes the search results this way.
 
-2. Apply the intermediate data to accumulate the final result. The `du` utility does it for collecting statistics.
+2. Accumulate intermediate data for calculating the final result. The `du` utility does it for collecting statistics.
 
-3. Mathematical calculations. You can calculate factorial using the loop operator.
+3. Mathematical calculations. You can calculate factorial using the loop.
 
-4. Wait for some event to happen. You can wait for the server's response in a busy waiting loop.
+4. Wait for some event to happen. You can wait for the server response in the busy waiting loop.
 
-The list is far from being complete. These are just the most common programming tasks that require a loop operator.
+This list is far from being complete. It demonstrates just the most common programming tasks that require the loop operator.
 
 ### While Statement
 
