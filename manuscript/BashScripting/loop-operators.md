@@ -393,13 +393,13 @@ This script behaves the same way as the one in Listing 3-10.
 
 ### For Statement
 
-There is another loop statement in Bash called `for`. Unlike `while`, use it when you know the number of iterations in advance.
+There is another loop statement in Bash called `for`. You should use it when you know the number of iterations in advance.
 
-The `for` statement has two forms. The first one processes words in a string sequentially. The second form applies an arithmetic expression in the loop's condition.
+The `for` statement has two forms. The first one processes words in a string sequentially. The second form applies an arithmetic expression in the loop condition.
 
 #### The First Form of For
 
-Let's start with the first form of the `for` statement. It looks like this in general:
+Let's start with the first form of the `for` statement. It looks this way in the general form:
 {line-numbers: true, format: Bash}
 ```
 for VARIABLE in STRING
@@ -414,26 +414,28 @@ You can write the same construction in a single line like this:
 for VARIABLE in STRING; do ACTION; done
 ```
 
-The ACTION in the `for` statement is a single command or a block of commands. It is the same as in the `while` statement.
+The ACTION of the `for` statement is a single command or a block of commands. It is the same thing as the one in the `while` statement.
 
-Bash performs all expansions in the `for` condition before starting the first iteration of the loop. What does it mean? Suppose you specified the command instead of a STRING. Then Bash executes this command and replaces it with its output. Also, you can specify a pattern instead of STRING. Then Bash expands it before starting the loop.
+Bash performs all expansions in the `for` condition before starting the first iteration of the loop. What does it mean? Suppose you specified the command instead of the STRING. Then Bash executes this command and replaces it with its output. Also, you can specify a pattern instead of the STRING. Then Bash expands it before starting the loop.
 
-BASH splits the STRING into words when there are no commands or patterns left in the `for` condition. It takes separators for splitting from the `IFS` variable.
+Bash splits the STRING into words when there are no commands or patterns left in the `for` condition. It takes the separators for splitting from the `IFS` variable.
 
-Then Bash executes the first iteration of the loop. The first word of the STRING is available via VARIABLE inside the loop body on the first iteration. Then Bash writes the second word of the STRING to the VARIABLE and starts the second iteration. It happens again and again until we pass all words of the STRING.
+Then Bash executes the first iteration of the loop. The first word of the STRING is available via the VARIABLE inside the loop body on the first iteration. Then Bash writes the second word of the STRING to the VARIABLE and starts the second iteration. It happens again and again until you handle all words of the STRING.
 
-Here is an example of the `for` loop. We want to write a script to print words in a string one by one. The script receives the string via the first parameter.
-
-Listing 3-23 shows the script.
+Here is an example of the `for` loop. Suppose that you need a script that prints words of a string one by one. The script receives the string via the first parameter. Listing 3-23 shows how its code looks like.
 
 {caption: "Listing 3-23. The script for printing words of a string", line-numbers: true, format: Bash}
 ![`for-string.sh`](code/BashScripting/for-string.sh)
 
-Here you should not enclose the position parameter `$1` in quotes. Quotes prevent word splitting, but we want it in this case. Otherwise, Bash passes the whole string to the first iteration of the `for` loop. Then the loop finishes. We do not want this behavior. The script should process each word of the string separately.
+Here you should not enclose the position parameter `$1` in quotes. Quotes prevent word splitting. Without word splitting, Bash passes the whole string to the first iteration of the `for` loop. Then the loop finishes. You do not want this behavior. The script should process each word of the string separately.
 
-When you call the script, you should enclose the input string in double-quotes. Then the whole string comes into the `$1` parameter. Here is an example of calling the script:
+When you call the script, you should enclose the input string in the double quotes. Then the whole string comes into the `$1` parameter. Here is an example of calling the script:
+{line-numbers: false, format: Bash}
+```
+./for-string.sh "this is a string"
+```
 
-There is a way to get rid of the double-quotes when calling the script. Replace the `$1` parameter in the `for` condition with `$@`. Then the loop statement becomes like this:
+There is a way to get rid of the double quotes when calling the script. Replace the `$1` parameter in the `for` condition with `$@`. Then the loop statement becomes like this:
 {line-numbers: true, format: Bash}
 ```
 for word in $@
@@ -449,7 +451,7 @@ Now both following script calls work properly:
 ./for-string.sh "this is a string"
 ```
 
-The `for` loop condition has a short form. Use it when you want to pass through all input parameters of the script. This short form looks like this:
+The `for` loop condition has a short form. Use it when you need to handle all input parameters of the script. This short form looks this way:
 {line-numbers: true, format: Bash}
 ```
 for word
@@ -458,16 +460,16 @@ do
 done
 ```
 
-It does the same as the script in Listing 3-23. We just dropped the "in $@" part in the condition. It did not change the loop behavior.
+It does the same as the script in Listing 3-23. The only difference is dropping the "in $@" part in the `for` condition. It did not change the loop behavior.
 
-Let's make the task a bit more complicated. Suppose the script receives a list of paths on input. Commas separate them. The paths may contain spaces. We should redefine the `IFS` variable to process such input correctly.
+Let's make the task a bit more complicated. Suppose the script receives a list of paths in input parameters. They are separated by commas. The paths may contain spaces. Then you should redefine the `IFS` variable to process such input correctly.
 
-Listing 3-24 shows the `for` loop to print the list of paths.
+Listing 3-24 shows the `for` loop that prints the list of paths.
 
 {caption: "Listing 3-24. The script for printing the list of paths", line-numbers: true, format: Bash}
 ![`for-path.sh`](code/BashScripting/for-path.sh)
 
-We have specified only one allowable delimiter in the `IFS` variable. The delimiter is the comma. Therefore, the `for` loop ignores spaces when splitting the input string.
+You have specified only one allowable delimiter in the `IFS` variable. This delimiter is the comma. Therefore, the `for` loop ignores spaces when splitting the input string.
 
 You can call the script this way:
 {line-numbers: false, format: Bash}
@@ -475,21 +477,29 @@ You can call the script this way:
 ./for-path.sh "~/My Documents/file1.pdf,~/My Documents/report2.txt"
 ```
 
-Here double-quotes for the input string are mandatory. You cannot replace the `$1` parameter with `$@` in the `for` condition and omit quotes. This will lead to an error. The error happens because Bash does word splitting when calling the script. This word splitting applies spaces as delimiters. It happens before our redeclaration of the `IFS` variable. Thus, Bash ignores our change of the variable in this case
+There are the mandatory double quotes for the input string here. You cannot replace the `$1` parameter with `$@` in the `for` condition and omit quotes. This will lead to an error. The error happens because Bash does word splitting when calling the script. This word splitting applies spaces as delimiters. It occurs before the redeclaration of the `IFS` variable. Thus, Bash ignores your change of the variable in this case.
 
-If there is a comma in one of the paths, it leads to an error.
+If some path contains a comma, it leads to an error.
 
 The `for` loop can pass through the elements of an indexed array. It works the same way as processing words in a string. Listing 3-25 shows an example of doing that.
 
 {caption: "Listing 3-25. The script for printing all elements of the array", line-numbers: true, format: Bash}
 ![`for-array.sh`](code/BashScripting/for-array.sh)
 
-Suppose you need the first three elements. Then you should expand only the elements you need in the loop condition. Listing 3-26 shows how to do that.
+Suppose that you need the first three elements of an array. In this case, you should expand only the elements you need in the loop condition. Listing 3-26 shows how to do that.
 
 {caption: "Listing 3-26. The script for printing the first three elements of the array", line-numbers: true, format: Bash}
 ![`for-elements.sh`](code/BashScripting/for-elements.sh)
 
-There is another option to pass through the array. You can iterate over the indexes instead of the array's elements. Write the string with indexes of the elements you need. Spaces should separate them. Put the string into the `for` condition. Then the loop gives you an index on each iteration. The loop looks like this:
+There is another option to handle the array. You can iterate over the indexes instead of the elements. These are the steps for doing that:
+
+1. Write the string with indexes of the elements you need. They should be separated by spaces.
+
+2. Put the string into the `for` condition.
+
+3. The loop gives you an index on each iteration.
+
+Here is an example of the loop condition:
 {line-numbers: true, format: Bash}
 ```
 array=(Alice Bob Eve Mallory)
@@ -513,9 +523,9 @@ do
 done
 ```
 
-The loop behaves the same way. It prints the first three elements of the array.
+This loop prints the first three elements of the array too.
 
-Do not iterate over the element's indexes when processing arrays with gaps. Expand the array's elements in the loop condition instead. Listing 3-25 and Listing 3-26 show how to do that.
+Do not iterate over the element indexes when processing arrays with gaps. You should expand the array elements in the loop condition instead. Listing 3-25 and Listing 3-26 show how to do that.
 
 #### Files Processing
 
