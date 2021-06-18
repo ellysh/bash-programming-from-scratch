@@ -262,24 +262,26 @@ The `-d` utility option highlights the difference of the command output at the c
 
 #### Reading a Standard Input Stream
 
-The `while` loop fits well for handling an input stream. Here is an example of such a task. We want to write a script that reads a text file. The script makes an associative array from the file's content.
+The `while` loop fits well for handling an input stream. Here is an example of such a task. Suppose that you need a script that reads a text file. It should make an associative array from the file content.
 
 Listing 3-10 shows the script for managing the list of contacts. The script stores contacts in the format of the Bash array declaration. It makes adding a new person to the list inconvenient. The user must know the Bash syntax. Otherwise, he can make a mistake when initializing an array element. It will break the script.
 
-We can solve the problem of editing the contacts list. Let's put the list in a separate text file. Our script should read it at startup. This way, we separate data and code. It is a well-known and good practice in software development.
+There is a solution to the problem of editing the contacts list. You can move the list into a separate text file. Then, the script would read it at startup. This way, you separate data and code. It is a well-known good practice in software development.
 
 Listing 3-21 shows a possible format of the file with contacts.
 
 {caption: "Listing 3-21. The file with contacts `contacts.txt`", line-numbers: true, format: text}
 ![`contacts.txt`](code/BashScripting/contacts.txt)
 
-Let's write a script to read this file. It is convenient to read the list of contacts directly into the associative array. This way, we keep the searching mechanism over the list as effective as before.
+Let's write the script that reads this file. It is convenient to read the list of contacts directly into the associative array. This way, you will keep the searching mechanism over the list as effective as before.
 
-When reading the file, we should process its lines in the same manner. It means that we will repeat our actions. Therefore, we need a loop statement. At the beginning of the loop, we don't know the size of the file.  Thus, we do not know the number of iterations to do. The `while` statement fits this case perfectly.
+When reading the file, you should handle its lines in the same manner. It means that you will repeat the same action several times. Therefore, you need a loop statement.
 
-Why do we not know the number of iterations in advance? It happens because the script reads the file line by line. It cannot count the lines before it reads them all. We can make two loops. The first one counts the lines. The second loop processes them. However, this solution works slower and less ineffective.
+At the beginning of the loop, you don't know the file size.  Thus, you do not know the number of iterations to do. The `while` statement fits this case perfectly.
 
-We can use the `read` built-in command for reading lines of the file. The command receives a string from the standard input stream. Then it writes the string into the specified variable. You can pass the variable's name as a parameter. Here is an example of doing that:
+Why is the number of iterations unknown in advance? It happens because the script reads the file line by line. It cannot count the lines before it reads them all. There is an option to make two loops. Then the first one counts the lines. The second loop processes them. However, this solution works slower and less ineffective.
+
+You can call the `read` Bash built-in for reading lines of the file. The command receives a string from the standard input stream. Then it writes the string into the specified variable. You can pass the variable name as the parameter. Here is an example of calling `read`:
 {line-numbers: false, format: Bash}
 ```
 read var
@@ -291,13 +293,13 @@ When `read` receives the string, it removes backslashes \ there. They escape spe
 
 You can pass several variable names to the `read` command. Then it divides the input text into parts. The command uses the delimiters from the reserved variable `IFS` in this case. Default delimiters are spaces, tabs and line breaks.
 
-Here is an example of multiple variables for the `read` command. Suppose that we want to store the input string into two variables. They are called `path` and `file`. The following command reads them:
+Here is an example of how the `read` built-in deals with several variables. Suppose that you want to store the input string into two variables. They are called `path` and `file`. The following command reads them:
 {line-numbers: false, format: Bash}
 ```
 read -r path file
 ```
 
-The user types the following string for this command:
+Suppose that you have typed the following string for this command:
 {line-numbers: false, format: text}
 ```
 ~/Documents report.txt
@@ -305,31 +307,31 @@ The user types the following string for this command:
 
 Then the `read` command writes the `~/Documents` path into the `path` variable. The filename `report.txt` comes into the `file` variable.
 
-If the path or filename contains spaces, an error occurs. Suppose the user type the following string:
+If the path or filename contains spaces, the error occurs. For example, you can type the following string:
 {line-numbers: false, format: text}
 ```
 ~/My Documents report.txt
 ```
 
-Then the command writes the `~/My` string into the `path` variable. The `file` variable stores the rest part of the input: `Documents report.txt`. This is a wrong result. Don't forget about such behavior when using the `read` command.
+Then the `read` built-in writes the `~/My` string into the `path` variable. The `file` variable gets the rest part of the input: `Documents report.txt`. This is the wrong result. Keep in mind this behavior when using the `read` command.
 
-We can solve the problem of splitting the input string. This can be done by redefining the `IFS` variable. Here is an example to specify comma as only one possible delimiter:
+There is a solution to the problem of splitting the input string. You can solve it by redefining the `IFS` variable. For example, the following declaration specifies a comma as the only possible delimiter:
 {line-numbers: false, format: text}
 ```
 IFS=$',' read -r path file
 ```
 
-Here we have applied the Bash-specific [type of quotes](http://mywiki.wooledge.org/Quotes) `$'...'`. Bash does not perform any expansions inside them. At the same time, you can place some control sequences there: `\n` (new line), `\\\` (escaped backslash), `\t` (tabulation) and `\xnn` (bytes in hexadecimal).
+This declaration uses the Bash-specific [type of quotes](http://mywiki.wooledge.org/Quotes) `$'...'`. Bash does not perform any expansions inside them. At the same time, you can place the following control sequences there: `\n` (new line), `\\\` (escaped backslash), `\t` (tabulation) and `\xnn` (bytes in hexadecimal).
 
-The new `IFS` declaration allows to process the following input string properly:
+The `IFS` redeclaration allows you to process the following input string properly:
 {line-numbers: true, format: text}
 ```
 ~/My Documents,report.txt
 ```
 
-The comma separates the path and filename. Therefore, the `read` command writes the `~/My Documents` string into the `path` variable. The `report.txt` string comes into the `file` variable.
+Here the comma separates the path and filename. Therefore, the `read` command writes the `~/My Documents` string into the `path` variable. The `report.txt` string comes into the `file` variable.
 
-The `read` command receives data from the standard input stream. It means that you can redirect the file contents to the command.
+The `read` built-in receives data from the standard input stream. It means that you can redirect the file contents there.
 
 Here is an example to read the first line of the `contacts.txt` file from Listing 3-21. The following command does it:
 {line-numbers: false, format: Bash}
@@ -337,15 +339,15 @@ Here is an example to read the first line of the `contacts.txt` file from Listin
 read -r contact < contacts.txt
 ```
 
-This command writes the "Alice=alice@gmail.com" string into the `contact` variable.
+This command writes the "Alice=alice@gmail.com" string to the `contact` variable.
 
-We can write the name and contact information into two different variables. Let's define the equal sign as a delimiter to do that. Then our `read` command looks like this:
+You can write the name and contact information to two different variables. You need to define the equal sign as a delimiter to do that. Then you will get the following `read` call:
 {line-numbers: false, format: Bash}
 ```
 IFS=$'=' read -r name contact < contacts.txt
 ```
 
-Now the `name` variable gets the "Alice" name. The e-mail address comes into the `contact` variable.
+Now the `name` variable gets the "Alice" name. The e-mail address comes to the `contact` variable.
 
 Let's try the following `while` loop for reading the entire `contacts.txt` file:
 {line-numbers: true, format: Bash}
@@ -356,9 +358,9 @@ do
 done
 ```
 
-Unfortunately, it does not work. Here we got an infinite loop accidentally. It happens because the `read` command always reads only the first line of the file. Then the command returns the zero exit status. The zero status leads to the loop body execution. It happens over and over again.
+Unfortunately, this approach does not work. You got the infinite loop accidentally. It happens because the `read` command always reads only the first line of the file. Then it returns the zero exit status. The zero status leads to another execution of the loop body. It happens over and over again.
 
-We should force the `while` loop to pass through all lines of the file. The following form of the loop does it:
+You should force the `while` loop to pass through all lines of the file. The following form of the loop does it:
 {line-numbers: true, format: Bash}
 ```
 while CONDITION
@@ -367,9 +369,9 @@ do
 done < FILE
 ```
 
-You can handle the input from the keyboard this way. Specify the `/dev/tty` file in this case. The loop will read keystrokes until you press Ctrl+D.
+This form of the loop can handle keyboard input too. You need to specify the `/dev/tty` input file for doing that. Then the loop will read keystrokes until you press Ctrl+D.
 
-Here is the right `while` loop to read the `contacts.txt` file:
+Here is the corrected `while` loop that reads the entire `contacts.txt` file:
 {line-numbers: true, format: Bash}
 ```
 while IFS=$'=' read -r name contact
@@ -378,16 +380,16 @@ do
 done < "contacts.txt"
 ```
 
-This loop prints the entire contents of the contact file.
+This loop prints all lines of the contact file.
 
-There is the last step left to finish our task. We should write the `name` and `contact` variables to the array on each iteration. The `name` variable is the key and `contact` is the value.
+There is the last step left to finish your script. You should write the `name` and `contact` variables to the array on each iteration. The `name` variable is the key and `contact` is the value.
 
 Listing 3-22 shows the final version of the script for reading the contacts from the file.
 
 {caption: "Listing 3-22. The script for managing the contacts", line-numbers: true, format: Bash}
 ![`while-contacts.sh`](code/BashScripting/while-contacts.sh)
 
-This script behaves the same way as one in Listing 3-10.
+This script behaves the same way as the one in Listing 3-10.
 
 ### For Statement
 
