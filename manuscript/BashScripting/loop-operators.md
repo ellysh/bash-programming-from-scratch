@@ -187,11 +187,11 @@ Choose the `while` or `until` statement, depending on the loop condition. Your g
 
 #### Infinite Loop
 
-The `while` statement fits well to implement [**infinite loops**](https://en.wikipedia.org/wiki/Infinite_loop). This kind of loop continues as long as the program is running.
+The `while` statement fits well when you need to implement an [**infinite loop**](https://en.wikipedia.org/wiki/Infinite_loop). This kind of loop continues as long as the program is running.
 
-You can find infinite loops in system software that runs until the computer is powered off. Examples are OS or microcontroller firmware. Computer games and monitor programs for collecting statistics also use such loops.
+You can meet infinite loops in system software. They run the whole time while a computer stays powered on. An example is the microcontroller firmware that checks some sensors cyclically. It happens in the infinite loop. Also, such loops are used in computer games, antiviruses, monitors of computer resources, etc.
 
-The `while` loop becomes infinite if its condition is always true. The easiest way to set such a condition is to call the `true` command. Here is an example of using it:
+The `while` loop becomes infinite if its condition always stays true. The easiest way to make such a condition is to call the `true` Bash built-in. Here is an example for doing that:
 {line-numbers: true, format: Bash}
 ```
 while true
@@ -200,11 +200,11 @@ do
 done
 ```
 
-The `true` command always returns the "true" value. It means that it returns zero exit status. There is the symmetric command called `false`. It always returns exit status one that matches the "false" value.
+The `true` built-in always returns the "true" value. It means that it returns zero exit status. There is the symmetric command called `false`. It always returns exit status one that matches the "false" value.
 
-I> Words "true" and "false" are [**literals**](https://en.wikipedia.org/wiki/Literal_(computer_programming)) in most programming languages. Literals are reserved words for representing fixed values. In our case, they represent the "true" and "false" values.
+I> Words "true" and "false" are [**literals**](https://en.wikipedia.org/wiki/Literal_(computer_programming)) in most programming languages. They represent the corresponding Boolean values. Literals are reserved words for representing fixed values.
 
-You can replace the `true` command in the `while` condition with a colon. This way, you get the following:
+You can replace the `true` built-in in the `while` condition with a colon. Then you will get the following statement:
 {line-numbers: true, format: Bash}
 ```
 while :
@@ -213,11 +213,11 @@ do
 done
 ```
 
-The colon is synonymous with the `true` command. The synonymous solves the [compatibility task](https://stackoverflow.com/questions/3224878/what-is-the-purpose-of-the-colon-gnu-bash-builtin) with the Bourne shell. This shell does not have `true` and `false` commands. Therefore, Bourne shell scripts use colons and Bash should support them.
+The colon is synonymous with the `true` command. This synonymous solves the [compatibility task](https://stackoverflow.com/questions/3224878/what-is-the-purpose-of-the-colon-gnu-bash-builtin) with the Bourne shell. This shell does not have `true` and `false` built-ins. Bourne shell scripts use a colon instead, and Bash should support it.
 
-The POSIX standard includes all three commands: colon, `true`, and `false`. However, avoid using a colon in your scripts. It is a deprecated syntax that makes your code harder to understand.
+The POSIX standard includes all three keywords: colon, `true`, and `false`. However, you should avoid using a colon in your scripts. It is a deprecated syntax that makes your code harder to understand.
 
-Here is an example of an infinite loop. We want to write a script that displays statistics of disk space usage. The `df` utility can help us in this case. It prints the following when called without parameters:
+Here is an example of an infinite loop. Suppose that you need a script that displays statistics of disk space usage. The `df` utility can help you in this case. It provides the following output when called without parameters:
 {line-numbers: true, format: Bash}
 ```
 $ df
@@ -226,7 +226,7 @@ C:/msys64       41940988  24666880  17274108  59% /
 Z:             195059116 110151748  84907368  57% /z
 ```
 
-The utility shows "Used" and "Available" disk space in bytes. We can add the `-h` option to the utility call. Then it shows kilobytes, megabytes, gigabytes and terabytes instead of bytes. Also, we add an option `-T`. It shows the file system type for each disk. This way, we get the following output:
+The utility shows "Used" and "Available" disk space in bytes. You can improve this output by adding the `-h` option to the utility call. Then `df` shows kilobytes, megabytes, gigabytes and terabytes instead of bytes. Another option that you can apply is `-T`. It shows the file system type for each disk. You will get the following output after all improvements:
 {line-numbers: true, format: Bash}
 ```
 $ df -hT
@@ -235,30 +235,30 @@ C:/msys64      ntfs   40G   24G   17G  59% /
 Z:             hgfs  187G  106G   81G  57% /z
 ```
 
-If you want to get information about all mount points, add the `-a` option.
+If you need to get information about all mount points, add the `-a` option.
 
-Now let's write an infinite loop. It calls the `df` utility on each iteration. This way, we get a simple script to monitor the file system. Listing 3-20 shows the script.
+Now you should write the infinite loop. It calls the `df` utility on each iteration. This way, you will get a simple script to monitor the file system. Listing 3-20 shows how it looks like.
 
 {caption: "Listing 3-20. The script to monitor the file system", line-numbers: true, format: Bash}
 ![`while-df.sh`](code/BashScripting/while-df.sh)
 
-The first action of the cycle iteration is the `clear` utility call. It clears the terminal window of text. Thanks to this step, the terminal shows the output of our script only.
+The first action of the loop body is the `clear` utility call. It removes all text in the terminal window. Thanks to this step, the terminal shows the output of your script only.
 
-Executing a command in a cycle is a common task that arises when working with Bash. The `watch` utility solves this task. The utility is a part of the `procps` package. The following command installs this package to the MSYS2 environment:
+When working with Bash, you often face the task of executing a command in a cycle. The `watch` utility does it. The utility is a part of the `procps` package. If you need it, the following command installs it to the MSYS2 environment:
 {line-numbers: false, format: Bash}
 ```
 pacman -S procps
 ```
 
-Now you can replace the script from listing 3-20 with a single command. It looks like this:
+Now you can replace the script from Listing 3-20 with a single command this way:
 {line-numbers: false, format: Bash}
 ```
 watch -n 2 "df -hT"
 ```
 
-The `-n` option of the `watch` utility specifies the interval between command calls. The command to execute follows all utility options.
+The `-n` option of the `watch` utility specifies the interval between command calls. The command to execute follows all options of `watch`.
 
-The `-d` utility option highlights the difference in the command's output at the current iteration and the last iteration. This way, it is easier to keep track of changes that have occurred.
+The `-d` utility option highlights the difference of the command output at the current and past iterations. This way, it is easier to keep track of occurred changes.
 
 #### Reading a Standard Input Stream
 
