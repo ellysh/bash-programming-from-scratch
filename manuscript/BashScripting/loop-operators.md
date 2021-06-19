@@ -529,28 +529,28 @@ Do not iterate over the element indexes when processing arrays with gaps. You sh
 
 #### Files Processing
 
-The `for` loop fits well for processing a list of files. When solving this task, you should compose the loop condition correctly. There are several common mistakes here. Let's consider them by examples.
+The `for` loop works well when you need to process a list of files. The only point here is to compose the loop condition correctly. There are several common mistakes when writing this condition. Let's consider them by examples.
 
-The first example is a script that prints types of files in the current directory. We can do it by calling the `file` utility for each file.
+The first example is a script that reads the current directory and prints the types of all files there. You can call the `file` utility to get this information for each file.
 
-The most common mistake when composing the `for` loop condition is neglecting patterns (globbing). Users often call the `ls` or `find` utility to get the STRING. It happens this way:
+When composing the `for` loop condition, the most common mistake is the neglect of patterns (globbing). Users often call the `ls` or `find` utility to get the STRING. It happens this way:
 {line-numbers: true, format: Bash}
 ```
 for filename in $(ls)
 for filename in $(find . - type f)
 ```
 
-This is wrong. Such a solution leads to the following problems:
+Both these `for` conditions are wrong. They lead to the following problems:
 
-1. Word splitting breaks names of files and directories with spaces.
+1. Word splitting breaks the names of files and directories with spaces.
 
-2. If the filename contains an asterisk, Bash performs globbing before starting the loop. Then it writes the expansion result to the `filename` variable. This way, you lose the actual filename.
+2. If the filename contains an asterisk, Bash performs globbing before starting the loop. Then it writes the globbing result to the `filename` variable. This way, you lose the actual filename.
 
 3. The output of the `ls` utility depends on the regional settings. Therefore, you can get question marks instead of the national alphabet characters in filenames. Then the `for` loop cannot process these files.
 
-Always use patterns in the `for` loop to enumerate filenames. It is the only correct solution for this task.
+Always use patterns in the `for` condition when you need to enumerate filenames. It is the only correct solution for this task.
 
-We should write the following `for` loop condition in our case:
+You should write the following `for` loop condition for our script:
 {line-numbers: false, format: Bash}
 ```
 for filename in *
@@ -561,21 +561,21 @@ Listing 3-27 shows the complete script.
 {caption: "Listing 3-27. The script for printing the file types", line-numbers: true, format: Bash}
 ![`for-file.sh`](code/BashScripting/for-file.sh)
 
-Do not forget to use double-quotes when accessing the `filename` variable. They prevent word splitting of filenames with spaces.
+Do not forget to use the double quotes when accessing the `filename` variable. They prevent word splitting of filenames with spaces.
 
-You can still use the pattern in the `for` loop condition if you want to process files from a specific directory. Here is an example of such a pattern:
+You can use a pattern in the `for` loop condition if you want to process files from a specific directory. Here is an example for doing that:
 {line-numbers: false, format: Bash}
 ```
 for filename in /usr/share/doc/bash/*
 ```
 
-A pattern can filter out files with a specific extension or name. It looks like this:
+A pattern can filter out files with a specific extension or name. It looks this way:
 {line-numbers: false, format: Bash}
 ```
 for filename in ~/Documents/*.pdf
 ```
 
-There is a new feature for patterns in Bash version 4. You can pass through directories recursively. Here is an example:
+There is a new feature of patterns in Bash version 4. You can pass through directories recursively. Here is an example:
 {line-numbers: true, format: Bash}
 ```
 shopt -s globstar
@@ -583,11 +583,11 @@ shopt -s globstar
 for filename in **
 ```
 
-This feature is disabled by default. Activate it by enabling the `globstar` interpreter option with the `shopt` command.
+This feature is disabled by default. You can activate it by enabling the `globstar` Bash option with the `shopt` command.
 
-When Bash meets the `**` pattern, it inserts a list of all subdirectories and their files starting from the current directory. You can combine this mechanism with regular patterns.
+When Bash meets the `**` pattern, it inserts a list of all subdirectories and their files starting from the current directory. You can combine this mechanism with a regular pattern.
 
-For example, let's process all files with the PDF extension from the user's home directory. The following `for` loop condition does that:
+For example, you want to process all files with the PDF extension from the home directory. The following `for` loop condition does that:
 {line-numbers: true, format: Bash}
 ```
 shopt -s globstar
@@ -603,36 +603,36 @@ find . -maxdepth 1 -exec file {} \;
 
 This command is more efficient than the `for` loop. It is compact and works faster because of fewer operations to do.
 
-When should you use the `for` loop instead of the `find` utility? Use `find` when one short command processes found files. If you need a conditional statement or block of commands for this job, use the `for` loop.
+When should you use the `for` loop instead of the `find` utility? Use `find` when one short command is enough to process found files. If you need a conditional statement or block of commands for that, use the `for` loop.
 
-There are cases when patterns are not enough in the `for` loop condition. You want to do a complex search with checking file types, for example. In this case, use the `while` loop instead of `for`.
+There are cases when patterns are not enough for the `for` loop condition. For example, you need a complex search with checking file types. Use the `while` loop in this case.
 
-Let's replace the `for` loop in Listing 3-27 with `while`. The `find` utility will provide us a list of files. But we should call it with the `-print0` option. This way, we avoid word splitting issues. Listing 3-28 shows how to combine the `find` utility and `while` loop properly.
+Let's replace the `for` loop with `while` in Listing 3-27. Then you can replace the pattern with the `find` call. When doing that, you should apply the `-print0` option of `find`. This way, you avoid issues caused by word splitting. Listing 3-28 shows how to combine the `find` utility with the `while` loop properly.
 
 {caption: "Listing 3-28. The script for printing the file types", line-numbers: true, format: Bash}
 ![`while-file.sh`](code/BashScripting/while-file.sh)
 
-There are several tricky solutions in this script. Let's take a closer look at them. The first question is why we need to assign an empty value to the `IFS` variable? If we keep the variable unchanged, Bash splits the `find` output by default delimiters (spaces, tabs and line breaks). It can break filenames with these characters.
+There are several tricky solutions in this script. Let's take a closer look at them. The first question is, why does the `IFS` variable get an empty value? If you keep it unchanged, Bash splits the `find` output by default delimiters (spaces, tabs and line breaks). It can break filenames with these characters.
 
-The second solution is applying the `-d` option of the `read` command. The option defines a delimiter character for splitting the input text. When using it, the `filename` variable gets the part of the string that comes before the next delimiter.
+The second solution is to apply the `-d` option of the `read` command. This option defines a delimiter character for splitting the input text. When using it, the `filename` variable gets the part of the string that comes before the next delimiter.
 
-The `-d` option specifies the empty delimiter. It means a NULL character. You can also specify it explicitly. Do it like this:
+The `-d` option specifies the empty delimiter in our case. It means the NULL character. You can also specify it explicitly this way:
 {line-numbers: false, format: Bash}
 ```
 while IFS= read -r -d $'\0' filename
 ```
 
-Thanks to the `-d` option, the read command handles the `find` output correctly. There is the `-print0` option in the utility call. It means that `find` separates found files by a NULL character. This way, we reconcile the `read` input format and the `find` output.
+Thanks to the `-d` option, the `read` command handles the `find` output correctly. There is the `-print0` option in the utility call. It means that `find` separates found files by a NULL character. This way, you reconcile the `read` input format and the `find` output.
 
-Note that you cannot specify a NULL character as a delimiter using the `IFS` variable. In other words, the following solution does not work:
+Note that you cannot specify the NULL character as a delimiter using the `IFS` variable. In other words, the following solution does not work:
 {line-numbers: false, format: Bash}
 ```
 while IFS=$'\0' read -r filename
 ```
 
-The problem comes from the peculiarity when [interpreting the `IFS` variable](https://mywiki.wooledge.org/IFS). If the variable is empty, Bash does not do word splitting at all. When you assign a NULL character to the variable, it means an empty value for Bash.
+The problem comes from the peculiarity when [interpreting the `IFS` variable](https://mywiki.wooledge.org/IFS). If the variable is empty, Bash does not do word splitting at all. When you assign the NULL character to the variable, it means an empty value for Bash.
 
-There is the last tricky solution in Listing 3-28. We use process substitution for passing the `find` output to the `while` loop. Why did we not use the command substitution instead? We can do it like this:
+There is the last tricky solution in Listing 3-28. The process substitution helps us to pass the `find` output to the `while` loop. Why did we not use the command substitution instead? It can look this way:
 {line-numbers: true, format: Bash}
 ```
 while IFS= read -r -d '' filename
@@ -641,20 +641,20 @@ do
 done < $(find . -maxdepth 1 -print0)
 ```
 
-Unfortunately, this redirection does not work. The < operator couples the input stream and the specified file descriptor. But there is no file descriptor when using the command substitution. Bash calls the `find` utility and inserts its output instead of `$(...)`. When you use process substitution, Bash writes the `find` output to a temporary file. This file has a descriptor. Therefore, the stream redirection works fine.
+Unfortunately, this redirection does not work. The < operator couples the input stream and the specified file descriptor. When you apply the command substitution, there is no file descriptor. In this case, Bash calls the `find` utility and inserts its output to the command instead of `$(...)`. When you use the process substitution, Bash writes the `find` output to a temporary file. This file has a descriptor. Therefore, the stream redirection works fine.
 
-There is only one issue with process substitution. It is not part of the POSIX standard. If you need to follow the standard, use a pipeline instead. Listing 3-29 demonstrates how to do it.
+The process substitution has only one issue. It is not part of the POSIX standard. If you should follow the standard, use a pipeline instead. Listing 3-29 demonstrates how to do that.
 
 {caption: "Listing 3-29. The script for printing the file types", line-numbers: true, format: Bash}
 ![`while-file-pipe.sh`](code/BashScripting/while-file-pipe.sh)
 
-Combine the `while` loop and `find` utility only when you have both following cases at the same time:
+Combine the `while` loop and `find` utility only when you meet both following cases:
 
 1. You need a conditional statement or code block to process files.
 
-2. You have a complex condition for searching files.
+2. You need a complex condition for searching files.
 
-When combining `while` and `find`, always use a NULL character as a delimiter. This way, you avoid the word splitting problems.
+When combining `while` and `find`, always use the NULL character as a delimiter. This way, you avoid the word splitting problems.
 
 #### The Second Form of For
 
