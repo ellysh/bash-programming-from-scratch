@@ -306,9 +306,9 @@ find_func ~
 
 ### Using Functions in Scripts
 
-The declaration of functions in scripts is the same as in a shell. There are two options: the  standard and one-line declarations.
+You can declare a function in a script the same way as you do it in the shell. Bash allows both full or one-line form there.
 
-For example, let's come back to the task of error handling in a large program. We can declare the following function for printing error messages:
+For example, let's come back to the task of handling errors in the large program. You can declare the following function for printing error messages:
 {line-numbers: true, format: Bash}
 ```
 print_error()
@@ -317,13 +317,13 @@ print_error()
 }
 ```
 
-This function receives parameters. They should explain the root cause of the error. Suppose our program reads a file on the disk. The file becomes unavailable for some reason. Then the following `print_error` function call reports the problem:
+This function expects input parameters. They should explain to a user the root cause of the error. Suppose that your program reads a file on the disk. The file becomes unavailable for some reason. Then the following `print_error` call reports this problem:
 {line-numbers: false, format: Bash}
 ```
 print_error "the readme.txt file was not found"
 ```
 
-Suppose that the requirements for the program have changed. Now the program should print error messages to a log file. It is enough to change only the declaration of the `print_error` function to meet the new requirement. The function's body looks like this after the change:
+Suppose that the requirements for the program have changed. Now the program should print error messages to a log file. It is enough to change only the declaration of the `print_error` function to meet the new requirement. The function body looks this way after the change:
 {line-numbers: true, format: Bash}
 ```
 print_error()
@@ -332,15 +332,15 @@ print_error()
 }
 ```
 
-This function prints all error messages to the `debug.log` file. There is no need to change places of the program where the function is called.
+This function prints all error messages to the `debug.log` file. There is no need to change anything at the points where the function is called.
 
-Sometimes you want to call one function from another. This is called **nested function call**. Bash allows it. In general, you can call a function from any point of the program.
+Sometimes you want to call one function from another. This technique is named a **nested function call**. Bash allows it. In general, you can call a function from any point of the program.
 
-Here is an example of nested function calls. Suppose you want to translate the program interface to another language. This task is called [**localization**](https://en.wikipedia.org/wiki/Internationalization_and_localization). It is better to print error messages in a language the user understands. This requires duplicating all messages in all languages supported by the program. How to do this?
+Here is an example of a nested function call. Suppose you want to translate the program interface to another language. This task is called [**localization**](https://en.wikipedia.org/wiki/Internationalization_and_localization). It is better to print error messages in a language the user understands, right? You need to duplicate all messages in all languages supported by your program to reach this requirement.
 
-The simplest solution is to assign a unique code to each error. Using error codes is a common practice in system programming. Let's apply this approach to our program. Then the `print_error` function will receive error codes via the parameters.
+The straightforward solution for localization is to assign a unique code to each error. Using such codes is a common practice in system programming. Let's apply this approach to your program. Then the `print_error` function will receive an error code via the input parameter.
 
-We can write error codes to the log file as it is. But then the user will need information about the meaning of that codes. Therefore, it is more convenient to print the message text as we did it before. To do this, we should convert error codes to the text in a specific language. We need a separate function for doing this conversion. Here is an example of such a function:
+You can write error codes to the log file as it is. However, it will be inconvenient for a user to interpret these codes. He would need a table to map them into error messages. Therefore, the better solution is to print the text messages to the log file. It means that it is your responsibility to convert error codes to text in a specific language. You would need a separate function for doing this conversion. Here is an example of such a function:
 {line-numbers: true, format: Bash}
 ```
 code_to_error()
@@ -356,7 +356,7 @@ code_to_error()
 }
 ```
 
-Let's apply the `code_to_error` function when printing an error in `print_error`. We get the following result:
+Now you can apply the `code_to_error` function when printing an error in the `print_error` body. You will get the following result:
 {line-numbers: true, format: Bash}
 ```
 print_error()
@@ -365,13 +365,13 @@ print_error()
 }
 ```
 
-Here is an example of the `print_error` function call from the program's code:
+Here is an example of the `print_error` function call from some point of your program:
 {line-numbers: false, format: Bash}
 ```
 print_error 1 "readme.txt"
 ```
 
-It prints the following line into the log file:
+It prints the following message to the log file:
 {line-numbers: false, format: text}
 ```
 File not found: readme.txt
@@ -379,21 +379,21 @@ File not found: readme.txt
 
 The first parameter of the `print_error` function is the error code. The second parameter is the name of the file that caused the error.
 
-Using functions made the error handling in our program easier to maintain. Changing the requirements can demonstrate it. Suppose that our customer asked us to support German language. We can do it by declaring two following functions:
+Using functions made the error handling in your program easier to maintain. Changing the requirements demonstrates it. Suppose that your customer asked you to support the German language. You can introduce this feature by declaring two extra functions:
 
 * `code_to_error_en` for messages in English.
 
 * `code_to_error_de` for messages in German.
 
-How can you choose the right function to convert error codes? The `LANGUAGE` Bash variable helps you in this case. It stores the current language of the user's system. Check this variable in the `print_error` function and convert error codes accordingly.
+How can you choose the proper function to convert error codes? The `LANGUAGE` Bash variable helps you in this case. It stores the language that the user has chosen for his system. You should check this variable in the `print_error` function and convert all error codes accordingly.
 
-I> If the `LANGUAGE` variable is not available on your system, use the `LANG` variable instead.
+I> If the `LANGUAGE` variable is not available on the target system, use the `LANG` variable instead.
 
-Our solution with the error codes conversion is just an example for demonstration. Never does it in the real project. Bash has a special mechanism to localize scripts. It uses PO files with texts in different languages. Read more about this mechanism in the [BashFAQ article](https://mywiki.wooledge.org/BashFAQ/098).
+Our functions for handling the error codes are just an example for demonstration. Never apply them in your real project. Bash has a special mechanism to localize scripts. It uses PO files with texts in different languages. Read more about this mechanism in the [BashFAQ article](https://mywiki.wooledge.org/BashFAQ/098).
 
 {caption: "Exercise 3-13. Functions", format: text, line-numbers: false}
 ```
-Write the following functions to display error messages in English and German:
+Write the following functions for printing error messages in English and German:
 
 * print_error
 * code_to_error_en
