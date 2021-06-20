@@ -180,11 +180,11 @@ alias mem="cat /proc/meminfo"
 
 It looks like functions and aliases work the same way. What should you choose then?
 
-Functions and aliases have one similar aspect only. They are built-in Bash mechanisms. From the user's point of view, they reduce the input of long commands. But these mechanisms work in completely different ways.
+Functions and aliases have one similar aspect only. They are built-in Bash mechanisms. From the user's point of view, they shorten long commands. However, these mechanisms work in completely different ways.
 
-An alias replaces one text with another in a typed command. In other words, Bash finds text in the command that matches the alias name. Then it replaces that text with the alias value. Finally, Bash executes the resulting command.
+An alias replaces one text with another in a typed command. In other words, Bash finds a part of the command that matches the alias name. Then the shell replaces it with the alias value. Finally, Bash executes the resulting command.
 
-Here is an example of an alias. Suppose you have declared an alias for the `cat` utility. It adds the `-n` option to the utility call. The option adds line numbers to the `cat` output. The alias declaration looks like this:
+Here is an example of an alias. Suppose you have declared the alias for the `cat` utility. It adds the `-n` option to the utility call. This option adds line numbers to the `cat` output. The alias declaration looks this way:
 {line-numbers: false, format: Bash}
 ```
 alias cat="cat -n"
@@ -196,109 +196,109 @@ Whenever you type a command that starts with the word "cat", Bash replaces it wi
 cat ~/.bashrc
 ```
 
-When Bash inserts an alias value, the command becomes like this:
+Bash inserts the alias value here, and the command becomes like this:
 {line-numbers: false, format: Bash}
 ```
 cat -n ~/.bashrc
 ```
 
-Bash has replaced the word "cat" with "cat -n". It did not change the parameter, i.e. the path to the file.
+Bash has replaced the word "cat" with "cat -n". It did not change the parameter, i.e. the `~/.bashrc` path.
 
-I> You can force Bash to insert an alias before executing the command. Type the command and press the Ctrl+Alt+E keystroke for doing that.
+I> You can force Bash to insert an alias without executing the resulting command. Type the command and press the Ctrl+Alt+E keystroke for doing that.
 
-Now let's look at how functions work. Suppose that Bash meets the function name in the typed command. Unlike an alias, the shell does not replace the function's name with its body. Instead, Bash executes the function's body.
+Now let's have a look at how functions work. Suppose that Bash meets the function name in the typed command. The shell does not replace the function name with its body, as it does for the alias. Instead, Bash executes the function body.
 
-Here is an example to explain the difference. We want to write the function that behaves the same way as the `cat` alias. If Bash functions work as aliases, the following declaration solves our task:
+An example will explain to you how it works. Suppose that you want to write the function that behaves the same way as the `cat` alias. If Bash functions work as aliases, the following declaration should solve your task:
 {line-numbers: false, format: Bash}
 ```
 cat() { cat -n; }
 ```
 
-We expect that Bash will add the `-n` option to the following command:
+You expect that Bash will add the `-n` option to the following command:
 {line-numbers: false, format: Bash}
 ```
 cat ~/.bashrc
 ```
 
-However, it would not work. Bash does not insert the body of the function in the command. The shell executes the body and inserts the result into the command.
+However, it does not happen. Bash does not insert the function body into the command. The shell executes the body and inserts the result into the command.
 
-In our example, Bash calls the `cat` utility with the `-n` option but without the `~/.bashrc` parameter. We do not want such behavior.
+In our example, Bash calls the `cat` function. The function calls the `cat` utility with the `-n` option, but it ignores the `~/.bashrc` parameter. You do not want such behavior.
 
-We can solve the problem by passing the filename to the function as a parameter. This works just like passing a parameter to a command or script. You can call the function and specify its parameters, separated by spaces.
+You can solve the problem of ignoring the `~/.bashrc` parameter. Pass this path to the function as a parameter. This mechanism works similarly to passing a parameter to some command or script. You can call the function and specify its parameters, separated by spaces.
 
-Calling a function and passing parameters to it looks like this in general:
+Calling a function and passing parameters to it looks this way in the general form:
 {line-numbers: false, format: Bash}
 ```
 FUNCTION_NAME PARAMETER_1 PARAMETER_2 PARAMETER_3`
 ```
 
-You can read parameters in the function's body via names `$1`, `$2`, `$3`, etc. The `$@` array stores all received parameters.
+You can read parameters in the function body via their names `$1`, `$2`, `$3`, etc. The `$@` array stores all these parameters.
 
-Let's correct the declaration of the `cat` function. We will pass all parameters of the function to the `cat` utility input. Then the declaration becomes like this:
+Let's correct the declaration of the `cat` function. You should pass all parameters of the function to the input of the `cat` utility. Then the declaration becomes like this:
 {line-numbers: false, format: Bash}
 ```
 cat() { cat -n $@; }
 ```
 
-This function would not work either. The problem happens because of unintentional **recursion**. When the function calls itself, it is called recursion.
+This function does not work either. The problem happens because of unintentional **recursion**. When some function calls itself, it is called recursion.
 
-Bash checks the list of declared functions before executing the command "cat -n $@". There is the `cat` function in the list. Bash executes its body at the moment, but it does not change anything. Thus, the shell calls the `cat` function again instead of calling the `cat` utility. The call repeats over and over again. It leads to the infinite recursion, which is similar to an infinite loop.
+Why did we get the recursion? Bash checks the list of declared functions before executing the command "cat -n $@". There is the `cat` function in the list. Bash executes it at the moment, but it does not change anything. Thus, the shell calls the `cat` function again instead of calling the `cat` utility. This call repeats over and over again. It leads to the infinite recursion, which is similar to an infinite loop.
 
-Recursion is not a mistake of Bash's behavior. It is a powerful mechanism that simplifies complex algorithms. The example of such algorithms is the traversing a [**graph**](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) or [**tree**](https://en.wikipedia.org/wiki/Tree_(data_structure)).
+Recursion is not a mistake of Bash behavior. It is a powerful mechanism that simplifies complex algorithms. An example of such algorithms is the traversing of a [**graph**](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) or [**tree**](https://en.wikipedia.org/wiki/Tree_(data_structure)).
 
-The mistake occurred in our declaration of the `cat` function. The recursive call happened by accident and led to a loop. There are two ways to solve this problem:
+The mistake occurred in our declaration of the `cat` function. The recursive call happens by accident and leads to a loop. There are two ways to solve this problem:
 
-1. Use the `command` built-in.
+1. Use the `command` Bash built-in.
 
-2. Rename the function so that its name differs from the utility name.
+2. Give another name to the function that does not conflict with the utility name.
 
-Let's look at the first solution. The `command` built-in receives a command as parameters. If there are aliases and function names there, Bash ignores them. It does not insert the alias value instead of its name. It does not call a function. Instead, Bash executes the command as it is.
+Let's try the first solution. The `command` built-in receives some command on input. If there are aliases or function names there, Bash ignores them. It does not insert the alias value instead of its name. It does not call a function. Instead, Bash executes the command as it is.
 
-If we apply the `command` built-in in the `cat` function, we get the following result:
+If you add the `command` built-in to the `cat` function, you get the following result:
 {line-numbers: false, format: Bash}
 ```
 cat() { command cat -n "$@"; }
 ```
 
-Now Bash calls the `cat` utility instead of the `cat` function.
+Now Bash calls the `cat` utility instead of the `cat` function here.
 
-The second solution is renaming the function. For example, this version works well:
+Another solution is renaming the function. For example, this declaration works well:
 {line-numbers: false, format: Bash}
 ```
 cat_func() { cat -n "$@"; }
 ```
 
-Always be aware of the problem of unintentional recursion. Keep the names of the functions unique. They should not match the names of built-in Bash commands and GNU utilities.
+Always be aware of the problem of unintentional recursion. Give unique names to your functions. They should not match the names of Bash built-ins and GNU utilities.
 
 Here is a summary of our comparison of functions and aliases. If you want to shorten a long command, use an alias.
 
-You need a function in the following cases only:
+When using the shell, you need a function in two cases only:
 
-1. You need a conditional statement, loop, or code block to perform a command.
+1. You need a conditional statement, loop, or code block to perform your command.
 
-2. The parameters are not at the end of the command.
+2. The input parameters are not at the end of the command.
 
-The second case needs an example. Let's shorten the `find` utility call. It should search for files in the specified directory. When you search in the home directory, the call looks like this:
+The second case needs an example. Let's shorten the `find` utility call. It should search for files in the specified directory. When you search them in the home directory, the `find` call looks this way:
 {line-numbers: false, format: Bash}
 ```
 find ~ -type f
 ```
 
-We cannot write an alias that takes the target path as a parameter. The following solution does not work:
+You cannot declare an alias that takes the target path as a parameter. In other words, the following solution does not work:
 {line-numbers: false, format: Bash}
 ```
 alias="find -type f"
 ```
 
-The target path should come before the `-type` option. This is a problem for the alias.
+The target path should come before the `-type` option. This requirement is a serious problem for the alias.
 
-However, we can use the function in this case. We can choose the position to insert the parameter in the `find` call. The function declaration looks like this:
+However, you can declare the function in this case. The function allows you to specify the position to insert the parameter to the `find` call. The declaration looks like this:
 {line-numbers: false, format: Bash}
 ```
 find_func() { find $1 -type f; }
 ```
 
-Now we can call it for searching files in the home directory this way:
+Now you can call the function that searches files in the home directory this way:
 {line-numbers: false, format: Bash}
 ```
 find_func ~
