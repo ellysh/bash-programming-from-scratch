@@ -79,7 +79,7 @@ filename = "README.txt"
 
 Bash misinterprets this line. It assumes that you call the command with the `filename` name. Then you pass there two parameters: `=` and "README.txt".
 
-When declaring a variable, you can apply Latin characters, numbers and the underscore in its name. The name must not start with a number. Letter case is important. It means that `filename` and `FILENAME` are two different variables.
+When declaring a variable, you can apply Latin letters, numbers and the underscore in its name. The name must not start with a number. Letter case is important. It means that `filename` and `FILENAME` are two different variables.
 
 Suppose you have declared a variable `filename`. Then Bash allocates the memory area for that. It writes the `README.txt` string there. You can read this value back using the variable name. When you do that, Bash should understand your intention. If you put a dollar sign before the variable name, it would be a hint for Bash. Then it treats the word `filename` as the variable name.
 

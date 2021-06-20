@@ -58,9 +58,9 @@ Using functions improves the readability of the source code. A function combines
 
 ### Using Functions in Shell
 
-The functions are available in both Bash modes: the command interpreter and script execution. First, let's consider how they work in the command interpreter.
+The functions are available in both Bash modes: shell and script execution. First, let's consider how they work in the shell.
 
-Here is the function's declaration in general:
+Here is the general form of the function declaration:
 {line-numbers: true, format: Bash}
 ```
 FUNCTION_NAME()
@@ -77,25 +77,25 @@ FUNCTION_NAME() { ACTION ; }
 
 The semicolon before the closing curly bracket is mandatory here.
 
-The ACTION is a single command or a block of commands. It is called the **function body**.
+The ACTION is a single command or block of commands. It is called the **function body**.
 
-Function names follow the same restrictions as variable names in Bash. They allow Latin characters, numbers and the underscore character. The name must not begin with a number.
+Function names follow the same restrictions as variable names in Bash. You are allowed to use Latin letters, numbers and the underscore character there. The name must not begin with a number.
 
-Let's look at how to declare and use functions in the shell. Suppose you need statistics about memory usage. This statistics are available via the special file system [**proc**](https://en.wikipedia.org/wiki/Procfs) or procfs. This file system provides the following information:
+Let's have a look at how to declare and use functions in the shell. Suppose you need statistics about memory usage. These statistics are available via the special file system [**proc**](https://en.wikipedia.org/wiki/Procfs) or procfs. This file system provides the following information:
 
 * The list of running processes.
 * The state of the OS.
-* The state of the computer's hardware.
+* The state of the computer hardware.
 
-There are files in the `/proc` system path. You can read the required information from these files.
+The default mount point of the procfs is the `/proc` path. You can find special files there. They provide you an interface to the kernel data.
 
-RAM usage statistics are available in the `/proc/meminfo` file. We can read it with the `cat` utility this way:
+You can read the RAM usage statistics in the `/proc/meminfo` file. The `cat` utility prints the file contents to the screen:
 {line-numbers: false, format: Bash}
 ```
 cat /proc/meminfo
 ```
 
-The output of this command depends on your OS. The `/proc/meminfo` file contains less information for the MSYS2 environment and more for the Linux system.
+The output of this command depends on your OS. The `/proc/meminfo` file provides less information for the MSYS2 environment and more for the Linux system.
 
 Here is an example of the `meminfo` file contents for the MSYS2 environment:
 {line-numbers: true, format: Bash}
@@ -110,12 +110,12 @@ SwapTotal:       1769472 kB
 SwapFree:        1636168 kB
 ```
 
-Table 3-22 explains the meaning of each field of this file.
+Table 3-22 explains the meaning of these abbreviations.
 
 {caption: "Table 3-22. Fields of the `meminfo` file", width: "100%"}
 | Field | Description |
 | --- | --- |
-| MemTotal | The total amount of usable RAM in the system |
+| MemTotal | The total amount of usable RAM in the system. |
 |  | |
 | MemFree | The amount of unused RAM at the moment. It is equal to sum of fields LowFree + HighFree. |
 |  | |
@@ -129,39 +129,39 @@ Table 3-22 explains the meaning of each field of this file.
 |  | |
 | SwapTotal | The total amount of physical [**swap**](https://en.wikipedia.org/wiki/Memory_paging#Unix_and_Unix-like_systems) memory. |
 |  | |
-| SwapFree | The amount of unused swap memory |
+| SwapFree | The amount of unused swap memory. |
 
 This [article](https://www.thegeekdiary.com/understanding-proc-meminfo-file-analyzing-memory-utilization-in-linux/) provides more details about fields of the `meminfo` file.
 
-Typing the `cat` command for printing the `meminfo` file contents takes time. We can declare the function with a short name for that. Here is an example of this function:
+You can always call the `cat` utility and get the `meminfo` file contents. However, typing this call takes time. You can shorten it by declaring the function this way:
 {line-numbers: false, format: Bash}
 ```
 mem() { cat /proc/meminfo; }
 ```
 
-This is a one-line declaration of the `mem` function. Now you can call it the same way as any regular Bash command. Do it like this:
+This is the one-line declaration of the `mem` function. Now you can call it the same way as any regular Bash built-in. Do it like this:
 {line-numbers: false, format: Bash}
 ```
 mem
 ```
 
-The function prints statistics on memory usage.
+This command calls the `mem` function that prints statistics on memory usage.
 
-The `unset` command removes the previously declared function. For example, the following call removes our `mem` function:
+The `unset` Bash built-in removes the declared function. For example, the following call removes our `mem` function:
 {line-numbers: false, format: Bash}
 ```
 unset mem
 ```
 
-Suppose a variable and a function are declared with the same name. Use the `-f` option to remove the function. Here is an example:
+Suppose that you have declared a variable and function with the same names. Call `unset` with the `-f` option to remove the function and keep the variable. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 unset -f mem
 ```
 
-You can add the function declaration to the `~/.bashrc` file. Then the function will be available every time you start the shell.
+You can add the function declaration to the `~/.bashrc` file. Then the function will be available whenever you start the shell.
 
-We declared the `mem` function in single-line format when using command-line. It is a convenient and fast way to type. But clarity is more important when declaring the function in the file `~/.bashrc`. Therefore, it is better to declare the `mem` function in a standard format there. Do it like this:
+We have declared the `mem` function in the single-line format. It is convenient when you type it in the shell. However, clarity is more important when you declare the function in the `~/.bashrc` file. Therefore, it is better to apply the following format there:
 {line-numbers: true, format: Bash}
 ```
 mem()
