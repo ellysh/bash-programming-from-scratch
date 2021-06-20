@@ -1,24 +1,24 @@
 ## Functions
 
-Bash is [**procedural programming language**](https://en.wikipedia.org/wiki/Procedural_programming). Procedural languages allow you to divide a program into logical parts called [**subroutine**](https://en.wikipedia.org/wiki/Subroutine). A subroutine is an independent block of code that solves a specific task. A program calls subroutines when it is necessary.
+Bash is the [**procedural programming language**](https://en.wikipedia.org/wiki/Procedural_programming). Procedural languages allow you to divide a program into logical parts called [**subroutines**](https://en.wikipedia.org/wiki/Subroutine). A subroutine is an independent block of code that solves a specific task. A program calls subroutines when it is necessary.
 
-Subroutines are called **functions** in modern programming languages. We have already met functions when considering the `declare` command. Now let's study the structure and purposes of functions.
+A subroutine is a deprecated term. It is called **function** in modern programming languages. We have already met functions when considering the `declare` Bash built-in. Now it is time to study them in detail.
 
 ### Programming Paradigms
 
-We should start with the terminology. It will help us to understand why functions have appeared and which tasks they solve.
+We should start with the terminology. It will explain to you why functions were introduced and which tasks they solve.
 
-What is procedural programming? It is one of [**paradigms**](https://en.wikipedia.org/wiki/Programming_paradigm) of software development. A paradigm is a set of ideas, methods and principles that define how to write programs.
+What is procedural programming? It is one of the [**paradigms**](https://en.wikipedia.org/wiki/Programming_paradigm) of software development. A paradigm is a set of ideas, methods and principles that define how to write programs.
 
-There are two dominant paradigms today. Most modern programming languages follow one of them. The paradigms are the following:
+There are two dominant paradigms today. Most modern programming languages follow them. That paradigms are the following:
 
-1. [**Imperative programming**](https://en.wikipedia.org/wiki/Imperative_programming). The developer explicitly specifies to the computer how to change its state. In other words, he writes a complete algorithm for calculating the result.
+1. [**Imperative programming**](https://en.wikipedia.org/wiki/Imperative_programming). The developer explicitly specifies to the computer how to change the state of the program. In other words, he writes a complete algorithm for calculating the result.
 
-2. [**Declarative programming**](https://en.wikipedia.org/wiki/Declarative_programming). The developer specifies the properties of the desired result but not the algorithm to calculate it.
+2. [**Declarative programming**](https://en.wikipedia.org/wiki/Declarative_programming). The developer specifies the properties of the desired result, but not the algorithm to calculate it.
 
 Bash follows the first paradigm. It is an imperative language.
 
-The imperative and declarative paradigms define general principles for writing a program. There are different methodologies (i.e. approaches) within the same paradigm. Each methodology offers specific programming techniques.
+The imperative and declarative paradigms define general principles for writing programs. There are different methodologies (i.e. approaches) within the same paradigm. Each methodology offers specific programming techniques.
 
 The imperative paradigm has two dominant methodologies:
 
@@ -26,35 +26,35 @@ The imperative paradigm has two dominant methodologies:
 
 2. [**Object-oriented programming**](https://en.wikipedia.org/wiki/Object-oriented_programming).
 
-These methodologies suggest structuring the source code of a program in different ways. Bash follows the first methodology.
+Each of these methodologies suggests a specific way for structuring the source code of programs. Bash follows the first methodology.
 
-Let's take a closer look at procedural programming. This methodology suggests features for combining the program's instruction sets into independent blocks of code. These blocks are called subroutines or functions.
+Let's take a closer look at procedural programming. This methodology suggests features for combining the program instructions into independent code blocks. These blocks are called subroutines or functions.
 
 You can call a function from any place of a program. The function can receive input parameters. This mechanism works similarly to passing command-line parameters to a script. This is a reason why a function is called "a program inside a program" sometimes.
 
-The main task of the functions is to manage the complexity of a program. The larger the size of the source code, the harder it is to maintain. Repeating code fragments make this situation worse. They are scattered throughout the program and may contain errors. After fixing a mistake in one fragment, you have to find and fix all the rest. If you put the fragment into a function, it is enough to fix the error only there.
+The main task of the functions is to manage the complexity of the source code. The larger size it has, the harder it is to maintain. Repeating code fragments make things worse. They are scattered throughout the program and may contain errors. After fixing a mistake in one fragment, you have to find and fix all the rest. If you put the fragment into a function, it is enough to fix the error only there.
 
-Here is an example of a repeating code fragment. Suppose that you are writing a large program. The program prints text messages to the error stream when handling errors. Then there will be many places in the source code where you call the `echo` command. These calls can look like this:
+Here is an example of a repeating code fragment. Suppose that you are writing a large program. Whenever some error happens, the program prints the corresponding text message to the error stream. This approach leads to duplicating `echo` calls in the source code. The typical call looks this way:
 {line-numbers: false, format: Bash}
 ```
 >&2 echo "The N error has happened"
 ```
 
-At some point, you decide that it is better to write all errors in a log file. Then it will be easier to analyze them. Users of your program may redirect the error stream to the log file themselves. But let's assume that some of them do not know how to use redirection. Thus, the program must write messages into the log file by itself.
+At some point, you decide that it is better to write all errors to the log file. It will help you to debug possible issues. Users of your program may redirect the error stream to the log file themselves. This is a good idea, but some users do not know how to use redirection. Thus, your program must write messages into the log file by itself.
 
-Let's change the program. You have to go through all places where it handles the errors. Then you should replace the `echo` calls there with the following one:
+You decided to change the way how the program prints error messages. It means that you need to check every place where it happens. You should change the `echo` calls there this way:
 {line-numbers: false, format: Bash}
 ```
 echo "The N error has happened" >> debug.log
 ```
 
-If you miss one `echo` call accidentally, its output does not come into the log file. But this specific output can be critical. Without it, you would not understand why the program fails for the user.
+If you miss one `echo` call accidentally, its output does not come to the log file. This specific output can be critical for debugging. Without it, you would not understand why the program fails on the user side.
 
-We have considered one of the difficulties of maintaining programs. It often occurs when you change the existing code. The root cause of the problem is a violation of the [**don't repeat yourself**](https://en.wikipedia.org/wiki/Don't_repeat_yourself) or DRY development principle. The same error handling code was copied over and over again in different places of the program. You should not do that.
+We have considered one of several problems of maintaining programs. The maintenance forces you to change the existing source code. If you have violated the [**don't repeat yourself**](https://en.wikipedia.org/wiki/Don't_repeat_yourself) or DRY development principle, you get a lot of troubles. Remember a simple rule: do not copy the same code block of your program.
 
-Functions solve the problem of code duplication. This solution somewhat resembles loops. The difference is that a loop executes a set of commands in one place of the program cyclically. In contrast to a loop, a function executes the same set of commands at different program places.
+Functions solve the problem of code duplication. They resemble loops in some sense. The difference is, a loop executes a code block in one place of the program cyclically. In contrast to a loop, a function executes the code block at different program places.
 
-Using functions improves the readability of the program's code. It combines a set of commands into a single block. If you give the block a speaking name, the task it solves becomes obvious. You can call the function by its name. It makes the program easier to read. Instead of a dozen lines of the function's body, there will be just its name. It explains to the reader what is going on in the function.
+Using functions improves the readability of the source code. A function combines a set of commands into a single block. If you give a speaking name to this block, its purpose becomes obvious. Then you can use this name to call the function. It makes your program easier to read. You replace a dozen lines of the function body with its name wherever you call it.
 
 ### Using Functions in Shell
 
