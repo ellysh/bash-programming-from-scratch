@@ -536,13 +536,13 @@ At first glance, the code looks almost the same as it was before. However, it be
 
 #### Variable Scope
 
-Naming conflicts is a serious problem. It occurs in Bash when functions declare variables in the global scope. As a result, the names of two variables can match. Then two functions will access them at different moments. This leads to confusion and data loss.
+Naming conflicts is a serious problem. They occur when functions declare their variables in the global scope. As a result, the names of two or more variables can match. If functions access these variables at different moments, they overwrite data of each other.
 
-Procedural languages suggest the solution for the naming conflicts problem. They provide features to restrict the scope of declared variables. Bash has these features too.
+Procedural languages provide the feature that resolves naming conflicts. The idea of this mechanism is to restrict the scope of declared variables.
 
-If you declare a variable with the `local` keyword in a function, its body limits the variable's scope. In other words, the variable becomes available inside the function only.
+Bash provides the `local` keyword. Suppose that you declare the variable in some function using this keyword. Then you can access this variable in the function body only. It means that the function body limits the variable scope.
 
-Here is our latest version of the `code_to_error` function:
+Here is the latest version of the `code_to_error` function:
 {line-numbers: true, format: Bash}
 ```
 code_to_error()
@@ -560,23 +560,23 @@ code_to_error()
 }
 ```
 
-We have declared the `_result_variable` variable using the `local` keyword. Therefore, it becomes a local variable. You can read and write its value in `code_to_error` and any other functions that it calls.
+We have declared the `_result_variable` variable using the `local` keyword. Therefore, it becomes the local variable. You can read and write its value inside `code_to_error` and any other function that it calls.
 
-Bash limits a local variable's scope by the execution time of the function where it is declared. Such a scope is called [**dynamic**](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope_vs._dynamic_scope_2). Modern languages prefer to use **lexical** scope. There the variable is available in the function's body only. If you have nested calls, the variable is not available in the called functions.
+Bash limits a local variable scope by the execution time of the function where it is declared. Such a scope is called [**dynamic**](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope_vs._dynamic_scope_2). Modern languages tend to use **lexical** scope. There the variable is available in the function body only. If you have nested calls, the variable is not available in the called functions.
 
-Local variables do not come into the global scope. This ensures that no function will overwrite them by accident.
+A local variable does not come to the global scope. It guarantees that no function will overwrite it by accident.
 
 {caption: "Exercise 3-14. Variable scope", format: text, line-numbers: false}
 ```
-What text will the script in Listing 3-37 print to the console when it executes?
+What text does the script in Listing 3-37 print to the console when it executes?
 ```
 
 {caption: "Listing 3-37. The script for testing the variable scope", line-numbers: true, format: Bash}
 ![`quiz-variable-scope.sh`](code/BashScripting/quiz-variable-scope.sh)
 
-Careless handling of local variables leads to errors. They happen because a local variable hides a global variable with the same name. Let's look at an example.
+Careless handling of local variables leads to errors. They happen because a local variable hides a global variable with the same name.
 
-Suppose you write a function to handle a file. For example, it calls the `grep` utility to look for a pattern in the file. The function looks like this:
+An example will demonstrate the problem. Suppose that you write a function for processing a file. It calls the `grep` utility to look for a pattern in the file contents. The function looks this way:
 {line-numbers: true, format: Bash}
 ```
 check_license()
@@ -586,7 +586,7 @@ check_license()
 }
 ```
 
-Now suppose that you have declared the global variable named `filename` at the beginning of the script. Its declaration looks like this:
+Now suppose that you have declared the global variable named `filename` at the beginning of the script. Here is its declaration:
 {line-numbers: true, format: Bash}
 ```
 #!/bin/bash
@@ -594,11 +594,13 @@ Now suppose that you have declared the global variable named `filename` at the b
 filename="$1"
 ```
 
-Will the `check_license` function run correctly? Yes. It happens thanks to **hiding a global variable**. This mechanism works in the following way. When Bash meets the `filename` variable in the function's body, it accesses the local variable instead of the global one. It happens because the local variable is declared later than the global one. Because of the hiding mechanism in the function's body, you cannot access the global variable `filename` there.
+Will the `check_license` function work correctly? Yes. It happens thanks to **hiding a global variable**. This mechanism works in the following way. When Bash meets the `filename` variable in the function body, it accesses the local variable instead of the global one. It happens because the local variable is declared later than the global one. When Bash translates the variable name to the memory address, it takes the latest variable declaration. The hiding mechanism has a side effect. It does not allow you to access the `filename` global variable inside the `check_license` function.
 
-Accidental hiding of global variables leads to errors. Try to avoid any possibility of getting such a situation. To do this, add a prefix or postfix for local variable names. For example, it can be an underscore at the end of the name.
+When you hide global variables accidentally, you get troubles. The best solution is to avoid any possibility of getting such a situation. Add a prefix or postfix for local variable names for doing that. For example, it can be an underscore at the end of each name.
 
-A global variable becomes unavailable in a function's body only after declaring the local variable with the same name. Consider the following variant of the `check_license` function:
+A global variable becomes unavailable in the function body only after declaring the local variable with the same name there.
+
+Let's consider the following variant of the `check_license` function:
 {line-numbers: true, format: Bash}
 ```
 #!/bin/bash
@@ -612,17 +614,17 @@ check_license()
 }
 ```
 
-Here we initialize the local variable `filename` by the value of a global variable with the same name. This assignment operation works as expected.  It happens because Bash does parameter expansion before executing the assignment.
+Here we initialize the local variable `filename` by the value of the global variable with the same name. This assignment works as expected.  It happens because Bash does parameter expansion before executing the assignment.
 
-Suppose that you pass the `README` filename to the script. Then the assignment looks like this after parameter expansion:
+Suppose that you pass the `README` filename to the script. Then you will get this assignment after the parameter expansion:
 {line-numbers: false, format: Bash}
 ```
   local filename="README"
 ```
 
-Developers changed the default scopes of arrays in the 4.2 Bash version. If you declare an indexed or associative array in a function' body, it comes to the local scope. You should use the `-g` option of the `declare` command to make an array global.
+Bash developers changed the default scope of arrays in the 4.2 shell version. If you declare an indexed or associative array in a function body, it comes to the local scope. You should use the `-g` option of the `declare` command to make the array global.
 
-Here is the declaration of the local array `files`:
+For example, here is the declaration of the `files` local array:
 {line-numbers: true, format: Bash}
 ```
 check_license()
@@ -632,7 +634,7 @@ check_license()
 }
 ```
 
-You should change the declaration this way to declare the global array:
+You should change this declaration if you need the global array. It becomes like this:
 {line-numbers: true, format: Bash}
 ```
 check_license()
@@ -644,13 +646,13 @@ check_license()
 
 We have considered the functions in Bash. Here are general recommendations on how to use them:
 
-1. Choose names for functions carefully. Each name should tell the reader of your code what the function does.
+1. Choose names for your functions carefully. They should explain the purpose of the functions.
 
-2. Declare only local variables inside functions. Use the naming convention for them. This solves potential conflicts of local and global variable names.
+2. Declare only local variables inside functions. Use some naming convention for them. This solves potential conflicts of local and global variable names.
 
-3. Do not use global variables in functions. Instead, pass the value of the global variable to the function via a parameter.
+3. Do not use global variables in functions. Instead, pass their values to the functions using input parameters.
 
-4. Do not use the `function` keyword when declaring functions. It is present in Bash but not in the POSIX standard.
+4. Do not use the `function` keyword when declaring a function. It presents in Bash, but the POSIX standard does not have it.
 
 Let's take a closer look at the last tip. Do not declare functions this way:
 {line-numbers: true, format: Bash}
@@ -662,7 +664,7 @@ function check_license()
 }
 ```
 
-The `function` keyword is useful in only one case. It resolves the conflict between the function name and the alias.
+There is only one case when the `function` keyword is useful. It resolves the conflict between the names of some function and alias.
 
 For example, the following function declaration does not work without the `function` keyword:
 {line-numbers: true, format: Bash}
@@ -676,16 +678,16 @@ function check_license()
 }
 ```
 
-If you have such a declaration, you can call the function only by adding a slash before its name. Here is an example of this call:
+If you have such a declaration, you can call the function by adding a slash before its name. Here is an example of this call:
 {line-numbers: false, format: Bash}
 ```
 \check_license
 ```
 
-If you skip the slash, Bush inserts the alias value instead of calling the function. It means this command brings the alias:
+If you skip the slash, Bush inserts the alias value instead of calling the function. It means that the following command runs the alias:
 {line-numbers: false, format: Bash}
 ```
 check_license
 ```
 
-There is a low probability that you get alias and function names conflict in the script. Each script runs in a separate Bash process. This process does not load aliases from the `.bashrc` file. Therefore, name conflicts can happen by mistake in the shell mode only.
+There is a low probability that you get the conflict of function and alias names in the script. Each script runs in a separate Bash process. This process does not load aliases from the `.bashrc` file. Therefore, name conflicts can happen by mistake in the shell mode only.
