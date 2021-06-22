@@ -4,7 +4,7 @@
 
 * [The history of the electronic computers](https://technicshistory.com/2017/08/29/the-electronic-computers-part-1-prologue).
 
-* [A History of Apple's Operating Systems](http://web.archive.org/web/20180702193510/http://kernelthread.com/publications/appleoshistory/).
+* [A history of Apple's operating systems](http://web.archive.org/web/20180702193510/http://kernelthread.com/publications/appleoshistory/).
 
 * [The article about static and dynamic typing](https://www.destroyallsoftware.com/compendium/types?share_key=baf6b67369843fa2).
 
@@ -32,10 +32,10 @@
 
 * [Shell Style Guide](https://google.github.io/styleguide/shellguide.html) by Google.
 
-* [Online Bash Commands Analyzer](https://explainshell.com/#).
+* [Online Bash commands analyzer](https://explainshell.com/#).
 
 * [The Bash scripts localization guide](https://mywiki.wooledge.org/BashFAQ/098).
 
 ## Unix Environment
 
-* ["The Art of Unix Programming "](http://www.catb.org/~esr/writings/taoup) by Eric S. Raymond.
+* ["The Art of Unix Programming"](http://www.catb.org/~esr/writings/taoup) by Eric S. Raymond.
