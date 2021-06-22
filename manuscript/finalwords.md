@@ -1,30 +1,38 @@
 # Finalwords
 
-Here we finish our introduction to Bash. We have covered the basics of the language only. This book leaves many topics out of the scope. They are required for advanced Bash development. Most probably, you would not need them for daily work with a computer.
+Here we finish our introduction to Bash. We have covered the language basics only. This book skips several important Bash topics. You will need them if you plan to use Bash for professional software development.
 
-These advanced topics can be interesting for you if you want to go deeper in Bash:
+Here is the list of advanced topics that you need for further development of your Bash skills:
 
-* [Manipulating Strings](https://tldp.org/LDP/abs/html/string-manipulation.html).
+* [Manipulating strings](https://tldp.org/LDP/abs/html/string-manipulation.html).
 
-* [Regular Expressions](https://tldp.org/LDP/abs/html/x17129.html).
+* [Regular expressions](https://tldp.org/LDP/abs/html/x17129.html).
 
 * [The `sed` stream editor](https://tldp.org/LDP/abs/html/x23170.html).
 
 * [The `awk` text processing language](https://tldp.org/LDP/abs/html/awk.html).
 
-These topics are important. They are material for advanced study. You can skip them if you are using Bash for simple tasks and basic automation. Learn these topics if you are going to write complex applications in Bash.
+These topics are material for advanced study. You can skip them if you are using Bash for simple tasks and basic automation only.
 
-Perhaps you enjoyed programming. You found it useful. What to do next after reading this book?
+Perhaps you liked writing programs. Now you want to know more about this topic. What is the next step after reading this book?
 
-First of all, let's admit that Bash is not a general-purpose programming language. This term refers to languages for developing applications in various [**domains**](https://en.wikipedia.org/wiki/Domain_(software_engineering)). Such languages do not contain constructs that are suitable for one domain only and useless in another.
+First, you should accept the idea that Bash is not the **general-purpose programming language**. This term means a language for developing applications in various [**domains**](https://en.wikipedia.org/wiki/Domain_(software_engineering)). Such a language does not contain features that are suitable for the specific domain and useless in another one.
 
-Bash is the [**domain-specific language**](https://en.wikipedia.org/wiki/Domain-specific_language). Does that mean it is useless? No, it does not. Bash is a powerful auxiliary tool for each software developer. Today it is used for integrating large projects, testing, building software and automating routine tasks. You would not find a commercial project written in Bash only. This language copes well with the tasks for which it was created. But it is inferior to modern general-purpose languages in many application domains.
+Bash is the [**domain-specific language**](https://en.wikipedia.org/wiki/Domain-specific_language). It does not mean that Bash is useless for you. It is a powerful auxiliary tool for each software developer. Today it is used for integrating large projects, testing, building software and automating routine tasks. However, you would not find any commercial project written in Bash only. This language copes well with the tasks for which it was created. On the other side, there are many domains where Bash cannot compete with modern general-purpose languages.
 
-Nobody creates a programming language just for fun. Its author faced some applied tasks. The languages existing at that time were not suitable to solve them. Then this developer wrote the new language that is focused on specific tasks. Therefore, modern general-purpose languages have advantages in a few domains only. No language fits any type of task perfectly. This leads that the applied domain dictates you the language for software development.
+Nobody creates some programming language just for fun. Its author faced some applied task. Then he found that all existing languages are inconvenient for solving it. At some point, this developer writes the new language that is focused on his specific task. Then there are two options for developing this language.
 
-So, you have read this book. Now it is time to choose an applied domain that interests you. Read articles on the Internet. Think about it: which area of software development is right for you? Only after answering this question, choose a programming language for further study.
+The first option is the language can provide universal and well-known constructs that fit several domains. It becomes general-purpose in this case. The author adds new features and libraries that adapt the language for various domains.
 
-Table 5-1 is your starting point for getting to know the applied domains. It also lists the languages used in them.
+The second option is the new language has many domain-specific features that are useful only for a limited range of tasks. It becomes domain-specific in this case. The author does not pay efforts for adding any features outside one specific domain.
+
+There is one important conclusion of the typical language development process. All modern general-purpose languages have strong advantages in a few domains only. No language fits any tasks perfectly. It means that the domain dictates you the language to use.
+
+Let's come back to our question regarding your next step. You have read this book. Now it is time to choose the applied domain that is interested to you. How can you do it? You already know something about software from your user experience. Read articles on the Internet about the programs that you use every day. Think about them this way: do you want to develop similar programs? It can happen that your user experience will help you to find the right applied domain.
+
+Suppose that you find the applied domain that you want to learn. The next step is choosing the appropriate programming language that fits this domain well.
+
+Table 5-1 will help you to find the right programming language for your applied domain.
 
 {caption: "Table 5-1. Applied domains of software development", width: "100%"}
 | Domain | Programming language |
@@ -39,7 +47,7 @@ Table 5-1 is your starting point for getting to know the applied domains. It als
 |  | |
 | [System administration](https://en.wikipedia.org/wiki/System_administrator) | Bash, Python, Perl, Ruby |
 |  | |
-| [Embedded systems](https://en.wikipedia.org/wiki/Embedded_system) | C, C++, Ассемблер |
+| [Embedded systems](https://en.wikipedia.org/wiki/Embedded_system) | C, C++, Assembler |
 |  | |
 | [Machine learning ](https://en.wikipedia.org/wiki/Machine_learning) and [data analysis](https://en.wikipedia.org/wiki/Data_analysis) | Python, Java, C++ |
 |  | |
@@ -49,24 +57,24 @@ Table 5-1 is your starting point for getting to know the applied domains. It als
 |  | |
 | [Video games](https://en.wikipedia.org/wiki/Video_game) | C++ |
 
-It is not enough to know a programming language to become a high-class developer. It is necessary to know the technologies that are used in the specific applied domain. For example, an information security expert must understand the architecture of computer networks and operating systems. As you grow professionally, you will come to understand what technologies you need to learn.
+Unfortunately, it is not enough to know one specific programming language to become a lead developer. You need to know the technologies that are used in the specific applied domain. For example, an information security expert must understand the architecture of computer networks and operating systems. As you grow professionally, you will get the list of technologies that you should learn.
 
-Suppose you have chosen your applied domain and programming language. Now it is time to enroll in a free online course. This book has introduced you to the basics of programming. So, learning a new language will go faster. The statements of Python or C++ will seem familiar to you from Bash. However, these languages have concepts that you will have to learn from scratch. Do not lose your motivation. Apply the new knowledge into practice and learn from your mistakes. This is the only way to get results.
+Suppose that you have chosen the applied domain and programming language. Now it is time to enroll in the corresponding online course. This book has introduced you to the basics of programming. Thus, learning the new language will go faster. You will find that some Python and C++ statements look the same as in Bash. However, these languages have concepts that you have to learn from scratch. Do not lose your motivation. Apply the new knowledge into practice and learn from your mistakes. This is the only way to get results.
 
-I hope you learned something new from this book and had an enjoyable time reading it. If you like the book, please share it with your friends. I would also appreciate it if you would take a few minutes to write a review on [Goodreads](https://www.goodreads.com/book/show/57301128-bash-programming-from-scratch).
+I hope that you learned something new from this book and had an enjoyable time while reading it. If you like the book, please share it with your friends. I would also appreciate it if you would take a few minutes to score it on [Goodreads](https://www.goodreads.com/book/show/57301128-bash-programming-from-scratch).
 
-If you have any questions or comments about the book, write me to [petrsum@gmail.com](mailto:petrsum@gmail.com). Also, ask questions in the "Issues" section of the [GitHub repository of the book](https://github.com/ellysh/bash-programming-from-scratch/issues).
+If you have any questions or comments about this book, please write to me here: [petrsum@gmail.com](mailto:petrsum@gmail.com). Also, you can ask questions in the "Issues" section of the [GitHub repository of the book](https://github.com/ellysh/bash-programming-from-scratch/issues).
 
 Thank you for reading "Bash programming from scratch"!
 
 # Acknowledgements
 
-Nobody writes a book alone. Several people helped me write this book. Some of them suggested me a general idea. Others gave me comments and advices. These are the people I want to thank.
+Nobody writes his book alone. Several people helped me a lot with this work. Some of them suggested just general ideas. Others gave me comments and recommendations. These are the people I want to thank here.
 
-Thanks to Sophia Kayunova for the wish to learn how to program. It led me to the idea of writing a programming guide for my friends.
+Thanks to Sophia Kayunova for the idea of the programming book for beginners. It gave me a strong motivation to write a book for my friends who asked me about programming.
 
-Thanks to Vitaly Lipatov for introducing me to Linux and Bash. He laid the foundation of my professional skills.
+Thanks to Vitaly Lipatov for introducing me to Linux and Bash. He taught me programming basics and showed me the world of open-source software.
 
-Thanks to Ruslan Piasetskyi for consulting on Bash. He explained to me the idioms and pitfalls of the language.
+Thanks to Ruslan Piasetskyi for consulting on some Bash topics. He explained to me the idioms and pitfalls of the language.
 
 Thanks also to everyone who supported me and motivated me to finish this work.
