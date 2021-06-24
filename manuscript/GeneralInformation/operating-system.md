@@ -2,7 +2,7 @@
 
 ### History of OS Origin
 
-Most of the computer users understand why [**operating system**](https://en.wikipedia.org/wiki/Operating_system) (OS) is needed. Before launching a new [**application**](https://en.wikipedia.org/wiki/Application_software), they usually check its system requirements. These requirements specify the [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware) and operating system that a user needs to launch the application.
+Most computer users understand why an [**operating system**](https://en.wikipedia.org/wiki/Operating_system) (OS) is needed. Before launching a new [**application**](https://en.wikipedia.org/wiki/Application_software), you usually check its system requirements. These requirements specify the [**hardware**](https://en.wikipedia.org/wiki/Computer_hardware) and OS that you need to launch the application.
 
 The system requirements bring us the idea that the OS is a software platform. The application requires this platform for correct working. But where did this requirement come from? Why can't you just buy a computer and launch the application without any OS?
 
@@ -139,7 +139,12 @@ The system libraries with useful algorithms (like GDI) are software resources of
 
 The OS manages hardware and software resources. Also, it organizes the joint work of running programs. The OS performs several non-trivial tasks to launch an application. Then the OS tracks its work. If the application violates some agreements (like memory usage), the OS terminates it. We will consider launching and executing the program in detail in the next section.
 
-If the OS is multi-user, it controls access to the data. It is an important security feature. Thanks to such control, each user can access his own files only. Therefore, they can work with the same computer safely.
+If the OS is multi-user, it controls access to the data. It is an important security feature. This feature allows the user to access the following file system objects:
+
+* Files and directories that the user owns.
+* Files and directories that somebody has shared with the user.
+
+It allows several persons to use the same computer safely.
 
 Here is the summary. The modern OS has all following features:
 
@@ -173,7 +178,7 @@ Early operating systems executed programs one after another without delays. This
 
 Batch processing increased the efficiency of using computers in the 1960s. This approach has automated program loading. The human operators became unnecessary for this task. However, the computers still had the [**bottleneck**](https://en.wikipedia.org/wiki/Bottleneck_(production)). The computational power of processors was increasing significantly every year. The speed of peripherals has remained almost the same. It led to CPU idles all the time while waiting for input/output.
 
-I> Bottleneck is a component or resource of an information system that limits its overall performance or bandwidth.
+I> A bottleneck is a component or resource of an information system that limits its overall performance or bandwidth.
 
 Why does CPU idle and wait for peripheral devices? Here is an example. Suppose that the computer from the 1960s runs programs one by one. It reads data from a magnetic tape and prints the results on the printer. The OS loads each program and executes its instructions. Then it loads the next one, and so on.
 
@@ -185,7 +190,7 @@ Here is an example. Suppose that your application wants to read data from your h
 
 Multiprogramming differs from multitasking that modern OSes have. Multiprogramming fits the batch processing mode very well. However, this load balancing concept is not suitable for [**interactive systems**](https://en.wikipedia.org/wiki/Interactivity#Computing_science). An interactive system considers each user action as an event (for example, a keystroke). The system should process events immediately when they happen. Otherwise, the user cannot work with the system.
 
-Here is an example of workflow with an interactive system. Suppose that you are typing text in the MS Office document. You press a key and expect to see this symbol on the screen. If the computer requires several seconds to process your keystroke and display the symbol, you cannot work like that. Most of the time, you will wait to check if the computer has processed your keystroke or not. This is inefficient.
+Here is an example of workflow with an interactive system. Suppose that you are typing text in the MS Office document. You press a key and expect to see this symbol on the screen. If the computer requires several seconds to process your keystroke and display the symbol, you cannot work like that. Most of the time, you will wait and check if the computer has processed your keystroke or not. This is inefficient.
 
 Multiprogramming cannot handle events in the interactive system. It happens because you cannot predict when task switching happens next time. OS switches tasks when a program finishes or when it requires a busy resource. Suppose that your text editor is not an active program now. Then you do not know when it can process your keystroke. It can happen in a second or in several minutes. This is unacceptable for a good user interface.
 
@@ -193,7 +198,7 @@ The multitasking concept solves the task of processing events in interactive sys
 
 Pseudo-parallel processing means that the computer executes one task only at any given time. The OS switches tasks so quickly that you can suppose the processing of several programs at once. This concept allows the OS to react immediately to any event. Even though every program and OS component uses hardware resources at strictly defined moments.
 
-There are computers with multiple processors or with [multi-core processors](https://en.wikipedia.org/wiki/Multi-core_processor). Only these computers can execute several programs at once. The number of the running programs equals the number of cores of all processors approximately. The preemptive multitasking mechanism with constant task switching works on such systems well. It is universal and balances the load regardless of the number of cores. This way, the computer responds to the user's actions quickly. The number of processor cores does not matter.
+There are computers with multiple processors or with [multi-core processors](https://en.wikipedia.org/wiki/Multi-core_processor). Only these computers can execute several programs at once. The number of the running programs equals the number of cores of all processors approximately. The preemptive multitasking mechanism with constant task switching works on such systems well. It is a universal approach that balances the load regardless of the number of cores. This way, the computer responds to the user's actions quickly. The number of processor cores does not matter.
 
 #### User Interface
 
@@ -206,7 +211,7 @@ Modern OSes are able to solve a wide range of tasks. These tasks depend on the c
 
 We will consider OSes for PCs and notebooks only. Apart from multitasking, they provide [**graphic user interface**](https://en.wikipedia.org/wiki/Graphical_user_interface) (GUI). This interface means the way to interact with the system. You launch applications, configure computer devices and OS components via the user interface. Let's take a look at its history and find how it has reached the current state.
 
-Nobody works with commercial computers interactively before 1960. [Digital Equipment Corporation](https://en.wikipedia.org/wiki/Digital_Equipment_Corporation) implemented the interactive mode for their [minicomputer](https://en.wikipedia.org/wiki/Minicomputer) [PDP-1](https://en.wikipedia.org/wiki/PDP-1) in 1959. It was a fundamentally new approach. Before that, IBM computers dominated the market in the 1950s. They worked in batch processing mode only. IBM OSes with multiprogramming automated program loading and provided high performance for calculation tasks.
+Nobody works with commercial computers interactively before 1960. [Digital Equipment Corporation](https://en.wikipedia.org/wiki/Digital_Equipment_Corporation) implemented the interactive mode for their [minicomputer](https://en.wikipedia.org/wiki/Minicomputer) [PDP-1](https://en.wikipedia.org/wiki/PDP-1) in 1959. It was a fundamentally new approach. Before that, IBM computers dominated the market in the 1950s. They worked in batch processing mode only. This mode automated program loading and provided high performance for calculation tasks.
 
 The idea of interactive work with the computer appeared first in the SAGE military project. The US Air Force was its customer. The goal of the project was to develop an automated air defense system to detect Soviet bombers.
 
@@ -253,7 +258,7 @@ Figure 1-7 shows a modern command-line interface. You can see the [**terminal em
 
 The command-line interface is still in demand today. It has several advantages over the graphical interface. For example, CLI does not require as many resources as GUI. CLI runs reliably on low-performance embedded computers as well as on powerful servers. If you use CLI to access the computer remotely, you can use a low bandwidth communication channel. The server will receive your commands in this case.
 
-The command-line interface has some disadvantages. Learning to use CLI effectively is a serious challenge. You have to remember around a hundred commands. Each command has several modes that change its behavior. Therefore, you should keep in mind these modes too. It takes some time to remember at least a minimum set of commands for daily work.
+The command-line interface has some disadvantages. Learning to use CLI effectively is hard and takes time. You have to remember around a hundred commands. Each command has several modes that change its behavior. Therefore, you should keep in mind these modes too. It takes some time to remember at least a minimum set of commands for daily work.
 
 There is an option to make the command-line interface more user-friendly. You can give a hint to the user about available commands. It was done in the [**text-based interface**](https://en.wikipedia.org/wiki/Text-based_user_interface) (TUI). The interface uses [**box-drawing characters**](https://en.wikipedia.org/wiki/Box-drawing_character) along with alphanumeric symbols. The box-drawing characters display the graphic primitives on the screen. Primitives are lines, rectangles, triangles, etc. They guide the user about the available actions he can do with the application.
 
@@ -300,7 +305,7 @@ Your business goes well until the new Windows version comes. Let's assume that M
 
 If users need your program for daily work, they refuse the Windows update. Using the program is more important than getting new OS features.
 
-We know that Microsoft has changed the Windows architecture completely. It means that you should rewrite your program from scratch. Now count all the time that you have spent fixing bugs and adding new features. You should repeat all this work as soon as possible. Most likely, you will give up this idea and suggest that users of your program stay on the old Windows version.
+We know that Microsoft has changed the Windows architecture completely. It means that you should rewrite your program from scratch. Now count all the time that you have spent fixing bugs and adding new features. You should repeat all this work as soon as possible. Most likely, you will give up this idea. Then your users should stay with the old Windows version.
 
 Windows is a very popular and widespread OS. It means that there are many programs like yours. Their developers will come to the same decision as you. As a result, nobody updates to the new Windows version. This situation demonstrates the backward compatibility problem. This problem forces OS developers to be careful with changing their products. The best solution for them is to make a family of similar OSes.
 
@@ -308,7 +313,7 @@ There is a significant influence of user applications on OS development. For exa
 
 The tabular processor [VisiCalc](https://en.wikipedia.org/wiki/VisiCalc) was another killer application. It promoted the distribution of the [Apple II](https://en.wikipedia.org/wiki/Apple_II_series) computers. In the same way, free compilers for C, Fortran and Pascal languages help Unix OS to become popular in university circles.
 
-There was the killer application behind each of the modern OS families. This application gives the OS the initial success. Further distribution of the OS happens thanks to the [network effect](https://en.wikipedia.org/wiki/Network_effect). This effect means that developers tend to choose the most widespread computing platforms for their new applications.
+There was the killer application behind each of the modern OS families. This application gave these OSes the initial success. Further distribution of the OS happened thanks to the [network effect](https://en.wikipedia.org/wiki/Network_effect). This effect means that developers tend to choose the most widespread computing platforms for their new applications.
 
 What are the differences between the OS families? Windows and Linux are remarkable because they do not depend on the hardware. It means that you can install them on any modern PC or laptop. macOS runs on Apple computers only. If you want to use macOS on different hardware, you would need the unofficial [modified version](https://en.wikipedia.org/wiki/Hackintosh) of OS.
 

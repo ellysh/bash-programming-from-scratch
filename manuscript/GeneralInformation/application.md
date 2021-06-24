@@ -84,7 +84,7 @@ Data storage devices have the following parameters:
 
 3. **Cost** is a price of a device concerning its capacity. The units are dollars or cents per byte or bit.
 
-4. **Access time** is the time between the moment when the process needs some data from the device and when it receives them. Units are [**clock signals**](https://en.wikipedia.org/wiki/Clock_signal) of the CPU.
+4. **Access time** is the time between the moment when the processor needs some data from the device and when it receives them. Units are [**clock signals**](https://en.wikipedia.org/wiki/Clock_signal) of the CPU.
 
 These parameters vary for devices on each level of the memory hierarchy. Table 1-3 shows the ratio of parameters for modern storage devices.
 
@@ -144,7 +144,7 @@ The CPU has logical blocks for executing each type of instruction. The available
 
 When the OS has loaded the program instructions and its data into RAM, it allocates the CPU time slots for that. The program becomes a [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)) or process since this moment. The process means the running program and the resources it uses. Examples of the resources are memory area and OS objects.
 
-How do the program instructions look like? We can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual contents of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
+How do the program instructions look like? You can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual contents of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
 
 There are advanced programs to read machine code. They are called [**disassemblers**](https://en.wikipedia.org/wiki/Disassembler). These programs guess how the program instructions look like in terms of the CPU commands. You can get a better representation of the program using the disassembler than the hex editor.
 
