@@ -26,7 +26,7 @@ I> The Bash shell has good integration with Linux and macOS. You can access most
 
 If the OS fails, you need system utilities to recover it. They have a command-line interface because a GUI often is not available after the failure.
 
-Besides the administration tasks, you would need CLI when [connecting computers over a network](https://en.wikipedia.org/wiki/Remote_desktop_software). There are GUI programs for such connection. The examples are TeamViewer and Remote Desktop. They require a stable and fast network connection for working well. If the connection is not reliable, these programs are slow and fail often. The command interface does not have such a limitation. The remote server receives your command even if the link is poor.
+Besides the administration tasks, you would need CLI when [connecting computers over a network](https://en.wikipedia.org/wiki/Remote_desktop_software). There are GUI programs for such connection. The examples are TeamViewer and Remote Desktop. They require a stable and fast network connection for working well. If the connection is not reliable, the GUI programs are slow and often fail. The command interface does not have such a limitation. The remote server receives your command even if the link is poor.
 
 You can say that a regular user does not deal with administration tasks and network connections. Even if you do not have such tasks, using command shell speeds up your daily work with the computer. Here are few things that you can do more effective with CLI than with GUI:
 
@@ -47,6 +47,8 @@ There are special programs to edit and compile source code. Such programs are ca
 
 If you are an experienced programmer, knowing the CLI encourages you to develop helper utilities. It happens because writing a program with a command interface is much faster than with a GUI. The speed of development is essential when solving one-off tasks.
 
-Here is an example situation when you would need to write a helper utility. Suppose that you have to make a massive change in the source code of your project. You can do it with IDE by repeating the same action many times. Another option is to spend time writing a utility that will do this job. You should compare the required time for both ways of solving your task. If you are going to write a GUI helper utility, it takes more time than for a CLI utility. This can lead you to the wrong decision to solve the task manually using the IDE. Automating your job is the best option in most cases. It saves your time and helps to avoid mistakes.
+Here is an example situation when you would need to write a helper utility. Suppose that you have to make a massive change in the source code of your project. You can do it with IDE by repeating the same action many times.
 
-You decide if you need to learn the CLI. I have only given few examples when it is beneficial. It is hard to switch from using a GUI to a CLI. You have to re-learn many things that you do with Windows Explorer regularly. But once you get the hang of the command shell, your new productivity will surprise you.
+Another option is to spend time writing a utility that will do this job. You should compare the required time for both ways of solving your task. If you are going to write a GUI helper utility, it takes more time than for a CLI utility. This can lead you to the wrong decision to solve the task manually using the IDE. Automating your job is the best option in most cases. It saves your time and helps to avoid mistakes.
+
+You decide if you need to learn the CLI. I have only given few examples of when it is beneficial. It is hard to switch from using a GUI to a CLI. You have to re-learn many things that you do with Windows Explorer regularly. But once you get the hang of the command shell, your new productivity will surprise you.

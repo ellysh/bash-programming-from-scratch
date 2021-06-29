@@ -16,7 +16,7 @@ There is an address bar at the top of the Windows Explorer window. It displays t
 
 Another way to specify the file system object place is using the **relative path**. It shows you how to reach the object from the current directory.
 
-A [directory](https://en.wikipedia.org/wiki/Directory_(computing)) is a file system cataloging structure. It can contain references to files and other directories. Windows terminology calls it [**folder**](https://en.wikipedia.org/wiki/Directory_(computing)#Folder_metaphor). Both names mean the same kind of file system object.
+A [directory](https://en.wikipedia.org/wiki/Directory_(computing)) is a file system cataloging structure. It can contain files and other directories. Windows terminology calls it [**folder**](https://en.wikipedia.org/wiki/Directory_(computing)#Folder_metaphor). Both names mean the same kind of file system object.
 
 Figure 2-6 shows an Explorer window. The address bar equals `This PC > Local Disk (C:) > msys64` there. It matches the `C:\msys64` absolute path. Thus, we see the contents of the `msys64` directory on the `C` drive in the Explorer window.
 
@@ -43,7 +43,7 @@ You can connect extra disk drives to your computer. Another option is to split a
 
 The [File Allocation Table](https://en.wikipedia.org/wiki/File_Allocation_Table) (FAT) file system dictates how Windows manages disks and provides you access to them. Microsoft developed this file system for the [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS) OS. The principles of FAT became the basis of the [ECMA-107](http://www.ecma-international.org/publications/standards/Ecma-107.htm) standard. The next-generation file system from Microsoft is called [NTFS](https://en.wikipedia.org/wiki/NTFS). It replaced the obsolete FAT in modern versions of Windows. However, the basic principles of disks and directory structure are the same in NAT and FAT. The reason for that is the backward compatibility requirement.
 
-The Unix directory structure follows the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap10.html#tag_10). This structure is more limited and strict than the Windows one. It has several predefined directories that you cannot move or rename. You are allowed to put your data in the specific paths only.
+The Unix directory structure follows the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap10.html#tag_10). This structure gives you less freedom than the Windows one. It has several predefined directories that you cannot move or rename. You are allowed to put your data in the specific paths only.
 
 The POSIX standard says that the file system should have a top-level directory. It is called the [**root directory**](https://en.wikipedia.org/wiki/Root_directory). The slash sign / denotes it. All directories and files of all connected disk drives are inside the root directory.
 
@@ -92,11 +92,11 @@ Here is the last point to mention regarding Unix and Windows file systems. Use t
 
 We are ready to learn our first Bash commands. Here are the steps to execute a shell command:
 
-1. Make the terminal window active.
-2. Type the command.
+1. Open the terminal window.
+2. Type the command there.
 3. Press Enter.
 
-The shell will process your input.
+The shell will execute your command.
 
 When the shell is busy, it cannot process your input. You can distinguish the shell's state by the [**command prompt**](https://en.wikipedia.org/wiki/Command-line_interface#Command_prompt). It is a sequence of one or more characters. The default prompt is the dollar sign $. You can see it in Figure 2-4. If the shell prints the prompt, it is ready for executing your command.
 
@@ -143,7 +143,7 @@ When you read an article about Bash on the Internet, its author can confuse the 
 
 #### pwd
 
-Let's consider the commands in Table 2-1. We have just started the terminal. The first thing we do is to find out the current directory. You can get it from the command prompt, but it depends on your Bash configuration. You do not have this feature enabled by default in Linux and macOS.
+Let's consider the commands in Table 2-1. You have just started the terminal. The first thing you do is to find out the current directory. You can get it from the command prompt, but it depends on your Bash configuration. You do not have this feature enabled by default in Linux and macOS.
 
 When you start the terminal, it opens the home directory of the current user. Bash abbreviates this path by the tilde symbol ~. You see this symbol before the command prompt. Use tilde instead of the home directory absolute path. It makes your commands shorter.
 
@@ -184,7 +184,7 @@ Suppose that you have just installed the MSYS2 environment. Then you launched th
 
 Windows has a concept of hidden files and directories. The Unix environment also has it. Applications and OS create hidden files for their own needs. These files store configuration and temporary data.
 
-Windows Explorer does not display hidden files and directories by default. Change the [Explorer settings](https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2) to see them.
+I> Windows Explorer does not display hidden files and directories by default. Change the [Explorer settings](https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2) to see them.
 
 You can make the file hidden in Windows by changing its attribute. If you want to do the same in Unix, you should add a dot at the beginning of the filename.
 
@@ -240,7 +240,7 @@ Another useful keystroke is Ctrl+C. It interrupts the currently running command.
 
 #### cd
 
-We have got everything about the current directory. Now we can change it. Suppose that you are looking for the Bash documentation. You can find it in the `/usr` system directory. Installed applications stores their non-executable files there. Call the `cd` command to go to the `/usr` path. Do it this way:
+You have got everything about the current directory. Now you can change it. Suppose that you are looking for the Bash documentation. You can find it in the `/usr` system directory. Installed applications stores their non-executable files there. Call the `cd` command to go to the `/usr` path. Do it this way:
 {line-numbers: false, format: Bash}
 ```
 cd /usr
@@ -263,7 +263,7 @@ Now you are in the `/usr` directory. You can get a list of its subdirectories an
 cd ..
 ```
 
-I> In addition to `..`, there is another special path `.`. It points to the current directory. If you execute the command "cd .", nothing happens. You stay in the same place. You need the `.` path to run programs from the current directory.
+I> In addition to `..`, there is another special path `.` (dot). It points to the current directory. If you execute the command "cd .", nothing happens. You stay in the same place. You need the `.` path to run programs from the current directory.
 
 Come back to the `/usr` directory. Then run the `ls` utility there. It will show you the `share` subdirectory. Come to this directory and call `ls` again. You will find the `doc` directory there. It contains Bash documentation. Call the `cd` command this way to reach the documentation:
 {line-numbers: false, format: Bash}
@@ -411,7 +411,9 @@ What of the following lines corresponds to the pattern "*/doc?openssl*" ?
 * /doc/openssl
 ```
 
-Let's apply glob patterns into practice. Suppose that you do not know the location of the Bash `README` file. You should use the `find` utility in this case. Start searching with the utility from the root directory. Now you need a search condition. It is a common practice to store documentation in directories called `doc` in Unix. Therefore, you can search files in these directories only. This way, you get the following `find` call:
+Let's apply glob patterns into practice. Suppose that you do not know the Bash `README` file location and looking for it. Then you should use the `find` utility.
+
+Start searching with the utility from the root directory. Now you need a search condition. It is a common practice to store documentation in directories called `doc` in Unix. Therefore, you can search files in these directories only. This way, you get the following `find` call:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/*
@@ -484,7 +486,7 @@ Table 2-4 shows the `find` options that specify actions.
 |  | | |
 | `-delete`| Delete each of the found files. The utility deletes empty directories only. | `find -name README -type f -delete` |
 
-Table 2-4 shows that there are two variants of the `-exec` action. They differ by the characters at the end. It can be an escaped semicolon `\;` or a plus sign +. Use the plus sign variant only if the called command handles several input parameters. You will make a mistake if the command accepts one parameter only. It will process the first found object and skip the rest.
+Table 2-4 shows that there are two variants of the `-exec` action. They differ by the character at the end. It can be an escaped semicolon `\;` or a plus sign +. Use the plus sign only if the called command handles several input parameters. You will make a mistake if the command accepts one parameter only. It will process the first found object and skip the rest.
 
 Let's apply the `-exec` action in practice. Suppose that you want to copy files with the Bash documentation into the home directory. You are interested in the HTML files only.
 
