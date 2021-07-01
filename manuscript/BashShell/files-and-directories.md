@@ -1,6 +1,6 @@
 ## Actions on Files and Directories
 
-You have learned how to find a file or directory on the disk. Now let's discuss what you can do with it. If you have an experience with Windows GUI, you know the following actions with a file system object:
+You have learned how to find a file or directory on the disk. Now let's discuss what you can do with it. If you have an experience with Windows GUI, you know the following actions with file system objects:
 
 * Create
 * Delete

@@ -103,7 +103,7 @@ Figure 2-25 shows the result of the command.
 
 You see a program for reading text documents. Use the arrow keys, PageUp and PageDown to scroll the text. Press the Q key to end the program.
 
-Developers of GNU utilities have created the `info` system. Before that, all Unix distributions used the `man` system. The capabilities of `info` and `man` are similar. The MSYS2 environment uses the `info` system, which is more modern.
+Developers of GNU utilities have created the `info` system. Before that, all Unix distributions used the man page system. It is also known as `man`. The capabilities of `info` and `man` are similar. The MSYS2 environment uses the `info` system, which is more modern.
 
 Your Linux distribution may use `man` instead of `info`. Use it in the same way as `info`. For example, the following `man` call shows you help for the `cat` utility:
 {line-numbers: false, format: Bash}
@@ -115,6 +115,6 @@ When you know which utility solves your task, it is easy to get help. What would
 
 {caption: "Exercise 2-5. The documentation system", format: text, line-numbers: false}
 ```
-Find documentation for each of the built-in commands and utilities in Table 2-1.
+Find documentation for each of the built-in commands and utilities of Table 2-1.
 Check the parameters of the ls and find utilities that we did not consider.
 ```

@@ -290,7 +290,7 @@ I> Some Bash manuals do not recommend printing file contents using the `cat` uti
 echo "$(< README.txt)"
 ```
 
-The `README` file contents do not fit the terminal window. Therefore, you see the tail of the file in Figure 2-13. Use the scroll bar on the window's right side to check the head of the file. Also, use the Shift+PageUp and Shift+PageDown hotkeys to scroll [pages](https://en.wikipedia.org/wiki/Page_Up_and_Page_Down_keys) up and down. The Shift+↑ and Shift+↓ keystrokes scroll the lines.
+The `README` file contents do not fit in the terminal window. Therefore, you see the tail of the file in Figure 2-13. Use the scroll bar on the window's right side to check the head of the file. Also, use the Shift+PageUp and Shift+PageDown hotkeys to scroll [pages](https://en.wikipedia.org/wiki/Page_Up_and_Page_Down_keys) up and down. The Shift+↑ and Shift+↓ keystrokes scroll the lines.
 
 #### Command History
 
@@ -486,7 +486,7 @@ Table 2-4 shows the `find` options that specify actions.
 |  | | |
 | `-delete`| Delete each of the found files. The utility deletes empty directories only. | `find -name README -type f -delete` |
 
-Table 2-4 shows that there are two variants of the `-exec` action. They differ by the character at the end. It can be an escaped semicolon `\;` or a plus sign +. Use the plus sign only if the called command handles several input parameters. You will make a mistake if the command accepts one parameter only. It will process the first found object and skip the rest.
+Table 2-4 shows that there are two variants of the `-exec` action. They differ by the last symbol. It can be an escaped semicolon `\;` or a plus sign +. Use the plus sign only if the called command handles several input parameters. You will make a mistake if the command accepts one parameter only. It will process the first found object and skip the rest.
 
 Let's apply the `-exec` action in practice. Suppose that you want to copy files with the Bash documentation into the home directory. You are interested in the HTML files only.
 
@@ -548,7 +548,7 @@ Write a find call to search for text files in a Unix environment.
 Extend the command to print the total number of lines in these files.
 ```
 
-#### Logic Expressions
+#### Boolean Expressions
 
 The search conditions of the `find` utility are [**Boolean expressions**](https://en.wikipedia.org/wiki/Boolean_expression). A Boolean expression is a programming language statement. It produces a Boolean value when evaluated. This value equals either "true" or "false".
 
@@ -724,7 +724,7 @@ echo *
 echo ~/*
 ```
 
-Run these commands. The first one lists files in the current directory. The second command does the same for the home directory.
+Run these commands. The first one lists files and subdirectories of the current directory. The second command does the same for the home directory.
 
 Do not enclose search patterns in double-quotes. Here is an example of the wrong command:
 {line-numbers: false, format: Bash}
