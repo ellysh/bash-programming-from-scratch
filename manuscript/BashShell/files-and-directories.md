@@ -12,7 +12,7 @@ Each of these actions has a corresponding GNU utility. Call them to manage the f
 {caption: "Table 2-7. Utilities for operating files and directories", width: "100%"}
 | Utility | Feature | Examples |
 | --- | --- | --- |
-| `mkdir` | It creates the directory with the specified name and path. | `mkdir /tmp/docs` |
+| `mkdir` | It creates the directory with the specified name and path. | `mkdir ~/tmp/docs` |
 | | | `mkdir -p tmp/docs/report` |
 |  | | |
 | `rm` | It deletes the specified file or directory | `rm readme.txt` |
@@ -48,7 +48,7 @@ cd ~
 mkdir docs
 ```
 
-The utility has an option `-p`. It creates the nested directories. Here is an example of when to use it. Suppose you want to move the documents into the `∼/docs/reports/2019` path. However, the `docs` and `reports` directories do not exist yet. If you use `mkdir` in the default mode, you should call it three times to create each of the nested directories. Another option is to call `mkdir` once with the `-p` option like this:
+The utility has an option `-p`. It creates the nested directories. Here is an example of when to use it. Suppose you want to move the documents into the ` ∼/docs/reports/2019` path. However, the `docs` and `reports` directories do not exist yet. If you use `mkdir` in the default mode, you should call it three times to create each of the nested directories. Another option is to call `mkdir` once with the `-p` option like this:
 {line-numbers: false, format: Bash}
 ```
 mkdir -p ~/docs/reports/2019
