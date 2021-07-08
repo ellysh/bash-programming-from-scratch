@@ -220,7 +220,7 @@ The permissions restrict the user actions on the file system. The OS tracks thes
 
 I> Users can share files with each other, but they should allow it explicitly. This sharing does not work by default.
 
-The permissions allow several people to share one computer. This workflow was widespread in the 1960s before appearing PCs. Hardware resources were expensive at that time. Therefore, several users have to operate with one computer.
+The permissions allow several people to share one computer. This workflow was widespread in the 1960s until the advent of PCs. Hardware resources were expensive at that time. Therefore, several users have to operate with one computer.
 
 Today most users have their own PC or laptop. However, the file system permissions are still relevant. They protect your Linux or macOS system from unauthorized access and malware.
 

@@ -505,6 +505,8 @@ q = -5437 / -17 ~ 319.8235 ~ 319
 r = -5437 - (-17) * 319 = -14
 ```
 
+You can use this [Python script](https://github.com/ellysh/bash-programming-from-scratch/blob/master/manuscript/resources/code/Answers/remainer-modulo.py) to check your calculations.
+
 ##### Exercise 3-9. Bitwise NOT
 
 First, let us calculate bitwise NOT for unsigned two-byte integers.

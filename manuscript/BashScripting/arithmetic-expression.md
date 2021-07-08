@@ -645,7 +645,7 @@ q = a / b
 If the signs differ, you should use another formula:
 {line-numbers: false}
 ```
-q = (a / b) + 1
+q = (a / b) - 1
 ```
 
 You should round the result to the lowest absolute number in both cases.
