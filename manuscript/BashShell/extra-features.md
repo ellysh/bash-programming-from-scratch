@@ -7,7 +7,7 @@ Bash provides several features that a GUI does not have. They give you a signifi
 These are the Bash features that we are talking about:
 
 1. I/O redirection.
-2. Pipelines.
+2. Pipeline.
 3. Logical operators.
 
 ### Unix Philosophy
@@ -73,7 +73,9 @@ What does the `1>` operator mean? It is a [redirection](https://en.wikipedia.org
 
 Any program operates in the software environment that the OS provides. You can imagine each standard stream as a communication channel between the program and the OS environment.
 
-Early Unix systems have used only physical channels for data input and output. The input channel comes from the keyboard. The same way the output channel goes to the monitor. Then developers introduced the streams as an [abstraction](https://en.wikipedia.org/wiki/Abstraction_layer) for these channels. The abstraction makes it possible to work with different objects using the same algorithm. It allows replacing a real device input with the file data. Similarly, it replaces printing data to the screen with writing them to the file. The same OS code handles these I/O operations.
+Early Unix systems have used only physical channels for data input and output. The input channel comes from the keyboard. The same way the output channel goes to the monitor. Then developers introduced the streams as an [abstraction](https://en.wikipedia.org/wiki/Abstraction_layer) for these channels.
+
+ The abstraction makes it possible to work with different objects using the same algorithm. It allows replacing a real device input with the file data. Similarly, it replaces printing data to the screen with writing them to the file. The same OS code handles these I/O operations.
 
 The purpose of the input and output streams is clear. However, the error stream causes questions. Why does a program need it? Imagine that you run the `find` utility to search for files. You do not have access to some directories. When the `find` utility reads their contents, it is unavailable. The utility reports about these issues in the error messages.
 
@@ -99,7 +101,7 @@ This command is for demonstration only. It uses the `grep` utility's interface t
 grep "Bash" README.txt
 ```
 
-Let's take a more complicated example. Some Bash manuals recommend the `echo` command to print a file's contents. Using this approach, you can print the`README.txt` file this way:
+Let's take a more complicated example. Some Bash manuals recommend the `echo` command to print a file's contents. Using this approach, you can print the `README.txt` file this way:
 {line-numbers: false, format: Bash}
 ```
 echo $( 0< README.txt )
@@ -133,7 +135,7 @@ This command should print the contents of all found files. However, it leads to 
 bash: {}: No such file or directory
 ```
 
-The problem happens because Bash executes the "0< {}" command before calling the `find` utility. When executing this command, the shell redirects the file called `{}` to the input stream. However, there is no file with such a name. We expect the `find` utility substitutes the brackets `{}` by its results. It does not happen because these results are not ready yet.
+The problem happens because Bash executes the `0< {}` command before calling the `find` utility. When executing this command, the shell redirects the file called `{}` to the input stream. However, there is no file with such a name. We expect the `find` utility substitutes the brackets `{}` by its results. It does not happen because these results are not ready yet.
 
 Replace the `echo` command with the `cat` utility. It solves the problem. Then you get the following `find` call:
 {line-numbers: false, format: Bash}
@@ -212,7 +214,7 @@ Let's go back to our `find` call. Bash processes redirection operators one by on
 |  | | |
 | 2 | `> result_and_errors.txt` | Now the output stream points to the file `result_and_errors.txt`. The error stream is still associated with the terminal window. |
 
-We should change the order of the redirection operators to fix the mistake. The `>` operator comes first. Then stream duplication takes place. Here is the command:
+We should change the order of the redirection operators to fix the mistake. The `>` operator comes first. Then stream duplication takes place. Here is the corrected command:
 {line-numbers: false, format: Bash}
 ```
 find / -path */doc/* -name README > result_and_errors.txt 2>&1
@@ -228,7 +230,7 @@ find / -path */doc/* -name README > result.txt 2> errors.txt
 
 The order of the operators is not important here.
 
-### Pipelines
+### Pipeline
 
 The redirection operators are useful when you save data for manual analysis or processing. When you want to process data with another program, storing them in temporary files is inconvenient. Managing these files takes extra effort. You should keep in mind their paths and remove them after usage.
 
@@ -319,7 +321,7 @@ It gives the following output:
 ...
 ```
 
-You see a table of two columns. The right column shows the subdirectories. The left column shows the number of bits they occupy.
+You see a table of two columns. The right column shows the subdirectories. The left column shows the number of bytes they occupy.
 
 You can add the statistics for the files to the `du` output. Use the `-a` option for that. Here is an example `du` call:
 {line-numbers: false, format: Bash}
@@ -487,7 +489,7 @@ The pipeline receives text data from the `find` utility. Then it transfers these
 
 The `-exec` action behaves in another way. No text data is transferred in this case. The `find` interpreter constructs a program call using the `find` results. It passes the paths of found files and directories to the program. These paths are not plain text.
 
-You can get the `-exec` action behavior when using the pipeline. Call the `xargs` utility for that.
+You can use a pipeline and get the -exec action behavior. Apply the xargs utility for that.
 
 Here is an example. Suppose that you want to find the pattern in the contents of the found files. The `grep` utility should receive file paths but not the plain text in this case. You can apply pipeline and `xarg` to solve this task. The solution looks like this:
 {line-numbers: false, format: Bash}
@@ -620,7 +622,7 @@ Here is an example. Create a file in the home directory. The filename should con
 touch ~/$'test\nfile.txt'
 ```
 
-The `touch` utility updates the modification time of the file. It is a primary task of the utility. If the file does not exist, `touch` creates it. Such secondary features of a program are called [**side effect**](https://en.wikipedia.org/wiki/Side_effect_(computer_science)).
+The `touch` utility updates the modification time of the file. It is a primary task of the utility. If the file does not exist, `touch` creates it. Such a secondary feature of a program is called the [**side effect**](https://en.wikipedia.org/wiki/Side_effect_(computer_science)).
 
 You need to create two extra files for our test. Call them `test1.txt` and `file1.txt`. The following command does that:
 {line-numbers: false, format: Bash}
@@ -726,7 +728,7 @@ Your command should provide the following result:
 
 The pipeline allows you to combine several commands. These commands together make an algorithm with a [**linear sequence**](https://www.cs.utexas.edu/users/mitra/csSpring2017/cs303/lectures/algo.html). The computer executes actions of such an algorithm one by one without any conditions.
 
-Suppose that you need a more complex algorithm. There the result of the first command determines the next step. If the command succeeds, the computer does one action. Otherwise, it does another action. Such a dependency is known as a [**conditional algorithm**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). The pipeline does not fit in this case.
+Suppose that you need a more complex algorithm. There, the result of the first command determines the next step. The computer does one action if the command succeeds. Otherwise, it does another action. Such a dependency is known as a [**conditional algorithm**](https://en.wikipedia.org/wiki/Conditional_(computer_programming)). The pipeline does not fit in this case.
 
 Here is an example of the conditional algorithm. You want to write a command to copy the directory. If this operation succeeds, the command writes the "OK" line in the log file. Otherwise, it writes the "Error" line there.
 
@@ -736,9 +738,9 @@ You can write the following command using the pipeline:
 cp -R ~/docs ~/docs-backup | echo "OK" > result.log
 ```
 
-This command does not work properly. It writes the "OK" line to the `result.log` file regardless of the copying result. Even if the `docs` directory does not exist, you get the "OK" line. It means the succeeded operation, but it has failed in fact.
+This command does not work properly. It writes the "OK" line to the `result.log` file regardless of the copying result. Even if the `docs` directory does not exist, you get the "OK" line. The log file reports that the operation succeeded, but it has failed in fact.
 
-The `cp` utility result should define the `echo` output. You can get this behavior using the && operator. Then the command looks like this:
+The `cp` utility result should define the `echo` output. You can get this behavior using the && operator. Then the command becomes like this:
 {line-numbers: false, format: Bash}
 ```
 cp -R ~/docs ~/docs-backup && echo "OK" > result.log
@@ -802,6 +804,8 @@ If the "A" value is "false", the expression (A && B) equals "false" too. In this
 
 The principle of short-circuits evaluation is not obvious. You would need some time to figure it out. Please do your best for that. Every modern programming language supports Boolean expressions. Therefore, understanding the rules of their evaluation is essential.
 
+### Combining Commands
+
 We already know how to combine Bash commands with pipelines and logical operators. There is a third way to do that. You can put a semicolon as a delimiter between the commands. In this case, Bash executes them one by one from left to right without any conditions. You get the linear sequence algorithm in this case.
 
 Here is an example. Suppose that you want to copy two directories to different target paths. A single `cp` call cannot do it. But you can combine two calls into one command like this:
@@ -818,7 +822,7 @@ You can do the same with the pipeline this way:
 cp -R ~/docs ~/docs-backup | cp -R ~/photo ~/photo-backup
 ```
 
-Here Bash executes both `cp` calls one by one too. It means that the linear sequence algorithm is the same for commands with the semicolon and pipeline.
+Here Bash executes both `cp` calls one by one too. It means that the linear sequence algorithm is the same for our two commands with the semicolon and pipeline.
 
 However, a semicolon and pipeline behave differently in general. When you use the semicolon, two commands do not depend on each other completely. When you use the pipeline, there is dependency. The output stream data of the first command comes to the input stream of the second command. In some cases, it changes the behavior of your algorithm.
 
