@@ -436,7 +436,7 @@ bsdtar -cjf ~/photo.tar.bz2 ~/photo album &&
   { echo "bsdtar - FAILS" > results.txt ; exit 1 ; }
 ```
 
-In this case, the `bsdtar` utility receives the "~/photo album" string in parts. It gets two parameters instead of one: "~/photo" and "album". These directories do not exist. Therefore, the script fails.
+In this case, the `bsdtar` utility receives the `~/photo album` string in parts. It gets two parameters instead of one: `~/photo` and `album`. These directories do not exist. Therefore, the script fails.
 
 It is not enough to put parameters in quotes when calling a script. You should quote all occurrences of the corresponding variable name in the script. It happens because of the way how the Bash runs a program.
 
@@ -481,7 +481,7 @@ These are three ways to integrate some script into Bash:
 
 1. Add the script's path to the `PATH` variable. Edit the `~/.bash_profile` file for that.
 
-2. Define the alias with an absolute path to the script. Do that in the file `~/.bashrc`.
+2. Define the alias with an absolute path to the script. Do that in the `~/.bashrc` file.
 
 3. Copy the script to the `/usr/local/bin` directory. The `PATH` variable contains this path by default. If there is no such directory in your MSYS2 environment, create it.
 
@@ -515,7 +515,7 @@ find ~/Documents -type f -name "*.pdf" -exec make-backup.sh {} \;
 
 I> There is the escaped semicolon at the end of the `find` call. It means that the action is done for each found file separately.
 
-This command works well. It makes an archive of each PDF file and copies it to the D disk. However, this approach is inconvenient. It would be better to collect all PDF files into one archive. Let's try the following command for that:
+This command works well. It creates an archive of each PDF file and copies it to the D disk. However, this approach is inconvenient. It would be better to collect all PDF files into one archive. Let's try the following command for that:
 {line-numbers: false, format: Bash}
 ```
 find ~/Documents -type f -name *.pdf -exec make-backup.sh {} +

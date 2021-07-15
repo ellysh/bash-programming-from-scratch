@@ -822,7 +822,7 @@ You can do the same with the pipeline this way:
 cp -R ~/docs ~/docs-backup | cp -R ~/photo ~/photo-backup
 ```
 
-Here Bash executes both `cp` calls one by one too. It means that the linear sequence algorithm is the same for our two commands with the semicolon and pipeline.
+Here Bash executes both `cp` calls one by one too. It means that the linear sequence algorithm is the same for our two commands: with the semicolon and pipeline.
 
 However, a semicolon and pipeline behave differently in general. When you use the semicolon, two commands do not depend on each other completely. When you use the pipeline, there is dependency. The output stream data of the first command comes to the input stream of the second command. In some cases, it changes the behavior of your algorithm.
 

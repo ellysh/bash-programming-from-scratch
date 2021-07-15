@@ -284,6 +284,8 @@ cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log \
 && rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
+## Bash Scrips
+
 ##### Exercise 3-2. The full form of parameter expansion
 
 The `find` utility searches for files recursively. It starts from the specified path and passes through all subdirectories. Use the `-maxdepth` option to exclude subdirectories from the search.

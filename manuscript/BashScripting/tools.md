@@ -41,7 +41,7 @@ It is possible to edit the source code without these features. However, they mak
 
 There are several ways to run the source code editor. The first option is using the GUI of your OS. Launch the editor via the Start menu or the desktop icon. It is the same way you run any other program.
 
-The second option is using the command-line interface. This approach is more convenient in some cases. Here is an example. You call the `find` utility for searching several files. You can pass the `find` output to the source code editor input and open all found files. It is possible because most modern editors support CLI.
+The second option is using the command-line interface. This approach is more convenient in some cases. Here is an example of when you would need it. You call the `find` utility for searching several files. You can pass the `find` output to the source code editor input and open all found files. It is possible because most modern editors support CLI.
 
 There are three ways to run an application in Bash:
 

@@ -174,7 +174,7 @@ We already know several [Bash expansions](http://www.gnu.org/savannah-checkouts/
 |  | | | |
 | 8 | [Filename Expansion](https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html) (globbing) | Bash replaces patterns with filenames. | `rm ~/delete/*` |
 |  | | | |
-| 9 | Quote Removal | Bash removes all unshielded \, ' and " characters that were not derived from one of the expansions. | `cp "my file.txt" ~` |
+| 9 | Quote Removal | Bash removes all unshielded characters `, ' "` that were not derived from one of the expansions. | `cp "my file.txt" ~` |
 
 {caption: "Exercise 3-1. Testing the Bash expansions", format: text, line-numbers: false}
 ```
@@ -295,11 +295,11 @@ The second group of internal variables is Bash specific. Table 3-5 shows them. T
 |  | |
 | `HOSTTYPE` | The string describing the hardware platform where Bash is running. |
 |  | |
-| `LANG` | [Locale settings](https://en.wikipedia.org/wiki/Locale_(computer_software)) for the user interface. They define the user's language, region and some special characters. Some settings are overridden by variables `LC_ALL`, `LC_COLLATE`, `LC_CTYPE`, `LC_MESSAGES`, `LC_NUMERIC`, `LC_TYPE`. |
+| `LANG` | [Locale settings](https://en.wikipedia.org/wiki/Locale_(computer_software)) for the user interface. They define the user's language, region and special characters. Some settings are overridden by variables `LC_ALL`, `LC_COLLATE`, `LC_CTYPE`, `LC_MESSAGES`, `LC_NUMERIC`, `LC_TYPE`. |
 |  | |
 | `MACHTYPE` | The string describing the system where Bash is running. It includes information from the `HOSTTYPE` and `OSTYPE` variables. |
 |  | |
-| `OLDPWD` | The previous working directory that the `cd` command has set. |
+| `OLDPWD` | The previous directory that the `cd` command has set. |
 |  | |
 | `OSTYPE` | The string describing of the OS where Bash is running. |
 |  | |
@@ -336,7 +336,7 @@ Table 3-6 shows frequently used special parameters.
 {caption: "Table 3-6. Bash Special Parameters", width: "100%"}
 | Name | Value |
 | --- | --- |
-| `$*` | The string with all positional parameters passed to the script. Parameters start with the `$1` variable but not with `$0`. If you skip the double quotes (`$*`), Bash inserts each positional parameter as a separate word. With double quotes ("$*"), Bash handles it as a single-quoted string. The string contains all the parameters separated by the first character of the internal variable `IFS`. |
+| `$*` | The string with all positional parameters passed to the script. Parameters start with the `$1` variable but not with `$0`. If you skip the double quotes (`$*`), Bash inserts each positional parameter as a separate word. With double quotes ("$*"), Bash handles it as one quoted string. The string contains all the parameters separated by the first character of the internal variable `IFS`. |
 |  | |
 | `$@` | The list of strings that contains all positional parameters passed to the script. Parameters start with the `$1` variable. If you skip double quotes (`$@`), Bash handles each array's element as an unquoted string. Word splitting happens in this case. With double quotes ("$@"), Bash handles each element as a quoted string without word splitting. |
 |  | |
@@ -387,7 +387,7 @@ All special parameters from Table 3-6 are available in the POSIX-compatible mode
 
 #### Environment Variables
 
-Any software system has **scopes** those group variables. A scope is a part of a program or system where the variable name remains associated with its value. There you can convert the variable name into its address. Outside the scope, the same name can point to another variable.
+Any software system has **scopes** that group variables. A scope is a part of a program or system where the variable name remains associated with its value. There you can convert the variable name into its address. Outside the scope, the same name can point to another variable.
 
 A scope is called **global** if it spreads to the whole system. Here is an example. Suppose that the variable called `filename` is in the global scope. Then you can access it by its name from any part of the system.
 
