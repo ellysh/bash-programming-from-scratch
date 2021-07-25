@@ -281,7 +281,7 @@ then
 fi
 ```
 
-Double quotes are optional in this condition. Bash skips globbing and word splitting when it substitutes a variable in the [[ operator. The quotes prevent problems if the string on the right side has spaces. Here is an example of such a string:
+Double quotes are optional in this condition. Bash skips globbing and word splitting when it substitutes a variable in the [[ operator. The quotes prevent problems if the variable value or string contains spaces. Here is an example of such a case:
 {line-numbers: true, format: Bash}
 ```
 if [[ "$var" = abc def ]]
@@ -544,7 +544,7 @@ Each `case` block consists of the following elements:
 
 4. Two semicolons. They mark the end of the code block.
 
-Bash checks patterns of the `case` blocks one by one. If the string matches the first pattern, Bash executes its code block. Then it skips other patterns. Instead, Bash executes the command that follows the `case` statement.
+Bash checks patterns of the `case` blocks one by one. If the string matches the first pattern, Bash executes its code block. Then it skips other patterns and executes the command that follows the `case` statement.
 
 The `*` pattern without quotes matches any string. It is usually placed at the end of the `case` statement. The corresponding code block handles cases when none of the patterns match the string. It usually indicates an error.
 
@@ -589,7 +589,7 @@ case STRING in
 esac
 ```
 
-The difference between the constructs is evident now. First, the `if` condition checks the results of a Boolean expression. The `case` statement compares a string with several patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is "true" and "false". The `if` statement is more convenient for such checking.
+The differences between the constructs are evident now. First, the `if` condition checks the results of a Boolean expression. The `case` statement compares a string with several patterns. Therefore, it makes no sense to pass a Boolean expression to the `case` condition. Doing that, you handle two cases only: when the expression is "true" and "false". The `if` statement is more convenient for such checking.
 
 The second difference between `if` and `case` is the number of conditions. Each branch of the `if` statement evaluates an individual Boolean expression. They are independent of each other in general. The expressions check the same variable in our example, but this is a particular case. The `case` statement checks one string that you pass to it.
 
@@ -651,7 +651,7 @@ This call forces the script to choose the `tar` utility for archiving the `Docum
 
 The script handles the first positional parameter on its own. It passes all the following parameters to the archiving utility. We use the `$@` parameter for doing that. It is not an array, but it supports the array-like syntax for accessing several elements. The archiving utility receives all elements of the `$@` parameter starting from the second one.
 
-Now let's rewrite our wrapper script using the associative array. First, we should consider the Bash mechanisms for converting data into commands. If you want to apply such a mechanism, you should store the command its parameters into the variable. Then Bash expands the variable somewhere in the script and executes the command.
+Now let's rewrite our wrapper script using the associative array. First, we should consider the Bash mechanisms for converting data into commands. If you want to apply such a mechanism, you should store the command and its parameters into the variable. Then Bash expands the variable somewhere in the script and executes the command.
 
 Here is an example of how to convert data into a command. For the first time, we will do it in the shell but not in the script. The first step is declaring the variable like this:
 {line-numbers: false, format: Bash}
@@ -692,7 +692,7 @@ Double quotes cause the problem because they prevent word splitting. Therefore, 
 "ls -l"
 ```
 
-This command asks Bash to call the utility named "ls -l". As you remember, the POSIX standard allows spaces in filenames. Therefore, "ls -l" is the correct name for an executable. Removing the quotes solves this problem. We meet one of the rare cases when you do not need double quotes for the parameter expansion.
+Bash should call the utility named "ls -l" for processing this command. As you remember, the POSIX standard allows spaces in filenames. Therefore, "ls -l" is the correct name for an executable. Removing the quotes solves this problem. We meet one of the rare cases when you do not need double quotes for the parameter expansion.
 
 It can happen that you still need double quotes when reading the command from the variable. This issue has a solution. Use the `eval` built-in in this case. It constructs the command from its input parameters. Then Bash does word splitting for the resulting command regardless of double quotes.
 

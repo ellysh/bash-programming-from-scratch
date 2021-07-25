@@ -381,7 +381,7 @@ To avoid nested `if` statements, we will apply the early return pattern. We will
 
 ##### Exercise 3-5. The [[ operator
 
-Let's compare the contents of the two directories. The result of the comparison is a list of files that are different.
+Let's compare the contents of the two directories. The result of the comparison is a list of files that differ.
 
 First, we have to go through all the files in each directory. The `find` utility does this task. Here is a command to search files in the `dir1` directory:
 {line-numbers: false, format: Bash}
@@ -421,7 +421,7 @@ Listing 5-3 shows the complete `dir-diff.sh` script for directory comparison.
 {caption: "Listing 5-3. The script for directory comparison", line-numbers: true, format: Bash}
 ![`dir-diff.sh`](code/Answers/dir-diff.sh)
 
-W> We wrote the directory comparison script for training purposes. Please do not use it for real tasks. Prefer the special GNU utility diff.
+W> We wrote the directory comparison script for training purposes. Please do not use it for real tasks. Prefer the `diff` GNU utility instead.
 
 ##### Exercise 3-6. The `case` statement
 

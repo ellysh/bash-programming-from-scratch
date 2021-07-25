@@ -245,7 +245,7 @@ You can declare variables for your own purposes. Bash also can do that. These va
 
 Internal variables solve two tasks:
 
-1. They pass information from the shell to the application it runs.
+1. They pass information from the shell to the applications it runs.
 
 2. They store the current state of the interpreter.
 
@@ -634,7 +634,7 @@ The `declare` call without the `-p` option does not print a function declaration
 declare quote
 ```
 
-We have considered how to get information about already declared variables and functions using `declare`. Now let's find out how this command sets attributes for new variables.
+We have learned how to get information about already declared variables and functions using `declare`. Now let's find out how this command sets attributes for new variables.
 
 Table 3-7 shows the frequently used options of the `declare` command.
 

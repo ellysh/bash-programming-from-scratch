@@ -679,8 +679,6 @@ When do you need the division remainder in programming? It is often used for che
 
 I> To check a number for parity, you should calculate the remainder of its division by 2. If the remainder is zero, then the number is even. Otherwise, it is odd.
 
-There is another task where you need to calculate the remainder. It is the converting of time units. Suppose you want to convert 128 seconds into minutes. Then you should count the number of minutes in 128 seconds. The next step is to add the remainder to the result.
-
 Another task that requires calculating the division remainder is converting the time units. For example, you want to convert 128 seconds into minutes.
 
 First, you count the number of minutes in 128 seconds. Divide 128 by 60 to do that. The result equals 2, which is the incomplete quotient. It means that 128 seconds contains 2 minutes.
