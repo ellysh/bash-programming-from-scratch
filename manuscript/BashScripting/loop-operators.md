@@ -279,7 +279,7 @@ When reading the file, you should handle its lines in the same manner. It means 
 
 At the beginning of the loop, you don't know the file size.  Thus, you do not know the number of iterations to do. The `while` statement fits this case perfectly.
 
-Why is the number of iterations unknown in advance? It happens because the script reads the file line by line. It cannot count the lines before it reads them all. There is an option to make two loops. Then the first one counts the lines. The second loop processes them. However, this solution works slower and less ineffective.
+Why is the number of iterations unknown in advance? It happens because the script reads the file line by line. It cannot count the lines before it reads them all. There is an option to make two loops. Then the first one counts the lines. The second loop processes them. However, this solution works slower and is less efficient.
 
 You can call the `read` Bash built-in for reading lines of the file. The command receives a string from the standard input stream. Then it writes the string into the specified variable. You can pass the variable name as the parameter. Here is an example of calling `read`:
 {line-numbers: false, format: Bash}
@@ -358,7 +358,7 @@ do
 done
 ```
 
-Unfortunately, this approach does not work. You got the infinite loop accidentally. It happens because the `read` command always reads only the first line of the file. Then it returns the zero exit status. The zero status leads to another execution of the loop body. It happens over and over again.
+Unfortunately, this approach does not work. You get the infinite loop accidentally. It happens because the `read` command always reads only the first line of the file. Then it returns the zero exit status. The zero status leads to another execution of the loop body. It happens over and over again.
 
 You should force the `while` loop to pass through all lines of the file. The following form of the loop does it:
 {line-numbers: true, format: Bash}
@@ -380,9 +380,9 @@ do
 done < "contacts.txt"
 ```
 
-This loop prints all lines of the contact file.
+This loop prints all lines of the contacts file.
 
-There is the last step left to finish your script. You should write the `name` and `contact` variables to the array on each iteration. The `name` variable is the key and `contact` is the value.
+There is the last step left to finish your script. You should write the `name` and `contact` variables to the associative array on each iteration. The `name` variable is the key and `contact` is the value.
 
 Listing 3-22 shows the final version of the script for reading the contacts from the file.
 
@@ -460,7 +460,7 @@ do
 done
 ```
 
-It does the same as the script in Listing 3-23. The only difference is dropping the "in $@" part in the `for` condition. It did not change the loop behavior.
+It does the same as our previous script for processing an unquoted string. The only difference is dropping the "in $@" part in the `for` condition. It did not change the loop behavior.
 
 Let's make the task a bit more complicated. Suppose the script receives a list of paths in input parameters. They are separated by commas. The paths may contain spaces. Then you should redefine the `IFS` variable to process such input correctly.
 
@@ -537,7 +537,7 @@ When composing the `for` loop condition, the most common mistake is the neglect 
 {line-numbers: true, format: Bash}
 ```
 for filename in $(ls)
-for filename in $(find . - type f)
+for filename in $(find . -type f)
 ```
 
 Both these `for` conditions are wrong. They lead to the following problems:
@@ -673,7 +673,7 @@ for i in {1..$1}
 
 You can expect that Bash does brace expansion here. However, it does not happen.
 
-According to Table 3-2, the brace expansion happens before the parameter expansion. Thus, the loop condition gets the "{1...$1}" string instead of "1 2 3 4 5". Bash does not recognize the brace expansion here because the upper bound of the range is not an integer. Then Bash writes the "{1...$1}" string to the `i` variable. Therefore, the (( operator in the loop body fails.
+According to Table 3-2, the brace expansion happens before the parameter expansion. Thus, the loop condition gets the `"{1...$1}"` string instead of "1 2 3 4 5". Bash does not recognize the brace expansion here because the upper bound of the range is not an integer. Then Bash writes the `"{1...$1}"` string to the `i` variable. Therefore, the (( operator in the loop body fails.
 
 The `seq` utility can solve our problem. It generates a sequence of integers or fractions.
 

@@ -987,7 +987,7 @@ Now let's do the left bit shift of the number 58 by three bits. You will get the
 
 Here you follow the same algorithm as for the right shift. First, discard three leftmost bits. Then add zeros to the right side of the result.
 
-Now let's consider the second bit shift type that is the arithmetic shift. When you do it to the left side, you follow the logical shift algorithm. The steps are entirely the same.
+Now let's consider the second type of bit shift that is the arithmetic shift. When you do it to the left side, you follow the logical shift algorithm. The steps are entirely the same.
 
 The arithmetic shift to the right side differs from the logical shift. The first two steps are the same. You should convert the source integer in the two's complement and discard the bits on its right side. Then you append the same amount of bits on the left side. Their value matches the leftmost bit of the integer. If it equals one, you add ones. Otherwise, add zeros. This way, you keep the sign of the integer unchanged after the shifting.
 
@@ -1030,7 +1030,7 @@ $ echo $((-105 >> 2))
 
 Bash provides another result for shifting 58 to the left by three bits. It equals 208. It happens because Bash always operates eight-byte integers.
 
-The third bit shift type is circular. It is used in programming rarely. Therefore, most programming languages do not have built-in operators for circular shifts.
+The third type of bit shift is a circular shift. It is used in programming rarely. Therefore, most programming languages do not have built-in operators for circular shifts.
 
 When doing the cyclic bit shift, you should append the discarded bits from one side of the number to another side.
 
@@ -1111,7 +1111,7 @@ Using the bitwise OR, you can set bits of the bitmask. For example, you can allo
 
 I> The bits numbering is from right to left. It starts from zero.
 
-We performed the bitwise OR for the permission mask and the 0000 0001 0000 0000 0000 number. The eighth bit of the number equals one. It changes the eighth bit of the permission mask. The corresponding bit in the mask can have any value. It does not matter because the bitwise OR sets it to one regardless of its current value. If you do not want to change some bits in the permission mask, set the corresponding bits of the number to zero.
+We performed the bitwise OR for the permission mask and the 0000 0001 0000 0000 number. The eighth bit of the number equals one. It changes the eighth bit of the permission mask. The corresponding bit in the mask can have any value. It does not matter because the bitwise OR sets it to one regardless of its current value. If you do not want to change some bits in the permission mask, set the corresponding bits of the number to zero.
 
 The bitwise AND clears bits of the bitmask. For example, let's remove the file owner's permission to write. Here is the calculation:
 {line-numbers: false}
@@ -1119,7 +1119,7 @@ The bitwise AND clears bits of the bitmask. For example, let's remove the file o
 0000 0111 0100 0100 & 1111 1101 1111 1111 = 0000 0101 0100 0100 = -r-xr--r--
 ```
 
-We set the ninth bit of the permission mask to zero. To do that, you should calculate the bitwise AND for the permission mask and the 1111 1101 1111 1111 1111 number. The ninth bit of the number equals zero and all other bits are ones. Therefore, the bitwise AND changes the ninth bit of the permission mask only.
+We set the ninth bit of the permission mask to zero. To do that, you should calculate the bitwise AND for the permission mask and the 1111 1101 1111 1111 number. The ninth bit of the number equals zero and all other bits are ones. Therefore, the bitwise AND changes the ninth bit of the permission mask only.
 
 The OS operates masks whenever you access a file. This way, it checks your access rights.
 
