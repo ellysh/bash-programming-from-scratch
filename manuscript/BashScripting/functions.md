@@ -536,7 +536,7 @@ At first glance, the code looks almost the same as it was before. However, it be
 
 #### Variable Scope
 
-Naming conflicts is a serious problem. They occur when functions declare their variables in the global scope. As a result, the names of two or more variables can match. If functions access these variables at different moments, they overwrite data of each other.
+Naming conflict is a serious problem. It occurs when functions declare their variables in the global scope. As a result, the names of two or more variables can match. If functions access these variables at different moments, they overwrite data of each other.
 
 Procedural languages provide the feature that resolves naming conflicts. The idea of this mechanism is to restrict the scope of declared variables.
 

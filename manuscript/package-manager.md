@@ -1,14 +1,14 @@
 # Package Manager
 
-You have learned basic Bash built-ins and GNU utilities. These tools are installed in the Unix environment by default. It can happen that they cannot solve your task. In this case, you should find an appropriate program or utility and install it on your own.
+You have learned basic Bash built-ins and GNU utilities. These tools are installed on the Unix environment by default. It can happen that they cannot solve your task. In this case, you should find an appropriate program or utility and install it on your own.
 
-Installing software in the Unix environment is not the same as it happens in Windows. Let's have a look at how to install and update software in any Unix environment or Linux distribution properly.
+Installing software to the Unix environment is not the same as it happens on Windows. Let's have a look at how to install and update the software to any Unix environment or Linux distribution properly.
 
 ## Repository
 
-Whenever you install the software in the Unix environment, you should use a [**repository**](https://help.ubuntu.com/community/Repositories). The repository is a server that stores all available programs. These programs are prepared by [**maintainers**](https://en.wikipedia.org/wiki/Software_maintainer). Maintainers are persons who take open source software and compile it for some repository. Most of these persons are volunteers and free software enthusiasts.
+Whenever you install the software to the Unix environment, you should use a [**repository**](https://help.ubuntu.com/community/Repositories). The repository is a server that stores all available programs. These programs are prepared by [**maintainers**](https://en.wikipedia.org/wiki/Software_maintainer). Maintainers are persons who take open source software and compile it for some repository. Most of these persons are volunteers and free software enthusiasts.
 
-The repository stores each program as a separate file. All these files have the same format. The format depends on the Linux distribution. Thus, each Linux distribution has its own repository. Examples of the formats are DEB, RPM, ZST, etc. A single file with some application is called a **package**. A package is a unit for installing software in your system.
+The repository stores each program as a separate file. All these files have the same format. The format depends on the Linux distribution. Thus, each Linux distribution has its own repository. Examples of the formats are DEB, RPM, ZST, etc. A single file with some application is called a **package**. A package is a unit for installing software on your system.
 
 The repository stores packages with applications, libraries and resource files. Besides that, the repository has meta-information about all packages. One or more files store this meta-information. They are called the **package index**.
 
@@ -22,7 +22,7 @@ Why does the Unix environment need a package manager? Windows does not have such
 
 I>There are several third-party package managers for Windows. The most popular one is [Chocolatey](https://chocolatey.org). Microsoft plans to develop the [official package manager](https://devblogs.microsoft.com/commandline/windows-package-manager-1-0) in the nearest future.
 
-The package manager installs and removes packages in the Unix environment. Its main task is to keep track of **package dependencies**. Suppose that some program from one package uses features of the library from another package. Then the first package depends on the second one. It means that you should install the second package whenever you install the first one.
+The package manager installs and removes packages from the Unix environment. Its main task is to keep track of **package dependencies**. Suppose that some program from one package uses features of the library from another package. Then the first package depends on the second one. It means that you should install the second package whenever you install the first one.
 
 Package dependency allows you to have a single copy of every program and library in your file system. All dependent programs know the installation path of the software they need. This way, they can share it.
 
@@ -91,7 +91,7 @@ antiword my_report.doc
 
 This command prints the document contents in text format.
 
-You have installed the new package in your system. If it becomes unnecessary, you can uninstall it. When you do it, the package manager uninstalls both the package and all its dependencies. It happens only when there are no other programs that require them.
+You have installed the new package on your system. If it becomes unnecessary, you can uninstall it. When you do it, the package manager uninstalls both the package and all its dependencies. It happens only when there are no other programs that require them.
 
 Here is the command to uninstall some PACKAGE:
 {line-numbers: false, format: Bash}
@@ -105,13 +105,13 @@ The following command uninstalls the package of the `antiword` utility:
 pacman -Rs mingw-w64-x86_64-antiword
 ```
 
-Suppose that you have installed several new packages in your system. After a while, maintainers compile new versions of these packages and push them to the repository. You want to get these new versions because of their features. The following command does that:
+Suppose that you have installed several new packages on your system. After a while, maintainers compile new versions of these packages and push them to the repository. You want to get these new versions because of their features. The following command does that:
 {line-numbers: false, format: Bash}
 ```
 pacman -Syu
 ```
 
-This command updates all installed packages in your system to their actual versions in the repository.
+This command updates all installed packages on your system to their actual versions in the repository.
 
 We have considered the basic `pacman` commands. Other package managers work the same way. They follow the same algorithm as `pacman` when installing and removing packages. However, they have other command-line parameters.
 

@@ -367,7 +367,7 @@ GNU utilities are part of OS. Therefore, they are available right after installi
 
 Windows installs new applications in the `Program Files` and `Program Files (x86)` directories on the system drive. Each application has its own subdirectory. For example, it can be `C:\Program Files (x86)\Notepad++`. The installer program copies executables, libraries, configuration and resource files into that subdirectory. The application requires all these files to work properly. You can specify another installation directory than `Program Files` and `Program Files (x86)`. Then the installer program creates the application subdirectory there.
 
-There are two approaches to install applications in the Unix environment. The first one resembles the Windows way. There is the system directory `/opt`. The installer program creates an application subdirectory with all its files there.
+There are two approaches to install applications to the Unix environment. The first one resembles the Windows way. There is the system directory `/opt`. The installer program creates an application subdirectory with all its files there.
 
 Here is an example. Suppose that you are installing the TeamViewer application. Its installer creates the `/opt/teamviewer` subdirectory. You can find the `TeamViewer` executable there. Developers of proprietary applications prefer this way of installing programs.
 
@@ -396,9 +396,9 @@ Table 2-11 explains the purposes of Unix system directories.
 
 Copying all files of the same type into one directory sounds like a controversial solution. Its disadvantage is the complexity of maintenance. Suppose that the application updates to the next version. It should update all its files in all system directories. If the application misses one of the files, it cannot run anymore.
 
-However, the Unix system directories have an advantage. When you install an application in Windows, it brings all files it needs. There are libraries with subroutines among these files. Some applications require the same libraries to run. When each application has its own copy of the same library, it causes the file system overhead.
+However, the Unix system directories have an advantage. When you install an application on Windows, it brings all files it needs. There are libraries with subroutines among these files. Some applications require the same libraries to run. When each application has its own copy of the same library, it causes the file system overhead.
 
-The Unix way gets rid of library copies. Suppose that all applications respect the agreement and install their files in the proper system directories. Then applications can locate files of each other. Therefore, they can use the same library if they require it. A single instance of each library is enough for supporting all dependent applications.
+The Unix way gets rid of library copies. Suppose that all applications respect the agreement and install their files to the proper system directories. Then applications can locate files of each other. Therefore, they can use the same library if they require it. A single instance of each library is enough for supporting all dependent applications.
 
 Suppose that you have installed a new application (e.g., a browser). Its executable file (for example, `firefox`) comes to the `/usr/bin` path according to Table 2-11. How to run this application in Bash? There are several ways for that:
 
@@ -432,7 +432,7 @@ The second way to run an application reminds the first one. Instead of the execu
 /usr/bin/firefox
 ```
 
-You would need this approach when launching proprietary applications. They are installed in the `/opt` system directory. The `PATH` variable does not contain this path by default. Therefore, Bash cannot find executables there. You can help Bash by specifying an absolute path to the program.
+You would need this approach when launching proprietary applications. They are installed to the `/opt` system directory. The `PATH` variable does not contain this path by default. Therefore, Bash cannot find executables there. You can help Bash by specifying an absolute path to the program.
 
 The third approach to run an application is something in between the first and second ways. You use a relative executable path instead of the absolute one. Here is an example for the Firefox browser:
 {line-numbers: true, format: Bash}
