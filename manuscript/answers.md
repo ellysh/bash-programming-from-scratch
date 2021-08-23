@@ -36,7 +36,7 @@ FB895301AD
 
 The correct answer is "README.md".
 
-The "00_README.txt" string does not fit. It happens because the "*ME.??"" pattern requires two characters after the dot. But the string has three characters.
+The "00_README.txt" string does not fit. It happens because the "*ME.??"" pattern requires two characters after the dot. However, the string has three characters.
 
 The "README" string does not fit because it does not have a dot.
 
