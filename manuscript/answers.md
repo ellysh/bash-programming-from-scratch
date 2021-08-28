@@ -60,7 +60,7 @@ find /usr -name "*.txt"
 
 The `/usr` path stores text files. So, there is no reason to check other system paths.
 
-Now let's count the number of lines in the found files. We should add the `-exec` action with the `wc` utility call to do this. The resulting command looks like this:
+Now let's count the number of lines in the found files. The `wc` utility can do this task. We should call the utility using the `-exec` action. Then the resulting command looks like this:
 {line-numbers: false, format: Bash}
 ```
 find /usr -name "*.txt" -exec wc -l {} +
@@ -78,32 +78,32 @@ If you add the `wc` call to the command, it fails when running in the MSYS2 envi
 find / -name "*.txt" -exec wc -l {} +
 ```
 
-The problem happens because of the error message that Figure 2-17 shows. The `find` utility passes the message to the `wc` input. The `wc` utility treats each word it receives as a file path. The error message is not a path. Therefore, `wc` fails.
+The problem happens because of the error message that Figure 2-17 shows. The `find` utility passes its error message to the `wc` input. The `wc` utility treats each word it receives as a file path. The error message is not a path. Therefore, `wc` fails.
 
 ##### Exercise 2-4. Searching for files with the `grep` utility
 
 Look for information about application licenses in the `/usr/share/doc` system path. It contains documentation for all installed software.
 
-If the program has the [GNU General Public License](https://en.wikipedia.org/wiki/GNU_General_Public_License), its documentation contains the "General Public License" line. The following command searches such documents:
+If the program has the [GNU General Public License](https://en.wikipedia.org/wiki/GNU_General_Public_License), its documentation contains the "General Public License" phrase. The following command searches this phrase in all documents:
 {line-numbers: false, format: Bash}
 ```
 grep -Rl "General Public License" /usr/share/doc
 ```
 
-You also should check the files in the `/usr/share/licenses` path. Here is the command for doing that:
+The `/usr/share/licenses` path is the place where you can find license information for all installed software. You can search the "General Public License" phrase there with the following command:
 {line-numbers: false, format: Bash}
 ```
 grep -Rl "General Public License" /usr/share/licenses
 ```
 
-The MSYS2 environment has two extra paths for installing programs: `/mingw32` and `/mingw64`. They do not match the POSIX standard. The following commands check documents in these paths:
+The MSYS2 environment has two extra paths for installing programs: `/mingw32` and `/mingw64`. They do not match the POSIX standard. The following `grep` calls check these paths:
 {line-numbers: true, format: Bash}
 ```
 grep -Rl "General Public License" /mingw32/share/doc
 grep -Rl "General Public License" /mingw64/share
 ```
 
-You can find applications with other licenses than GNU General Public License. This is the list of licenses and possible lines for searching:
+You can find applications with other licenses than GNU General Public License. Here is the list of licenses and corresponding phrases for searching:
 
 * MIT - "MIT license"
 * Apache - "Apache license"
@@ -111,7 +111,7 @@ You can find applications with other licenses than GNU General Public License. T
 
 ##### Exercise 2-6. Operations with files and directories
 
-First, you should create directories for saving photos by each year and month. The following commands do this task:
+First, you should create directories for saving photos. Each directory should match a specific month of the year. The following commands create them:
 {line-numbers: true, format: Bash}
 ```
 mkdir -p ~/photo/2019/11
@@ -119,32 +119,32 @@ mkdir -p ~/photo/2019/12
 mkdir -p ~/photo/2020/01
 ```
 
-Suppose that the `D:\Photo` directory contains all photos. You can use the `find` utility for searching files with a creation date equals to November 2019. The `-newermt` option of the utility checks the creation date. Here is an example command:
+Suppose that the `D:\Photo` directory contains all your photos. You can use the `find` utility to search photos created in November 2019. The `-newermt` option of the utility checks the creation date. Here is an example command of how to use it:
 {line-numbers: false, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-11-01 ! -newermt 2019-12-01
 ```
 
-This command looks for files in the `/d/Photo` directory. It corresponds to the `D:\Photo` path in the Windows environment.
+This command looks for files in the `/d/Photo` directory. It matches the `D:\Photo` path in the Windows environment.
 
-The first expression `-newermt 2019-11-01` means to search for files changed since November 1, 2019. The second expression `! -newermt 2019-12-01` excludes files modified since December 1, 2019. The exclamation point before the expression is a negation. There is no condition between expressions. But the find utility inserts the logical AND by default. The resulting expression looks like: "files created after November 1, 2019, but no later than November 30, 2019". It means "files for November".
+The first expression `-newermt 2019-11-01` points to files changed since November 1, 2019. The second expression `! -newermt 2019-12-01` excludes files modified since December 1, 2019. The exclamation point before the expression is a negation. There is no condition between expressions. The `find` utility inserts the logical AND by default. The resulting expression looks like: "files created after November 1, 2019, but no later than November 30, 2019". It means "the files created in November 2019".
 
-The file search command is ready. Now add the copy action to it. The result looks like this:
+The file search command is ready. Now we should add the copy action there. The result looks like this:
 {line-numbers: false, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-11-01 ! -newermt 2019-12-01 -exec cp {} ~/photo/2019/11 \;
 ```
 
-This command copies the November 2019 files into the `~/photo/2019/11` directory.
+This command copies the files created in November 2019 into the `~/photo/2019/11` directory.
 
-Here are similar commands for copying the December and January files:
+Here are the similar commands for copying the December and January files:
 {line-numbers: true, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-12-01 ! -newermt 2020-01-01 -exec cp {} ~/photo/2019/12 \;
 find /d/Photo -type f -newermt 2020-01-01 ! -newermt 2020-02-01 -exec cp {} ~/photo/2020/01 \;
 ```
 
-Let's assume that you do not need old files in the `D:\Photo` directory. Then replace copying action with renaming. The result is the following commands:
+Let's assume that you do not need old files in the `D:\Photo` directory. Then you should replace the copying action with renaming. This way, you get the following commands:
 {line-numbers: true, format: Bash}
 ```
 find /d/Photo -type f -newermt 2019-11-01 ! -newermt 2019-12-01 -exec mv {} ~/photo/2019/11 \;
@@ -152,21 +152,21 @@ find /d/Photo -type f -newermt 2019-12-01 ! -newermt 2020-01-01 -exec mv {} ~/ph
 find /d/Photo -type f -newermt 2020-01-01 ! -newermt 2020-02-01 -exec mv {} ~/photo/2020/01 \;
 ```
 
-Note the scalability of our solution. The number of files in the `D:\Photo` directory is not important. You need only three commands to break them up into three months.
+Note the scalability of our solution. The number of files in the `D:\Photo` directory does not matter. You need only three commands to process them.
 
 ##### Exercise 2-7. Pipelines and I/O streams redirection
 
-First, let's figure out how the `bsdtar` utility works. Call it with the `--help` option. It shows you a brief help. The help tells you that the utility archives the directory if you apply the `-c` and `-f` options. The name of the archive follows the options. Here is an example call of the `bsdtar` utility:
+First, let's figure out how the `bsdtar` utility works. Call it with the `--help` option. It shows you a brief help. The help tells you that the utility archives a target directory if you apply the `-c` and `-f` options. You should specify the archive name after these options. Here is an example call of the `bsdtar` utility:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -c -f test.tar test
 ```
 
-This command creates an archive named `test.tar`. It has the contents of the `test` directory inside. Note that the command does not [compress data](https://en.wikipedia.org/wiki/Data_compression). It means that the archive occupies the same disk space as the files it contains.
+This command creates the `test.tar` archive. It includes the contents of the `test` directory. Note that the command does not [compress data](https://en.wikipedia.org/wiki/Data_compression). It means that the archive occupies the same disk space as the files it contains.
 
-The purposes of archiving and compression operations are different. Archiving is for storing and copying large numbers of files. Compression reduces the amount of the occupied disk memory. Often these operations are combined into one. But they are not the same.
+The purposes of archiving and compression operations differ. You need archiving for storing and copying a large number of files. Compression reduces the amount of the occupied disk memory. These operations are combined into one often, but they are not the same.
 
-To create an archive and compress it, add the `-j` option to the `bsdtar` call. Here is an example:
+Suppose that you want to create an archive and compress it. Then you need to add the `-j` option to the `bsdtar` call. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -c -j -f test.tar.bz2 test
@@ -178,37 +178,37 @@ You can combine the `-c`, `-j` and `-f` options into one group. Then you get the
 bsdtar -cjf test.tar.bz2 test
 ```
 
-Let's write a command to navigate through the catalog of photos. It should create a separate archive for each month.
+Let's write a command for processing all photos. The command should archive each directory with the photos of the specific month.
 
-The following `find` utility call finds directories that match specific months:
+First, you need to find the directories for archiving. The following command does it:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/*
 ```
 
-Next, we redirect the output of this command to the `xargs` utility. It will generate the `bsdtar` call. Our command looks like this now:
+Next, you redirect the output of the `find` call to the `xargs` utility. It will generate the `bsdtar` call. This way, you get the following command:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* | xargs -I% bsdtar -cf %.tar %
 ```
 
-We can add the `-j` option to force `bsdtar` to compress archived data. The command became like this:
+You can add the `-j` option to force `bsdtar` to compress archived data. The command became like this:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* | xargs -I% bsdtar -cjf %.tar.bz2 %
 ```
 
-I> The data compression takes longer than archiving.
+I> The data compression usually takes longer than archiving.
 
-We pass the `-I` parameter to the `xargs` utility. It specifies where to insert the arguments into the generated command. There are two such places in the `bsdtar` utility call: the archive's name and the directory's path to be processed.
+We pass the `-I` parameter to the `xargs` utility. It specifies the place to insert the arguments into the generated command. There are two such places in the `bsdtar` utility call: the archive's name and the directory's path to be processed.
 
-Do not forget about filenames with line breaks. To process them correctly, add the `-print0` option to the `find` utility call. This way, we get the following command:
+Do not forget about filenames with line breaks. To process them correctly, add the `-print0` option to the `find` call. This way, you get the following command:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* -print0 | xargs -0 -I% bsdtar -cjf %.tar.bz2 %
 ```
 
-Suppose that we want to keep the files in the archives without relative paths (e.g. `2019/11`). The `--strip-components` option of `bsdtar` removes them. Here is the command with this option:
+Suppose that you want to keep the files in the archives without relative paths (e.g. `2019/11`). The `--strip-components` option of `bsdtar` removes them. The following command uses this option:
 {line-numbers: false, format: Bash}
 ```
 find ~/photo -type d -path */2019/* -o -path */2020/* -print0 | xargs -0 -I% bsdtar --strip-components=3 -cjf %.tar.bz2 %
@@ -222,39 +222,39 @@ Let's implement the algorithm step by step. The first action is to copy the `REA
 cp /usr/share/doc/bash/README ~
 ```
 
-Use the && operator and the `echo` command to print the command's result into the log file. The command became like this:
+Apply the && operator and the `echo` built-in to print the `cp` result into the log file. Then you get the following command:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > result.log
 ```
 
-Call the `bsdtar` or `tar` utility to archive a file. Here is an example:
+The second step is archiving the file. You can call the `bsdtar` or `tar` utility for that. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf ~/README.tar.bz2 ~/README
 ```
 
-We can print the result of archiving operation using the `echo` command again:
+Add `echo` built-in to print the result of the archiving utility. The command becomes like this:
 {line-numbers: false, format: Bash}
 ```
 bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> result.log
 ```
 
-In this case, the `echo` command appends a line to the end of the existing log file.
+Here the `echo` command appends the string to the end of the existing log file.
 
-Let's combine the `cp` and `bsdtar` calls into one command. We should call the `bsdtar` utility only if the `README` file has been successfully copied. To achieve this dependency, we put the && operator between the commands. We get the following command:
+Let's combine the `cp` and `bsdtar` utilities into one command. You should call `bsdtar` only if the `README` file has been copied successfully. To achieve this dependency, put the && operator between the calls. This way, you get the following command:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > result.log && bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> result.log
 ```
 
-The last missing step is deleting the `README` file. We can add it this way:
+The last step is deleting the `README` file. Do it by the `rm` call this way:
 {line-numbers: false, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log && bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> ~/result.log && rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
-Run this command. If it succeeds, the log file looks like this:
+Run this command in your terminal. If it succeeds, you get the following log file:
 {line-numbers: true}
 ```
 cp - OK
@@ -262,9 +262,9 @@ bsdtar - OK
 rm - OK
 ```
 
-The command with calls to three utilities in a row looks cumbersome. It is inconvenient to read and edit. Let's break the command into lines. There are several ways to do this.
+The current version of our command calls three utilities in a row. It looks cumbersome and inconvenient for reading. Let's break the command into lines. There are several ways to do that.
 
-The first way is to break lines after logical operators. We apply it and get the following:
+The first way is to break lines after logical operators. If you apply this approach, you get the following result:
 {line-numbers: true, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log &&
@@ -272,11 +272,11 @@ bsdtar -cjf ~/README.tar.bz2 ~/README && echo "bsdtar - OK" >> ~/result.log &&
 rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
-Try to copy this command into a terminal window and execute it. It will run without errors.
+Copy this command to your terminal and execute it. It works properly.
 
-The second way to add line breaks is to use the backslash character. Put a line break right after it. Use this method when there are no logical operators in the command.
+The second way to add line breaks is to use the backslash symbol. Put a line break right after it. This method fits well when there are no logical operators in the command.
 
-For example, let's put backslashes before the && operators in our command. Then we get this result:
+For example, you can put backslashes before the && operators in our command. Then you get this result:
 {line-numbers: true, format: Bash}
 ```
 cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log \
@@ -284,25 +284,27 @@ cp /usr/share/doc/bash/README ~ && echo "cp - OK" > ~/result.log \
 && rm ~/README && echo "rm - OK" >> ~/result.log
 ```
 
+Run this command in your terminal. It works properly too.
+
 ## Bash Scrips
 
 ##### Exercise 3-2. The full form of parameter expansion
 
-The `find` utility searches for files recursively. It starts from the specified path and passes through all subdirectories. Use the `-maxdepth` option to exclude subdirectories from the search.
+The `find` utility searches for files recursively. It starts from the specified path and passes through all subdirectories. If you want to exclude subdirectories from the search, apply the `-maxdepth` option.
 
-The command for searching TXT files in the current directory looks like this:
+Here is the command for searching TXT files in the current directory:
 {line-numbers: false, format: Bash}
 ```
 find . -maxdepth 1 -type f -name "*.txt"
 ```
 
-Let's add an action to copy the found files to the user's home directory. The command became like this:
+Let's add an action to copy the found files to the user's home directory. The command becomes like this:
 {line-numbers: false, format: Bash}
 ```
 find . -maxdepth 1 -type f -name "*.txt" -exec cp -t ~ {} \;
 ```
 
-Now create a script and name it `txt-copy.sh`. Copy our `find` call into the file.
+Now create a script and name it `txt-copy.sh`. Copy our `find` call to this file.
 
 The script should receive an input parameter. The parameter defines an action to apply for each found file. There are two possible actions: copy or move. It is convenient to pass the utility's name as a parameter. Thus, it can be `cp` or `mv`. The script will call the utility by its name.
 
