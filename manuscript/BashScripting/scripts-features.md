@@ -542,7 +542,7 @@ Listing 3-9 shows the corrected version of the backup script. It handles an arbi
 {caption: "Listing 3-9. The script with an arbitrary number of input parameters", line-numbers: true, format: Bash}
 ![`make-backup.sh`](code/BashScripting/make-backup.sh)
 
-Bash has an alternative variable for `$@`. It is called `$*`. If you put it in double-quotes, Bash interprets its value as a single word. It interprets the `$@` variable as a set of words in the same case.
+Bash has an alternative variable for `$@`. It is called `$*`. If you put it in double quotes, Bash interprets its value as a single word. It interprets the `$@` variable as a set of words in the same case.
 
 Here is an example to explain the difference between the `$@` and `$*` variables. Suppose you call the backup script this way:
 {line-numbers: false, format: Bash}

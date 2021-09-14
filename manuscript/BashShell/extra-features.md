@@ -658,7 +658,7 @@ Here `xargs` constructs the following call of the `cp` utility:
 cp -t ~/tmp test file.txt
 ```
 
-The command copies the `test` and `file.txt` files to the `~/tmp` path. However, none of these files exists. The reason for the error is the word splitting mechanism. Bash splits lines in words by the spaces. You can disable the mechanism by double-quotes. Here is an example for our command:
+The command copies the `test` and `file.txt` files to the `~/tmp` path. However, none of these files exists. The reason for the error is the word splitting mechanism. Bash splits lines in words by the spaces. You can disable the mechanism using double quotes. Here is an example for our command:
 {line-numbers: false, format: Bash}
 ```
 ls ~ | xargs -I % cp -t ~/tmp "%"

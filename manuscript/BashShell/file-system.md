@@ -496,7 +496,7 @@ The first step is preparing the correct `find` call for searching the files. You
 find / -path "*/doc/bash/*" -name "*.html"
 ```
 
-When you pass the glob pattern to the `find` utility, always enclose it in double-quotes. The quotes do the same as the backslash before parentheses. They prevent Bash from expanding the patterns. Instead, Bash passes them to the `find` utility.
+When you pass the glob pattern to the `find` utility, always enclose it in double quotes. The quotes do the same as the backslash before parentheses. They prevent Bash from expanding the patterns. Instead, Bash passes them to the `find` utility.
 
 Figure 2-17 shows the result of our `find` call. You can see that it found HTML files correctly.
 
@@ -675,7 +675,7 @@ Using a text editor for checking dozens of files takes too much effort and time.
 grep "free software" /usr/share/doc/bash/README
 ```
 
-The first parameter of the utility is a string for searching. Always enclose it in the double-quotes. This way, you prevent Bash expansions and guarantee that the utility receives the string unchanged. Without the quotes, Bash splits the phrase into two separate parameters. This mechanism of splitting strings into words is called [**word splitting**](http://mywiki.wooledge.org/WordSplitting).
+The first parameter of the utility is a string for searching. Always enclose it in double quotes. This way, you prevent Bash expansions and guarantee that the utility receives the string unchanged. Without the quotes, Bash splits the phrase into two separate parameters. This mechanism of splitting strings into words is called [**word splitting**](http://mywiki.wooledge.org/WordSplitting).
 
 The second parameter of `grep` is a relative or absolute path to the file. If you specify a list of files separated by spaces, the utility processes them all. In the example, we passed the `README` file path only.
 
@@ -726,7 +726,7 @@ echo ~/*
 
 Run these commands. The first one lists files and subdirectories of the current directory. The second command does the same for the home directory.
 
-Do not enclose search patterns in double-quotes. Here is an example of the wrong command:
+Do not enclose search patterns in double quotes. Here is an example of the wrong command:
 {line-numbers: false, format: Bash}
 ```
 grep "free software" "*"

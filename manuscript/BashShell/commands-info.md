@@ -41,7 +41,7 @@ echo 123
 
 The dollar sign before a word tells Bash that it is a variable name. The interpreter handles it differently than a regular word. When Bash encounters a variable name in a command, it checks its variable list. If the name presents there, Bash inserts the variable value into the command. Otherwise, the interpreter places an empty string there.
 
-I> Enclosing variable names in double-quotes is a [good practice](https://www.tldp.org/LDP/abs/html/quotingvar.html). This way, you avoid potential errors. There is an example. Bash replaces the variable name by its value. The value contains [**control characters**](https://en.wikipedia.org/wiki/Control_character). The interpreter handles these characters. As a result, the inserted variable's value differs from one that is stored in memory. This effect leads to incorrect behavior of the program. Double-quotes prevent Bash from processing strings.
+I> Enclosing variable names in double quotes is a [good practice](https://www.tldp.org/LDP/abs/html/quotingvar.html). This way, you avoid potential errors. There is an example. Bash replaces the variable name by its value. The value contains [**control characters**](https://en.wikipedia.org/wiki/Control_character). The interpreter handles these characters. As a result, the inserted variable's value differs from one that is stored in memory. This effect leads to incorrect behavior of the program. Double quotes prevent Bash from processing strings.
 
 Let's come back to the `echo` command that prints the `PATH` variable. Figure 2-22 shows this output.
 

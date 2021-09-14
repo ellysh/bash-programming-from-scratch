@@ -85,7 +85,7 @@ Bash complains that you have passed too many parameters to `cd`. This command ex
 
 You have two option to suppress the word splitting mechanism:
 
-1. Enclose the path in double-quotes:
+1. Enclose the path in double quotes:
 {line-numbers: false, format: Bash}
 ```
 cd "/c/Program Files"
@@ -116,14 +116,14 @@ Figure 3-3 shows that this command still fails.
 {caption: "Figure 3-3. Result of the `cd` command"}
 ![cd result](images/BashScripting/cd-unexpected-token.png)
 
-This is the same error message as Bash has printed when launching Notepad++ in Figure 3-1. This problem happens because of the parentheses. They are part of the Bash syntax. It means that the shell treats them as a language construct. We met this problem when grouping conditions of the `find` utility. Escaping or double-quotes solves this issue too. Here are possible solutions for our case:
+This is the same error message as Bash has printed when launching Notepad++ in Figure 3-1. This problem happens because of the parentheses. They are part of the Bash syntax. It means that the shell treats them as a language construct. We met this problem when grouping conditions of the `find` utility. Escaping or double quotes solves this issue too. Here are possible solutions for our case:
 {line-numbers: true, format: Bash}
 ```
 cd /c/Program\ Files\ \(x86\)
 cd "/c/Program Files (x86)"
 ```
 
-Using double-quotes is simpler than escaping. Apply them to launch the Notepad++ this way:
+Using double quotes is simpler than escaping. Apply them to launch the Notepad++ this way:
 {line-numbers: false, format: Bash}
 ```
 "/c/Program Files (x86)/Notepad++/notepad++.exe"

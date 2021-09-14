@@ -136,7 +136,7 @@ The `rm` utility deletes all files ending in `file.txt`. The globbing mechanism 
 rm report_file.txt myfile.txt msg_file.txt
 ```
 
-When referencing a variable, always apply the double-quotes. They prevent unwanted Bash expansions. The quotes solve problems of both our examples:
+When referencing a variable, always apply double quotes. They prevent unwanted Bash expansions. The quotes solve problems of both our examples:
 {line-numbers: true, format: Bash}
 ```
 filename1="my file.txt"
@@ -203,7 +203,7 @@ Here Bash tries to find and insert the variable called "prefix_". It happens bec
 cp "${prefix}_${name}" ~
 ```
 
-If you prefer to use the short form of the expansion, you have another option. Enclose each variable name in the double-quotes. Then Bash will not confuse them and nearby text. Here is an example:
+If you prefer to use the short form of the expansion, you have another option. Enclose each variable name in double quotes. Then Bash will not confuse them and nearby text. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 cp "$prefix"_"$name" ~
