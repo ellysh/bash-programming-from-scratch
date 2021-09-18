@@ -25,7 +25,7 @@ The second reason for low computation speed is mechanical parts. The tabulator c
 
 If you look at how the tabulator works, you find no place for OS there. OS just does not have any tasks to do on such a kind of computer.
 
-Tabulators used rotating cylinders for performing calculations. The next generation of computers replaced the cylinders with [**relays**](https://en.wikipedia.org/wiki/Relay). A relay is a mechanical element that changes its state due to an electric current.
+Tabulators used rotating cylinders for performing calculations. The next generation of computers replaced the cylinders with [**relays**](https://en.wikipedia.org/wiki/Relay). A relay is a electromechanical element that changes its state due to an electric current.
 
 The German engineer [Konrad Zuse](https://en.wikipedia.org/wiki/Konrad_Zuse) designed one of [the first relay computers](https://en.wikipedia.org/wiki/Z2_(computer)) called Z2 in 1939. Then he improved this computer in 1941 and called it Z3. These machines perform a single elementary operation in milliseconds. They are much faster than tabulators. This performance gain happens thanks to applying relays instead of rotating cylinders.
 
@@ -88,7 +88,7 @@ Figure 1-4 demonstrates the interaction between the OS, an application and hardw
 
 According to Figure 1-4, the application does not interact with hardware directly. The program does it through [**system libraries**](https://en.wikipedia.org/wiki/Library_(computing)). The system libraries are part of the OS. There are rules to access the system libraries. Each application should follow them.
 
-[**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API is the interface that the OS provides to an application to interact with system libraries. In general, the API term means a set of agreements for interacting components of the information system. These agreements become a well-known standard often. For example, the POSIX standard describes the API for portable OSes. The standard guarantees the compatibility of the OS and applications.
+[**Application Programming Interface**](https://en.wikipedia.org/wiki/API) or API is the interface that the OS provides to an application to interact with system libraries. In general, the API term means a set of agreements for interacting components of the information system. These agreements become a well-known standard often. For example, the POSIX standard describes the portable API for a family of OSes. The standard guarantees the compatibility of the OS and applications.
 
 OS [**kernel**](https://en.wikipedia.org/wiki/Kernel_(operating_system)) and [**device drivers**](https://en.wikipedia.org/wiki/Device_driver) are part of OS. They dictate which hardware features the application can access. When the application interacts with system libraries, the libraries request capabilities of kernel and drivers. If you need the hardware feature and OS does not support it, you cannot use it.
 
@@ -114,7 +114,7 @@ There is an example. Two programs cannot write data to the same area of the [har
 
 You should place all requests to write data on the disk in a queue because of these two problems. Then each request should be performed separately. The OS takes care of this task.
 
-The kernel (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). Similarly, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. Besides kernel, there are special programs called device drivers (see Figure 1-4). They help the OS to control devices.
+The kernel (see Figure 1-4) of the OS provides a mechanism for managing access to the hard drive. This mechanism is called [**file system**](https://en.wikipedia.org/wiki/File_system). Similarly, the OS manages access to all [**peripheral**](https://en.wikipedia.org/wiki/Peripheral) and internal devices of the computer. Device drivers provide access to the hardware for OS and applications.
 
 We have mentioned peripheral and internal devices. What is the difference between them? Peripherals are all devices that are responsible for inputting, outputting, and storing data permanently. Here are the examples:
 
@@ -182,7 +182,7 @@ I> A bottleneck is a component or resource of an information system that limits 
 
 Why does CPU idle and wait for peripheral devices? Here is an example. Suppose that the computer from the 1960s runs programs one by one. It reads data from a magnetic tape and prints the results on the printer. The OS loads each program and executes its instructions. Then it loads the next one, and so on.
 
-The problem happens when reading data and printing the results. The time for reading data on the magnetic tape is huge on the CPU scale. This time is enough for the processor to perform many calculations. However, it does not do that. The reason for that is the currently loaded program occupies all computer resources. The same CPU idle happens when printing the results. The printer is a slow mechanical device.
+The problem happens when reading data and printing the results. The time for reading data on the magnetic tape is huge on the CPU scale. This time is enough for the processor to perform many calculations. However, it does not do that. The reason for that is the currently loaded program occupies all computer resources. The same CPU idle happens when printing the results. The printer is a slow electromechanical device.
 
 The CPU idle led OS developers to the concept of [**multiprogramming**](https://en.wikipedia.org/wiki/Computer_multitasking#Multiprogramming). This concept implies that OS loads several programs into the computer memory at the same time. The first program works as long as all resources it needs are available. It stops executing once a required resource is busy. Then OS switches to another program.
 
@@ -230,7 +230,7 @@ Suppose that you are writing a program for the computer with batch processing. Y
 
 The software development workflow differs when you use an interactive mode. You prepare your program and load it to the computer. Then it launches the program and shows you results. Immediately, you can analyze a possible error, fix it and relaunch the program. This workflow accelerates software development and debugging tasks significantly.  Now you spend few hours on the task that requires days with batch processing mode.
 
-The interactive mode brought new challenges for computer engineers. This mode requires the system that reacts to user actions immediately. And providing a short reaction time required a new load-balancing mechanism. The multitasking concept became a solution for this task.
+The interactive mode brought new challenges for computer engineers. This mode requires a system that reacts to user actions immediately. A short reaction time required a new load-balancing mechanism. The multitasking concept became a solution for this issue.
 
 There are alternative solutions for providing interactive mode. For example, there are interactive single-tasking OSes like [MS-DOS](https://en.wikipedia.org/wiki/MS-DOS). MS-DOS was the system for cheap PCs of the 1980s.
 
@@ -240,14 +240,14 @@ When the first relatively cheap personal computers appeared in the 1980s, they u
 
 When interactive mode became more and more popular, computer engineers meet a new challenge. The existing devices for interacting with computers turned out to be inconvenient. Magnetic tapes and printers were widespread through the 1950s and early 1960s. They did not fit interactive mode absolutely.
 
-[**Teletype**](https://en.wikipedia.org/wiki/Teleprinter) (TTY) became a prototype of a device for interactive work with a computer. Figure 1-6 shows the Model 33 teletype. It is an electromechanical typewriter. It is connected to the same typewriter through wires. Once two teletypes are connected, operators can send text messages to each other. The sender types text on his device. The keystrokes are transmitted to the receiver's device. It prints out each received letter on paper.
+[**Teletype**](https://en.wikipedia.org/wiki/Teleprinter) (TTY) became a prototype of a device for interactive work with a computer. The original idea behind this device was to connect two of them via wires. It allows users on both sides to send each other text messages. One user types the message on the keyboard. Then his device transmits the keystrokes to the receiver. When the teletype on the other side receives data, it prints the text on paper.
+
+Figure 1-6 shows the Model 33 teletype. It was one of the most popular devices in the 1960s.
 
 {caption: "Figure 1-6. A Teletype Model 33", height: "50%"}
 ![Teletype Model 33](images/GeneralInformation/teletype.jpg)
 
-[**Teletype**](https://en.wikipedia.org/wiki/Teleprinter) (TTY) became a prototype of a device for interactive work with a computer. The original idea behind this device was to connect two of them via wires. It allows users on both sides to send each other text messages. One user types the message on the keyboard. Then his device transmits the keystrokes to the receiver. When the teletype on the other side receives data, it prints the text on paper.
-
-Computer engineers connected the teletype to the computer. This solution allowed the user to send text commands to the machine and receive results. Such a workflow became known as a [**command-line interface**](https://en.wikipedia.org/wiki/Command-line_interface) (CLI). Figure 1-6 shows the Model 33 teletype. It was one of the most popular devices in the 1960s.
+Computer engineers connected the teletype to the computer. This solution allowed the user to send text commands to the machine and receive results. Such a workflow became known as a [**command-line interface**](https://en.wikipedia.org/wiki/Command-line_interface) (CLI).
 
 Teletype uses the printer as an output device. It works very slow and requires around 10 seconds to print a single line. The next step of developing the user interface was replacing the printer with the monitor. This increased the data output speed several times. The new device with a keyboard and monitor was called the [**terminal**](https://en.wikipedia.org/wiki/Computer_terminal). It replaced teletypes in the 1970s.
 
@@ -269,17 +269,17 @@ Figure 1-8 shows a typical text-based interface. There is an output of system re
 
 The further performance gain of computers allowed OS developers to replace box-drawing characters with real graphic elements. There are examples of such elements: windows, icons, buttons, etc. It was a moment when the full-fledged graphical interface came. Modern OSes provide this kind of interface.
 
-Figure 1-9 demonstrates the Windows GUI. You can see the desktop. There are windows of three applications there. The applications are Explorer, Notepad and Calculator. They work in parallel.
-
-{caption: "Figure 1-9. Windows GUI"}
-![Windows GUI](images/GeneralInformation/gui.png)
-
 The first GUI appeared in the [Xerox Alto](https://en.wikipedia.org/wiki/Xerox_Alto) minicomputer (see Figure 1-10). It was developed in the research center [Xerox PARC](https://en.wikipedia.org/wiki/PARC_(company)) in 1973. However, the graphical interface did not spread widely until the 1980s. It happens because GUI requires a lot of memory and high computer performance. PCs with such features were too expensive for ordinary users at that time.
 
 Apple produced the first relatively cheap PC with GUI in 1983. It was called Lisa.
 
 {caption: "Figure 1-10. Minicomputer Xerox Alto", height: "50%"}
 ![Minicomputer Xerox Alto](images/GeneralInformation/xerox-alto.jpg)
+
+Figure 1-9 demonstrates the Windows GUI. You can see the desktop. There are windows of three applications there. The applications are Explorer, Notepad and Calculator. They work in parallel.
+
+{caption: "Figure 1-9. Windows GUI"}
+![Windows GUI](images/GeneralInformation/gui.png)
 
 #### Families of OSes
 
