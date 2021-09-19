@@ -31,7 +31,7 @@ CPU cannot refer to a single bit. There are technical reasons for that. The prim
 
 Introducing bytes affected the architecture of processors. Engineers have expected that the CPU performs most operations over numbers. Therefore, they added a feature to load and process all bits of the number at once. This solution increased computers' performance by order of magnitude. At the same time, loading of the single bit in the CPU happens rarely. Supporting this feature in hardware brings significant overhead. Therefore, engineers have excluded it from modern processors.
 
-There is one more question. Why does a byte consist of eight bits? It was not always this way. The byte was equal to [six bits](https://en.wikipedia.org/wiki/Six-bit_character_code) in the first computers. Such a memory block was enough to encode all the English alphabet characters in upper and lower case, numbers, punctuation marks and mathematical operations.
+There is one more question. Why does a byte consist of eight bits? It was not always this way. The byte was equal to [six bits](https://en.wikipedia.org/wiki/Six-bit_character_code) in the first computers. Such a memory block was enough to encode all the English alphabet characters in upper case, numbers, punctuation marks and mathematical operations.
 
 Six-bits encodings were insufficient for representing control and box-drawing characters. Therefore, these encodings were extended to seven bits in the early 1960s. The [ASCII encoding](https://en.wikipedia.org/wiki/ASCII) appeared at that moment. It became the standard for encoding characters. ASCII defines characters for codes from 0 to 127. The maximum seven-bit number 127 limits this range.
 
@@ -78,7 +78,7 @@ When the CPU writes data back to the disk, it happens in the reverse order of st
 
 Data storage devices have the following parameters:
 
-1. **Access speed** defines the amount of data that you can read or write to the device per unit of time. Units of measure are bytes per second (KBps).
+1. **Access speed** defines the amount of data that you can read or write to the device per unit of time. Units of measure are bytes per second (Bps).
 
 2. **Capacity** is the maximum amount of data that a device can store. The units are bytes.
 
@@ -89,7 +89,7 @@ Data storage devices have the following parameters:
 These parameters vary for devices on each level of the memory hierarchy. Table 1-3 shows the ratio of parameters for modern storage devices.
 
 {caption: "Table 1-3. Memory levels", width: "100%", column-widths: "10%,30%,*"}
-| Level | Memory | Capacity | Access speed | Access time | Cost |
+| Level | Device | Capacity | Access speed | Access time | Cost |
 | --- | --- | --- | --- | --- | --- |
 | 1 | [**CPU registers**](https://en.wikipedia.org/wiki/Processor_register) | up to 1000 bytes | - | 1 tick | - |
 | | | | | | |
@@ -138,15 +138,15 @@ The [**southbridge**](https://en.wikipedia.org/wiki/Southbridge_(computing)) is 
 
 Suppose that the OS has loaded the contents of an executable file into RAM. This file contains both instructions and data of the program. Examples of data are text strings, box-drawing characters, predefined constants, etc.
 
-Program instructions are called [**machine code**](https://en.wikipedia.org/wiki/Machine_code). The processor executes them one by one. A single instruction is an elementary operation on the data from the CPU registers.
+Program instructions are written in [**machine code**](https://en.wikipedia.org/wiki/Machine_code). This code consists of commands that processor performs one by one. A single instruction is an elementary operation on the data from the CPU registers.
 
 The CPU has logical blocks for executing each type of instruction. The available blocks determine the operations that the CPU can perform. If the processor does not have an appropriate logical block to accomplish a specific instruction, it combines several blocks to do this job. The execution takes more clock cycles in this case.
 
 When the OS has loaded the program instructions and its data into RAM, it allocates the CPU time slots for that. The program becomes a [**computing process**](https://en.wikipedia.org/wiki/Process_(computing)) or process since this moment. The process means the running program and the resources it uses. Examples of the resources are memory area and OS objects.
 
-How do the program instructions look like? You can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine code in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual contents of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
+How do the program instructions look like? You can see them using the special program for reading and editing executable files. Such a program is called [**hex editor**](https://en.wikipedia.org/wiki/Hex_editor). The editor represents the program's machine instructions in [**hexadecimal numeral system**](https://en.wikipedia.org/wiki/Hexadecimal). The actual contents of the executable file is [**binary code**](https://en.wikipedia.org/wiki/Binary_code). This code is a sequence of zeros and ones. The CPU receives program instructions and data in this format. The hex editor makes them easy to read for humans.
 
-There are advanced programs to read machine code. They are called [**disassemblers**](https://en.wikipedia.org/wiki/Disassembler). These programs guess how the program instructions look like in terms of the CPU commands. You can get a better representation of the program using the disassembler than the hex editor.
+There are advanced programs to read machine code. They are called [**disassemblers**](https://en.wikipedia.org/wiki/Disassembler). Disassembler translates the program instructions into [**assembly language**](https://en.wikipedia.org/wiki/Assembly_language). This language is more convenient for a human to read. You can get a better representation of the program using the disassembler than the hex editor.
 
 If you take a specific number, it looks different in various numeral systems. The numeral system determines the symbols and their order to write a number. For example, binary allows 0 and 1 symbols only.
 
@@ -230,17 +230,17 @@ While the program is running, its instructions, resources and required libraries
 
 ### Source Code
 
-Machine code is a low-level representation of a program. This format is convenient for the processor. However, it is hard for a human to write a program in machine code. Software engineers developed the first programs this way. It was possible for early computers because of their simplicity. Modern computers are much more powerful and complex devices. Their programs are huge and have a lot of functions.
+Machine code is a low-level language for the representation of a program. This format is convenient for the processor. However, it is hard for a human to write a program in machine code. Software engineers developed the first programs this way. It was possible for early computers because of their simplicity. Modern computers are much more powerful and complex devices. Their programs are huge and have a lot of functions.
 
 Computer engineers invented two types of special applications. They solve the problem of the machine code complexity. These applications are [**compilers**](https://en.wikipedia.org/wiki/Compiler) and [**interpreters**](https://en.wikipedia.org/wiki/Interpreter_(computing)). They translate the program from a human-readable language into machine code. Compilers and interpreters solve this task differently.
 
-Software developers use [**programming languages**](https://en.wikipedia.org/wiki/Programming_language) in their work nowadays. Compilers and interpreters take programs written in such languages and produce the corresponding machine code.
+Software developers use [**programming languages**](https://en.wikipedia.org/wiki/Programming_language) in their work nowadays. Compilers and interpreters take programs written in such languages and produce the corresponding machine instructions.
 
-Humans use one of [**natural language**](https://en.wikipedia.org/wiki/Natural_language) to communicate with each other. Programming languages are different from them. They are formal and very limited. Using a programming language, you can express only actions that a computer can perform. There are strict rules on how you should write these actions. For example, you can use a small set of words and combine them in specific orders. [**Source code**](https://en.wikipedia.org/wiki/Source_code) is a text of the program you write in a programming language.
+Humans use one of [**natural languages**](https://en.wikipedia.org/wiki/Natural_language) to communicate with each other. Programming languages are different from them. They are formal and very limited. Using a programming language, you can express only actions that a computer can perform. There are strict rules on how you should write these actions. For example, you can use a small set of words and combine them in specific orders. [**Source code**](https://en.wikipedia.org/wiki/Source_code) is a text of the program you write in a programming language.
 
-The compiler and interpreter process source code differently. The compiler reads the entire program text, generates machine code instructions and saves them on a disk drive. The compiler does not execute the resulting program on its own. The interpreter reads the source code in parts, generates machine code instructions and executes them immediately. The interpreter stores its results in RAM temporarily. When the program finishes, you lose these results.
+The compiler and interpreter process source code differently. The compiler reads the entire program text, generates machine instructions and saves them on a disk drive. The compiler does not execute the resulting program on its own. The interpreter reads the source code in parts, generates machine instructions and executes them immediately. The interpreter stores its results in RAM temporarily. When the program finishes, you lose these results.
 
-Let's consider how the compiler works step by step. Suppose that you have written the program. You saved its source code to a file on the hard disk. Then you run a compiler that fits the language you have used. Each programming language has the corresponding compiler or interpreter. The compiler reads your file, processes it and writes the resulting machine code in the executable file on a disk. Now you have two files: one with source code and one with machine code. Every time you change the source code file, you should generate the new executable file. You can run the executable file to launch your program.
+Let's consider how the compiler works step by step. Suppose that you have written the program. You saved its source code to a file on the hard disk. Then you run a compiler that fits the language you have used. Each programming language has the corresponding compiler or interpreter. The compiler reads your file, processes it and writes the resulting machine instructions in the executable file on a disk. Now you have two files: one with source code and one with machine instructions. Every time you change the source code file, you should generate the new executable file. You can run the executable file to launch your program.
 
 Figure 1-15 shows how the compiler processes a program written in C and C++ languages.
 
@@ -267,7 +267,7 @@ If you combine compiler and linker, you need extra passes through the whole prog
 
 The program can call blocks of commands from the library. The linker process the library file together with the object files of your program in this case. The compiler cannot process the library. Its file contains machine code but not the source code. Therefore, the compiler does not understand it. Splitting the compilation into two steps resolves the task of using libraries too.
 
-We have considered the basics of how the compiler works. Now suppose that you choose an interpreter instead to execute your program. You have the file with its source code on the disk drive. The file is ready for execution. When you run it, the OS loads the interpreter first. Then the interpreter reads your source code file into RAM and executes it line by line. The translation of source code commands to machine code instructions happens in RAM. Some interpreters save files with an intermediate representation of the program to the disk drive. It speeds up the program execution if you restart it. However, you always need to run an interpreter first for executing your program.
+We have considered the basics of how the compiler works. Now suppose that you choose an interpreter instead to execute your program. You have the file with its source code on the disk drive. The file is ready for execution. When you run it, the OS loads the interpreter first. Then the interpreter reads your source code file into RAM and executes it line by line. The translation of source code commands to machine instructions happens in RAM. Some interpreters save files with an intermediate representation of the program to the disk drive. It speeds up the program execution if you restart it. However, you always need to run an interpreter first for executing your program.
 
 Figure 1-16 shows the process of interpreting the program.
 
@@ -284,7 +284,7 @@ First, all interpreters work slowly. It happens because every time you run the p
 
 Second, the interpreter itself is a complex program. It requires some portion of the computer's hardware resources to launch and work. Therefore, the computer executes both interpreter and your program in parallel and shares resources among them. It is an extra overhead that reduces the performance of your program.
 
-Interpreting the program is slow. Does it mean that compilation is better? The compiler generates an executable file with machine code. Therefore, you reach almost the program's performance when you compile it or write machine code on your own. However, you pay for using the programming language at the compilation stage. A couple of seconds and a few megabytes of RAM are enough to compile a small program. When you compile a large project (for example, the Linux kernel), it takes several hours. If you change the source code, you should recompile the project and wait hours again.
+Interpreting the program is slow. Does it mean that compilation is better? The compiler generates an executable file with machine instructions. Therefore, you reach almost the program's performance when you compile it or write machine instructions on your own. However, you pay for using the programming language at the compilation stage. A couple of seconds and a few megabytes of RAM are enough to compile a small program. When you compile a large project (for example, the Linux kernel), it takes several hours. If you change the source code, you should recompile the project and wait hours again.
 
 Keep in mind the overhead of interpreters and compilers when choosing a programming language for your project. The interpreter is a good choice in the following cases:
 
@@ -309,13 +309,13 @@ One simple example helps you to realize all advantages of using a programming la
 {caption: "Listing 1-1. Source code of the C program", format: C}
 ![`HelloWorld.c`](code/GeneralInformation/HelloWorld.c)
 
-Listing 1-2 shows the machine code of this program in the hexadecimal format.
+Listing 1-2 shows the machine instructions of this program in the hexadecimal format.
 
-{caption: "Listing 1-2. Machine code of the program"}
+{caption: "Listing 1-2. Machine instructions of the program"}
 ![`MachineCode.txt`](code/GeneralInformation/MachineCode.txt)
 
 Even if you don't know the C language, you would prefer to deal with the code in Listing 1-1. You can read and edit it easily. At the same time, you need significant efforts to decode the numbers in Listing 1-2.
 
-Perhaps a professional programmer with huge experience can write a small program in machine codes. However, another programmer will spend a lot of time and effort to figure it out. Developing a large project in machine codes is a challenging and time-consuming task for any developer.
+Perhaps a professional programmer with huge experience can write a small program in machine code. However, another programmer will spend a lot of time and effort to figure it out. Developing a large project in machine code is a challenging and time-consuming task for any developer.
 
 Using programming language saves your effort and time significantly when developing programs. Also, it reduces the cost of maintaining the existing project. There is no way to develop modern complex software using the machine code only.
