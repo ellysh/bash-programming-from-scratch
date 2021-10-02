@@ -49,7 +49,7 @@ There are three ways to run an application in Bash:
 2. By the absolute path.
 3. By the relative path.
 
-The first approach is the most convenient. However, you need to add the installation path of the application to the `PATH` variable. Then Bash can find the program's executable when you call it.
+The first approach is the most convenient. You need to add the installation path of the application to the `PATH` variable. Then Bash can find the program's executable when you call it.
 
 Let's consider how to run the Notepad++ editor by the executable name. The program has the following installation path by default:
 {line-numbers: false}
@@ -175,7 +175,9 @@ If the `test.txt` file does not exist, Notepad++ shows you the dialog to create 
 
 Suppose that you run a GUI application in the terminal window. Then you cannot use this window for typing the Bash commands. The GUI program controls it and prints the diagnostic messages there. The terminal window becomes available again when the application finishes.
 
-You can run the GUI application in the **background mode**. Then the terminal window stays available, and you can use it normally. Add the ampersand & at the end of a Bash command to launch it in the background mode. Here is an example:
+You can run the GUI application in the **background mode**. Then the terminal window stays available, and you can use it normally.
+
+Add the ampersand & at the end of a Bash command to launch it in the background mode. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 notepad++ test.txt &
@@ -232,4 +234,3 @@ You can call Notepad++ and detach it from the terminal in a single command. In t
 ```
 notepad++ test.txt & disown $!
 ```
-

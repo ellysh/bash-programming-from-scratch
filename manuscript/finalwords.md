@@ -2,15 +2,17 @@
 
 Here we finish our introduction to Bash. We have covered the language basics only. This book skips several important Bash topics. You will need them if you plan to use Bash for professional software development.
 
-Here is the list of advanced topics that you need for further development of your Bash skills:
+Here are the topics that would be a good start for advanced learning of Bash:
 
-* [Manipulating strings](https://tldp.org/LDP/abs/html/string-manipulation.html).
+* [Strings manipulation](https://tldp.org/LDP/abs/html/string-manipulation.html).
 
 * [Regular expressions](https://tldp.org/LDP/abs/html/x17129.html).
 
 * [The `sed` stream editor](https://tldp.org/LDP/abs/html/x23170.html).
 
 * [The `awk` text processing language](https://tldp.org/LDP/abs/html/awk.html).
+
+I> GNU utilities `sed` and `awk` are not part of Bash. However, they give you advanced features for processing strings.
 
 These topics are material for advanced study. You can skip them if you are using Bash for simple tasks and basic automation only.
 
@@ -28,7 +30,9 @@ The second option is the new language has many domain-specific features that are
 
 There is one important conclusion of the typical language development process. All modern general-purpose languages have strong advantages in a few domains only. No language fits any tasks perfectly. It means that the domain dictates you the language to use.
 
-Let's come back to our question regarding your next step. You have read this book. Now it is time to choose the applied domain that is interested to you. How can you do it? You already know something about software from your user experience. Read articles on the Internet about the programs that you use every day. Think about them this way: do you want to develop similar programs? It can happen that your user experience will help you to find the right applied domain.
+Let's come back to our question regarding your next step for learning programming. You have read this book. Now it is time to choose the applied domain that is interested to you. How can you do it?
+
+You already know something about software from your user experience. Read articles on the Internet about the programs that you use every day. Think about them this way: do you want to develop similar programs? It can happen that your user experience will help you to find the right applied domain.
 
 Suppose that you find the applied domain that you want to learn. The next step is choosing the appropriate programming language that fits this domain well.
 
@@ -41,7 +45,7 @@ Table 5-1 will help you to find the right programming language for your applied 
 |  | |
 | [Web applications](https://en.wikipedia.org/wiki/Web_application) ([front end](https://en.wikipedia.org/wiki/Front_end_and_back_end)) | JavaScript, PHP, HTML5, CSS, SQL |
 |  | |
-| [Web applications](https://en.wikipedia.org/wiki/Web_application) ([back end](https://en.wikipedia.org/wiki/Front_end_and_back_end)) | JavaScript, PHP, Ryby, Perl, C#, Java, Go |
+| [Web applications](https://en.wikipedia.org/wiki/Web_application) ([back end](https://en.wikipedia.org/wiki/Front_end_and_back_end)) | JavaScript, Python, Ryby, Perl, C#, Java, Go |
 |  | |
 | [High Load Systems](https://en.wikipedia.org/wiki/Server_(computing)) | C++, Python, Ruby, SQL |
 |  | |
@@ -65,7 +69,7 @@ I hope that you learned something new from this book and had an enjoyable time w
 
 If you have any questions or comments about this book, please write to me here: [petrsum@gmail.com](mailto:petrsum@gmail.com). Also, you can ask questions in the "Issues" section of the [GitHub repository of the book](https://github.com/ellysh/bash-programming-from-scratch/issues).
 
-Thank you for reading "Bash programming from scratch"!
+Thank you for reading ["Bash programming from scratch"](https://leanpub.com/bash-programming-from-scratch/)!
 
 # Acknowledgements
 

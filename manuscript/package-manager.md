@@ -20,7 +20,7 @@ Each Unix environment provides a special program for accessing the repository. I
 
 Why does the Unix environment need a package manager? Windows does not have such a program. Users of this OS download all software from the Internet and install it manually.
 
-I>There are several third-party package managers for Windows. The most popular one is [Chocolatey](https://chocolatey.org). Microsoft plans to develop the [official package manager](https://devblogs.microsoft.com/commandline/windows-package-manager-1-0) in the nearest future.
+I> There are several third-party package managers for Windows. The most popular one is [Chocolatey](https://chocolatey.org). Microsoft plans to develop the [official package manager](https://devblogs.microsoft.com/commandline/windows-package-manager-1-0) in the nearest future.
 
 The package manager installs and removes packages from the Unix environment. Its main task is to keep track of **package dependencies**. Suppose that some program from one package uses features of the library from another package. Then the first package depends on the second one. It means that you should install the second package whenever you install the first one.
 

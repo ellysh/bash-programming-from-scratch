@@ -1008,13 +1008,10 @@ unset 'contacts[Bob]'
 Bash can insert several elements of an associative array in the same way as it does for an indexed array. Here is an example:
 {line-numbers: true, format: Bash}
 ```
-$ echo "${contacts[@]:Bob:2}"
-(697) 955-5984 mallory@hotmail.com
+$ echo "${contacts[@]:0:2}"
+mallory@hotmail.com (245) 317-0117
 ```
 
-Here you get two elements printed:
-
-* The one that corresponds to the `Bob` key.
-* The next one in memory.
+Here you get the first two elements of the array.
 
 There is one problem with inserting several elements of an associative array. Their order in memory does not match their initialization order. The [**hash function**](https://en.wikipedia.org/wiki/Hash_function) calculates a numerical index in the memory of each element. The function takes a string-key on input and returns a unique integer on output. Because of this feature, inserting several elements of the associative array is a bad practice.
