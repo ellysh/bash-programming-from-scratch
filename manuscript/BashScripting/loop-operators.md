@@ -101,7 +101,7 @@ When the script receives the response from the server, it should print a message
 
 You can call the [`ping`](https://en.wikipedia.org/wiki/Ping_(networking_utility)) utility to send a request to the server. The utility uses the [ICMP](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol) **protocol**.
 
-The protocol is an agreement for the format of messages between the computers of the network. The ICMP protocol describes the messages to serve the network. For example, you need them to check if some computer is available.
+The protocol is an agreement for the format of messages between the computers of the network. The ICMP protocol describes the error messages and packets with operational information. For example, you need them to check if some computer is available.
 
 When calling the `ping` utility, you should specify an [IP address](https://en.wikipedia.org/wiki/IP_address) or [URL](https://en.wikipedia.org/wiki/URL) of the target **host**. A host is a computer or device connected to the network.
 

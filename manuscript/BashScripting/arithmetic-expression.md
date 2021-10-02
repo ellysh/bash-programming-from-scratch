@@ -263,7 +263,7 @@ Represent the following two-byte integers in the two's complement and add them:
 
 You have learned how a computer represents numbers in memory. Would you need this knowledge in practice?
 
-Modern programming languages take care of converting numbers to the correct format. For example, you declare a signed integer variable in decimal notation. You do not need to worry about how the computer stores it in memory. If the variable becomes negative, the computer applies the two's complement representation automatically.
+Modern programming languages take care of converting numbers to the correct format. For example, you declare a signed integer variable in decimal notation. You do not need to worry about how the computer stores it in memory. It stores all numbers in two's complement representation automatically.
 
 There are cases when you want to treat a variable as a set of bits. You declare it as a positive integer in this case. You should operate it in hexadecimal. Please do not convert this variable to decimal. This way, you avoid the problems of converting numbers.
 
@@ -817,18 +817,21 @@ The bitwise AND operate the numbers instead of Boolean expressions. These are st
 
 3. Take the bits of the numbers in the same position and apply the logical AND for them.
 
-Here is an example. You want to calculate the bitwise AND for numbers 5 and 3. First, you should represent them in the two's complement like this:
+Here is an example. You want to calculate the bitwise AND for numbers 5 and 3. First, you should represent their absolute values in binary like this:
 {line-numbers: false}
 ```
 5 = 101
 3 = 11
 ```
 
+
 The number 3 has fewer bits than 5. Therefore, you have to add an extra zero on its left side. This way, you get the following representation of the number 3:
 {line-numbers: false}
 ```
 3 = 011
 ```
+
+You should convert a number in the two's complement if it is negative.
 
 Now you should apply the logical AND for each pair of bits of the numbers. You can write the numbers in columns for convenience:
 {line-numbers: false}
@@ -855,7 +858,7 @@ echo $((5 & 3))
 
 The bitwise OR operation works similarly as bitwise AND. The only difference is it applies logical OR instead of AND for each pair of bits.
 
-Here is an example. Suppose that you need to calculate the bitwise OR for the numbers 10 and 6. First, you should write them in the two's complement representation this way:
+Here is an example. Suppose that you need to calculate the bitwise OR for the numbers 10 and 6. First, you should write them in binary this way:
 {line-numbers: false}
 ```
 10 = 1010
@@ -893,7 +896,7 @@ echo $((10 | 6))
 
 The bitwise exclusive OR (XOR) operation is similar to the bitwise OR. You should replace the logical OR with the **exclusive OR** when handling the bits of the numbers there. The exclusive OR returns "false" only when both operands have the same values. Otherwise, it returns "true".
 
-Let's calculate the exclusive OR for the numbers 12 and 5. First, represent them in the two's complement:
+Let's calculate the exclusive OR for the numbers 12 and 5. First, represent them in binary:
 {line-numbers: false}
 ```
 12 = 1100
@@ -951,7 +954,7 @@ Any bit shift operation takes two operands. The first one is some integer, which
 
 Here is an algorithm for doing the logical bit shift:
 
-1. Represent the integer in the two's complement.
+1. Represent the integer in binary.
 
 2. Discard the required amount of bits on the RHS for the right shift and the LHS for the left shift.
 
@@ -959,7 +962,7 @@ Here is an algorithm for doing the logical bit shift:
 
 Here is an example. You need to do a logical right shift of the unsigned integer 58 by three bits. The integer occupies one byte of memory.
 
-First, you represent the number in the two's complement:
+First, you represent the number in binary:
 {line-numbers: false}
 ```
 58 = 0011 1010

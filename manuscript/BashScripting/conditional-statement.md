@@ -506,7 +506,7 @@ You can choose the mode by passing a command-line option to the script. Table 3-
 | `-c` | Archiving with compression |
 | `-x` | Unarchiving |
 
-I> Always follow the [POSIX agreement](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) when choosing options and parameters format for your scripts. Then users can learn them faster.
+I> Always follow the [POSIX convention](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html) and its [GNU extension](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html) when choosing options and parameters format for your scripts. Then users can learn them faster.
 
 You can check the script option using the `if` statement. Listing 3-12 shows how this solution looks like.
 

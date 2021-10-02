@@ -751,7 +751,9 @@ Here is an example of using the `-r` option:
 grep -r "free software" .
 ```
 
-This command finds the "free software" phrase in the files of the current directory. It processes the hidden objects too. If you work on Linux or macOS, prefer the `-R` option instead of `-r`. It forces `grep` to follow [**symbol links**](https://en.wikipedia.org/wiki/Symbolic_link) when searching. Here is an example:
+This command finds the "free software" phrase in the files of the current directory. It processes the hidden objects too.
+
+If you work on Linux or macOS, prefer the `-R` option instead of `-r`. It forces `grep` to follow [**symbol links**](https://en.wikipedia.org/wiki/Symbolic_link) when searching. Here is an example:
 {line-numbers: false, format: Bash}
 ```
 grep -R "free software" .

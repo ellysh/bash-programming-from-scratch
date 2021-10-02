@@ -47,7 +47,7 @@ Now we have everything to install MSYS2. Follow these steps for doing it:
 
 4. The next window suggests you to choose the application name for the Windows "Start" menu. Leave it unchanged and click the "Next" button. Then the installation process starts.
 
-4. When the installation finishes, click the "Finish" button. It closes the installer window.
+5. When the installation finishes, click the "Finish" button. It closes the installer window.
 
 You have installed the MSYS2 Unix environment on your hard drive. You can find its files in the `C:\msys64` directory if you did not change the default installation path. Go to this directory and run the `msys2.exe` file. It opens the window where you can work with the Bash shell. Figure 2-4 shows this window.
 
