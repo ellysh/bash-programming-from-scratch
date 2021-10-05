@@ -573,7 +573,7 @@ The `case` statement looks this way:
 case STRING in
   PATTERN_1)
     ACTION_1
-     ;;
+    ;;
 
   PATTERN_2)
     ACTION_2
