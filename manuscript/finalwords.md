@@ -47,11 +47,11 @@ Table 5-1 will help you to find the right programming language for your applied 
 |  | |
 | [Web applications](https://en.wikipedia.org/wiki/Web_application) ([back end](https://en.wikipedia.org/wiki/Front_end_and_back_end)) | JavaScript, Python, Ryby, Perl, C#, Java, Go |
 |  | |
-| [High Load Systems](https://en.wikipedia.org/wiki/Server_(computing)) | C++, Python, Ruby, SQL |
+| [High Load Systems](https://en.wikipedia.org/wiki/Server_(computing)) | C++, Rust, Python, Ruby, SQL |
 |  | |
 | [System administration](https://en.wikipedia.org/wiki/System_administrator) | Bash, Python, Perl, Ruby |
 |  | |
-| [Embedded systems](https://en.wikipedia.org/wiki/Embedded_system) | C, C++, Assembler |
+| [Embedded systems](https://en.wikipedia.org/wiki/Embedded_system) | C, C++, Rust, Assembler |
 |  | |
 | [Machine learning ](https://en.wikipedia.org/wiki/Machine_learning) and [data analysis](https://en.wikipedia.org/wiki/Data_analysis) | Python, Java, C++ |
 |  | |

@@ -189,6 +189,7 @@ Table 3-16 shows the two's complement representation of some numbers.
 {caption: "Table 3-16. The two's complement of the signed integers", width: "70%"}
 | Decimal | Hexadecimal | Two's Complement |
 | --- | --- | --- |
+| -128 | 80 | 1000 0000 |
 | -127 | 81 | 1000 0001 |
 | -110 | 92 | 1001 0010 |
 | -60 | C4 | 1100 0100 |
@@ -199,7 +200,7 @@ Table 3-16 shows the two's complement representation of some numbers.
 | 110 | 6E | 0110 1110 |
 | 127 | 7F | 0111 1111 |
 
-The memory capacity stays the same when you switch from SMR to the two's complement. One byte can store the numbers from -127 to 127.
+The memory capacity increases by one unit when you switch from SMR to the two's complement. It happens because there is only one way to represent zero. Therefore, one byte can store the numbers from -128 to 127.
 
 Here is an example of adding numbers 14 and -8. First, you should write them in the two's complement this way:
 {line-numbers: false}
